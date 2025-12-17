@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Defence Guesser - Origin Identification</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#00ff88">
+    <meta name="description"
+        content="Test your military knowledge! Identify the origin of defence equipment from around the world.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="DefenceGuesser">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Icons for various platforms -->
+    <link rel="icon" type="image/png" href="assets/DG_Logo.png">
+    <link rel="apple-touch-icon" href="assets/DG_Logo.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="landing-glow"></div>
+            <div class="glass-panel start-panel">
+                <!-- Terms & Conditions Icon -->
+                <button id="terms-icon" class="terms-icon" title="Terms & Conditions">?</button>
+                <!-- Sound Toggle -->
+                <button id="sound-toggle" class="sound-toggle" title="Sound: ON">🔊</button>
+
+                <div class="app-icon-container">
+                    <div class="icon-glow"></div>
+                    <img src="assets/DG_Logo.png" alt="Defence Guesser" class="app-icon">
+                </div>
+                <h1 style="color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;">DEFENCE<span
+                        class="highlight"
+                        style="color: #00ff88 !important; -webkit-text-fill-color: #00ff88 !important;">GUESSER</span>
+                </h1>
+                <p class="tagline">Identify where defence technology was built. Secure the Intel.</p>
+
+                <div class="start-buttons">
+                    <button id="start-btn" class="btn primary">START GAME</button>
+                    <button id="daily-btn" class="btn daily">DAILY CHALLENGE</button>
+                </div>
+
+                <button id="practice-btn" class="btn secondary">PRACTICE HUB</button>
+            </div>
+            <div class="version-display">V1.0</div>
+        </div>
+
+        <!-- Daily Challenge Options Modal -->
+        <div id="daily-options-modal" class="modal hidden">
+            <div class="modal-content daily-options-content">
+                <h2>DAILY <span class="highlight">CHALLENGE</span></h2>
+                <p class="daily-info">Same 5 targets for all players today!</p>
+                <div class="daily-option-buttons">
+                    <button id="daily-play-btn" class="btn daily-option">
+                        <span class="option-icon">🎮</span>
+                        <span class="option-text">PLAY TODAY'S CHALLENGE</span>
+                    </button>
+                    <button id="daily-leaderboard-btn" class="btn daily-option secondary">
+                        <span class="option-icon">🏆</span>
+                        <span class="option-text">YOUR STATS</span>
+                    </button>
+                </div>
+                <button id="daily-options-cancel-btn" class="btn text-btn">← BACK</button>
+            </div>
+        </div>
+
+        <!-- Game Options Modal -->
+        <div id="game-options-modal" class="modal hidden">
+            <div class="modal-content game-options-content">
+                <h2>GAME <span class="highlight">OPTIONS</span></h2>
+                <p class="game-options-info">Customize your game filters</p>
+
+                <div class="game-options-filters">
+                    <div class="filter-group compact">
+                        <label for="game-origin-filter">Country of Origin:</label>
+                        <select id="game-origin-filter" class="game-filter-select">
+                            <option value="all">All Countries</option>
+                            <option value="america-europe">America & Europe</option>
+                            <option value="russia-china-iran">Russia, China & Iran</option>
+                            <option value="rest-of-world">Rest of World</option>
+                        </select>
+                    </div>
+                    <div class="filter-group compact">
+                        <label for="game-type-filter">Equipment Type:</label>
+                        <select id="game-type-filter" class="game-filter-select">
+                            <option value="all">All Types</option>
+                            <option value="tanks">Tanks</option>
+                            <option value="aircraft">Aircraft</option>
+                            <option value="smallarms">Small Arms</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="game-options-buttons">
+                    <button id="game-begin-btn" class="btn primary">BEGIN</button>
+                    <button id="game-options-cancel-btn" class="btn text-btn">← BACK</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Challenge Name Entry Modal -->
+        <div id="daily-name-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>DAILY <span class="highlight">CHALLENGE</span></h2>
+                <p>Enter your callsign for the leaderboard:</p>
+                <input type="text" id="player-name-input" placeholder="Your callsign..." maxlength="20">
+                <div class="modal-buttons">
+                    <button id="daily-start-btn" class="btn primary">BEGIN MISSION</button>
+                    <button id="daily-cancel-btn" class="btn secondary">CANCEL</button>
+                </div>
+                <p class="daily-info">Same 5 targets for all players today!</p>
+            </div>
+        </div>
+
+        <!-- Daily Leaderboard View Modal -->
+        <div id="daily-leaderboard-modal" class="modal hidden">
+            <div class="modal-content leaderboard-modal-content">
+                <button id="leaderboard-close-btn" class="close-btn">✕</button>
+                <h2>YOUR DAILY <span class="highlight">CHALLENGE</span></h2>
+
+                <!-- Stats Dashboard -->
+                <div class="stats-dashboard">
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-value" id="stat-best">-</div>
+                        <div class="stat-label">Best Score</div>
+                        <div class="stat-date" id="stat-best-date"></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value" id="stat-average">-</div>
+                        <div class="stat-label">Average</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-value" id="stat-streak">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value" id="stat-total">0</div>
+                        <div class="stat-label">Total Days</div>
+                    </div>
+                </div>
+
+                <!-- Progress Chart -->
+                <div class="progress-section">
+                    <h3>Last 7 Days</h3>
+                    <div class="chart-container">
+                        <canvas id="progress-chart" width="360" height="120"></canvas>
+                    </div>
+                </div>
+
+                <!-- History List -->
+                <!-- Total Points - Compact -->
+                <div class="history-section">
+                    <div class="total-points-display">
+                        <div class="total-points-icon">🎯</div>
+                        <div class="total-points-info">
+                            <div class="total-points-value" id="total-points">0</div>
+                            <div class="total-points-label">Total Points Achieved</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="leaderboard-close-btn-bottom" class="btn secondary">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Help Menu Modal (appears when clicking ?) -->
+        <div id="help-menu-modal" class="modal hidden">
+            <div class="modal-content help-menu-content">
+                <button id="help-menu-close-btn" class="close-btn">✕</button>
+                <h2>HELP & <span class="highlight">INFO</span></h2>
+                <p class="help-menu-subtitle">What would you like to know?</p>
+                <div class="help-option-buttons">
+                    <button id="help-how-to-play-btn" class="btn help-option">
+                        <span class="option-icon">🎮</span>
+                        <span class="option-text">HOW TO PLAY</span>
+                    </button>
+                    <button id="help-terms-btn" class="btn help-option secondary">
+                        <span class="option-icon">📄</span>
+                        <span class="option-text">TERMS & CONDITIONS</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- How to Play Modal -->
+        <div id="how-to-play-modal" class="modal hidden">
+            <div class="modal-content terms-modal-content">
+                <button id="how-to-play-close-btn" class="close-btn">✕</button>
+                <h2>HOW TO <span class="highlight">PLAY</span></h2>
+                <div class="terms-content">
+                    <h3>Objective</h3>
+                    <p>Identify the <strong>country of origin</strong> where military equipment was designed and
+                        manufactured.</p>
+
+                    <div class="important-note">
+                        <span class="note-icon">⚠️</span>
+                        <strong>Identify where it was BUILT, not who uses it!</strong>
+                    </div>
+
+                    <p>Many countries operate equipment manufactured elsewhere. Your goal is to pinpoint the country
+                        that originally developed and produced the equipment, not the countries currently using it.</p>
+
+                    <h3>How to Play</h3>
+
+                    <h4>1. View the Equipment</h4>
+                    <p>An image of military equipment will appear on your screen. Study it carefully - the visual design
+                        can often provide clues about its origin.</p>
+
+                    <h4>2. Make Your Guess</h4>
+                    <p>Click anywhere on the world map to drop a pin where you think the equipment was manufactured. You
+                        can also click on a specific country for more precision.</p>
+
+                    <h4>3. Confirm Your Selection</h4>
+                    <p>Once you've placed your pin, click <strong>"CONFIRM DROP"</strong> to submit your guess.</p>
+
+                    <h4>4. Bonus Round - Identify the Equipment</h4>
+                    <p>After guessing the location, you'll be challenged to identify the specific equipment from
+                        multiple choices. Correct identification earns bonus points!</p>
+
+                    <h3>Scoring</h3>
+                    <ul>
+                        <li><strong>Location Accuracy:</strong> Up to 5,000 points based on how close your pin is to the
+                            actual manufacturing location</li>
+                        <li><strong>Equipment Identification:</strong> Additional 5,000 points for correctly naming the
+                            equipment</li>
+                        <li><strong>Total Possible:</strong> 10,000 points per round</li>
+                    </ul>
+                    <p>The closer you click to the correct location, the more points you earn!</p>
+
+                    <h3>Game Modes</h3>
+                    <ul>
+                        <li><strong>Start Game:</strong> Play 5 random rounds</li>
+                        <li><strong>Daily Challenge:</strong> Complete the same 5 equipment items as all other players
+                            today and compete on the leaderboard</li>
+                        <li><strong>Practice Hub:</strong> Browse and study all available equipment to improve your
+                            knowledge</li>
+                    </ul>
+
+                    <h3>Tips</h3>
+                    <ul>
+                        <li>Many countries produce distinctive equipment with unique design philosophies</li>
+                        <li>Pay attention to details like shape, size, and visible markings</li>
+                        <li>Western equipment often differs in design from Eastern equipment</li>
+                        <li>Some countries are known for specific types of military technology</li>
+                    </ul>
+
+                    <p class="terms-footer"><strong>Good luck, and may your geographical knowledge be sharp!</strong>
+                    </p>
+                </div>
+                <button id="how-to-play-ok-btn" class="btn primary">GOT IT</button>
+            </div>
+        </div>
+
+        <!-- Terms & Conditions Modal -->
+        <div id="terms-modal" class="modal hidden">
+            <div class="modal-content terms-modal-content">
+                <button id="terms-close-btn" class="close-btn">✕</button>
+                <h2>TERMS & <span class="highlight">CONDITIONS</span></h2>
+                <div class="terms-content">
+                    <p class="terms-updated"><strong>Last Updated:</strong> 15th December 2024</p>
+
+                    <h3>1. Introduction</h3>
+                    <p>Welcome to Defence Guesser. By accessing or playing our game, you agree to be bound by these
+                        Terms and Conditions and Privacy Policy. If you disagree with any part of these terms, you may
+                        not access or use the service.</p>
+
+                    <h3>2. Intellectual Property</h3>
+
+                    <h4>2.1 Game Ownership</h4>
+                    <p>The game, including but not limited to its original code, design, graphics, user interface, and
+                        game logic, is the property of the developers of Defence Guesser. All rights reserved.</p>
+
+                    <h4>2.2 Military Equipment Images</h4>
+                    <p>The game utilizes images of military equipment which are believed to be in the public domain or
+                        used under Creative Commons licenses. Attribution for these images is provided within the
+                        application where available. If you believe any content infringes on your copyright, please
+                        contact us at <a href="mailto:defenceguesser@gmail.com">defenceguesser@gmail.com</a> for prompt
+                        removal.</p>
+
+                    <h4>2.3 Third-Party Services</h4>
+                    <p>This application uses the following third-party services:</p>
+                    <ul>
+                        <li><strong>Leaflet</strong> - Interactive map library</li>
+                        <li><strong>CartoDB</strong> - Map tile provider</li>
+                        <li><strong>Google Fonts</strong> - Typography (Outfit font family)</li>
+                    </ul>
+                    <p>These services are used in accordance with their respective licenses and terms of service.</p>
+
+                    <h4>2.4 User License</h4>
+                    <p>You are granted a limited, non-exclusive, non-transferable, and revocable license to use Defence
+                        Guesser for personal, non-commercial entertainment purposes only. You may not:</p>
+                    <ul>
+                        <li>Modify, reverse engineer, decompile, or disassemble the game</li>
+                        <li>Create derivative works based on the game</li>
+                        <li>Distribute, sell, or otherwise commercialize any part of the game</li>
+                        <li>Use automated tools, bots, or scripts to interact with the game</li>
+                        <li>Exploit bugs or glitches for unfair advantage</li>
+                    </ul>
+
+                    <h3>3. Privacy Policy & Data Collection</h3>
+
+                    <h4>3.1 No Server-Side Data Collection</h4>
+                    <p>Defence Guesser is a client-side application that operates entirely in your web browser.
+                        <strong>We do not collect, store, or transmit any personally identifiable information (PII) to
+                            external servers.</strong>
+                    </p>
+
+                    <h4>3.2 Local Storage Usage</h4>
+                    <p>The game uses your browser's <strong>Local Storage</strong> to enhance your experience by saving:
+                    </p>
+                    <ul>
+                        <li>Game progress and high scores</li>
+                        <li>Daily Challenge history and completion status</li>
+                        <li>User preferences and settings</li>
+                        <li>Your chosen callsign for the Daily Challenge leaderboard</li>
+                    </ul>
+                    <p><strong>This data remains exclusively on your device and is not shared with us or any third
+                            parties.</strong></p>
+
+                    <h4>3.3 Legal Basis for Local Storage</h4>
+                    <p>By using Defence Guesser, you consent to the storage of this data on your device for the purposes
+                        described above. This data is essential for providing core game functionality such as saving
+                        progress and maintaining leaderboard scores.</p>
+
+                    <h4>3.4 No Tracking Cookies</h4>
+                    <p>We do not use tracking cookies, analytics services, or any third-party data collection tools.</p>
+
+                    <h4>3.5 Your Data Rights (GDPR Compliance)</h4>
+                    <p>Under GDPR and similar privacy regulations, you have the following rights regarding data stored
+                        locally:</p>
+                    <ul>
+                        <li><strong>Right to Access:</strong> You can view your locally stored data through your
+                            browser's developer tools</li>
+                        <li><strong>Right to Erasure:</strong> You can delete all locally stored game data at any time
+                            by clearing your browser's local storage for this website, or by using your browser's "Clear
+                            browsing data" function</li>
+                        <li><strong>Right to Withdraw Consent:</strong> You can stop using the game at any time, and
+                            clear all stored data through your browser settings</li>
+                    </ul>
+                    <p><strong>To completely remove all game data:</strong></p>
+                    <ol>
+                        <li>Open your browser settings</li>
+                        <li>Navigate to Privacy/Storage settings</li>
+                        <li>Clear site data for Defence Guesser</li>
+                        <li>Alternatively, clear all browser local storage</li>
+                    </ol>
+
+                    <h4>3.6 Data Security</h4>
+                    <p>As all data is stored locally on your device, its security depends on your device's security
+                        measures. We recommend keeping your device secure with appropriate passwords and security
+                        software.</p>
+
+                    <h4>3.7 Third-Party Data Processing</h4>
+                    <p>While we do not collect data ourselves, the third-party services listed in section 2.3 (Leaflet,
+                        CartoDB, Google Fonts) may process data according to their own privacy policies when you use
+                        Defence Guesser. We recommend reviewing their respective privacy policies.</p>
+
+                    <h3>4. User Conduct</h3>
+                    <p>You agree to use Defence Guesser in accordance with all applicable laws and regulations.
+                        Prohibited activities include:</p>
+                    <ul>
+                        <li>Attempting to gain unauthorized access to any part of the application</li>
+                        <li>Interfering with the proper functioning of the game</li>
+                        <li>Using the game for any unlawful purpose</li>
+                        <li>Submitting offensive or inappropriate content as your callsign</li>
+                    </ul>
+
+                    <h3>5. Disclaimers and Limitation of Liability</h3>
+
+                    <h4>5.1 "As Is" Provision</h4>
+                    <p>The Service is provided on an <strong>"AS IS"</strong> and <strong>"AS AVAILABLE"</strong> basis.
+                        The Service is provided without warranties of any kind, whether express or implied, including,
+                        but not limited to, implied warranties of merchantability, fitness for a particular purpose,
+                        non-infringement, or course of performance.</p>
+
+                    <h4>5.2 No Guarantee of Accuracy</h4>
+                    <p>While we strive for accuracy in the military equipment information presented, we make no
+                        guarantees about the completeness, reliability, or accuracy of this information.</p>
+
+                    <h4>5.3 Limitation of Liability</h4>
+                    <p>In no event shall the developers be liable for any indirect, incidental, special, consequential,
+                        or punitive damages, including without limitation, loss of profits, data, use, goodwill, or
+                        other intangible losses, resulting from:</p>
+                    <ul>
+                        <li>Your access to or use of or inability to access or use the Service</li>
+                        <li>Any conduct or content of any third party on the Service</li>
+                        <li>Any content obtained from the Service</li>
+                        <li>Unauthorized access, use, or alteration of your transmissions or content</li>
+                    </ul>
+
+                    <h3>6. Age Restrictions</h3>
+                    <p>Defence Guesser is intended for users of all ages. However, if you are under 13 years of age,
+                        please ensure you have parental consent before using this application.</p>
+
+                    <h3>7. Changes to Terms</h3>
+                    <p>We reserve the right, at our sole discretion, to modify or replace these Terms and Privacy Policy
+                        at any time. Material changes will be indicated by updating the "Last Updated" date at the top
+                        of this document. Your continued use of Defence Guesser after any such changes constitutes your
+                        acceptance of the new Terms.</p>
+
+                    <h3>8. Governing Law</h3>
+                    <p>These Terms shall be governed and construed in accordance with the laws of your jurisdiction of
+                        residence, without regard to its conflict of law provisions.</p>
+
+                    <h3>9. Contact Us</h3>
+                    <p>If you have any questions about these Terms and Privacy Policy, or wish to exercise your data
+                        rights, please contact us at:</p>
+                    <p><strong>Email:</strong> <a href="mailto:defenceguesser@gmail.com">defenceguesser@gmail.com</a>
+                    </p>
+
+                    <hr class="terms-divider">
+                    <p class="terms-footer"><em>By playing Defence Guesser, you acknowledge that you have read,
+                            understood, and agree to be bound by these Terms and Conditions and Privacy Policy.</em></p>
+                </div>
+                <button id="terms-ok-btn" class="btn primary">I UNDERSTAND</button>
+            </div>
+        </div>
+
+
+        <!-- Practice Hub Screen -->
+        <div id="practice-screen" class="screen hidden">
+            <div class="practice-container">
+                <div class="practice-header">
+                    <button id="practice-back-btn" class="back-btn">← BACK</button>
+                    <h2>PRACTICE <span class="highlight">HUB</span></h2>
+                    <p>Familiarize yourself with defence equipment</p>
+                </div>
+
+                <div class="category-selector">
+                    <button class="category-btn active" data-category="all">ALL</button>
+                    <button class="category-btn" data-category="Main Battle Tank">TANKS</button>
+                    <button class="category-btn" data-category="Fighter Aircraft">AIRCRAFT</button>
+                    <button class="category-btn" data-category="Naval Vessel">NAVAL</button>
+                    <button class="category-btn" data-category="Air Defense System">AIR DEFENSE</button>
+                    <button class="category-btn" data-category="Artillery">ARTILLERY</button>
+                    <button class="category-btn" data-category="Combat Drone">DRONES</button>
+                    <button class="category-btn" data-category="Small Arms">SMALL ARMS</button>
+                </div>
+
+                <!-- Country Filters -->
+                <div class="country-filters">
+                    <div class="filter-group">
+                        <label for="origin-filter">Country of Origin:</label>
+                        <select id="origin-filter" class="country-select">
+                            <option value="all">All Countries</option>
+                            <!-- Options populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="operator-filter">Operated By:</label>
+                        <select id="operator-filter" class="country-select">
+                            <option value="all">All Countries</option>
+                            <!-- Options populated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="equipment-grid" id="equipment-grid">
+                    <!-- Equipment cards will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Equipment Detail Modal -->
+            <div id="practice-detail-modal" class="practice-modal hidden">
+                <div class="practice-modal-content">
+                    <button id="close-practice-modal" class="close-btn">✕</button>
+
+                    <!-- Image Container with Overlaid Thumbnails -->
+                    <div class="practice-image-container">
+                        <img id="practice-modal-image" src="" alt="Equipment">
+
+                        <!-- Image Gallery Thumbnails (overlaid at bottom of image) -->
+                        <div id="practice-image-gallery" class="practice-image-gallery hidden">
+                            <!-- Thumbnails will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="practice-modal-info">
+                        <h3 id="practice-modal-name"></h3>
+                        <p class="practice-modal-origin" id="practice-modal-origin"></p>
+                        <div class="practice-modal-specs">
+                            <div class="spec-row">
+                                <span class="spec-label">TYPE:</span>
+                                <span class="spec-value" id="practice-modal-type"></span>
+                            </div>
+                            <div class="spec-row">
+                                <span class="spec-label">SPEED:</span>
+                                <span class="spec-value" id="practice-modal-speed"></span>
+                            </div>
+                            <div class="spec-row">
+                                <span class="spec-label">ARMAMENT:</span>
+                                <span class="spec-value" id="practice-modal-armament"></span>
+                            </div>
+                            <div class="spec-row">
+                                <span class="spec-label">RANGE:</span>
+                                <span class="spec-value" id="practice-modal-range"></span>
+                            </div>
+                            <div class="spec-row">
+                                <span class="spec-label">IN SERVICE:</span>
+                                <span class="spec-value" id="practice-modal-service"></span>
+                            </div>
+                            <div class="spec-row">
+                                <span class="spec-label">STATUS:</span>
+                                <span class="spec-value" id="practice-modal-status"></span>
+                            </div>
+                            <div class="spec-row full-width">
+                                <span class="spec-label">OPERATORS:</span>
+                                <span class="spec-value" id="practice-modal-users"></span>
+                            </div>
+                        </div>
+
+                        <!-- Image Attribution -->
+                        <div class="image-credit" id="practice-modal-credit">
+                            <!-- Will be populated by JavaScript if credit exists -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div class="top-bar">
+                <div class="score-container">SCORE: <span id="score">0</span></div>
+                <div class="round-container">ROUND: <span id="round">1</span></div>
+            </div>
+
+            <!-- Fullscreen Map -->
+            <div class="map-container-fullscreen">
+                <div id="map"></div>
+                <button id="guess-btn" class="btn primary">CONFIRM DROP</button>
+            </div>
+
+            <!-- Equipment Image Popup Overlay -->
+            <div id="equipment-popup" class="equipment-popup">
+                <button id="close-equipment" class="close-btn" title="Minimize">✕</button>
+                <img id="equipment-image" src="" alt="Classified Equipment">
+                <div class="loader">Accessing Archive...</div>
+            </div>
+
+            <!-- Minimized Equipment Thumbnail (Bottom Right) -->
+            <div id="equipment-thumbnail" class="equipment-thumbnail hidden">
+                <img id="thumbnail-image" src="" alt="Equipment">
+            </div>
+        </div>
+
+        <!-- Result Screen (Overlay) -->
+        <div id="result-screen" class="screen hidden">
+            <div class="glass-panel result-panel">
+                <h2 id="result-title">TARGET ACQUIRED</h2>
+
+                <div class="result-details">
+                    <p>Actual Origin: <span id="actual-origin" class="highlight">Unknown</span></p>
+                    <p>Distance Error: <span id="distance-error">0</span></p>
+                    <p>Points Awarded: +<span id="points-awarded">0</span></p>
+                </div>
+
+                <div class="bonus-section" id="bonus-section">
+                    <h3>BONUS INTEL (+5000 pts)</h3>
+                    <p>Identify the equipment:</p>
+                    <div class="bonus-choices" id="bonus-choices">
+                        <!-- Choices will be generated by JavaScript -->
+                    </div>
+                    <p id="bonus-result" class="bonus-result"></p>
+                </div>
+
+                <!-- Equipment Summary Section -->
+                <div class="equipment-summary hidden" id="equipment-summary">
+                    <h3>EQUIPMENT PROFILE</h3>
+
+                    <!-- Interesting Fact -->
+                    <div class="equipment-fact" id="equipment-fact">
+                        <span class="fact-icon">💡</span>
+                        <span class="fact-text" id="fact-text"></span>
+                    </div>
+
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <span class="summary-label">IN SERVICE:</span>
+                            <span class="summary-value" id="summary-year">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">OPERATIONAL STATUS:</span>
+                            <span class="summary-value" id="summary-status">-</span>
+                        </div>
+                        <div class="summary-item full-width">
+                            <span class="summary-label">CURRENT USERS:</span>
+                            <span class="summary-value" id="summary-users">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Technical Specifications -->
+                    <div class="tech-specs">
+                        <h4>SPECIFICATIONS</h4>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <span class="spec-label">SPEED:</span>
+                                <span class="spec-value" id="summary-speed">-</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">ARMAMENT:</span>
+                                <span class="spec-value" id="summary-armament">-</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">RANGE:</span>
+                                <span class="spec-value" id="summary-range">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Attribution -->
+                    <div class="image-credit" id="summary-image-credit">
+                        <!-- Will be populated by JavaScript if credit exists -->
+                    </div>
+                </div>
+
+                <button id="next-btn" class="btn secondary">NEXT TARGET</button>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="screen hidden">
+            <div class="debrief-container">
+                <div class="debrief-header">
+                    <h1>MISSION <span class="highlight">DEBRIEF</span></h1>
+                    <p class="debrief-subtitle">Intelligence Assessment Complete</p>
+                </div>
+
+                <div class="debrief-content">
+                    <!-- Score Summary -->
+                    <div class="score-summary">
+                        <div class="final-score-display">
+                            <span class="score-label">FINAL SCORE</span>
+                            <span class="score-value" id="final-score">0</span>
+                        </div>
+                        <div class="score-rating" id="score-rating">
+                            <span class="rating-label">PERFORMANCE RATING</span>
+                            <span class="rating-value" id="rating-value">RECRUIT</span>
+                        </div>
+                        <div class="score-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" id="stat-correct-locations">0</span>
+                                <span class="stat-label">Correct Locations</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="stat-correct-ids">0</span>
+                                <span class="stat-label">Correct IDs</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="stat-accuracy">0%</span>
+                                <span class="stat-label">Accuracy</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Summary Bar (only shown for daily challenge) -->
+                    <div class="daily-summary-bar hidden" id="daily-summary-bar">
+                        <div class="daily-summary-content" id="daily-summary-content">
+                            <!-- Will be populated by JavaScript: high score message + streak -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="debrief-actions">
+                    <button id="restart-btn" class="btn primary">RE-DEPLOY</button>
+                    <button id="view-daily-stats-btn" class="btn secondary hidden">YOUR STATS</button>
+                    <button id="menu-btn" class="btn secondary">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="assets/geo-data.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -191,6 +191,26 @@
         imageCredit: "Photo: Stefan Krasowski / Flickr / CC BY 2.0"
     },
     {
+        id: 113,
+        name: "M109 Paladin",
+        type: "Artillery",
+        origin: "United States",
+        coords: [39.8283, -98.5795],
+        images: [
+            "assets/M109.jpg",
+            "assets/M109_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Staff Sgt. Richard Wrigley / U.S. Army / Public Domain",
+            "Photo: SPEC. 5 Vince Werner / U.S. Government / Public Domain"
+        ],
+        specs: { speed: "56 km/h", armament: "155mm M284", range: "30 km" },
+        inService: 1963,
+        users: ["United States", "Austria", "Bahrain", "Belgium", "Brazil", "Canada", "Chile", "Denmark", "Egypt", "Germany", "Greece", "Israel", "Italy", "Japan", "Jordan", "Kuwait", "Morocco", "Netherlands", "Norway", "Oman", "Pakistan", "Portugal", "Saudi Arabia", "South Korea", "Spain", "Switzerland", "Taiwan", "Thailand", "Tunisia", "Turkey", "Ukraine", "United Kingdom", "30+ countries"],
+        status: "Active",
+        fact: "The M109 is one of the most widely produced self-propelled artillery systems in the world, with over 10,000 units built. First introduced in 1963 for the Vietnam War, it has been continuously upgraded through variants (A1-A7), with the latest M109A7 featuring enhanced armor and automation. Its 155mm howitzer can fire GPS-guided Excalibur rounds up to 40km away."
+    },
+    {
         id: 11,
         name: "Zulfiqar-3",
         type: "Main Battle Tank",
@@ -1036,6 +1056,60 @@
         fact: "The PCL-09 is a truck-mounted 122mm howitzer with exceptional mobility, reaching 85 km/h on roads. With 300+ units in service, it provides rapid-deployment fire support for China's motorized infantry and can extend its range to 27km using rocket-assisted projectiles.",
         imageCredit: "Photo: 中国新闻社 (China News Service) / YouTube / CC BY 3.0"
     },
+    {
+        id: 114,
+        name: "PLZ-05",
+        type: "Artillery",
+        origin: "China",
+        coords: [35.8617, 104.1954],
+        images: [
+            "assets/PLZ_05.jpg",
+            "assets/PLZ_05_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Tyg728 / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Ministry of Defence of the Russian Federation / Mil.ru / CC BY 4.0"
+        ],
+        specs: { speed: "56 km/h", armament: "155mm L/52", range: "50 km" },
+        inService: 2008,
+        users: ["China"],
+        status: "Active",
+        fact: "The PLZ-05 is China's most advanced 155mm self-propelled howitzer, featuring an automatic loading system capable of 8-10 rounds per minute. With a 52-caliber barrel, it can fire rocket-assisted rounds up to 50km and specialized projectiles beyond 100km. Weighing 35 tonnes and powered by an 800hp diesel engine, it serves as the backbone of PLA artillery units."
+    },
+    {
+        id: 115,
+        name: "Raad-2",
+        type: "Artillery",
+        origin: "Iran",
+        coords: [32.4279, 53.6880],
+        image: "assets/Raad_2.jpg",
+        specs: { speed: "N/A", armament: "155mm HM44", range: "30 km" },
+        inService: 2013,
+        users: ["Iran"],
+        status: "Active",
+        fact: "The Raad-2 is an Iranian domestically-produced 155mm self-propelled howitzer based on a heavily modified chassis. It features the HM44 howitzer with a 30km firing range and represents Iran's efforts to develop indigenous artillery systems despite international sanctions.",
+        imageCredit: "Photo: Sonia Sevilla / Wikimedia Commons / CC0 1.0"
+    },
+    {
+        id: 119,
+        name: "Archer Artillery System",
+        type: "Artillery",
+        origin: "Sweden",
+        coords: [59.3293, 18.0686],
+        images: [
+            "assets/Archer.jpg",
+            "assets/Archer_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Stridsvagn122 / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Staff Sgt. Bryan Myhr / U.S. Air National Guard / Public Domain"
+        ],
+        specs: { speed: "70 km/h", armament: "155mm L/52", range: "60 km" },
+        inService: 2016,
+        users: ["Sweden", "Norway", "Ukraine"],
+        status: "Active",
+        fact: "The Archer is a Swedish 155mm fully-automated self-propelled howitzer mounted on a Volvo 6×6 all-terrain vehicle. It can fire 20 rounds in 2.5 minutes, has a deployment time under 30 seconds, and can fire Excalibur precision rounds up to 60km. Its crew of 3 operates from an armored cabin, and the system can even be controlled by a single operator."
+    },
 
     // === COMBAT DRONES ===
     {
@@ -1312,6 +1386,26 @@
         imageCredit: "Photo: KASP / Wikimedia Commons / CC BY-SA 4.0"
     },
     {
+        id: 116,
+        name: "HK416",
+        type: "Assault Rifle",
+        origin: "Germany",
+        coords: [51.2993, 8.4168],
+        images: [
+            "assets/HK416.jpg",
+            "assets/HK416_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Dybdal / Wikimedia Commons / CC BY-SA 2.0",
+            "Photo: Armée Française - Opérations militaires / defense.gouv.fr / Etalab-2.0"
+        ],
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "600 m" },
+        inService: 2005,
+        users: ["United States", "France", "Norway", "Germany", "Australia", "Netherlands", "20+ countries"],
+        status: "Active",
+        fact: "The HK416 is an improved variant of the M4 carbine developed by Heckler & Koch as a more reliable alternative. Used by elite units including US Delta Force and SEAL Team Six, it gained fame as the weapon used in Operation Neptune Spear. France adopted it to replace the FAMAS, and the US Marines use a variant designated M27 IAR."
+    },
+    {
         id: 84,
         name: "FX-05 Xiuhcoatl",
         type: "Assault Rifle",
@@ -1324,6 +1418,20 @@
         status: "Active",
         fact: "The FX-05 'Xiuhcoatl' (Fire Serpent) is an indigenous Mexican rifle designed to replace the G3. It features a design that resembles the G36 but uses a distinct internal mechanism.",
         imageCredit: "Photo: Shdowcrwler / Wikimedia Commons / CC BY-SA 3.0"
+    },
+    {
+        id: 117,
+        name: "Vektor LM5 (R5)",
+        type: "Assault Rifle",
+        origin: "South Africa",
+        coords: [-25.7479, 28.2293],
+        image: "assets/Vektor_LM5.jpg",
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "500 m" },
+        inService: 1980,
+        users: ["South Africa"],
+        status: "Active",
+        fact: "The Vektor R5 is a South African carbine based on the Israeli Galil, adapted for local conditions. The LM5 is the semi-automatic civilian version. It served as the standard issue carbine for the South African Defence Force and remains in active service, with a 2016 modernization contract extending its lifespan to at least 2020.",
+        imageCredit: "Photo: Craig Lee courtesy of gunsite.co.za / CC BY-SA 3.0"
     },
 
     // === ARMOURED PERSONNEL CARRIERS ===
@@ -2164,6 +2272,22 @@
         users: ["United States", "United Kingdom", "Italy", "Portugal", "Serbia", "Slovakia", "Slovenia", "Spain"],
         status: "Active",
         fact: "The Benelli M4 (designated M1014 by the USMC and L128A1 by the British) was the first gas-operated shotgun adopted for widespread U.S. military service. Its proprietary ARGO gas system uses two self-cleaning stainless steel pistons, allowing it to reliably cycle any ammunition from light loads to 3-inch magnums without adjustment. It can fire over 25,000 rounds without major part replacement."
+    },
+
+    // === ANTI-TANK WEAPONS ===
+    {
+        id: 118,
+        name: "9M133 Kornet-EM",
+        type: "Anti-Tank Missile",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        image: "assets/Kornet_EM.jpg",
+        specs: { speed: "N/A", armament: "ATGM", range: "10 km" },
+        inService: 2012,
+        users: ["Russia", "Syria", "Algeria", "India", "Iraq", "Iran", "Libya", "UAE", "20+ countries"],
+        status: "Active",
+        fact: "The Kornet-EM is an advanced Russian anti-tank guided missile with a maximum range of 10km, featuring laser beam-riding guidance and automatic target tracking. It can penetrate 1,300mm of armor after reactive armor and is also effective against helicopters and UAVs. Used extensively in modern conflicts, it represents one of the most lethal ATGMs in service today.",
+        imageCredit: "Photo: Wikimedia Commons / CC BY-SA 4.0"
     }
 ];
 

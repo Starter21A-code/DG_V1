@@ -1,5 +1,5 @@
 // Defence Guesser Service Worker
-const CACHE_NAME = 'defence-guesser-v16';
+const CACHE_NAME = 'defence-guesser-v27';
 
 // Files to cache for offline use
 const urlsToCache = [
@@ -184,7 +184,18 @@ const urlsToCache = [
     './assets/D_30_Bravo.jpg',
     './assets/L118.jpg',
     './assets/L118_Bravo.jpg',
-    './assets/PCL_09.png'
+    './assets/PCL_09.png',
+    './assets/M109.jpg',
+    './assets/M109_Bravo.jpg',
+    './assets/PLZ_05.jpg',
+    './assets/PLZ_05_Bravo.jpg',
+    './assets/Raad_2.jpg',
+    './assets/HK416.jpg',
+    './assets/HK416_Bravo.jpg',
+    './assets/Vektor_LM5.jpg',
+    './assets/Kornet_EM.jpg',
+    './assets/Archer.jpg',
+    './assets/Archer_Bravo.jpg'
 ];
 
 // Install event - cache files

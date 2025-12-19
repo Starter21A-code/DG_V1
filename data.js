@@ -337,7 +337,7 @@
         ],
         specs: { speed: "Mach 2+", armament: "M61A1 Vulcan 20mm", range: "2,027 km" },
         inService: 1980,
-        users: ["United States", "Israel", "Turkey", "South Korea", "Netherlands", "Belgium", "Poland", "Taiwan"],
+        users: ["United States", "Israel", "Turkey", "South Korea", "Netherlands", "Belgium", "Poland", "Taiwan", "Ukraine"],
         status: "Active",
         fact: "The F-16 Fighting Falcon is the world's most common fixed-wing military aircraft, with over 4,600 built and operated by 25+ nations. Its frameless bubble canopy provides exceptional visibility."
     },
@@ -962,6 +962,80 @@
         fact: "The OTR-21 Tochka (NATO: SS-21 Scarab) is a road-mobile tactical ballistic missile that can carry nuclear, chemical, or conventional warheads and has seen extensive combat use in multiple conflicts.",
         imageCredit: "Photo: Vladislav Falshivomonetchik / Wikimedia Commons / CC BY-SA 3.0"
     },
+    {
+        id: 109,
+        name: "L118 Light Gun",
+        type: "Artillery",
+        origin: "United Kingdom",
+        coords: [51.5074, -0.1278],
+        images: [
+            "assets/L118.jpg",
+            "assets/L118_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Richard Watt/MOD / Wikimedia Commons / OGL v1.0",
+            "Photo: Marinha do Brasil / Flickr / CC BY-SA 2.0"
+        ],
+        specs: { speed: "N/A (Towed)", armament: "105mm L118", range: "17.2 km" },
+        inService: 1976,
+        users: ["United Kingdom", "United States", "Brazil", "Spain", "UAE", "Australia", "New Zealand", "Ireland", "Portugal", "Thailand", "Ukraine", "20+ countries"],
+        status: "Active",
+        fact: "The L118 Light Gun is a highly mobile 105mm towed howitzer that can be deployed by helicopter or parachute. Its crew can bring it into action in just 30 seconds and achieve a firing rate of 6-8 rounds per minute."
+    },
+    {
+        id: 110,
+        name: "M777 Howitzer",
+        type: "Artillery",
+        origin: "United States",
+        coords: [39.8283, -98.5795],
+        images: [
+            "assets/M777_howitzer.jpg",
+            "assets/M777_howitzer_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Sgt Jose F. Guillen / U.S. Marine Corps / Public Domain",
+            "Photo: mark6mauno / Flickr / CC BY 2.0"
+        ],
+        specs: { speed: "N/A (Towed)", armament: "155mm L/39", range: "30 km" },
+        inService: 2005,
+        users: ["United States", "Australia", "Canada", "India", "Saudi Arabia", "Ukraine", "Colombia"],
+        status: "Active",
+        fact: "The M777 is an ultra-lightweight 155mm howitzer made with titanium and aluminum alloys, weighing just 4.2 tons—43% lighter than the M198 it replaced. It can fire precision Excalibur rounds up to 40km away with GPS guidance."
+    },
+    {
+        id: 111,
+        name: "2A18 D-30 Howitzer",
+        type: "Artillery",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/howitzer_2A18_D_30.jpg",
+            "assets/D_30_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: D'oh Boy (Mark Holloway) / Flickr / CC BY 2.0",
+            "Photo: Richard Allen / Flickr / CC BY 2.0"
+        ],
+        specs: { speed: "N/A (Towed)", armament: "122mm D-30", range: "15.3 km" },
+        inService: 1960,
+        users: ["Russia", "China", "Iraq", "Iran", "Syria", "North Korea", "Egypt", "India", "60+ countries"],
+        status: "Active",
+        fact: "The D-30's distinctive three-leg carriage allows the gun to traverse a full 360 degrees, enabling rapid engagement of targets in any direction. Despite being designed in the 1960s, it remains in widespread service across 60+ countries and has been used in nearly every major conflict since the Cold War."
+    },
+    {
+        id: 112,
+        name: "PCL-09 Self-Propelled Howitzer",
+        type: "Artillery",
+        origin: "China",
+        coords: [35.8617, 104.1954],
+        image: "assets/PCL_09.png",
+        specs: { speed: "85 km/h", armament: "122mm PL-96", range: "18 km" },
+        inService: 2009,
+        users: ["China"],
+        status: "Active",
+        fact: "The PCL-09 is a truck-mounted 122mm howitzer with exceptional mobility, reaching 85 km/h on roads. With 300+ units in service, it provides rapid-deployment fire support for China's motorized infantry and can extend its range to 27km using rocket-assisted projectiles.",
+        imageCredit: "Photo: 中国新闻社 (China News Service) / YouTube / CC BY 3.0"
+    },
 
     // === COMBAT DRONES ===
     {
@@ -1262,7 +1336,7 @@
         image: "assets/HUMVEE.jpg",
         specs: { speed: "105 km/h", armament: "Various MGs/Launchers", range: "400 km" },
         inService: 1985,
-        users: ["United States", "Afghanistan", "Iraq", "Jordan", "Kuwait", "Kenya", "Honduras"],
+        users: ["United States", "Afghanistan", "Iraq", "Jordan", "Kuwait", "Kenya", "Honduras", "50+ countries"],
         status: "Active",
         fact: "The iconic Humvee (High Mobility Multipurpose Wheeled Vehicle) replaced multiple older vehicles when it entered service in 1985. With over 50 countries using it, the versatile 4x4 can be armed with weapons from M249 SAWs to TOW missiles and serves in roles from troop transport to ambulance.",
         imageCredit: "Photo: Tobias Nordhausen / Wikimedia Commons / CC BY 2.0"

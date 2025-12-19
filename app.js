@@ -497,12 +497,12 @@ function startGame(isDailyMode = false, filters = null) {
                 return;
             }
             // Adjust max rounds or repeat equipment
-            state.gameData = [...filteredData].sort(() => 0.5 - Math.random()).slice(0, Math.min(filteredData.length, state.maxRounds));
+            state.gameData = shuffleArray(filteredData).slice(0, Math.min(filteredData.length, state.maxRounds));
         } else {
-            state.gameData = [...filteredData].sort(() => 0.5 - Math.random()).slice(0, state.maxRounds);
+            state.gameData = shuffleArray(filteredData).slice(0, state.maxRounds);
         }
     } else {
-        state.gameData = [...equipmentData].sort(() => 0.5 - Math.random()).slice(0, state.maxRounds);
+        state.gameData = shuffleArray(equipmentData).slice(0, state.maxRounds);
     }
 
     switchScreen('game');
@@ -1716,6 +1716,16 @@ function updateTotalPoints(history) {
     totalPointsElement.textContent = totalPoints.toLocaleString();
 }
 
+
+// Proper Fisher-Yates shuffle (unbiased)
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
 
 // Seeded random number generator for consistent daily equipment
 function seededRandom(seed) {

@@ -12,7 +12,9 @@ const COUNTRY_ALIASES = {
     "Germany": ["Germany", "Federal Republic of Germany"],
     "Sweden": ["Sweden", "Kingdom of Sweden"],
     "China": ["China", "People's Republic of China"],
-    "India": ["India", "Republic of India"]
+    "India": ["India", "Republic of India"],
+    "United Kingdom / France": ["United Kingdom", "Great Britain", "UK", "Britain", "France", "French Republic"],
+    "United Kingdom / Sweden": ["United Kingdom", "Great Britain", "UK", "Britain", "Sweden", "Kingdom of Sweden"]
 };
 
 let state = {
@@ -1107,8 +1109,17 @@ function closePracticeHub() {
 }
 
 function populateCountryFilters() {
-    // Get all unique origin countries
-    const origins = [...new Set(equipmentData.map(eq => eq.origin))].sort();
+    // Get all unique origin countries and split dual-origin entries
+    const originsSet = new Set();
+    equipmentData.forEach(eq => {
+        // Split dual-origin entries (e.g., "United Kingdom / France" becomes ["United Kingdom", "France"])
+        if (eq.origin.includes(' / ')) {
+            eq.origin.split(' / ').forEach(country => originsSet.add(country.trim()));
+        } else {
+            originsSet.add(eq.origin);
+        }
+    });
+    const origins = [...originsSet].sort();
 
     // Get all unique operator countries
     const operators = new Set();
@@ -1191,9 +1202,18 @@ function renderEquipmentGrid() {
         });
     }
 
-    // Filter by origin country
+    // Filter by origin country (handle dual-origin equipment)
     if (practiceState.originCountry !== 'all') {
-        filteredEquipment = filteredEquipment.filter(eq => eq.origin === practiceState.originCountry);
+        filteredEquipment = filteredEquipment.filter(eq => {
+            // Check if equipment origin matches exactly or is part of a dual-origin string
+            if (eq.origin === practiceState.originCountry) return true;
+            // Check if selected country is in a dual-origin entry (e.g., "United Kingdom" matches "United Kingdom / France")
+            if (eq.origin.includes(' / ')) {
+                const countries = eq.origin.split(' / ').map(c => c.trim());
+                return countries.includes(practiceState.originCountry);
+            }
+            return false;
+        });
     }
 
     // Filter by operator country

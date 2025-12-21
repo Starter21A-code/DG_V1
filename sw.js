@@ -1,5 +1,5 @@
 // Defence Guesser Service Worker
-const CACHE_NAME = 'defence-guesser-v27';
+const CACHE_NAME = 'defence-guesser-v49';
 
 // Files to cache for offline use
 const urlsToCache = [
@@ -44,6 +44,8 @@ const urlsToCache = [
     './assets/su57_felon.jpg',
     './assets/uss_ford_carrier.jpg',
     './assets/s400_1765118527696.jpg',
+    './assets/2S6M1_Tunguska.jpg',
+    './assets/Tunguska_Bravo.jpg',
     './assets/caesar_1765118550941.jpg',
     './assets/bayraktar_1765118506987.jpg',
     './assets/m4a1_carbine.jpg',
@@ -71,6 +73,12 @@ const urlsToCache = [
     './assets/Shahed_136.png',
     './assets/Wing_Loong2.jpg',
     './assets/QBZ_95.jpg',
+    './assets/QBZ191.jpg',
+    './assets/ASMI.jpg',
+    './assets/NLAW.jpg',
+    './assets/NLAW_Bravo.jpg',
+    './assets/Taurus.jpg',
+    './assets/Taurus_Bravo.jpg',
     './assets/KH-2002.jpg',
     './assets/Type_88.jpg',
     './assets/ZBD_04.jpg',
@@ -86,6 +94,8 @@ const urlsToCache = [
     './assets/TMM_6.jpg',
     './assets/B_2_Spirit.jpg',
     './assets/B_52.jpg',
+    './assets/B21.jpg',
+    './assets/B21_Bravo.jpg',
     './assets/HIMARS.jpg',
     './assets/Tornado_S.png',
     './assets/Apache.jpg',
@@ -104,14 +114,22 @@ const urlsToCache = [
     './assets/Bushmaster.jpg',
     './assets/G36.jpg',
     './assets/FX_05.jpg',
+    './assets/FX05_Bravo.jpg',
     './assets/Krasukha_2.jpg',
     './assets/BMP_2.jpg',
     './assets/Black_Hawk.jpg',
     './assets/Chinook.jpg',
+    './assets/C130.jpg',
+    './assets/C130_Bravo.jpg',
     './assets/Puma.jpg',
     './assets/TOS_1a.jpg',
     './assets/T72.jpg',
     './assets/T72_Bravo.jpg',
+    './assets/BMPT.jpg',
+    './assets/BMPT_Bravo.jpg',
+    './assets/Altay_Tank.jpg',
+    './assets/Altay_Bravo.jpg',
+    './assets/MTLB.jpg',
     './assets/SU_25.jpg',
     './assets/MQ_1C.jpg',
     './assets/Pantsir_S1.jpg',
@@ -195,7 +213,10 @@ const urlsToCache = [
     './assets/Vektor_LM5.jpg',
     './assets/Kornet_EM.jpg',
     './assets/Archer.jpg',
-    './assets/Archer_Bravo.jpg'
+    './assets/Archer_Bravo.jpg',
+    './assets/Storm_Shadow.jpg',
+    './assets/Zubr_class_LCAC.jpg',
+    './assets/QBZ95_Bravo.jpg'
 ];
 
 // Install event - cache files

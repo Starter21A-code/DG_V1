@@ -78,7 +78,7 @@
         inService: 1998,
         users: ["United Kingdom", "Oman"],
         status: "Active",
-        fact: "Despite being deployed in combat extensively, only one Challenger 2 has been destroyed by enemy fire, showcasing its exceptional armor protection - the best of any NATO tank."
+        fact: "Ukrainian crews have praised the Challenger 2's accuracy, likening its rifled 120mm gun to a 'sniper rifle among tanks' due to its exceptional precision compared to smoothbore-equipped tanks."
     },
     {
         id: 5,
@@ -326,6 +326,60 @@
         status: "Active",
         fact: "The T-72 is one of the most widely produced tanks in history, with over 25,000 units built and service in 40+ countries."
     },
+    {
+        id: 115,
+        name: "BMPT Terminator",
+        type: "Tank Support Vehicle",
+        origin: "Russia",
+        coords: [56.8389, 60.6057],
+        images: [
+            "assets/BMPT.jpg",
+            "assets/BMPT_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0",
+            "Photo: VoidWanderer / Wikimedia Commons / CC BY-SA 4.0"
+        ],
+        specs: { speed: "60 km/h", armament: "2x 30mm 2A42, 4x 9M120 Ataka", range: "550 km" },
+        inService: 2018,
+        users: ["Russia", "Kazakhstan", "Algeria"],
+        status: "Active",
+        fact: "The BMPT 'Terminator' was developed from combat experiences in Afghanistan and Chechnya, where tanks proved vulnerable in urban environments. Built on the T-72 chassis, it features dual 30mm autocannons, four Ataka missile launchers, and a crew of 5 to provide dedicated protection to tanks against infantry threats."
+    },
+    {
+        id: 118,
+        name: "Altay",
+        type: "Main Battle Tank",
+        origin: "Turkey",
+        coords: [39.9334, 32.8597],
+        images: [
+            "assets/Altay_Tank.jpg",
+            "assets/Altay_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Emir GEÇIR / Wikimedia Commons / CC0 1.0",
+            "Photo: CeeGee / Wikimedia Commons / CC BY-SA 4.0"
+        ],
+        specs: { speed: "65 km/h", armament: "120mm L/55", range: "500 km" },
+        inService: 2025,
+        users: ["Turkey"],
+        status: "Active",
+        fact: "The Altay is Turkey's first domestically developed main battle tank, named after General Fahrettin Altay. Mass production began in 2025, with the design based on technology transfer from South Korea's K2 Black Panther. It features the AKKOR Active Protection System providing 360-degree defense against anti-tank missiles and a 1,500 hp engine giving it exceptional mobility."
+    },
+    {
+        id: 119,
+        name: "MT-LB",
+        type: "Multi-Purpose Tracked Vehicle",
+        origin: "Russia",
+        coords: [49.9935, 36.2304],
+        image: "assets/MTLB.jpg",
+        specs: { speed: "61 km/h", armament: "7.62mm PKT MG", range: "500 km" },
+        inService: 1970,
+        users: ["Russia", "Ukraine", "Poland", "Bulgaria", "Finland", "40+ countries"],
+        status: "Active",
+        fact: "The MT-LB (Multi-purpose Towing Vehicle Light Armoured) is a highly versatile Soviet-era tracked vehicle that entered service in 1970. Fully amphibious and capable of carrying 11 passengers plus a 2-person crew, it has served as an artillery tractor, armored personnel carrier, command vehicle, and platform for numerous weapon systems. Its combination of reliability, low silhouette, and adaptability has made it one of the most widely used tracked vehicles globally.",
+        imageCredit: "Photo: DON S. Montgomery / U.S. Navy / Public Domain"
+    },
 
     // === FIGHTER AIRCRAFT ===
     {
@@ -541,6 +595,26 @@
         imageCredit: "Photo: Airman 1st Class Victor J. Caputo / U.S. Air Force / Public Domain"
     },
     {
+        id: 121,
+        name: "B-21 Raider",
+        type: "Strategic Bomber Aircraft",
+        origin: "United States",
+        coords: [34.6037, -118.0848],
+        images: [
+            "assets/B21.jpg",
+            "assets/B21_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: U.S. Air Force / Public Domain",
+            "Photo: U.S. Air Force / Public Domain"
+        ],
+        specs: { speed: "Mach 0.95", armament: "Nuclear/Conventional", range: "12,000 km" },
+        inService: 2027,
+        users: ["United States"],
+        status: "In Development",
+        fact: "The B-21 Raider is America's sixth-generation stealth bomber, first flown in November 2023 and expected to enter service in 2027. Named after the Doolittle Raiders of WWII, it features next-generation stealth technology, AI-capable autonomous flight, and an open systems architecture for easy upgrades. With an estimated 100 aircraft planned, it will eventually replace both the B-1 Lancer and B-2 Spirit, forming the backbone of America's strategic bomber force."
+    },
+    {
         id: 32,
         name: "AH-64 Apache",
         type: "Fighter Aircraft",
@@ -624,6 +698,26 @@
         fact: "The Chinook is capable of floating on water for short periods and can even perform water landings to deploy special forces boats.",
         imageCredit: "Photo: Cpl Lee Goddard RAF/MOD / OGL v1.0"
     },
+    {
+        id: 116,
+        name: "C-130 Hercules",
+        type: "Transport Aircraft",
+        origin: "United States",
+        coords: [33.9425, -118.4081],
+        images: [
+            "assets/C130.jpg",
+            "assets/C130_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Tech. Sgt. Howard Blair / U.S. Air Force / Public Domain",
+            "Photo: MarcelX42 / Wikimedia Commons / CC BY-SA 4.0"
+        ],
+        specs: { speed: "592 km/h", armament: "Cargo/Troops", range: "3,800 km" },
+        inService: 1956,
+        users: ["United States", "Australia", "Canada", "United Kingdom", "60+ nations"],
+        status: "Active",
+        fact: "The C-130 Hercules is one of the longest continuously produced military aircraft in history, serving since 1956. Designed for tactical airlift operations, it can operate from unprepared runways and is used by over 60 nations worldwide. The versatile airframe has spawned more than 40 variants, including gunships (AC-130), aerial refuelers (KC-130), and search and rescue configurations."
+    },
 
     // === NAVAL VESSELS ===
     {
@@ -698,13 +792,101 @@
         type: "Assault Rifle",
         origin: "China",
         coords: [39.9042, 116.4074],
-        image: "assets/QBZ_95.jpg",
+        images: [
+            "assets/QBZ_95.jpg",
+            "assets/QBZ95_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Wikimedia Commons / CC BY-SA 3.0",
+            "Photo: Tyg728 / Wikimedia Commons / CC BY-SA 4.0"
+        ],
         specs: { speed: "N/A", armament: "5.8x42mm", range: "400 m" },
         inService: 1997,
         users: ["China"],
         status: "Active",
-        fact: "The QBZ-95 is a bullpup assault rifle that entered service with China's armed forces in 1997, chambered in the unique 5.8x42mm cartridge.",
-        imageCredit: "Photo: Wikimedia Commons / CC BY-SA 3.0"
+        fact: "The QBZ-95 is a bullpup assault rifle that entered service with China's armed forces in 1997, chambered in the unique 5.8x42mm cartridge."
+    },
+    {
+        id: 114,
+        name: "QBZ-191",
+        type: "Assault Rifle",
+        origin: "China",
+        coords: [29.4316, 106.9123],
+        image: "assets/QBZ191.jpg",
+        specs: { speed: "N/A", armament: "5.8x42mm DBP191", range: "400 m" },
+        inService: 2019,
+        users: ["China"],
+        status: "Active",
+        fact: "The QBZ-191 is China's newest service rifle, formally unveiled at the 70th Anniversary National Day parade in 2019. It features a gas-operated short-stroke piston system, full-length Picatinny rail, and aluminum alloy receivers. With a rate of fire of 750 rounds per minute, it's intended to replace the QBZ-95 in the People's Liberation Army.",
+        imageCredit: "Photo: Dan3031949 / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 120,
+        name: "ASMI",
+        type: "Submachine Gun",
+        origin: "India",
+        coords: [28.6139, 77.2090],
+        image: "assets/ASMI.jpg",
+        specs: { speed: "N/A", armament: "9x19mm", range: "100 m" },
+        inService: 2024,
+        users: ["India"],
+        status: "Active",
+        fact: "The ASMI is India's first domestically designed modern submachine gun, developed by DRDO and Lt. Colonel Prasad Bansod in 2020 and inducted into the Indian Army in October 2024. Weighing under 2 kg with aircraft-grade aluminum and carbon fiber construction, it features a 33-round Glock magazine, 600 rpm rate of fire, and a side-folding stock. At approximately $600 per unit, it offers an affordable alternative to imported weapons like the MP5.",
+        imageCredit: "Photo: DRDO / Government of India / GODL-India"
+    },
+    {
+        id: 122,
+        name: "NLAW",
+        type: "Anti-Tank Missile",
+        origin: "United Kingdom / Sweden",
+        coords: [51.5074, -0.1278],
+        images: [
+            "assets/NLAW.jpg",
+            "assets/NLAW_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: MKF1 / Wikimedia Commons / Public Domain",
+            "Photo: Cpl Danny Houghton / UK Ministry of Defence / OGL v3.0"
+        ],
+        specs: { speed: "200 m/s", armament: "150mm HEAT", range: "800 m" },
+        inService: 2009,
+        users: ["United Kingdom", "Sweden", "Finland", "Ukraine", "Luxembourg", "Malaysia", "Indonesia"],
+        status: "Active",
+        fact: "The NLAW (Next generation Light Anti-tank Weapon) is a shoulder-fired, fire-and-forget anti-tank missile jointly developed by the UK and Sweden. Weighing just 12.5 kg, it features an innovative overfly top-attack mode that flies 1 meter above the target and strikes the vulnerable top armor. With soft-launch capability allowing firing from confined spaces, it can be operated by a single soldier and gained fame for its effectiveness against Russian armor in Ukraine."
+    },
+    {
+        id: 123,
+        name: "Taurus KEPD-350",
+        type: "Cruise Missile",
+        origin: "Germany",
+        coords: [48.7758, 9.1829],
+        images: [
+            "assets/Taurus.jpg",
+            "assets/Taurus_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 3.0 Unported",
+            "Photo: Alf van Beem / Wikimedia Commons / CC0 1.0"
+        ],
+        specs: { speed: "Mach 0.9", armament: "481 kg MEPHISTO", range: "500+ km" },
+        inService: 2005,
+        users: ["Germany", "Sweden", "Spain", "South Korea"],
+        status: "Active",
+        fact: "The Taurus KEPD-350 is a sophisticated air-launched cruise missile jointly developed by Germany and Sweden for deep strike missions against heavily fortified targets. Its 481 kg MEPHISTO warhead features a two-stage tandem penetrator with intelligent fusing technology capable of counting layers and detecting voids to maximize effectiveness against bunkers and hardened facilities. With a range exceeding 500 km and advanced navigation combining GPS, terrain reference, and image-based systems, it can operate independently without GPS support."
+    },
+    {
+        id: 124,
+        name: "Storm Shadow / SCALP",
+        type: "Cruise Missile",
+        origin: "United Kingdom / France",
+        coords: [51.5074, -0.1278],
+        image: "assets/Storm_Shadow.jpg",
+        specs: { speed: "Mach 0.8-0.95", armament: "450 kg BROACH", range: "550 km" },
+        inService: 2002,
+        users: ["United Kingdom", "France", "Italy", "Greece", "Saudi Arabia", "UAE", "Egypt", "India", "Qatar", "Ukraine"],
+        status: "Active",
+        fact: "The Storm Shadow (UK) / SCALP (France) is a long-range air-launched cruise missile jointly developed by France and the United Kingdom. Its 450 kg BROACH (Bomb Royal Ordnance Augmented Charge) warhead is specifically designed to penetrate hardened bunkers and underground facilities. With a range of 550 km and advanced guidance combining GPS, INS, terrain-following radar, and infrared terminal seeker, it can strike high-value targets with precision while remaining undetected. The missile has been combat-proven in Libya, Syria, and Ukraine.",
+        imageCredit: "Photo: Rept0n1x / Wikimedia Commons / CC BY-SA 3.0"
     },
     {
         id: 44,
@@ -750,6 +932,26 @@
         users: ["Russia", "China", "Turkey", "India", "Belarus"],
         status: "Active",
         imageCredit: "Photo: Vitaly V. Kuzmin / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 117,
+        name: "2S6M1 Tunguska",
+        type: "Air Defense System",
+        origin: "Russia",
+        coords: [54.3142, 48.4033],
+        images: [
+            "assets/2S6M1_Tunguska.jpg",
+            "assets/Tunguska_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 3.0 Germany",
+            "Photo: Doomych / Wikimedia Commons / Public Domain"
+        ],
+        specs: { speed: "65 km/h", armament: "2x 30mm 2A38M, 8x 9M311-M1 SAM", range: "10 km" },
+        inService: 2003,
+        users: ["Russia", "India", "Ukraine", "Syria", "Belarus", "Morocco"],
+        status: "Active",
+        fact: "The 2S6M1 Tunguska (NATO: SA-19 'Grison') is a unique tracked mobile air defense system combining both guns and missiles. It features twin 30mm autocannons firing 5,000 rounds per minute alongside 8 surface-to-air missiles with 10km range, designed to protect armored units from low-flying aircraft, helicopters, and cruise missiles in all weather conditions."
     },
     {
         id: 47,
@@ -1411,13 +1613,19 @@
         type: "Assault Rifle",
         origin: "Mexico",
         coords: [19.4326, -99.1332],
-        image: "assets/FX_05.jpg",
+        images: [
+            "assets/FX_05.jpg",
+            "assets/FX05_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Shdowcrwler / Wikimedia Commons / CC BY-SA 3.0",
+            "Photo: Brian Armstrong / Wikimedia Commons / CC BY-SA 3.0"
+        ],
         specs: { speed: "N/A", armament: "5.56x45mm", range: "800 m" },
         inService: 2008,
         users: ["Mexico"],
         status: "Active",
-        fact: "The FX-05 'Xiuhcoatl' (Fire Serpent) is an indigenous Mexican rifle designed to replace the G3. It features a design that resembles the G36 but uses a distinct internal mechanism.",
-        imageCredit: "Photo: Shdowcrwler / Wikimedia Commons / CC BY-SA 3.0"
+        fact: "The FX-05 'Xiuhcoatl' (Fire Serpent) is an indigenous Mexican rifle designed to replace the G3. It features a design that resembles the G36 but uses a distinct internal mechanism."
     },
     {
         id: 117,
@@ -2030,6 +2238,20 @@
         status: "Active",
         fact: "The USS Zumwalt (DDG-1000) is the most technologically advanced surface combatant ever built, featuring a distinctive angular stealth design with a wave-piercing tumblehome hull. Its all-electric Integrated Power System generates 78 MW of power. Originally equipped with 155mm Advanced Gun Systems, it underwent modernization in 2023-2024 to carry 12 hypersonic missiles in place of the guns. Named after Admiral Elmo Zumwalt, only three ships of this class were built due to costs exceeding $4 billion per vessel.",
         imageCredit: "Photo: Petty Officer 3rd Class Emiline L. M. Senn / U.S. Navy / Public Domain"
+    },
+    {
+        id: 140,
+        name: "Zubr-class LCAC",
+        type: "Naval Vessel",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        image: "assets/Zubr_class_LCAC.jpg",
+        specs: { speed: "117 km/h", armament: "2x AK-630, 140mm Rockets", range: "560 km" },
+        inService: 1986,
+        users: ["Russia", "Greece", "China"],
+        status: "Active",
+        fact: "The Zubr-class (NATO: Pomornik) is the world's largest military hovercraft, capable of carrying 3 main battle tanks or 10 armored vehicles plus 140 troops at speeds up to 63 knots (117 km/h). Its unique air cushion design allows it to operate over water, ice, sand, and marshland. Armed with two 30mm AK-630 CIWS and 140mm rocket launchers, it can defend itself while delivering amphibious forces. Greece operates the largest fleet outside Russia with 4 vessels.",
+        imageCredit: "Photo: Petty Officer 1st Class John Bellino / U.S. Navy / Public Domain"
     },
     {
         id: 126,

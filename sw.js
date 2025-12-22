@@ -224,7 +224,7 @@ const urlsToCache = [
     './assets/Pindad_SS1.jpg',
     './assets/Pindad_SS1_Bravo.jpg',
     './assets/EF88.jpg',
-    './assets/EF88_Bravo.jpg',
+    './assets/EF88_Bravo.png',
     './assets/Type89.jpg',
     './assets/Type89_Bravo.jpg',
     './assets/Type20.jpg'

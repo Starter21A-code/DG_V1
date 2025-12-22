@@ -978,11 +978,11 @@
         coords: [-25.2744, 133.7751],
         images: [
             "assets/EF88.jpg",
-            "assets/EF88_Bravo.jpg"
+            "assets/EF88_Bravo.png"
         ],
         imageCredits: [
             "Photo: Mass Communication Specialist 3rd Class Dylan Lavin / U.S. Navy / Public Domain",
-            "Photo: Pfc. Mariah Aguilar / U.S. Army / Public Domain"
+            "Photo: KarmaKangaroo / Wikimedia Commons / CC0 1.0 Universal Public Domain"
         ],
         specs: { speed: "N/A", armament: "5.56×45mm NATO", range: "600 m" },
         inService: 2016,

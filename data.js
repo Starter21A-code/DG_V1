@@ -2593,7 +2593,7 @@
         ],
         specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "550 m" },
         inService: 1964,
-        users: ["United States", "United Kingdom", "Canada", "Australia", "Israel", "South Korea", "Philippines", "Thailand"],
+        users: ["United States", "Canada", "Australia", "Israel", "South Korea", "Philippines", "Thailand"],
         status: "Active",
         fact: "The M16, designed by Eugene Stoner, revolutionized infantry warfare with its lightweight design and smaller 5.56mm cartridge, allowing soldiers to carry more ammunition. It has served American forces for over 50 years across Vietnam, Iraq, and Afghanistan. Early reliability issues in Vietnam were resolved with the M16A1, and it spawned the iconic M4 carbine. The M16 family has been used by over 80 nations worldwide."
     },

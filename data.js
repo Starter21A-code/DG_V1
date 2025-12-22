@@ -889,6 +889,20 @@
         imageCredit: "Photo: Rept0n1x / Wikimedia Commons / CC BY-SA 3.0"
     },
     {
+        id: 125,
+        name: "RS-24 Yars",
+        type: "Intercontinental Ballistic Missile",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        image: "assets/RS_24.jpg",
+        specs: { speed: "Mach 20+", armament: "3-4 MIRV warheads (200 kt)", range: "11,000 km" },
+        inService: 2010,
+        users: ["Russia"],
+        status: "Active",
+        fact: "The RS-24 Yars (NATO: SS-29) is Russia's primary road-mobile intercontinental ballistic missile and the backbone of its strategic nuclear forces. Entering service in 2010, it can carry 3-4 independently targetable thermonuclear warheads (MIRV) with yields of 150-300 kilotons each. The three-stage solid-fuel missile reaches speeds exceeding Mach 20 and features advanced countermeasures including decoys and maneuverable warheads designed to penetrate missile defense systems. Deployable from both mobile TEL launchers and hardened silos, the Yars provides Russia with a survivable second-strike capability, with over 150 systems currently operational.",
+        imageCredit: "Photo: Dmitry Fomin / Wikimedia Commons / CC BY 2.0"
+    },
+    {
         id: 44,
         name: "KS-1 (L403A1)",
         type: "Assault Rifle",
@@ -901,6 +915,114 @@
         status: "Active",
         fact: "The KS-1, designated L403A1 by the UK, was selected in 2023 under Project Hunter. Manufactured by Knight's Armament Company, it features a 13.7-inch barrel, ambidextrous controls, and comes with a Vortex 1-10x LPVO, Aimpoint red dot, and KAC suppressor as standard.",
         imageCredit: "Photo: Corporal Rebecca Brown / UK Ministry of Defence / OGL v3.0"
+    },
+    {
+        id: 126,
+        name: "T91",
+        type: "Assault Rifle",
+        origin: "Taiwan",
+        coords: [23.6978, 120.9605],
+        images: [
+            "assets/T91.jpg",
+            "assets/T91_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Zcdrrn / Wikimedia Commons / CC BY-SA 3.0 Unported",
+            "Photo: SP Lee / Wikimedia Commons / CC BY-SA 4.0 International"
+        ],
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "600 m" },
+        inService: 2003,
+        users: ["Taiwan", "Bosnia and Herzegovina", "Jordan", "Kuwait", "UAE", "India", "Indonesia", "Haiti", "Gambia"],
+        status: "Active",
+        fact: "The T91 is Taiwan's indigenous assault rifle, developed by the 205th Armory and entering service in 2003 to replace the older T65 series. Chambered in 5.56×45mm NATO, it features a short-stroke gas piston system, folding stock, and a 4-position fire selector (safe, semi-auto, 3-round burst, full-auto). With a cyclic rate of 800-850 rpm and effective range of 600 meters, it uses standard STANAG magazines and M16A2-style sights with Picatinny rail compatibility. Taiwan ordered over 100,000 units and has successfully exported the T91 to multiple nations including Jordan (20,000), Kuwait (18,000), and the UAE (10,000)."
+    },
+    {
+        id: 127,
+        name: "FARA 83",
+        type: "Assault Rifle",
+        origin: "Argentina",
+        coords: [-38.4161, -63.6167],
+        image: "assets/Fara83.jpg",
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "600 m" },
+        inService: 1984,
+        users: ["Argentina"],
+        status: "Active - Limited Use",
+        fact: "The FARA 83 (Fusil Automático República Argentina 1983) is an Argentine assault rifle designed by Enrique Chichizola in 1981 and manufactured by FMAP-DM from 1984 to 1990. Chambered in 5.56×45mm NATO, it features a gas-operated rotating bolt system, folding buttstock, integral muzzle brake, and tritium night sights. With a cyclic rate of 750 rpm and effective range of 600 meters, it uses proprietary 30-round Beretta AR70 magazines. Originally intended to replace the FN FAL as Argentina's standard rifle, economic difficulties limited production to only approximately 1,193 units by 1990, relegating it to secondary status while the FN FAL remained the primary service rifle.",
+        imageCredit: "Photo: Gelpgim22 (Sergio Moises Panto Pitrau) / Wikimedia Commons / CC BY-SA 4.0 International"
+    },
+    {
+        id: 128,
+        name: "Pindad SS1",
+        type: "Assault Rifle",
+        origin: "Indonesia",
+        coords: [-0.7893, 113.9213],
+        images: [
+            "assets/Pindad_SS1.jpg",
+            "assets/Pindad_SS1_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Pindad / Public Domain (Indonesia)",
+            "Photo: Cpl. Danny Gonzalez / U.S. Marine Corps / Public Domain"
+        ],
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "450 m" },
+        inService: 1991,
+        users: ["Indonesia", "Cambodia", "Laos", "Mali"],
+        status: "Active",
+        fact: "The Pindad SS1 (Senapan Serbu 1 - 'Assault Rifle 1') is Indonesia's standard service rifle, manufactured by state-owned PT Pindad and adopted in 1991. Based on a licensed and modified version of the Belgian FN FNC, it is chambered in 5.56×45mm NATO with a gas-operated rotating bolt action. Featuring a folding stock, 449mm barrel, and cyclic rate of 700-760 rpm, it uses STANAG-compatible 20 or 30-round magazines with an effective range of 450 meters. The SS1 serves all branches of the Indonesian Armed Forces (TNI) including elite units like Kopassus and Kopaska, as well as the Indonesian National Police. Multiple variants exist including compact carbines (SS1-V5), optical sight versions (SS1-V4), and a specialized 7.62×45mm variant for law enforcement."
+    },
+    {
+        id: 129,
+        name: "EF88 Austeyr",
+        type: "Assault Rifle",
+        origin: "Australia",
+        coords: [-25.2744, 133.7751],
+        images: [
+            "assets/EF88.jpg",
+            "assets/EF88_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Mass Communication Specialist 3rd Class Dylan Lavin / U.S. Navy / Public Domain",
+            "Photo: Pfc. Mariah Aguilar / U.S. Army / Public Domain"
+        ],
+        specs: { speed: "N/A", armament: "5.56×45mm NATO", range: "600 m" },
+        inService: 2016,
+        users: ["Australia"],
+        status: "Active",
+        fact: "The EF88 Austeyr is Australia's current standard service rifle, manufactured by Thales Australia at the Lithgow Arms factory and entering service in 2016 to replace the F88 Austeyr. An enhanced bullpup assault rifle chambered in 5.56×45mm NATO, it features a gas-operated short-stroke piston system with a 20-inch barrel and cyclic rate of 680-850 rpm. Using standard 30-round STANAG magazines, it delivers accurate fire out to 600 meters with advanced optics. The EF88 incorporates significant improvements over its predecessor including enhanced ergonomics, STANAG 4694 NATO rails for mounting accessories, a fixed barrel, modified gas system, and compatibility with various sights (ACOG, thermal imaging, enhanced day sights) and attachments like the ML40AUS grenade launcher. Over 30,000 rifles were delivered to the Australian Defence Force between 2016-2021."
+    },
+    {
+        id: 130,
+        name: "Howa Type 89",
+        type: "Assault Rifle",
+        origin: "Japan",
+        coords: [36.2048, 138.2529],
+        images: [
+            "assets/Type89.jpg",
+            "assets/Type89_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Crescent moon / Japanese Wikipedia / CC BY 3.0 Unported",
+            "Photo: 36th Infantry Regiment, 3rd Division, JGSDF / CC BY 4.0 International"
+        ],
+        specs: { speed: "N/A", armament: "5.56×45mm NATO", range: "500 m" },
+        inService: 1989,
+        users: ["Japan"],
+        status: "Active",
+        fact: "The Howa Type 89 is Japan's standard service rifle, developed by Howa Machinery Co. and adopted by the Japan Self-Defense Forces in 1989 to replace the Type 64 battle rifle. Chambered in 5.56×45mm NATO, it's based on the Armalite AR-18 design with a gas-operated rotating bolt system. Featuring a 420mm barrel and cyclic rate of 750 rpm, it uses STANAG-compatible 20 or 30-round magazines with an effective range of 500 meters. The Type 89 offers three fire modes: semi-automatic, full-automatic, and a distinctive three-round burst. It includes an integrated removable bipod and can fire Type 06 rifle grenades. The primary variant, Type 89-F, features a folding stock for paratroopers and vehicle crews. Due to Japan's strict arms export ban, the Type 89 has never been sold internationally and is exclusively used by Japanese forces including JGSDF, Coast Guard Special Security Team, and Special Assault Team."
+    },
+    {
+        id: 131,
+        name: "Howa Type 20",
+        type: "Assault Rifle",
+        origin: "Japan",
+        coords: [36.2048, 138.2529],
+        image: "assets/Type20.jpg",
+        specs: { speed: "N/A", armament: "5.56×45mm NATO", range: "500 m" },
+        inService: 2020,
+        users: ["Japan"],
+        status: "Active",
+        fact: "The Howa Type 20 is Japan's newest service rifle, developed by Howa Machinery Ltd. and officially adopted by the Japan Ground Self-Defense Force in 2020 to replace the Type 89. This modern 5.56×45mm NATO assault rifle features a gas-operated short-stroke piston system with a 330mm barrel and cyclic rate of 650 rpm. Using STANAG or Magpul PMAG 30-round magazines, it delivers an effective range of 500 meters. The Type 20 incorporates cutting-edge features including fully ambidextrous controls (safety, magazine release, swappable charging handle), a five-position adjustable telescopic stock, full-length Picatinny rail, and M-LOK compatible handguard for accessories. Designed with enhanced water resistance for amphibious operations and built from corrosion-resistant materials, it's compatible with the Beretta GLX-160 grenade launcher. Initial deliveries went to the Amphibious Rapid Deployment Brigade in 2021, with continued deployment across JGSDF, JASDF security units, and JMSDF.",
+        imageCredit: "Photo: Hunini / Wikimedia Commons / CC BY-SA 4.0 International"
     },
 
     // === AIR DEFENSE SYSTEMS ===

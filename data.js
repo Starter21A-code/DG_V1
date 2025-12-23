@@ -714,7 +714,7 @@
         ],
         specs: { speed: "592 km/h", armament: "Cargo/Troops", range: "3,800 km" },
         inService: 1956,
-        users: ["United States", "Australia", "Canada", "United Kingdom", "60+ nations"],
+        users: ["United States", "Australia", "Canada", "60+ nations"],
         status: "Active",
         fact: "The C-130 Hercules is one of the longest continuously produced military aircraft in history, serving since 1956. Designed for tactical airlift operations, it can operate from unprepared runways and is used by over 60 nations worldwide. The versatile airframe has spawned more than 40 variants, including gunships (AC-130), aerial refuelers (KC-130), and search and rescue configurations."
     },
@@ -1021,7 +1021,7 @@
         inService: 2020,
         users: ["Japan"],
         status: "Active",
-        fact: "The Howa Type 20 is Japan's newest service rifle, developed by Howa Machinery Ltd. and officially adopted by the Japan Ground Self-Defense Force in 2020 to replace the Type 89. This modern 5.56×45mm NATO assault rifle features a gas-operated short-stroke piston system with a 330mm barrel and cyclic rate of 650 rpm. Using STANAG or Magpul PMAG 30-round magazines, it delivers an effective range of 500 meters. The Type 20 incorporates cutting-edge features including fully ambidextrous controls (safety, magazine release, swappable charging handle), a five-position adjustable telescopic stock, full-length Picatinny rail, and M-LOK compatible handguard for accessories. Designed with enhanced water resistance for amphibious operations and built from corrosion-resistant materials, it's compatible with the Beretta GLX-160 grenade launcher. Initial deliveries went to the Amphibious Rapid Deployment Brigade in 2021, with continued deployment across JGSDF, JASDF security units, and JMSDF.",
+        fact: "The Howa Type 20 is Japan's newest service rifle. The Type 20 incorporates cutting-edge features including fully ambidextrous controls (safety, magazine release, swappable charging handle), a five-position adjustable telescopic stock, full-length Picatinny rail, and M-LOK compatible handguard for accessories. Designed with enhanced water resistance for amphibious operations and built from corrosion-resistant materials, it's compatible with the Beretta GLX-160 grenade launcher. Initial deliveries went to the Amphibious Rapid Deployment Brigade in 2021, with continued deployment across JGSDF, JASDF security units, and JMSDF.",
         imageCredit: "Photo: Hunini / Wikimedia Commons / CC BY-SA 4.0 International"
     },
 

@@ -853,6 +853,85 @@ function nextRound() {
     }
 }
 
+// Performance Rating Quotes - each rating can have multiple quotes for variety
+const PERFORMANCE_QUOTES = {
+    'God of War': [
+        { text: '"Veni, Vidi, Vici." (I came, I saw, I conquered.)', author: 'Julius Caesar' },
+        { text: '"Victory belongs to the most persevering."', author: 'Napoleon Bonaparte' },
+        { text: '"There is no substitute for victory."', author: 'General Douglas MacArthur' },
+        { text: '"It\'s hard to be humble when you\'re as great as I am."', author: 'Muhammad Ali' },
+        { text: '"I\'m an expert in everything. Except for the things I don\'t know, and those things aren\'t worth knowing."', author: 'Lord Flashheart (Blackadder)' },
+        { text: '"Success is a science; if you have the conditions, you get the result."', author: 'Oscar Wilde' },
+        { text: '"I have nothing to declare except my genius."', author: 'Oscar Wilde' },
+        { text: '"Soldiers! I am pleased with you. On the day of Austerlitz, you have justified all that I expected from your intrepidity; you have adorned your eagles with immortal glory."', author: 'Napoleon Bonaparte' },
+        { text: '"Far better it is to dare mighty things, to win glorious triumphs… than to rank with those poor spirits who neither enjoy nor suffer much."', author: 'Theodore Roosevelt' },
+        { text: '"Victorious warriors win first and then go to war."', author: 'Sun Tzu' },
+        { text: '"Excellence is never an accident."', author: 'Aristotle' },
+        { text: '"To improve is to change; to be perfect is to change often."', author: 'Winston Churchill' },
+        { text: '"Excellence is a continuous process, not an accident."', author: 'Leonardo da Vinci' },
+        { text: '"The superior man is modest in his speech, but exceeds in his actions."', author: 'Confucius' }
+    ],
+    'John Rambo': [
+        { text: '"To survive a war, you gotta become war."', author: 'Rambo' },
+        { text: '"They drew first blood, not me."', author: 'Rambo' },
+        { text: '"I\'m no tourist."', author: 'Rambo' },
+        { text: '"Who are you?" — "Your worst nightmare."', author: 'Rambo' }
+    ],
+    'John Matrix (Commando)': [
+        { text: '"I eat Green Berets for breakfast. And right now I\'m very hungry!"', author: 'John Matrix' },
+        { text: '"Let off some steam, Bennett."', author: 'John Matrix' },
+        { text: '"Leave anything for us?" — "Just bodies."', author: 'General Kirby & John Matrix' }
+    ],
+    'Maj Richard Sharpe': [
+        { text: '"War\'s not about glory. It\'s about staying alive long enough to see the next dawn."', author: 'Sharpe' },
+        { text: '"Fight well, fight hard!"', author: 'Sharpe' }
+    ],
+    'Maj Winters': [
+        { text: '"We\'re paratroopers, Lieutenant. We\'re supposed to be surrounded."', author: 'Maj Winters' },
+        { text: '"I\'m not asking you to do anything I wouldn\'t do myself. Now, let\'s go."', author: 'Maj Winters' },
+        { text: '"Captain Sobel, we salute the rank, not the man."', author: 'Maj Winters' }
+    ],
+    'Johnny Rico': [
+        { text: '"Come on you apes, you wanna live forever?!"', author: 'Johnny Rico' },
+        { text: '"The only good bug is a dead bug!"', author: 'Johnny Rico' },
+        { text: '"No guts, no glory."', author: 'Johnny Rico' }
+    ],
+    'Lt Aldo Rain': [
+        { text: '"You know somethin\', Utivich? I think this just might be my masterpiece."', author: 'Lt Aldo Rain' }
+    ],
+    'Pte Gump': [
+        { text: '"I\'m pretty tired... I think I\'ll go home now."', author: 'Pte Gump' },
+        { text: '"I may not be a smart man, but I know what love is."', author: 'Pte Gump' },
+        { text: '"Sometimes, there just aren\'t enough rocks."', author: 'Pte Gump' }
+    ],
+    'Capt Sobel': [
+        { text: '"Your weekend pass is revoked."', author: 'Capt Sobel' },
+        { text: '"Hi-ho, Silver!"', author: 'Capt Sobel' },
+        { text: '"You people are the sorriest excuse for soldiers I\'ve ever seen."', author: 'Capt Sobel' }
+    ],
+    'Gen Melchett': [
+        { text: '"There is one thing that will help you through this, Blackadder: total, utter, blind stupidity!"', author: 'Gen Melchett' },
+        { text: '"Doing precisely what we\'ve done eighteen times before is exactly the last thing they would expect us to do this time!"', author: 'Gen Melchett' }
+    ],
+    'Pte Baldrick': [
+        { text: '"I\'m not a complete idiot. Some parts are missing."', author: 'Pte Baldrick' },
+        { text: '"Don\'t worry, sir. I\'ve got a cunning plan."', author: 'Pte Baldrick' }
+    ],
+    'LIZZARD': [
+        { text: '"He is a modest man, with much to be modest about."', author: 'Winston Churchill' },
+        { text: '"It is better to keep your mouth closed and let people think you are a fool than to open it and remove all doubt."', author: 'Mark Twain' },
+        { text: '"I sometimes think that God, in creating man, somewhat overestimated his ability."', author: 'Oscar Wilde' },
+        { text: '"Have no fear of perfection—you\'ll never reach it."', author: 'Salvador Dalí' },
+        { text: '"Whatever you do, always give 100%. Unless you\'re donating blood."', author: 'Bill Murray' }
+    ]
+};
+
+function getRandomQuote(rating) {
+    const quotes = PERFORMANCE_QUOTES[rating];
+    if (!quotes || quotes.length === 0) return null;
+    return quotes[Math.floor(Math.random() * quotes.length)];
+}
+
 function endGame() {
     // Play game over fanfare
     playGameOverSound();
@@ -869,8 +948,8 @@ function endGame() {
     else if (percentage >= 90) rating = 'John Rambo';
     else if (percentage >= 80) rating = 'John Matrix (Commando)';
     else if (percentage >= 75) rating = 'Maj Richard Sharpe';
-    else if (percentage >= 70) rating = 'Johnnie Rico';
-    else if (percentage >= 60) rating = 'Maj Winters';
+    else if (percentage >= 70) rating = 'Maj Winters';
+    else if (percentage >= 60) rating = 'Johnny Rico';
     else if (percentage >= 50) rating = 'Lt Aldo Rain';
     else if (percentage >= 40) rating = 'Pte Gump';
     else if (percentage >= 30) rating = 'Capt Sobel';
@@ -878,6 +957,36 @@ function endGame() {
     else if (percentage >= 10) rating = 'Pte Baldrick';
 
     document.getElementById('rating-value').textContent = rating;
+
+    // Apply RAG color class based on percentage
+    const scoreRating = document.getElementById('score-rating');
+    scoreRating.classList.remove('rating-red', 'rating-amber', 'rating-green', 'rating-gold');
+
+    if (percentage >= 100) {
+        scoreRating.classList.add('rating-gold');
+    } else if (percentage >= 80) {
+        scoreRating.classList.add('rating-green');
+    } else if (percentage >= 50) {
+        scoreRating.classList.add('rating-amber');
+    } else {
+        scoreRating.classList.add('rating-red');
+    }
+
+    // Display performance quote if available for this rating
+    const quoteContainer = document.getElementById('rating-quote');
+    const quoteText = document.getElementById('quote-text');
+    const quoteAuthor = document.getElementById('quote-author');
+    const quote = getRandomQuote(rating);
+
+    if (quote) {
+        quoteText.textContent = quote.text;
+        quoteAuthor.textContent = `— ${quote.author}`;
+        quoteContainer.classList.remove('hidden');
+    } else {
+        quoteContainer.classList.add('hidden');
+    }
+
+
 
     // Calculate stats
     const correctLocations = state.roundResults.filter(r => r.locationCorrect).length;

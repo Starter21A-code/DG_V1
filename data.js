@@ -388,12 +388,18 @@
         type: "Fighter Aircraft",
         origin: "United States",
         coords: [38.8814, -77.0365],
-        image: "assets/f35.jpg",
+        images: [
+            "assets/f35.jpg",
+            "assets/F35_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Noah Wulf / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: U.S. Air Force / Public Domain"
+        ],
         specs: { speed: "Mach 1.6", armament: "AIM-120, GBU-31", range: "2,200 km" },
         inService: 2015,
         users: ["United States", "UK", "Italy", "Netherlands", "Australia", "Norway", "Japan", "Israel", "South Korea"],
-        status: "Active",
-        imageCredit: "Photo: Noah Wulf / Wikimedia Commons / CC BY-SA 4.0"
+        status: "Active"
     },
     {
         id: 18,
@@ -454,12 +460,19 @@
         type: "Fighter Aircraft",
         origin: "United States",
         coords: [33.7490, -84.3880],
-        image: "assets/f22_raptor.jpg",
-        specs: { speed: "Mach 2.25", armament: "AIM-120, AIM-9", range: "2,960 km" },
+        images: [
+            "assets/f22_raptor.jpg",
+            "assets/F22_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Airwolfhound / Wikimedia Commons / CC BY-SA 2.0",
+            "Photo: Master Sgt. Andy Dunaway / U.S. Air Force / Public Domain"
+        ],
+        specs: { speed: "Mach 2.25", armament: "AIM-120, AIM-9, GBU-32", range: "2,960 km" },
         inService: 2005,
         users: ["United States"],
         status: "Active",
-        imageCredit: "Photo: Airwolfhound / Wikimedia Commons / CC BY-SA 2.0"
+        fact: "The F-22 Raptor is the world's first fifth-generation fighter aircraft, combining stealth, supercruise, maneuverability, and advanced avionics. It can cruise at supersonic speeds without afterburners and is the most advanced air superiority fighter ever built."
     },
     {
         id: 22,
@@ -546,12 +559,18 @@
         type: "Fighter Aircraft",
         origin: "Germany",
         coords: [52.5200, 13.4050],
-        image: "assets/Eurofighter_Typhoon.jpg",
+        images: [
+            "assets/Eurofighter_Typhoon.jpg",
+            "assets/Eurofighter_Typhoon_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Markus Zinner (Bundesheer) / Wikimedia Commons / CC BY-SA 3.0",
+            "Photo: Chris Lofting / Wikimedia Commons / GFDL 1.2"
+        ],
         specs: { speed: "Mach 2.0", armament: "AMRAAM, ASRAAM, Meteor", range: "3,790 km" },
         inService: 2003,
         users: ["Germany", "UK", "Italy", "Spain", "Saudi Arabia"],
-        status: "Active",
-        imageCredit: "Photo: Markus Zinner (Bundesheer) / Wikimedia Commons / CC BY-SA 3.0"
+        status: "Active"
     },
     {
         id: 29,
@@ -569,16 +588,22 @@
     {
         id: 30,
         name: "B-2 Spirit",
-        type: "Strategic Bomber Aircraft",
+        type: "Stealth Bomber Aircraft",
         origin: "United States",
-        coords: [38.7295, -93.5478],
-        image: "assets/B_2_Spirit.jpg",
-        specs: { speed: "Mach 0.95", armament: "40,000 lbs ordnance", range: "11,100 km" },
+        coords: [38.3090, -93.7144],
+        images: [
+            "assets/B_2_Spirit.jpg",
+            "assets/B2_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: U.S. Air Force photo by Master Sgt. Roy Santana / Public Domain",
+            "Photo: Royal Air Force / Wikimedia Commons / OGL v1.0"
+        ],
+        specs: { speed: "Mach 0.95", armament: "Nuclear/Conventional", range: "11,100 km" },
         inService: 1997,
         users: ["United States"],
         status: "Active",
-        fact: "The B-2 Spirit is the world's most expensive aircraft ever built, with a total program cost of $44 billion for 21 aircraft. Its unique flying wing design and advanced stealth technology make it virtually invisible to radar.",
-        imageCredit: "Photo: Staff Sgt. Bennie J. Davis III / U.S. Air Force / Public Domain"
+        fact: "The B-2 Spirit is the only acknowledged aircraft that can carry large air-to-surface standoff weapons in a stealth configuration."
     },
     {
         id: 31,
@@ -586,13 +611,20 @@
         type: "Strategic Bomber Aircraft",
         origin: "United States",
         coords: [46.9102, -98.6832],
-        image: "assets/B_52.jpg",
+        images: [
+            "assets/B_52.jpg",
+            "assets/B52_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: U.S. Air Force photo/Senior Airman Carlin Leslie / Public Domain",
+            "Photo: Pseudopanax at English Wikipedia / Public Domain"
+        ],
         specs: { speed: "Mach 0.86", armament: "70,000 lbs ordnance", range: "14,200 km" },
         inService: 1955,
         users: ["United States"],
         status: "Active",
         fact: "An interesting fact about the B-52 Stratofortress is that it was designed for a nuclear war that never happened, yet it has served in more conflicts than any other US bomber.",
-        imageCredit: "Photo: Airman 1st Class Victor J. Caputo / U.S. Air Force / Public Domain"
+        imageCredit: "Photo: U.S. Air Force photo/Senior Airman Carlin Leslie / Public Domain"
     },
     {
         id: 121,
@@ -617,10 +649,17 @@
     {
         id: 32,
         name: "AH-64 Apache",
-        type: "Fighter Aircraft",
+        type: "Attack Helicopter",
         origin: "United States",
         coords: [33.3484, -111.7892],
-        image: "assets/Apache.jpg",
+        images: [
+            "assets/Apache.jpg",
+            "assets/AH64 Apache_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: PigiusMax / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Tech. Sgt. Andy Dunaway / U.S. Army / Public Domain"
+        ],
         specs: { speed: "300 km/h", armament: "30mm M230, Hellfire", range: "500 km" },
         inService: 1984,
         users: ["United States", "Egypt", "Greece", "India", "Indonesia", "Israel", "Japan", "Kuwait", "Netherlands", "Qatar", "Saudi Arabia", "Singapore", "South Korea", "UAE", "United Kingdom"],
@@ -833,6 +872,40 @@
         status: "Active",
         fact: "The ASMI is India's first domestically designed modern submachine gun, developed by DRDO and Lt. Colonel Prasad Bansod in 2020 and inducted into the Indian Army in October 2024. Weighing under 2 kg with aircraft-grade aluminum and carbon fiber construction, it features a 33-round Glock magazine, 600 rpm rate of fire, and a side-folding stock. At approximately $600 per unit, it offers an affordable alternative to imported weapons like the MP5.",
         imageCredit: "Photo: DRDO / Government of India / GODL-India"
+    },
+    {
+        id: 139,
+        name: "L7A2 GPMG",
+        type: "Small Arms",
+        origin: "United Kingdom",
+        coords: [51.5074, -0.1278],
+        images: [
+            "assets/GPMG.jpg",
+            "assets/GPMG_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Graeme Main/UK Ministry of Defence / OGL v3.0",
+            "Photo: Cpl Si Longworth RLC (Phot)/MOD / OGL v2.0"
+        ],
+        specs: { speed: "N/A", armament: "7.62x51mm NATO", range: "1,800 m" },
+        inService: 1963,
+        users: ["United Kingdom", "Australia", "Canada", "New Zealand", "80+ countries (FN MAG variant)"],
+        status: "Active",
+        fact: "The L7A2 GPMG is the British designation for the Belgian FN MAG (Mitrailleuse d'Appui Général). Serving with the British Armed Forces since the 1960s, it can fire 750 rounds per minute and has an effective range of 800m in light role or 1,800m in sustained fire role when mounted on a tripod. The FN MAG family is used by over 80 countries worldwide, making it one of the most widely used machine guns in the world."
+    },
+    {
+        id: 141,
+        name: "M240",
+        type: "Small Arms",
+        origin: "United States",
+        coords: [39.8283, -98.5795],
+        image: "assets/M240.jpg",
+        specs: { speed: "N/A", armament: "7.62x51mm NATO", range: "1,800 m" },
+        inService: 1977,
+        users: ["United States", "Indonesia", "Poland", "Spain", "Georgia", "Philippines", "Ukraine", "Iraq", "Syria", "30+ countries"],
+        status: "Active",
+        fact: "The M240 is the U.S. military designation for the FN MAG (the same platform as the British L7A2 GPMG). Adopted by the U.S. Army in 1977, it fires 650-950 rounds per minute depending on gas regulator setting. All U.S. military branches use variants of the M240, mounted on vehicles, aircraft, and used by infantry. Its effective range is 800m with a bipod or 1,800m when tripod-mounted.",
+        imageCredit: "Photo: PEO Soldier / U.S. Army / Public Domain"
     },
     {
         id: 122,
@@ -1198,6 +1271,7 @@
         status: "Active",
         imageCredit: "Photo: Markus Rauchenberger / U.S. Army / Public Domain"
     },
+
     {
         id: 56,
         name: "M270 MLRS",
@@ -1565,12 +1639,18 @@
         type: "Assault Rifle",
         origin: "Russia",
         coords: [56.8431, 60.6454],
-        image: "assets/ak74m_rifle.jpg",
+        images: [
+            "assets/ak74m_rifle.jpg",
+            "assets/AK74M_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Vitaly Kuzmin / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Pkm-betta / Wikimedia Commons / CC0 1.0"
+        ],
         specs: { speed: "N/A", armament: "5.45x39mm", range: "500 m" },
         inService: 1991,
         users: ["Russia", "Belarus", "Kazakhstan", "Former Soviet states"],
-        status: "Active",
-        imageCredit: "Photo: Vitaly Kuzmin / Wikimedia Commons / CC BY-SA 4.0"
+        status: "Active"
     },
     {
         id: 74,
@@ -1951,18 +2031,44 @@
         imageCredit: "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
     },
     {
+        id: 143,
+        name: "CV90",
+        type: "Infantry Fighting Vehicle",
+        origin: "Sweden / Czech Republic / Lithuania",
+        coords: [60.1282, 18.6435],
+        images: [
+            "assets/CV90.jpg",
+            "assets/CV90_Bravo.jpeg"
+        ],
+        imageCredits: [
+            "Photo: BAE Systems / Public Domain",
+            "Photo: Andrii Nikolaienko / Pexels / CC0 1.0"
+        ],
+        specs: { speed: "70 km/h", armament: "30mm/35mm/40mm cannon", range: "300 km" },
+        inService: 1993,
+        users: ["Sweden", "Norway", "Finland", "Denmark", "Netherlands", "Estonia", "Switzerland", "Czech Republic", "Slovakia", "Ukraine"],
+        status: "Active",
+        fact: "The CV90 (Combat Vehicle 90) is a highly successful Swedish infantry fighting vehicle family developed by BAE Systems Hägglunds. While originally built in Sweden, production is now decentralized with assembly in Czech Republic and planned manufacturing in Lithuania. The platform is extremely modular, with variants mounting 30mm, 35mm, or 40mm autocannons, and even 105mm/120mm guns for light tank configurations. Over 1,300 have been produced and it serves in 10 countries."
+    },
+    {
         id: 98,
         name: "AJAX",
         type: "Armoured Fighting Vehicle",
         origin: "United Kingdom",
         coords: [55.3781, -3.4360],
-        image: "assets/AJAX.jpg",
+        images: [
+            "assets/AJAX.jpg",
+            "assets/Ajax_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Richard Watt / MOD / OGL v1.0",
+            "Photo: Airwolfhound / Flickr / CC BY-SA 2.0"
+        ],
         specs: { speed: "70 km/h", armament: "40mm CTAS40", range: "500 km" },
         inService: 2025,
         users: ["United Kingdom"],
         status: "Active",
-        fact: "The AJAX features advanced digital architecture with 360-degree situational awareness systems, replacing the British Army's aging Combat Vehicle Reconnaissance (Tracked) fleet.",
-        imageCredit: "Photo: Richard Watt / MOD / OGL v1.0"
+        fact: "The AJAX features advanced digital architecture with 360-degree situational awareness systems, replacing the British Army's aging Combat Vehicle Reconnaissance (Tracked) fleet."
     },
     {
         id: 99,
@@ -2179,13 +2285,19 @@
         type: "Assault Rifle",
         origin: "Czech Republic",
         coords: [49.2004, 15.4730],
-        image: "assets/CZ_BREN.jpg",
+        images: [
+            "assets/CZ_BREN.jpg",
+            "assets/CZ_Bren_2_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Land68 / Wikimedia Commons / CC0 1.0",
+            "Photo: Land08 / Wikimedia Commons / CC0 1.0"
+        ],
         specs: { speed: "N/A", armament: "5.56x45mm NATO / 7.62x39mm", range: "500 m" },
         inService: 2016,
         users: ["Czech Republic", "Hungary", "France", "Ukraine", "Egypt", "Indonesia", "Slovakia"],
         status: "Active",
-        fact: "The CZ Bren 2 is a highly modular assault rifle featuring a multi-caliber system that allows users to quickly switch between 5.56x45mm NATO and 7.62x39mm by simply changing the barrel, bolt, and magazine well. It's used by Czech forces and French GIGN special forces.",
-        imageCredit: "Photo: Land68 / Wikimedia Commons / CC0 1.0"
+        fact: "The CZ Bren 2 is a highly modular assault rifle featuring a multi-caliber system that allows users to quickly switch between 5.56x45mm NATO and 7.62x39mm by simply changing the barrel, bolt, and magazine well. It's used by Czech forces and French GIGN special forces."
     },
     {
         id: 114,
@@ -2193,13 +2305,19 @@
         type: "Assault Rifle",
         origin: "South Korea",
         coords: [37.5665, 126.9780],
-        image: "assets/Daewoo_K2.jpg",
+        images: [
+            "assets/Daewoo_K2.jpg",
+            "assets/Daewoo_K2_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Republic of Korea Armed Forces / Wikimedia Commons / CC BY-SA 2.0",
+            "Photo: Sholgunlee / Wikimedia Commons / CC BY 3.0"
+        ],
         specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "500 m" },
         inService: 1985,
         users: ["South Korea", "Indonesia", "Iraq", "Cambodia", "Peru", "Philippines", "Nigeria"],
         status: "Active",
-        fact: "The Daewoo K2 is a hybrid design combining the robustness of the AK-47's gas piston system with the ergonomics of the M16. Adopted in 1984 to replace the M16A1, it has served as South Korea's standard-issue rifle for over 40 years and features a unique 3-round burst mode alongside semi and full-auto.",
-        imageCredit: "Photo: Republic of Korea Armed Forces / Wikimedia Commons / CC BY-SA 2.0"
+        fact: "The Daewoo K2 is a hybrid design combining the robustness of the AK-47's gas piston system with the ergonomics of the M16. Adopted in 1984 to replace the M16A1, it has served as South Korea's standard-issue rifle for over 40 years and features a unique 3-round burst mode alongside semi and full-auto."
     },
     {
         id: 115,
@@ -2291,13 +2409,19 @@
         type: "Strategic Heavy-Lift Aircraft",
         origin: "United States",
         coords: [33.4484, -112.0740],
-        image: "assets/C_5M_Super_Galaxy.jpg",
+        images: [
+            "assets/C_5M_Super_Galaxy.jpg",
+            "assets/C5_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Kevin Clark / U.S. Air Force / Public Domain",
+            "Photo: U.S. Air Force photo by Airman 1st Class Renee Nicole Finona / Public Domain"
+        ],
         specs: { speed: "Mach 0.77", armament: "None (Transport)", range: "8897 km" },
         inService: 2014,
         users: ["United States"],
         status: "Active",
-        fact: "The C-5M Super Galaxy is the largest aircraft in the U.S. Air Force and one of the world's largest military transports. It can carry 129,274 kg (285,000 lbs) of cargo - including two M1 Abrams tanks or six Apache helicopters. With four upgraded GE engines producing 50,000+ lbs of thrust each, it features a unique 'kneeling' landing gear system and both front and rear cargo doors for simultaneous loading. The modernization extends its service life to at least 2045.",
-        imageCredit: "Photo: Kevin Clark / U.S. Air Force / Public Domain"
+        fact: "The C-5M Super Galaxy is the largest aircraft in the U.S. Air Force and one of the world's largest military transports. It can carry 129,274 kg (285,000 lbs) of cargo - including two M1 Abrams tanks or six Apache helicopters. With four upgraded GE engines producing 50,000+ lbs of thrust each, it features a unique 'kneeling' landing gear system and both front and rear cargo doors for simultaneous loading. The modernization extends its service life to at least 2045."
     },
     {
         id: 122,
@@ -2632,6 +2756,26 @@
         status: "Active",
         fact: "The Kornet-EM is an advanced Russian anti-tank guided missile with a maximum range of 10km, featuring laser beam-riding guidance and automatic target tracking. It can penetrate 1,300mm of armor after reactive armor and is also effective against helicopters and UAVs. Used extensively in modern conflicts, it represents one of the most lethal ATGMs in service today.",
         imageCredit: "Photo: Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 142,
+        name: "Sigma 155 (Ro'em)",
+        type: "Artillery",
+        origin: "Israel",
+        coords: [31.0461, 34.8516],
+        images: [
+            "assets/Sigma155.jpg",
+            "assets/Sigma155_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: IDF Spokesperson's Unit / CC BY-SA 3.0",
+            "Photo: IDF Spokesperson's Unit / CC BY-SA 3.0"
+        ],
+        specs: { speed: "N/A", armament: "155mm L/52", range: "40 km" },
+        inService: 2024,
+        users: ["Israel", "Asia-Pacific (undisclosed)"],
+        status: "Active",
+        fact: "The Sigma 155, designated 'Ro'em' (thunderous) in Israel, is a wheeled 155mm self-propelled howitzer manufactured by Elbit Systems. Mounted on an Oshkosh 10x10 truck, it features a fully automated remote-controlled turret that allows a crew of just 3 to operate from inside an armored cabin. It can fire 8-10 rounds per minute, carry 40 rounds onboard, and transition from travel to fire mode in one minute. First operational firing by IDF gunners occurred in June 2024, replacing older M109 howitzers."
     }
 ];
 

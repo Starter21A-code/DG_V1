@@ -469,7 +469,8 @@ function getFilteredEquipment(filters) {
                 eq.type === 'Assault Rifle' ||
                 eq.type === 'Pistol' ||
                 eq.type === 'Sniper Rifle' ||
-                eq.type === 'Anti-Tank Missile'
+                eq.type === 'Anti-Tank Missile' ||
+                eq.type === 'Small Arms'
             );
         }
     }
@@ -567,7 +568,7 @@ function loadRound() {
 
 function submitGuess() {
     if (!state.userGuess) {
-        alert("Select a location on the map first!");
+        alert("Close the equipment image using the X icon and select a location on the map first!");
         return;
     }
 
@@ -1304,6 +1305,7 @@ function renderEquipmentGrid() {
                     eq.type === 'Combat Shotgun' ||
                     eq.type === 'Submachine Gun' ||
                     eq.type === 'Anti-Tank Missile' ||
+                    eq.type === 'Small Arms' ||
                     eq.name === 'Javelin' ||
                     eq.name.includes('Javelin');
             }

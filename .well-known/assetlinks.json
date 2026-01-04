@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.defenceguesser.twa",
+            "sha256_cert_fingerprints": [
+                "A0:0E:3E:9B:63:A1:47:1A:A0:74:EE:2D:3E:29:F1:5D:5F:3A:C4:6B:A7:C6:94:2A:E5:30:E8:EA:59:0B:92:B3"
+            ]
+        }
+    }
+]

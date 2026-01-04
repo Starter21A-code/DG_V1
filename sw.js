@@ -1,5 +1,5 @@
 // Defence Guesser Service Worker
-const CACHE_NAME = 'defence-guesser-v81';
+const CACHE_NAME = 'defence-guesser-v83';
 
 // Files to cache for offline use
 const urlsToCache = [
@@ -103,6 +103,8 @@ const urlsToCache = [
     'assets/B2_Bravo.jpg',
     './assets/B_52.jpg',
     './assets/B52_Bravo.jpg',
+    './assets/B1_Lancer.jpg',
+    './assets/B1_Lancer_Bravo.jpg',
     './assets/B21.jpg',
     './assets/B21_Bravo.jpg',
     './assets/HIMARS.jpg',

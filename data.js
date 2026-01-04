@@ -627,6 +627,26 @@
         imageCredit: "Photo: U.S. Air Force photo/Senior Airman Carlin Leslie / Public Domain"
     },
     {
+        id: 31.5,
+        name: "B-1 Lancer",
+        type: "Strategic Bomber Aircraft",
+        origin: "United States",
+        coords: [32.8998, -97.4415],
+        images: [
+            "assets/B1_Lancer.jpg",
+            "assets/B1_Lancer_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Balon Greyjoy / Wikimedia Commons / CC0 1.0",
+            "Photo: Balon Greyjoy / Wikimedia Commons / CC0 1.0"
+        ],
+        specs: { speed: "Mach 1.25", armament: "75,000 lbs ordnance", range: "11,998 km" },
+        inService: 1986,
+        users: ["United States"],
+        status: "Active",
+        fact: "The B-1 Lancer, nicknamed the 'Bone' (from 'B-One'), carries the largest conventional payload of any U. S. Air Force bomber at 75,000 pounds and holds nearly 50 world records for speed, payload, range, and time of climb in its class. Its variable-sweep wing design allows it to adjust wing configuration for both high-speed penetration and efficient cruising."
+    },
+    {
         id: 121,
         name: "B-21 Raider",
         type: "Strategic Bomber Aircraft",

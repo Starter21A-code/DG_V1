@@ -14,11 +14,17 @@
             "Photo: Spc. Matthew Marcellus / U.S. Army / Public Domain",
             "Photo: Unknown author / U.S. Army Heritage and Education Center / Public Domain"
         ],
-        specs: { speed: "67 km/h", armament: "120mm M256", range: "426 km" },
+        specs: { speed: "67 km/h", armament: "120mm M256", operationalRange: "426 km" },
         inService: 1980,
         users: ["United States", "Australia", "Egypt", "Iraq", "Kuwait", "Saudi Arabia"],
         status: "Active",
-        fact: "The M1 Abrams is powered by a 1,500 hp gas turbine engine, giving it exceptional acceleration and allowing it to run on multiple fuel types including jet fuel, diesel, and gasoline."
+        fact: "The M1 Abrams is powered by a 1,500 hp gas turbine engine, giving it exceptional acceleration and allowing it to run on multiple fuel types including jet fuel, diesel, and gasoline.",
+        recognitionFeatures: {
+            wheels: "7 road wheels per side with significant gap between 1st and 2nd wheel. Drive sprocket at rear (distinctive high mount).",
+            hull: "Flat, very long glacis plate. Central driver's hatch. Rear engine deck has large grilles for gas turbine exhaust.",
+            armament: "120mm M256 smoothbore gun with large bore evacuator. Coaxial 7.62mm MG.",
+            turret: "Large, wide, and angular turret. Bustle rack at rear. Commander's Independent Thermal Viewer (CITV) box on left side (M1A2)."
+        }
     },
     {
         id: 2,
@@ -34,11 +40,17 @@
             "Photo: Fric.matej / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
         ],
-        specs: { speed: "72 km/h", armament: "120mm L/55", range: "500 km" },
+        specs: { speed: "72 km/h", armament: "120mm L/55", operationalRange: "500 km" },
         inService: 2014,
         users: ["Germany", "Hungary", "Qatar"],
         status: "Active",
-        fact: "The Leopard 2A7 features modular composite armor that can be quickly reconfigured for different threat environments, making it one of the most adaptable main battle tanks in service."
+        fact: "The Leopard 2A7 features modular composite armor that can be quickly reconfigured for different threat environments, making it one of the most adaptable main battle tanks in service.",
+        recognitionFeatures: {
+            wheels: "7 road wheels per side. Torsion bar suspension. Idler at front, sprocket at rear.",
+            hull: "Flat glacis plate. Distinctive ventilation grille at right rear for APU. Driver's hatch on front right.",
+            armament: "120mm L/55 smoothbore gun - noticeably longer than L/44. Bore evacuator on barrel.",
+            turret: "Arrow-shaped (wedge) appliqué armor on turret front. Boxy bustle with cooling system at rear."
+        }
     },
     {
         id: 3,
@@ -54,10 +66,16 @@
             "Photo: Shadman Samee / Wikimedia Commons / CC BY-SA 2.0",
             "Photo: Cepasial / Wikimedia Commons / CC BY-SA 4.0"
         ],
-        specs: { speed: "72 km/h", armament: "125mm Smoothbore", range: "500 km" },
+        specs: { speed: "72 km/h", armament: "125mm Smoothbore", operationalRange: "500 km" },
         inService: 2001,
         users: ["Pakistan", "Bangladesh", "Morocco", "Myanmar", "Sri Lanka"],
         status: "Active",
+        recognitionFeatures: {
+            wheels: "6 rubber-tired road wheels. Wavy-shaped side skirts often covering upper tracks. Drive sprocket at rear.",
+            hull: "Low profile with ERA blocks on glacis. Driver positioned centrally with single hatch. V-shaped splash guard on glacis.",
+            armament: "125mm smoothbore gun with thermal sleeve. 12.7mm anti-aircraft MG mounted on commander's cupola.",
+            turret: "Boxy, welded turret with modular composite/ERA armor on front. Smoke grenade dischargers on sides. Storage basket at rear."
+        },
         fact: "The Al-Khalid is a joint Pakistan-China development based on the Chinese Type 90-II. Also known as MBT-2000 and VT-1A, it features a powerful 1,200hp engine and an autoloader capable of firing 8 rounds per minute from its 125mm gun."
     },
     {
@@ -74,11 +92,17 @@
             "Photo: Graeme Main/MOD / Wikimedia Commons / OGL v1.0",
             "Photo: KyÅMaruOtami / Wikimedia Commons / CC BY 4.0"
         ],
-        specs: { speed: "59 km/h", armament: "120mm L30A1", range: "450 km" },
+        specs: { speed: "59 km/h", armament: "120mm L30A1", operationalRange: "450 km" },
         inService: 1998,
         users: ["United Kingdom", "Oman"],
         status: "Active",
-        fact: "Ukrainian crews have praised the Challenger 2's accuracy, likening its rifled 120mm gun to a 'sniper rifle among tanks' due to its exceptional precision compared to smoothbore-equipped tanks."
+        fact: "Ukrainian crews have praised the Challenger 2's accuracy, likening its rifled 120mm gun to a 'sniper rifle among tanks' due to its exceptional precision compared to smoothbore-equipped tanks.",
+        recognitionFeatures: {
+            wheels: "6 road wheels per side, evenly spaced with prominent rubber rims. No return rollers visible - track runs directly over wheels.",
+            hull: "Flat glacis plate with Dorchester composite armor blocks. Driver's hatch offset to right side. Distinctive angular appliqué armor panels.",
+            armament: "Unique L30A1 120mm rifled gun - the only modern MBT still using a rifled barrel. Prominent thermal sleeve. Coaxial 7.62mm chain gun.",
+            turret: "Angular wedge-shaped Dorchester armor with distinctive 'arrowhead' profile. Large stowage bins at rear."
+        }
     },
     {
         id: 5,
@@ -94,11 +118,18 @@
             "Photo: Aleksey Kitaev / Wikimedia Commons / CC BY-SA 3.0",
             "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0"
         ],
-        specs: { speed: "60 km/h", armament: "125mm 2A46M-5", range: "550 km" },
+        specs: { speed: "60 km/h", armament: "125mm 2A46M-5", operationalRange: "550 km" },
         inService: 2011,
         users: ["Russia", "India", "Algeria", "Iraq"],
         status: "Active",
+        recognitionFeatures: {
+            wheels: "6 road wheels per side. Torsion bar suspension. Drive sprocket at rear.",
+            hull: "Modular ERA (Relikt) on glacis. Rear slat armor/cage visible. Driver's hatch offset to left.",
+            armament: "125mm 2A46M-5 smoothbore gun. Remote Weapon Station (RCWS) with 7.62mm MG on turret roof.",
+            turret: "New welded turret with extended bustle rack (ammunition storage). ERA panels on front/sides."
+        },
         fact: "The T-90MS features the Shtora-1 defensive suite, which can detect laser targeting and automatically deploy smoke grenades or jam incoming guided missiles."
+
     },
     {
         id: 6,
@@ -114,11 +145,18 @@
             "Photo: Vitaly V. Kuzmin / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
         ],
-        specs: { speed: "90 km/h", armament: "125mm 2A82-1M", range: "500 km" },
+        specs: { speed: "90 km/h", armament: "125mm 2A82-1M", operationalRange: "500 km" },
         inService: 2024,
         users: ["Russia"],
         status: "Active",
+        recognitionFeatures: {
+            wheels: "7 road wheels per side (unlike 6 on T-72/T-90). Drive sprocket at rear. Idler at front.",
+            hull: "Crew capsule at front (3 hatches in line). Unmanned turret. Malachit ERA blocks on sides.",
+            armament: "125mm 2A82-1M smoothbore gun (no bore evacuator). Remote 7.62mm MG on turret roof.",
+            turret: "Unmanned, angular stealthy design. Active Protection System (Afghanit) sensors and launchers visible."
+        },
         fact: "The T-14 Armata houses all three crew members in a protected compartment in the front of the hull, a significant departure from traditional tank architecture designed to enhance crew survivability by separating the personnel from the ammunition and the main gun system."
+
     },
     {
         id: 7,
@@ -134,10 +172,17 @@
             "Photo: MathKnight and Zachi Evenor / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: IDF Spokesperson's Unit / Wikimedia Commons / CC BY-SA 3.0"
         ],
-        specs: { speed: "64 km/h", armament: "120mm MG253", range: "500 km" },
+        specs: { speed: "64 km/h", armament: "120mm MG253", operationalRange: "500 km" },
         inService: 2004,
         users: ["Israel"],
-        status: "Active"
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "6 road wheels with visible coil springs. Drive sprocket at front (unique for MBTs).",
+            hull: "Front-mounted engine (exhaust on right side). Rear clamshell doors for infantry/ammo access. Flat, angled glacis.",
+            armament: "120mm smoothbore gun with thermal sleeve. 12.7mm M2 heavy MG often on mantlet. Internal 60mm mortar.",
+            turret: "Large, saucer/disc-like shape. Distinctive 'ball and chain' curtain on rear bustle overhang."
+        }
+
     },
     {
         id: 8,
@@ -153,10 +198,17 @@
             "Photo: Tyg728 / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: Max Smith / Wikimedia Commons / Public Domain"
         ],
-        specs: { speed: "80 km/h", armament: "125mm ZPT-98", range: "600 km" },
+        specs: { speed: "80 km/h", armament: "125mm ZPT-98", operationalRange: "600 km" },
         inService: 2011,
         users: ["China"],
-        status: "Active"
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "6 road wheels per side. Driver sprocket at rear, idler at front.",
+            hull: "Arrow-shaped ERA/composite armor on front. Rear engine deck is raised (unlike Type 96).",
+            armament: "125mm ZPT-98 smoothbore gun (50 caliber). 12.7mm QJC-88 heavy MG on roof.",
+            turret: "Large, angular welded turret with heavy ERA coverage (arrow-shaped). Large bustle rack. Laser dazzler system (JD-3) on roof."
+        }
+
     },
     {
         id: 9,
@@ -172,23 +224,43 @@
             "Photo: Staff Sgt. Matthew Foster / U.S. National Guard / Public Domain",
             "Photo: Simta / Wikimedia Commons / CC BY-SA 3.0"
         ],
-        specs: { speed: "70 km/h", armament: "120mm L/55", range: "450 km" },
+        specs: { speed: "70 km/h", armament: "120mm L/55", operationalRange: "450 km" },
         inService: 2014,
         users: ["South Korea", "Poland"],
-        status: "Active"
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "6 road wheels per side with rubber tires. Advanced In-arm Suspension Unit (ISU) allows distinctive 'kneeling' capability.",
+            hull: "Driver positioned front-center. Heavy composite armor with Explosive Reactive Armor (ERA) blocks often visible on skirts.",
+            armament: "Long 120mm L/55 smoothbore gun with thermal sleeve. Bustle-mounted autoloader eliminates need for loader's hatch.",
+            turret: "Flat, angular turret with MAWS radar plates on frontal cheeks. Large bustle rack at rear."
+        }
     },
+
     {
-        id: 10,
-        name: "Pokpung-ho",
+        id: 120,
+        name: "Chonma-2",
         type: "Main Battle Tank",
         origin: "North Korea",
-        coords: [39.0392, 125.7625],
-        image: "assets/pokpung_ho.jpg",
-        specs: { speed: "60 km/h", armament: "125mm smoothbore", range: "300 km" },
-        inService: 2002,
+        coords: [39.0194, 125.7381],
+        images: [
+            "assets/Chonma_2.png",
+            "assets/Chonma_2_Bravo.png"
+        ],
+        imageCredits: [
+            "Photo: Арт123ПК / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Арт123ПК / Wikimedia Commons / CC BY-SA 4.0"
+        ],
+        specs: { speed: "65 km/h", armament: "125mm smoothbore", operationalRange: "500 km" },
+        inService: 2020,
         users: ["North Korea"],
         status: "Active",
-        imageCredit: "Photo: Stefan Krasowski / Flickr / CC BY 2.0"
+        fact: "Officially named 'Cheonma-2', this tank represents a significant leap in North Korean armor design, featuring composite armor, active protection systems (APS), and external similarities to modern tanks like the M1A2 Abrams and T-14 Armata.",
+        recognitionFeatures: {
+            wheels: "7 road wheels per side (distinct from older 6-wheel designs).",
+            hull: "Modern composite armor with ERA blocks. Driver likely centrally positioned.",
+            armament: "125mm main gun with muzzle reference system. Bulsae-3 anti-tank missiles on turret side.",
+            turret: "Angular welded turret with slat armor at rear. Active Protection System sensors visible."
+        }
     },
     {
         id: 113,
@@ -204,7 +276,7 @@
             "Photo: Staff Sgt. Richard Wrigley / U.S. Army / Public Domain",
             "Photo: SPEC. 5 Vince Werner / U.S. Government / Public Domain"
         ],
-        specs: { speed: "56 km/h", armament: "155mm M284", range: "30 km" },
+        specs: { speed: "56 km/h", armament: "155mm M284", maximumRange: "30 km" },
         inService: 1963,
         users: ["United States", "Austria", "Bahrain", "Belgium", "Brazil", "Canada", "Chile", "Denmark", "Egypt", "Germany", "Greece", "Israel", "Italy", "Japan", "Jordan", "Kuwait", "Morocco", "Netherlands", "Norway", "Oman", "Pakistan", "Portugal", "Saudi Arabia", "South Korea", "Spain", "Switzerland", "Taiwan", "Thailand", "Tunisia", "Turkey", "Ukraine", "United Kingdom", "30+ countries"],
         status: "Active",
@@ -224,10 +296,17 @@
             "Photo: M-ATF / military.ir / CC BY-SA 3.0",
             "Photo: M-ATF / military.ir / CC BY-SA 3.0"
         ],
-        specs: { speed: "70 km/h", armament: "125mm smoothbore", range: "450 km" },
+        specs: { speed: "70 km/h", armament: "125mm smoothbore", operationalRange: "450 km" },
         inService: 2016,
         users: ["Iran"],
-        status: "Active"
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "7 road wheels per side (unlike 6 on earlier Zulfiqars). Skirts cover upper track.",
+            hull: "Boxy hull resembling US Abrams. Driver's hatch front-center. Sloped glacis.",
+            armament: "125mm 2A46M smoothbore gun (auto-loaded). 12.7mm DShK MG on commander's hatch.",
+            turret: "Angular, welded turret resembling Abrams. Large bustle rack. Meteorological mast often visible."
+        }
+
     },
     {
         id: 12,
@@ -243,10 +322,16 @@
             "Photo: Anirvan Shukla / Wikimedia Commons / CC BY-SA 3.0",
             "Photo: Anirvan Shukla / Wikimedia Commons / CC BY-SA 3.0"
         ],
-        specs: { speed: "58 km/h", armament: "120mm rifled gun", range: "450 km" },
+        specs: { speed: "58 km/h", armament: "120mm rifled gun", operationalRange: "450 km" },
         inService: 2014,
         users: ["India"],
-        status: "Active"
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "7 road wheels per side (distinctive count). Hydropneumatic suspension. Large side skirts covering upper tracks.",
+            hull: "Heavy Kanchan composite armor with wedge-shaped reactive armor blocks on glacis. Driver's hatch on right.",
+            armament: "120mm rifled gun with thermal sleeve and fume extractor. Resembles British 120mm guns but on a larger turret.",
+            turret: "Boxy composite turret with arrow-shaped add-on armor modules on front. Prominent RCWS (Remote Controlled Weapon Station) on roof."
+        }
     },
     {
         id: 13,
@@ -262,10 +347,16 @@
             "Photo: Daniel Steger / OpenPhoto.net / CC BY-SA 2.5",
             "Photo: David Monniaux / Wikimedia Commons / CC BY-SA 2.0 France"
         ],
-        specs: { speed: "72 km/h", armament: "120mm CN120-26", range: "550 km" },
+        specs: { speed: "72 km/h", armament: "120mm CN120-26", operationalRange: "550 km" },
         inService: 1992,
         users: ["France", "UAE", "Jordan"],
-        status: "Active"
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "6 road wheels per side. Hydropneumatic suspension system. Drive sprocket at rear, idler at front. Side skirts often cover upper track.",
+            hull: "Compact hull length (approx 6.9m). Driver positioned at front-left. Modular composite armor on glacis.",
+            armament: "120mm CN 120-26 smoothbore gun (52 caliber) - notably longer than typical L/44 guns. Thermal sleeve and compressed air fume extractor.",
+            turret: "Distinctive low-profile turret with modular armor. Autoloader bustle at rear separates crew from ammo."
+        }
     },
     {
         id: 14,
@@ -281,10 +372,18 @@
             "Photo: TGoto / Wikimedia Commons / Public Domain",
             "Photo: Los688 / Wikimedia Commons / CC0 1.0"
         ],
-        specs: { speed: "70 km/h", armament: "120mm L/44", range: "440 km" },
+        specs: { speed: "70 km/h", armament: "120mm L/44", operationalRange: "440 km" },
         inService: 2012,
         users: ["Japan"],
-        status: "Active"
+        users: ["Japan"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "5 large road wheels per side (distinctive count). Hydropneumatic active suspension (variable ride height).",
+            hull: "Modular ceramic/composite armor. Rubber side skirts. Headlights recessed in front armor.",
+            armament: "120mm L/44 smoothbore gun with thermal sleeve. 12.7mm M2 MG on roof.",
+            turret: "Wedge-shaped modular armor on front/sides. Boxy bustle with autoloader. Smoke dischargers embedded under armor."
+        }
+
     },
     {
         id: 15,
@@ -300,11 +399,18 @@
             "Photo: Spore1200 / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: Danie van der Merwe / Flickr / CC BY 2.0"
         ],
-        specs: { speed: "58 km/h", armament: "105mm rifled gun", range: "350 km" },
+        specs: { speed: "58 km/h", armament: "105mm rifled gun", operationalRange: "350 km" },
         inService: 1976,
         users: ["South Africa"],
         status: "Active",
-        fact: "The Olifant (Afrikaans for 'Elephant') is South Africa's main battle tank, developed from the British Centurion and upgraded over decades to remain competitive with modern armor."
+        fact: "The Olifant (Afrikaans for 'Elephant') is South Africa's main battle tank, developed from the British Centurion and upgraded over decades to remain competitive with modern armor.",
+        recognitionFeatures: {
+            wheels: "6 road wheels per side (Centurion lineage). Side skirts often have 'saw-tooth' bottom edge.",
+            hull: "Boxy hull with driver's hatch on right. V-shaped 'bush basher' bar often on lower front glacis.",
+            armament: "105mm rifled GT3B gun (L7 derivative) with thermal sleeve and fume extractor. Coaxial 7.62mm MG.",
+            turret: "Boxy, welded turret with large bustle rack at rear. Distinctive wedge-shaped additional armor on front."
+        }
+
     },
     {
         id: 16,
@@ -320,11 +426,18 @@
             "Photo: Turkmen / Wikimedia Commons / CC BY 4.0",
             "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0"
         ],
-        specs: { speed: "60 km/h", armament: "125mm 2A46M", range: "460 km" },
+        specs: { speed: "60 km/h", armament: "125mm 2A46M", operationalRange: "460 km" },
         inService: 1973,
         users: ["Russia", "India", "Iraq", "Poland", "Syria"],
         status: "Active",
+        recognitionFeatures: {
+            wheels: "6 large die-cast road wheels (starfish pattern). Distinctly larger than T-64/T-80 wheels.",
+            hull: "Low markings. V-shaped splash guard on glacis. Exhaust port on left side (above last wheel).",
+            armament: "125mm 2A46 smoothbore gun with thermal sleeve and bore evacuator. IR searchlight to right of gun.",
+            turret: "Low, rounded cast turret ('Frying Pan'). External fuel drums often mounted at rear."
+        },
         fact: "The T-72 is one of the most widely produced tanks in history, with over 25,000 units built and service in 40+ countries."
+
     },
     {
         id: 115,
@@ -340,7 +453,7 @@
             "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0",
             "Photo: VoidWanderer / Wikimedia Commons / CC BY-SA 4.0"
         ],
-        specs: { speed: "60 km/h", armament: "2x 30mm 2A42, 4x 9M120 Ataka", range: "550 km" },
+        specs: { speed: "60 km/h", armament: "2x 30mm 2A42, 4x 9M120 Ataka", operationalRange: "550 km" },
         inService: 2018,
         users: ["Russia", "Kazakhstan", "Algeria"],
         status: "Active",
@@ -360,10 +473,17 @@
             "Photo: Emir GEÇIR / Wikimedia Commons / CC0 1.0",
             "Photo: CeeGee / Wikimedia Commons / CC BY-SA 4.0"
         ],
-        specs: { speed: "65 km/h", armament: "120mm L/55", range: "500 km" },
+        specs: { speed: "65 km/h", armament: "120mm L/55", operationalRange: "500 km" },
         inService: 2025,
         users: ["Turkey"],
         status: "Active",
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "7 rubber-tired road wheels. Hydropneumatic suspension. Drive sprocket at rear with idler at front.",
+            hull: "Heavy modular composite armor with noticeable Roketsan ERA packages on glacis. Driver on right.",
+            armament: "120mm L/55 smoothbore gun (MKE production) with thermal sleeve. 7.62mm coaxial MG.",
+            turret: "Distinctive angular turret with AKKOR Active Protection System radars on corners. Remote weapon station options on roof."
+        },
         fact: "The Altay is Turkey's first domestically developed main battle tank, named after General Fahrettin Altay. Mass production began in 2025, with the design based on technology transfer from South Korea's K2 Black Panther. It features the AKKOR Active Protection System providing 360-degree defense against anti-tank missiles and a 1,500 hp engine giving it exceptional mobility."
     },
     {
@@ -373,7 +493,7 @@
         origin: "Russia",
         coords: [49.9935, 36.2304],
         image: "assets/MTLB.jpg",
-        specs: { speed: "61 km/h", armament: "7.62mm PKT MG", range: "500 km" },
+        specs: { speed: "61 km/h", armament: "7.62mm PKT MG", operationalRange: "500 km" },
         inService: 1970,
         users: ["Russia", "Ukraine", "Poland", "Bulgaria", "Finland", "40+ countries"],
         status: "Active",
@@ -396,10 +516,16 @@
             "Photo: Noah Wulf / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: U.S. Air Force / Public Domain"
         ],
-        specs: { speed: "Mach 1.6", armament: "AIM-120, GBU-31", range: "2,200 km" },
+        specs: { speed: "Mach 1.6", armament: "AIM-120, GBU-31", combatRadius: "2,200 km" },
         inService: 2015,
         users: ["United States", "UK", "Italy", "Netherlands", "Australia", "Norway", "Japan", "Israel", "South Korea"],
-        status: "Active"
+        status: "Active",
+        recognitionFeatures: {
+            wings: "Mid-mounted, trapezoidal wings. Smaller span than F-22.",
+            engine: "Single turbofan engine. Conventional round exhaust nozzle.",
+            fuselage: "Blended wing-body stealth design. Thicker/heavier appearance than F-22.",
+            tail: "Twin outward-canted vertical stabilizers. Horizontal stabilators."
+        }
     },
     {
         id: 18,
@@ -415,11 +541,17 @@
             "Photo: Staff Sgt. Cherie A. Thurlby / U.S. Air Force / Public Domain",
             "Photo: Åukasz GoÅ‚owanow / Konflikty.pl / Attribution"
         ],
-        specs: { speed: "Mach 2+", armament: "M61A1 Vulcan 20mm", range: "2,027 km" },
+        specs: { speed: "Mach 2+", armament: "M61A1 Vulcan 20mm", combatRadius: "2,027 km" },
         inService: 1980,
         users: ["United States", "Israel", "Turkey", "South Korea", "Netherlands", "Belgium", "Poland", "Taiwan", "Ukraine"],
         status: "Active",
-        fact: "The F-16 Fighting Falcon is the world's most common fixed-wing military aircraft, with over 4,600 built and operated by 25+ nations. Its frameless bubble canopy provides exceptional visibility."
+        fact: "The F-16 Fighting Falcon is the world's most common fixed-wing military aircraft, with over 4,600 built and operated by 25+ nations. Its frameless bubble canopy provides exceptional visibility.",
+        recognitionFeatures: {
+            wings: "Mid-mounted, cropped delta wings. Strakes (leading edge extensions) run from wing root to nose.",
+            engine: "Single large turbofan engine. Distinctive oval air intake under the fuselage.",
+            fuselage: "Single engine configuration. Bubble canopy offers 360-degree visibility.",
+            tail: "Single vertical stabilizer. Two ventral fins under the tail section."
+        }
     },
     {
         id: 19,
@@ -435,11 +567,17 @@
             "Photo: Master Sgt. William Greer / U.S. Air Force / Public Domain",
             "Photo: Senior Airman Audree Campbell / U.S. Air Force / Public Domain"
         ],
-        specs: { speed: "680 km/h", armament: "GAU-8/A Avenger 30mm", range: "4,150 km" },
+        specs: { speed: "680 km/h", armament: "GAU-8/A Avenger 30mm", combatRadius: "4,150 km" },
         inService: 1977,
         users: ["United States"],
         status: "Active",
-        fact: "The A-10 'Warthog' is built around its devastating 30mm GAU-8/A Avenger rotary cannon, which fires 3,900 rounds per minute and can destroy tanks from miles away. The aircraft is famously durable and can fly with one engine, half a tail, and one elevator destroyed."
+        fact: "The A-10 'Warthog' is built around its devastating 30mm GAU-8/A Avenger rotary cannon, which fires 3,900 rounds per minute and can destroy tanks from miles away. The aircraft is famously durable and can fly with one engine, half a tail, and one elevator destroyed.",
+        recognitionFeatures: {
+            wings: "Low-mounted, straight leading/trailing edges. Hoerner tips. Large surface area.",
+            engine: "Two TF34 turbofans mounted high on rear fuselage nacelles. Shielded by twin tails.",
+            fuselage: "Robust, straight design. Cockpit forward of wings. GAU-8 cannon protrudes from nose.",
+            tail: "Twin vertical stabilizers on payload-shielding horizontal stabilizer."
+        }
     },
     {
         id: 20,
@@ -448,10 +586,16 @@
         origin: "Sweden",
         coords: [60.1282, 18.6435],
         image: "assets/gripen_1765118486549.jpg",
-        specs: { speed: "Mach 2", armament: "Meteor, RBS-15", range: "3,200 km" },
+        specs: { speed: "Mach 2", armament: "Meteor, RBS-15", combatRadius: "3,200 km" },
         inService: 2019,
         users: ["Sweden", "Brazil", "South Africa", "Thailand", "Czech Republic", "Hungary", "Colombia", "Ukraine"],
         status: "Active",
+        recognitionFeatures: {
+            wings: "Delta wing configuration. Large all-moving canards mounted on air intakes.",
+            engine: "Single turbofan engine (Volvo RM12/RM16). Round exhaust nozzle.",
+            fuselage: "Sleek, unstable aerodynamic design. Pitot tube on nose.",
+            tail: "Vertical stabilizer only (no horizontal tail). Delta wing provides lift/control."
+        },
         imageCredit: "Photo: Milan Nykodym / Wikimedia Commons / CC BY-SA 2.0"
     },
     {
@@ -468,11 +612,17 @@
             "Photo: Airwolfhound / Wikimedia Commons / CC BY-SA 2.0",
             "Photo: Master Sgt. Andy Dunaway / U.S. Air Force / Public Domain"
         ],
-        specs: { speed: "Mach 2.25", armament: "AIM-120, AIM-9, GBU-32", range: "2,960 km" },
+        specs: { speed: "Mach 2.25", armament: "AIM-120, AIM-9, GBU-32", combatRadius: "2,960 km" },
         inService: 2005,
         users: ["United States"],
         status: "Active",
-        fact: "The F-22 Raptor is the world's first fifth-generation fighter aircraft, combining stealth, supercruise, maneuverability, and advanced avionics. It can cruise at supersonic speeds without afterburners and is the most advanced air superiority fighter ever built."
+        fact: "The F-22 Raptor is the world's first fifth-generation fighter aircraft, combining stealth, supercruise, maneuverability, and advanced avionics. It can cruise at supersonic speeds without afterburners and is the most advanced air superiority fighter ever built.",
+        recognitionFeatures: {
+            wings: "High-mounted, diamond-shaped (clipped delta) wings.",
+            engine: "Twin turbofans. Distinctive 2D rectangular thrust-vectoring nozzles.",
+            fuselage: "Sleek, blended wing-body design. Flat bottom fuselage.",
+            tail: "Twin outward-canted vertical stabilizers. All-moving horizontal stabilators."
+        }
     },
     {
         id: 22,
@@ -481,10 +631,16 @@
         origin: "Russia",
         coords: [56.3269, 44.0059],
         image: "assets/su57_felon.jpg",
-        specs: { speed: "Mach 2", armament: "R-77M, Kh-59MK2", range: "3,500 km" },
+        specs: { speed: "Mach 2", armament: "R-77M, Kh-59MK2", combatRadius: "3,500 km" },
         inService: 2020,
         users: ["Russia"],
         status: "Active - Limited Production",
+        recognitionFeatures: {
+            wings: "Trapezoidal wings with LEVCONs (Leading Edge Vortex Controllers). Large surface area.",
+            engine: "Two widely separated engines. Wide, flattened fuselage between engines.",
+            fuselage: "Flattened, blended wing-body stealth design. Side storage bays.",
+            tail: "Twin all-moving canted vertical stabilizers. 'Stinger' tail cone for countermeasures."
+        },
         imageCredit: "Photo: Anna Zvereva / Flickr / CC BY-SA 2.0"
     },
     {
@@ -492,12 +648,18 @@
         name: "IRIAF F-14 Tomcat",
         type: "Fighter Aircraft",
         origin: "United States",
-        coords: [35.6892, 51.3890],
+        coords: [36.8206, -76.0333],
         image: "assets/IRIAF F_14.jpg",
-        specs: { speed: "Mach 2.34", armament: "AIM-54 Phoenix", range: "2,960 km" },
+        specs: { speed: "Mach 2.34", armament: "AIM-54 Phoenix", combatRadius: "2,960 km" },
         inService: 1976,
         users: ["Iran"],
         status: "Active",
+        recognitionFeatures: {
+            wings: "Variable-sweep wings. High-mounted on the fuselage. Automatically sweep back in flight.",
+            engine: "Twin engines in widely spaced nacelles. Rectangular air intakes with ramps.",
+            fuselage: "Large, flat 'pancake' lifting body between engine nacelles. Tandem cockpit.",
+            tail: "Twin outward-canted vertical stabilizers. All-moving horizontal stabilators."
+        },
         imageCredit: "Photo: Mohammad Shaltouki / Nasim Online / CC BY 4.0"
     },
     {
@@ -507,10 +669,16 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/MiG_29.jpg",
-        specs: { speed: "Mach 2.25", armament: "R-73, R-27", range: "1,430 km" },
+        specs: { speed: "Mach 2.25", armament: "R-73, R-27", combatRadius: "1,430 km" },
         inService: 1983,
         users: ["Russia", "India", "North Korea", "Iran", "Poland"],
         status: "Active",
+        recognitionFeatures: {
+            wings: "Mid-mounted swept wings with large leading-edge root extensions (LERX).",
+            engine: "Two widely spaced turbofans fed by wedge-shaped air intakes under the fuselage.",
+            fuselage: "Blended wing-body design. Distinctive high-mounted bubble cockpit.",
+            tail: "Twin outward-canted vertical stabilizers. Deeply notched tailpipes."
+        },
         imageCredit: "Photo: Julian Herzog / Wikimedia Commons / CC BY 4.0"
     },
     {
@@ -520,11 +688,17 @@
         origin: "Russia",
         coords: [44.6861, 37.6496],
         image: "assets/SU_25.jpg",
-        specs: { speed: "975 km/h", armament: "30mm GSh-30-2, Rockets", range: "750 km" },
+        specs: { speed: "975 km/h", armament: "30mm GSh-30-2, Rockets", combatRadius: "750 km" },
         inService: 1981,
         users: ["Russia", "Ukraine", "North Korea", "Iraq", "Bulgaria"],
         status: "Active",
         fact: "The Su-25 'Frogfoot' is a heavily armored ground-attack aircraft, often compared to the US A-10 Thunderbolt II for its durability and role.",
+        recognitionFeatures: {
+            wings: "High-mounted, back-tapered with straight trailing edges and square tips. Pods often mounted at wingtips.",
+            engine: "Two turbojets mounted in long nacelles alongside the lower fuselage. Semicircular air intakes.",
+            fuselage: "Long, slender body with a rounded nose and stepped canopy. Tapers to the rear.",
+            tail: "Swept-back fin with a square tip. Mid-mounted horizontal stabilizers with unequal taper."
+        },
         imageCredit: "Photo: Fedor Leukhin / Wikimedia Commons / CC BY-SA 2.0"
     },
     {
@@ -534,11 +708,17 @@
         origin: "China",
         coords: [30.5728, 104.0668],
         image: "assets/J_20_Mighty_Dragon.jpg",
-        specs: { speed: "Mach 2.0", armament: "PL-15, PL-21", range: "5,500 km" },
+        specs: { speed: "Mach 2.0", armament: "PL-15, PL-21", combatRadius: "5,500 km" },
         inService: 2017,
         users: ["China"],
         status: "Active",
-        imageCredit: "Photo: N509FZ / Wikimedia Commons / CC BY-SA 4.0"
+        imageCredit: "Photo: N509FZ / Wikimedia Commons / CC BY-SA 4.0",
+        recognitionFeatures: {
+            wings: "High-mounted delta wings. Large all-moving canards forward of the main wings.",
+            engine: "Twin engines side-by-side. Serrated nozzles for stealth (operational variants).",
+            fuselage: "Long, blended fuselage with chined nose. DSI (Bump) air intakes on sides.",
+            tail: "Twin outward-canted all-moving vertical stabilizers. Ventral fins under engines."
+        }
     },
     {
         id: 27,
@@ -547,10 +727,16 @@
         origin: "France",
         coords: [48.8566, 2.3522],
         image: "assets/Rafale.jpg",
-        specs: { speed: "Mach 1.8", armament: "MICA, Meteor, SCALP", range: "3,700 km" },
+        specs: { speed: "Mach 1.8", armament: "MICA, Meteor, SCALP", combatRadius: "3,700 km" },
         inService: 2001,
         users: ["France", "Egypt", "Qatar", "India", "Greece"],
         status: "Active",
+        recognitionFeatures: {
+            wings: "Delta wing design with close-coupled canards. Large degree of wing-body blending.",
+            engine: "Two engines with semicircular intakes positioned low on the fuselage side, beneath the wings.",
+            fuselage: "Pointed nose with a refueling probe (prominent on many variants). Blended body design.",
+            tail: "Single large vertical stabilizer. No horizontal tail surfaces (delta configuration)."
+        },
         imageCredit: "Photo: Tim Felce (Airwolfhound) / Wikimedia Commons / CC BY-SA 2.0"
     },
     {
@@ -567,24 +753,19 @@
             "Photo: Markus Zinner (Bundesheer) / Wikimedia Commons / CC BY-SA 3.0",
             "Photo: Chris Lofting / Wikimedia Commons / GFDL 1.2"
         ],
-        specs: { speed: "Mach 2.0", armament: "AMRAAM, ASRAAM, Meteor", range: "3,790 km" },
+        specs: { speed: "Mach 2.0", armament: "AMRAAM, ASRAAM, Meteor", combatRadius: "3,790 km" },
         inService: 2003,
         users: ["Germany", "UK", "Italy", "Spain", "Saudi Arabia"],
-        status: "Active"
+        status: "Active",
+        fact: "The Eurofighter Typhoon is a highly agile aircraft, designed to be effectively unstable in flight to maximize maneuverability. It is flown by computers that make thousands of adjustments per second to keep it stable.",
+        recognitionFeatures: {
+            wings: "Delta wing configuration with no tailplanes. Canards mounted below cockpit.",
+            engine: "Twin Eurojet EJ200 turbofans mounted side-by-side. Rectangular intakes under fuselage.",
+            fuselage: "Single vertical stabilizer. Cockpit placed well forward. Canards on nose.",
+            tail: "Large single vertical fin. No horizontal tail surfaces (delta wing design)."
+        }
     },
-    {
-        id: 29,
-        name: "Qaher-313",
-        type: "Fighter Aircraft",
-        origin: "Iran",
-        coords: [35.6892, 51.3890],
-        image: "assets/Qaher_313.jpg",
-        specs: { speed: "Unknown", armament: "Unknown", range: "Unknown" },
-        inService: 2017,
-        users: ["Iran"],
-        status: "Development",
-        imageCredit: "Photo: Yunes Khani / Mehr News Agency / CC BY 4.0"
-    },
+
     {
         id: 30,
         name: "B-2 Spirit",
@@ -599,11 +780,17 @@
             "Photo: U.S. Air Force photo by Master Sgt. Roy Santana / Public Domain",
             "Photo: Royal Air Force / Wikimedia Commons / OGL v1.0"
         ],
-        specs: { speed: "Mach 0.95", armament: "Nuclear/Conventional", range: "11,100 km" },
+        specs: { speed: "Mach 0.95", armament: "Nuclear/Conventional", combatRadius: "11,100 km" },
         inService: 1997,
         users: ["United States"],
         status: "Active",
-        fact: "The B-2 Spirit is the only acknowledged aircraft that can carry large air-to-surface standoff weapons in a stealth configuration."
+        fact: "The B-2 Spirit is the only acknowledged aircraft that can carry large air-to-surface standoff weapons in a stealth configuration.",
+        recognitionFeatures: {
+            wings: "Flying wing design. Swept leading edge (33°). Distinctive W-shaped 'saw-tooth' trailing edge.",
+            engine: "Four turbofans buried deep within the wing structure. S-duct air intakes on upper surface.",
+            fuselage: "Blended wing-body with no distinct fuselage. Cockpit creates a small hump in the center.",
+            tail: "No vertical stabilizers (Tailless). Yaw control provided by drag rudders on wingtips."
+        }
     },
     {
         id: 31,
@@ -619,11 +806,17 @@
             "Photo: U.S. Air Force photo/Senior Airman Carlin Leslie / Public Domain",
             "Photo: Pseudopanax at English Wikipedia / Public Domain"
         ],
-        specs: { speed: "Mach 0.86", armament: "70,000 lbs ordnance", range: "14,200 km" },
+        specs: { speed: "Mach 0.86", armament: "70,000 lbs ordnance", combatRadius: "14,200 km" },
         inService: 1955,
         users: ["United States"],
         status: "Active",
         fact: "An interesting fact about the B-52 Stratofortress is that it was designed for a nuclear war that never happened, yet it has served in more conflicts than any other US bomber.",
+        recognitionFeatures: {
+            wings: "High-mounted, swept wings with significant droop when on the ground. Wingtip landing gear.",
+            engine: "Eight turbofan engines mounted in pairs on four underwing pylons.",
+            fuselage: "Long, slab-sided fuselage. Cockpit windows wrap around the nose.",
+            tail: "Large single vertical stabilizer. Horizontal stabilizers mounted low on the fuselage."
+        },
         imageCredit: "Photo: U.S. Air Force photo/Senior Airman Carlin Leslie / Public Domain"
     },
     {
@@ -640,11 +833,17 @@
             "Photo: Balon Greyjoy / Wikimedia Commons / CC0 1.0",
             "Photo: Balon Greyjoy / Wikimedia Commons / CC0 1.0"
         ],
-        specs: { speed: "Mach 1.25", armament: "75,000 lbs ordnance", range: "11,998 km" },
+        specs: { speed: "Mach 1.25", armament: "75,000 lbs ordnance", combatRadius: "11,998 km" },
         inService: 1986,
         users: ["United States"],
         status: "Active",
-        fact: "The B-1 Lancer, nicknamed the 'Bone' (from 'B-One'), carries the largest conventional payload of any U. S. Air Force bomber at 75,000 pounds and holds nearly 50 world records for speed, payload, range, and time of climb in its class. Its variable-sweep wing design allows it to adjust wing configuration for both high-speed penetration and efficient cruising."
+        fact: "The B-1 Lancer, nicknamed the 'Bone' (from 'B-One'), carries the largest conventional payload of any U. S. Air Force bomber at 75,000 pounds and holds nearly 50 world records for speed, payload, range, and time of climb in its class. Its variable-sweep wing design allows it to adjust wing configuration for both high-speed penetration and efficient cruising.",
+        recognitionFeatures: {
+            wings: "Variable-sweep 'swing-wings'. Triangular gloves blend wings into fuselage.",
+            engine: "Four turbofans mounted in pairs under the fixed wing root gloves.",
+            fuselage: "Long, blended wing-body design with a pointed nose and slender profile.",
+            tail: "Large swept vertical stabilizer with cruciform horizontal stabilizer mounted mid-way."
+        }
     },
     {
         id: 121,
@@ -660,11 +859,17 @@
             "Photo: U.S. Air Force / Public Domain",
             "Photo: U.S. Air Force / Public Domain"
         ],
-        specs: { speed: "Mach 0.95", armament: "Nuclear/Conventional", range: "12,000 km" },
+        specs: { speed: "Mach 0.95", armament: "Nuclear/Conventional", combatRadius: "12,000 km" },
         inService: 2027,
         users: ["United States"],
         status: "In Development",
-        fact: "The B-21 Raider is America's sixth-generation stealth bomber, first flown in November 2023 and expected to enter service in 2027. Named after the Doolittle Raiders of WWII, it features next-generation stealth technology, AI-capable autonomous flight, and an open systems architecture for easy upgrades. With an estimated 100 aircraft planned, it will eventually replace both the B-1 Lancer and B-2 Spirit, forming the backbone of America's strategic bomber force."
+        fact: "The B-21 Raider is America's sixth-generation stealth bomber, first flown in November 2023 and expected to enter service in 2027. Named after the Doolittle Raiders of WWII, it features next-generation stealth technology, AI-capable autonomous flight, and an open systems architecture for easy upgrades. With an estimated 100 aircraft planned, it will eventually replace both the B-1 Lancer and B-2 Spirit, forming the backbone of America's strategic bomber force.",
+        recognitionFeatures: {
+            wings: "Flying wing design. Swept leading edge. Simpler V-shaped trailing edge (no saw-tooth).",
+            engine: "Buried engines with flush, scalloped inlets that sit lower than on the B-2.",
+            fuselage: "Seamless blended wing-body. Lighter gray coating ('white bat') compared to B-2's gunmetal.",
+            tail: "No vertical stabilizers (Tailless). Advanced stealth shaping eliminates need for traditional tail surfaces."
+        }
     },
     {
         id: 32,
@@ -680,11 +885,17 @@
             "Photo: PigiusMax / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: Tech. Sgt. Andy Dunaway / U.S. Army / Public Domain"
         ],
-        specs: { speed: "300 km/h", armament: "30mm M230, Hellfire", range: "500 km" },
+        specs: { speed: "300 km/h", armament: "30mm M230, Hellfire", combatRadius: "500 km" },
         inService: 1984,
         users: ["United States", "Egypt", "Greece", "India", "Indonesia", "Israel", "Japan", "Kuwait", "Netherlands", "Qatar", "Saudi Arabia", "Singapore", "South Korea", "UAE", "United Kingdom"],
         status: "Active",
         fact: "The AH-64 Apache's 30mm M230 chain gun is linked to the crew member's helmet, meaning the gun aims wherever the operator looks.",
+        recognitionFeatures: {
+            rotors: "4-blade main rotor. 4-blade 'scissor' tail rotor.",
+            engine: "Twin turboshafts mounted high on either side of the rotor shaft.",
+            fuselage: "Narrow, tandem cockpit. Cheek fairings for avionics/ammo.",
+            tail: "Vertical stabilizer with tail rotor. Horizontal stabilator at base."
+        },
         imageCredit: "Photo: PigiusMax / Wikimedia Commons / CC BY-SA 4.0"
     },
     {
@@ -694,11 +905,17 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/MI_24.jpg",
-        specs: { speed: "350 km/h", armament: "12.7mm Gatling, ATGMs", range: "480 km" },
+        specs: { speed: "350 km/h", armament: "12.7mm Gatling, ATGMs", combatRadius: "480 km" },
         inService: 1972,
         users: ["Russia", "Algeria", "Angola", "Armenia", "Azerbaijan", "Belarus", "Bulgaria", "Chad", "Cuba", "Czech Republic", "DR Congo", "Eritrea", "Ethiopia", "Hungary", "India", "Iraq", "Kazakhstan", "Kyrgyzstan", "Libya", "Mali", "Mozambique", "Nicaragua", "Nigeria", "Peru", "Poland", "Slovakia", "South Sudan", "Sudan", "Syria", "Turkmenistan", "Uganda", "Ukraine", "Venezuela", "Vietnam", "Yemen", "Zambia"],
         status: "Active",
         fact: "The Mi-24 'Hind' is a unique hybrid gunship that combines attack helicopter firepower with troop transport capability. Over 3,500 have been produced and it's used by 52+ countries, making it one of the most widely used attack helicopters in history.",
+        recognitionFeatures: {
+            rotors: "5-blade main rotor. 3-blade tail rotor.",
+            engine: "Two turboshaft engines mounted high above the fuselage. Two large round intakes.",
+            fuselage: "Tandem 'double bubble' cockpit. Troop compartment behind cockpit.",
+            tail: "Large vertical fin. Three-bladed tail rotor (usually on left)."
+        },
         imageCredit: "Photo: Åukasz Golowanow & Maciek HypÅ¡ / Konflikty.pl"
     },
     {
@@ -708,11 +925,17 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/MiG_31.jpg",
-        specs: { speed: "Mach 2.8", armament: "R-33/R-37M AAMs", range: "3000 km" },
+        specs: { speed: "Mach 2.8", armament: "R-33/R-37M AAMs", combatRadius: "3000 km" },
         inService: 1981,
         users: ["Russia", "Kazakhstan"],
         status: "Active",
         fact: "The MiG-31 Foxhound is a supersonic interceptor designed to defend Russia's vast airspace. Capable of Mach 2.8 at altitude and equipped with the powerful Zaslon radar, four MiG-31s can patrol an 800x900 km area using datalink coordination. It now launches the Kinzhal hypersonic missile.",
+        recognitionFeatures: {
+            wings: "High-mounted swept wings with small wing fences.",
+            engine: "Two massive Soloviev D-30F6 turbofans. Large rectangular side intakes.",
+            fuselage: "Box-like, rectangular fuselage layout tailored for high-speed interception.",
+            tail: "Twin vertical fins with slight outward cant. Two ventral fins under the tail."
+        },
         imageCredit: "Photo: Dmitriy Pichugin / Wikimedia Commons / GNU FDL"
     },
     {
@@ -722,11 +945,17 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/Sukhoi_Su_30.jpg",
-        specs: { speed: "Mach 2.0", armament: "R-77/R-27/Brahmos", range: "3000 km" },
+        specs: { speed: "Mach 2.0", armament: "R-77/R-27/Brahmos", combatRadius: "3000 km" },
         inService: 2002,
         users: ["India"],
         status: "Active",
         fact: "The Su-30MKI is India's premier air superiority fighter, featuring thrust-vectoring engines and canards for exceptional maneuverability. It can carry the BrahMos supersonic cruise missile and serves as the backbone of the Indian Air Force with over 260 aircraft in service.",
+        recognitionFeatures: {
+            wings: "Swept wings with large LERX. Distinctive canards forward of the main wings.",
+            engine: "Two widely spaced engines with thrust-vectoring nozzles. 'Stinger' between engines.",
+            fuselage: "High, blended wing-body design. Retractable refueling probe near cockpit.",
+            tail: "Twin vertical stabilizers. Horizontal stabilators attached to tail booms."
+        },
         imageCredit: "Photo: Chris Lofting / Wikimedia Commons / GNU FDL"
     },
     {
@@ -736,11 +965,17 @@
         origin: "United States",
         coords: [41.2524, -73.1184],
         image: "assets/Black_Hawk.jpg",
-        specs: { speed: "294 km/h", armament: "M240/M134 MGs", range: "590 km" },
+        specs: { speed: "294 km/h", armament: "M240/M134 MGs", ferryRange: "590 km" },
         inService: 1979,
         users: ["United States", "South Korea", "Colombia", "Turkey"],
         status: "Active",
         fact: "The UH-60 Black Hawk gained fame from the movie 'Black Hawk Down', but it gives its name to the Black Hawk War of 1832, not the other way around.",
+        recognitionFeatures: {
+            rotors: "4-blade main rotor. 4-blade tail rotor (canted).",
+            engine: "Twin turboshafts. Exhausts typically angled upwards/outwards.",
+            fuselage: "Low profile, troop transport cabin. Sliding side doors.",
+            tail: "Horizontal stabilizer on tail boom. Tail rotor on vertical fin."
+        },
         imageCredit: "Photo: Jakub HaÅ‚un / Wikimedia Commons / CC BY-SA 4.0"
     },
     {
@@ -750,11 +985,17 @@
         origin: "United States",
         coords: [39.8653, -75.2936],
         image: "assets/Chinook.jpg",
-        specs: { speed: "315 km/h", armament: "7.62mm MGs", range: "741 km" },
+        specs: { speed: "315 km/h", armament: "7.62mm MGs", ferryRange: "741 km" },
         inService: 1962,
         users: ["United States", "United Kingdom", "Japan", "India"],
         status: "Active",
         fact: "The Chinook is capable of floating on water for short periods and can even perform water landings to deploy special forces boats.",
+        recognitionFeatures: {
+            rotors: "Twin tandem 3-blade main rotors. No tail rotor.",
+            engine: "Twin turboshafts mounted in pods on the rear fuselage.",
+            fuselage: "Box-like transport body. Sponsons along the sides.",
+            tail: "Large rear pylon supporting the aft rotor. Loading ramp."
+        },
         imageCredit: "Photo: Cpl Lee Goddard RAF/MOD / OGL v1.0"
     },
     {
@@ -771,11 +1012,17 @@
             "Photo: Tech. Sgt. Howard Blair / U.S. Air Force / Public Domain",
             "Photo: MarcelX42 / Wikimedia Commons / CC BY-SA 4.0"
         ],
-        specs: { speed: "592 km/h", armament: "Cargo/Troops", range: "3,800 km" },
+        specs: { speed: "592 km/h", armament: "Cargo/Troops", ferryRange: "3,800 km" },
         inService: 1956,
         users: ["United States", "Australia", "Canada", "60+ nations"],
         status: "Active",
-        fact: "The C-130 Hercules is one of the longest continuously produced military aircraft in history, serving since 1956. Designed for tactical airlift operations, it can operate from unprepared runways and is used by over 60 nations worldwide. The versatile airframe has spawned more than 40 variants, including gunships (AC-130), aerial refuelers (KC-130), and search and rescue configurations."
+        fact: "The C-130 Hercules is one of the longest continuously produced military aircraft in history, serving since 1956. Designed for tactical airlift operations, it can operate from unprepared runways and is used by over 60 nations worldwide. The versatile airframe has spawned more than 40 variants, including gunships (AC-130), aerial refuelers (KC-130), and search and rescue configurations.",
+        recognitionFeatures: {
+            wings: "High-mounted, straight wings with blunt tips. Four turboprops.",
+            engine: "Four turboprops mounted under the wings. Distinctive external fuel tanks (often) between engines.",
+            fuselage: "Wide, cylindrical fuselage with a distinct 'snout' nose (weather radar). Ramp at rear.",
+            tail: "Conventional tail with a very tall, distinctively shaped vertical stabilizer."
+        }
     },
 
     // === NAVAL VESSELS ===
@@ -786,7 +1033,7 @@
         origin: "United States",
         coords: [36.9466, -76.3130],
         image: "assets/uss_ford_carrier.jpg",
-        specs: { speed: "56+ km/h", armament: "75+ Aircraft", range: "Unlimited (Nuclear)" },
+        specs: { speed: "30+ knots", armament: "75+ Aircraft", endurance: "Unlimited (Nuclear)" },
         inService: 2017,
         users: ["United States Navy"],
         status: "Active",
@@ -799,7 +1046,7 @@
         origin: "China",
         coords: [31.2304, 121.4737],
         image: "assets/Type_055_Destroyer.jpg",
-        specs: { speed: "55+ km/h", armament: "112 VLS cells", range: "9,300 km" },
+        specs: { speed: "30+ knots", armament: "112 VLS cells", endurance: "9,300 km" },
         inService: 2020,
         users: ["China"],
         status: "Active",
@@ -812,7 +1059,7 @@
         origin: "Russia",
         coords: [69.0833, 33.4167],
         image: "assets/Kirov_Class_Battlecruiser.jpg",
-        specs: { speed: "59 km/h", armament: "P-700 Granit missiles", range: "Unlimited (Nuclear)" },
+        specs: { speed: "32 knots", armament: "P-700 Granit missiles", endurance: "Unlimited (Nuclear)" },
         inService: 1980,
         users: ["Russia"],
         status: "Active",
@@ -825,7 +1072,7 @@
         origin: "United Kingdom",
         coords: [50.8036, -1.0644],
         image: "assets/QE.jpg",
-        specs: { speed: "46 km/h", armament: "40+ F-35B Aircraft", range: "18,500 km" },
+        specs: { speed: "25 knots", armament: "40+ F-35B Aircraft", endurance: "18,500 km" },
         inService: 2017,
         users: ["United Kingdom"],
         status: "Active",
@@ -838,7 +1085,7 @@
         origin: "Russia",
         coords: [69.0833, 33.4167],
         image: "assets/Delta_IV.jpg",
-        specs: { speed: "44 km/h", armament: "16 R-29RMU Sineva SLBMs", range: "Unlimited (Nuclear)" },
+        specs: { speed: "24 knots", armament: "16 R-29RMU Sineva SLBMs", endurance: "Unlimited (Nuclear)" },
         inService: 1985,
         users: ["Russia"],
         status: "Active",
@@ -859,7 +1106,7 @@
             "Photo: Wikimedia Commons / CC BY-SA 3.0",
             "Photo: Tyg728 / Wikimedia Commons / CC BY-SA 4.0"
         ],
-        specs: { speed: "N/A", armament: "5.8x42mm", range: "400 m" },
+        specs: { speed: "N/A", armament: "5.8x42mm", effectiveRange: "400 m" },
         inService: 1997,
         users: ["China"],
         status: "Active",
@@ -872,7 +1119,7 @@
         origin: "China",
         coords: [29.4316, 106.9123],
         image: "assets/QBZ191.jpg",
-        specs: { speed: "N/A", armament: "5.8x42mm DBP191", range: "400 m" },
+        specs: { speed: "N/A", armament: "5.8x42mm DBP191", effectiveRange: "400 m" },
         inService: 2019,
         users: ["China"],
         status: "Active",
@@ -886,7 +1133,7 @@
         origin: "India",
         coords: [28.6139, 77.2090],
         image: "assets/ASMI.jpg",
-        specs: { speed: "N/A", armament: "9x19mm", range: "100 m" },
+        specs: { speed: "N/A", armament: "9x19mm", effectiveRange: "100 m" },
         inService: 2024,
         users: ["India"],
         status: "Active",
@@ -907,7 +1154,7 @@
             "Photo: Graeme Main/UK Ministry of Defence / OGL v3.0",
             "Photo: Cpl Si Longworth RLC (Phot)/MOD / OGL v2.0"
         ],
-        specs: { speed: "N/A", armament: "7.62x51mm NATO", range: "1,800 m" },
+        specs: { speed: "N/A", armament: "7.62x51mm NATO", effectiveRange: "1,800 m" },
         inService: 1963,
         users: ["United Kingdom", "Australia", "Canada", "New Zealand", "80+ countries (FN MAG variant)"],
         status: "Active",
@@ -920,7 +1167,7 @@
         origin: "United States",
         coords: [39.8283, -98.5795],
         image: "assets/M240.jpg",
-        specs: { speed: "N/A", armament: "7.62x51mm NATO", range: "1,800 m" },
+        specs: { speed: "N/A", armament: "7.62x51mm NATO", effectiveRange: "1,800 m" },
         inService: 1977,
         users: ["United States", "Indonesia", "Poland", "Spain", "Georgia", "Philippines", "Ukraine", "Iraq", "Syria", "30+ countries"],
         status: "Active",
@@ -941,7 +1188,7 @@
             "Photo: MKF1 / Wikimedia Commons / Public Domain",
             "Photo: Cpl Danny Houghton / UK Ministry of Defence / OGL v3.0"
         ],
-        specs: { speed: "200 m/s", armament: "150mm HEAT", range: "800 m" },
+        specs: { speed: "200 m/s", armament: "150mm HEAT", maximumRange: "800 m" },
         inService: 2009,
         users: ["United Kingdom", "Sweden", "Finland", "Ukraine", "Luxembourg", "Malaysia", "Indonesia"],
         status: "Active",
@@ -961,7 +1208,7 @@
             "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 3.0 Unported",
             "Photo: Alf van Beem / Wikimedia Commons / CC0 1.0"
         ],
-        specs: { speed: "Mach 0.9", armament: "481 kg MEPHISTO", range: "500+ km" },
+        specs: { speed: "Mach 0.9", armament: "481 kg MEPHISTO", maximumRange: "500+ km" },
         inService: 2005,
         users: ["Germany", "Sweden", "Spain", "South Korea"],
         status: "Active",
@@ -974,7 +1221,7 @@
         origin: "United Kingdom / France",
         coords: [51.5074, -0.1278],
         image: "assets/Storm_Shadow.jpg",
-        specs: { speed: "Mach 0.8-0.95", armament: "450 kg BROACH", range: "550 km" },
+        specs: { speed: "Mach 0.8-0.95", armament: "450 kg BROACH", maximumRange: "550 km" },
         inService: 2002,
         users: ["United Kingdom", "France", "Italy", "Greece", "Saudi Arabia", "UAE", "Egypt", "India", "Qatar", "Ukraine"],
         status: "Active",
@@ -988,7 +1235,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/RS_24.jpg",
-        specs: { speed: "Mach 20+", armament: "3-4 MIRV warheads (200 kt)", range: "11,000 km" },
+        specs: { speed: "Mach 20+", armament: "3-4 MIRV warheads (200 kt)", maximumRange: "11,000 km" },
         inService: 2010,
         users: ["Russia"],
         status: "Active",
@@ -1002,7 +1249,7 @@
         origin: "United States",
         coords: [39.8283, -98.5795],
         image: "assets/KS_1.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "600 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "600 m" },
         inService: 2023,
         users: ["United Kingdom"],
         status: "Active",
@@ -1023,7 +1270,7 @@
             "Photo: Zcdrrn / Wikimedia Commons / CC BY-SA 3.0 Unported",
             "Photo: SP Lee / Wikimedia Commons / CC BY-SA 4.0 International"
         ],
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "600 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "600 m" },
         inService: 2003,
         users: ["Taiwan", "Bosnia and Herzegovina", "Jordan", "Kuwait", "UAE", "India", "Indonesia", "Haiti", "Gambia"],
         status: "Active",
@@ -1036,7 +1283,7 @@
         origin: "Argentina",
         coords: [-38.4161, -63.6167],
         image: "assets/Fara83.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "600 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "600 m" },
         inService: 1984,
         users: ["Argentina"],
         status: "Active - Limited Use",
@@ -1057,7 +1304,7 @@
             "Photo: Pindad / Public Domain (Indonesia)",
             "Photo: Cpl. Danny Gonzalez / U.S. Marine Corps / Public Domain"
         ],
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "450 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "450 m" },
         inService: 1991,
         users: ["Indonesia", "Cambodia", "Laos", "Mali"],
         status: "Active",
@@ -1077,7 +1324,7 @@
             "Photo: Mass Communication Specialist 3rd Class Dylan Lavin / U.S. Navy / Public Domain",
             "Photo: KarmaKangaroo / Wikimedia Commons / CC0 1.0 Universal Public Domain"
         ],
-        specs: { speed: "N/A", armament: "5.56×45mm NATO", range: "600 m" },
+        specs: { speed: "N/A", armament: "5.56×45mm NATO", effectiveRange: "600 m" },
         inService: 2016,
         users: ["Australia"],
         status: "Active",
@@ -1097,7 +1344,7 @@
             "Photo: Crescent moon / Japanese Wikipedia / CC BY 3.0 Unported",
             "Photo: 36th Infantry Regiment, 3rd Division, JGSDF / CC BY 4.0 International"
         ],
-        specs: { speed: "N/A", armament: "5.56×45mm NATO", range: "500 m" },
+        specs: { speed: "N/A", armament: "5.56×45mm NATO", effectiveRange: "500 m" },
         inService: 1989,
         users: ["Japan"],
         status: "Active",
@@ -1110,7 +1357,7 @@
         origin: "Japan",
         coords: [36.2048, 138.2529],
         image: "assets/Type20.jpg",
-        specs: { speed: "N/A", armament: "5.56×45mm NATO", range: "500 m" },
+        specs: { speed: "N/A", armament: "5.56×45mm NATO", effectiveRange: "500 m" },
         inService: 2020,
         users: ["Japan"],
         status: "Active",
@@ -1126,7 +1373,7 @@
         origin: "United States",
         coords: [39.8283, -98.5795],
         image: "assets/M27.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "800 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "800 m" },
         inService: 2010,
         users: ["United States"],
         status: "Active",
@@ -1142,7 +1389,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/s400_1765118527696.jpg",
-        specs: { speed: "Static", armament: "40N6 Missiles", range: "400 km" },
+        specs: { speed: "Static", armament: "40N6 Missiles", engagementRange: "400 km" },
         inService: 2007,
         users: ["Russia", "China", "Turkey", "India", "Belarus"],
         status: "Active",
@@ -1162,7 +1409,7 @@
             "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 3.0 Germany",
             "Photo: Doomych / Wikimedia Commons / Public Domain"
         ],
-        specs: { speed: "65 km/h", armament: "2x 30mm 2A38M, 8x 9M311-M1 SAM", range: "10 km" },
+        specs: { speed: "65 km/h", armament: "2x 30mm 2A38M, 8x 9M311-M1 SAM", engagementRange: "10 km" },
         inService: 2003,
         users: ["Russia", "India", "Ukraine", "Syria", "Belarus", "Morocco"],
         status: "Active",
@@ -1175,7 +1422,7 @@
         origin: "United States",
         coords: [32.7767, -96.7970],
         image: "assets/Patriot.jpg",
-        specs: { speed: "Static", armament: "MIM-104F", range: "70 km" },
+        specs: { speed: "Static", armament: "MIM-104F", engagementRange: "70 km" },
         inService: 1984,
         users: ["United States", "Germany", "Japan", "Saudi Arabia", "Israel"],
         status: "Active",
@@ -1188,7 +1435,7 @@
         origin: "Israel",
         coords: [32.0853, 34.7818],
         image: "assets/IronDome.jpg",
-        specs: { speed: "Static", armament: "Tamir interceptors", range: "70 km" },
+        specs: { speed: "Static", armament: "Tamir interceptors", engagementRange: "70 km" },
         inService: 2011,
         users: ["Israel", "United States"],
         status: "Active",
@@ -1201,7 +1448,7 @@
         origin: "Iran",
         coords: [35.6892, 51.3890],
         image: "assets/Bavar_373.jpg",
-        specs: { speed: "Static", armament: "Sayyad-4 missiles", range: "300 km" },
+        specs: { speed: "Static", armament: "Sayyad-4 missiles", engagementRange: "300 km" },
         inService: 2019,
         users: ["Iran"],
         status: "Active",
@@ -1214,7 +1461,7 @@
         origin: "China",
         coords: [39.9042, 116.4074],
         image: "assets/HQ_9.jpg",
-        specs: { speed: "Static", armament: "HQ-9 missiles", range: "200 km" },
+        specs: { speed: "Static", armament: "HQ-9 missiles", engagementRange: "200 km" },
         inService: 1997,
         users: ["China", "Pakistan"],
         status: "Active",
@@ -1227,7 +1474,7 @@
         origin: "Russia",
         coords: [54.1931, 37.6172],
         image: "assets/Pantsir_S1.jpg",
-        specs: { speed: "90 km/h", armament: "12x Missiles, 2x 30mm Guns", range: "20 km" },
+        specs: { speed: "90 km/h", armament: "12x Missiles, 2x 30mm Guns", engagementRange: "20 km" },
         inService: 2012,
         users: ["Russia", "UAE", "Syria", "Iraq", "Algeria"],
         status: "Active",
@@ -1241,7 +1488,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/SA_13.jpg",
-        specs: { speed: "61.5 km/h", armament: "4x SAMs ready", range: "5 km" },
+        specs: { speed: "61.5 km/h", armament: "4x SAMs ready", engagementRange: "5 km" },
         inService: 1979,
         users: ["Russia", "Ukraine", "Afghanistan", "Angola", "Vietnam", "India", "Cuba", "Serbia"],
         status: "Active",
@@ -1255,7 +1502,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/TOR_M1_SA_15.jpg",
-        specs: { speed: "65 km/h", armament: "8x SAMs ready", range: "15 km" },
+        specs: { speed: "65 km/h", armament: "8x SAMs ready", engagementRange: "15 km" },
         inService: 1991,
         users: ["Russia", "Armenia", "Azerbaijan", "Belarus", "China", "Cyprus", "Egypt", "Greece", "Iran", "Peru", "Ukraine", "Venezuela", "Yemen", "Libya", "Myanmar"],
         status: "Active",
@@ -1269,7 +1516,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/Buk_SA_17.jpg",
-        specs: { speed: "65 km/h", armament: "4x SAMs ready", range: "45 km" },
+        specs: { speed: "65 km/h", armament: "4x SAMs ready", engagementRange: "45 km" },
         inService: 1979,
         users: ["Russia", "Kazakhstan", "Venezuela", "Belarus", "Finland", "Syria", "Ukraine", "Serbia", "Egypt", "Georgia", "India", "North Korea", "Azerbaijan", "Vietnam", "Armenia"],
         status: "Active",
@@ -1285,7 +1532,7 @@
         origin: "France",
         coords: [48.8566, 2.3522],
         image: "assets/caesar_1765118550941.jpg",
-        specs: { speed: "100 km/h", armament: "155mm L/52", range: "42 km" },
+        specs: { speed: "100 km/h", armament: "155mm L/52", maximumRange: "42 km" },
         inService: 2008,
         users: ["France", "Denmark", "Czech Republic", "Ukraine", "Indonesia"],
         status: "Active",
@@ -1299,7 +1546,7 @@
         origin: "United States",
         coords: [38.2527, -85.7585],
         image: "assets/M270_MLRS.jpg",
-        specs: { speed: "64 km/h", armament: "227mm rockets", range: "300 km" },
+        specs: { speed: "64 km/h", armament: "227mm rockets", maximumRange: "300 km" },
         inService: 1983,
         users: ["United States", "UK", "Germany", "France", "Japan"],
         status: "Active",
@@ -1312,7 +1559,7 @@
         origin: "United States",
         coords: [35.4676, -97.5164],
         image: "assets/HIMARS.jpg",
-        specs: { speed: "94 km/h", armament: "GMLRS rockets", range: "92 km" },
+        specs: { speed: "94 km/h", armament: "GMLRS rockets", maximumRange: "92 km" },
         inService: 2005,
         users: ["United States", "Ukraine", "Poland", "Romania", "Jordan", "Singapore", "UAE", "Australia", "Finland", "Estonia", "Latvia", "Lithuania"],
         status: "Active",
@@ -1326,7 +1573,7 @@
         origin: "Russia",
         coords: [56.3269, 44.0059],
         image: "assets/2S19_MSTA.jpg",
-        specs: { speed: "60 km/h", armament: "152mm 2A64", range: "29 km" },
+        specs: { speed: "60 km/h", armament: "152mm 2A64", maximumRange: "29 km" },
         inService: 1989,
         users: ["Russia", "Ukraine", "Belarus"],
         status: "Active",
@@ -1339,7 +1586,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/Tornado_S.png",
-        specs: { speed: "90 km/h", armament: "300mm rockets", range: "90 km" },
+        specs: { speed: "90 km/h", armament: "300mm rockets", maximumRange: "90 km" },
         inService: 2011,
         users: ["Russia"],
         status: "Active",
@@ -1353,7 +1600,7 @@
         origin: "Russia",
         coords: [55.5587, 37.0514],
         image: "assets/TOS_1a.jpg",
-        specs: { speed: "60 km/h", armament: "220mm Thermobaric", range: "6 km" },
+        specs: { speed: "60 km/h", armament: "220mm Thermobaric", maximumRange: "6 km" },
         inService: 2001,
         users: ["Russia", "Azerbaijan", "Iraq", "Kazakhstan", "Saudi Arabia", "Syria"],
         status: "Active",
@@ -1367,7 +1614,7 @@
         origin: "South Korea",
         coords: [37.5665, 126.9780],
         image: "assets/K9_Thunder.jpg",
-        specs: { speed: "67 km/h", armament: "155mm L/52", range: "40 km" },
+        specs: { speed: "67 km/h", armament: "155mm L/52", maximumRange: "40 km" },
         inService: 1999,
         users: ["South Korea", "Turkey", "Poland", "India", "Norway"],
         status: "Active",
@@ -1380,7 +1627,7 @@
         origin: "North Korea",
         coords: [39.0392, 125.7625],
         image: "assets/M1989.jpg",
-        specs: { speed: "40 km/h", armament: "170mm M-1978", range: "60 km" },
+        specs: { speed: "40 km/h", armament: "170mm M-1978", maximumRange: "60 km" },
         inService: 1978,
         users: ["North Korea", "Iran"],
         status: "Active",
@@ -1393,7 +1640,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/SS_21.jpg",
-        specs: { speed: "Mach 5.3", armament: "Various warheads", range: "120 km" },
+        specs: { speed: "Mach 5.3", armament: "Various warheads", maximumRange: "120 km" },
         inService: 1975,
         users: ["Russia", "Ukraine", "Belarus", "Kazakhstan", "Armenia", "Yemen"],
         status: "Active",
@@ -1414,7 +1661,7 @@
             "Photo: Richard Watt/MOD / Wikimedia Commons / OGL v1.0",
             "Photo: Marinha do Brasil / Flickr / CC BY-SA 2.0"
         ],
-        specs: { speed: "N/A (Towed)", armament: "105mm L118", range: "17.2 km" },
+        specs: { speed: "N/A (Towed)", armament: "105mm L118", maximumRange: "17.2 km" },
         inService: 1976,
         users: ["United Kingdom", "United States", "Brazil", "Spain", "UAE", "Australia", "New Zealand", "Ireland", "Portugal", "Thailand", "Ukraine", "20+ countries"],
         status: "Active",
@@ -1434,7 +1681,7 @@
             "Photo: Sgt Jose F. Guillen / U.S. Marine Corps / Public Domain",
             "Photo: mark6mauno / Flickr / CC BY 2.0"
         ],
-        specs: { speed: "N/A (Towed)", armament: "155mm L/39", range: "30 km" },
+        specs: { speed: "N/A (Towed)", armament: "155mm L/39", maximumRange: "30 km" },
         inService: 2005,
         users: ["United States", "Australia", "Canada", "India", "Saudi Arabia", "Ukraine", "Colombia"],
         status: "Active",
@@ -1454,7 +1701,7 @@
             "Photo: D'oh Boy (Mark Holloway) / Flickr / CC BY 2.0",
             "Photo: Richard Allen / Flickr / CC BY 2.0"
         ],
-        specs: { speed: "N/A (Towed)", armament: "122mm D-30", range: "15.3 km" },
+        specs: { speed: "N/A (Towed)", armament: "122mm D-30", maximumRange: "15.3 km" },
         inService: 1960,
         users: ["Russia", "China", "Iraq", "Iran", "Syria", "North Korea", "Egypt", "India", "60+ countries"],
         status: "Active",
@@ -1467,7 +1714,7 @@
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/PCL_09.png",
-        specs: { speed: "85 km/h", armament: "122mm PL-96", range: "18 km" },
+        specs: { speed: "85 km/h", armament: "122mm PL-96", maximumRange: "18 km" },
         inService: 2009,
         users: ["China"],
         status: "Active",
@@ -1488,7 +1735,7 @@
             "Photo: Tyg728 / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: Ministry of Defence of the Russian Federation / Mil.ru / CC BY 4.0"
         ],
-        specs: { speed: "56 km/h", armament: "155mm L/52", range: "50 km" },
+        specs: { speed: "56 km/h", armament: "155mm L/52", maximumRange: "50 km" },
         inService: 2008,
         users: ["China"],
         status: "Active",
@@ -1501,7 +1748,7 @@
         origin: "Iran",
         coords: [32.4279, 53.6880],
         image: "assets/Raad_2.jpg",
-        specs: { speed: "N/A", armament: "155mm HM44", range: "30 km" },
+        specs: { speed: "N/A", armament: "155mm HM44", maximumRange: "30 km" },
         inService: 2013,
         users: ["Iran"],
         status: "Active",
@@ -1522,7 +1769,7 @@
             "Photo: Stridsvagn122 / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: Staff Sgt. Bryan Myhr / U.S. Air National Guard / Public Domain"
         ],
-        specs: { speed: "70 km/h", armament: "155mm L/52", range: "60 km" },
+        specs: { speed: "70 km/h", armament: "155mm L/52", maximumRange: "60 km" },
         inService: 2016,
         users: ["Sweden", "Norway", "Ukraine"],
         status: "Active",
@@ -1537,7 +1784,7 @@
         origin: "Turkey",
         coords: [38.9637, 35.2433],
         image: "assets/bayraktar_1765118506987.jpg",
-        specs: { speed: "220 km/h", armament: "MAM-L, MAM-C", range: "150 km" },
+        specs: { speed: "220 km/h", armament: "MAM-L, MAM-C", operationalRange: "150 km" },
         inService: 2014,
         users: ["Turkey", "Ukraine", "Azerbaijan", "Libya", "Poland"],
         status: "Active",
@@ -1550,7 +1797,7 @@
         origin: "United States",
         coords: [31.3278, -110.3607],
         image: "assets/MQ_1C.jpg",
-        specs: { speed: "310 km/h", armament: "AGM-114 Hellfire", range: "400 km" },
+        specs: { speed: "310 km/h", armament: "AGM-114 Hellfire", operationalRange: "400 km" },
         inService: 2009,
         users: ["United States"],
         status: "Active",
@@ -1564,7 +1811,7 @@
         origin: "United States",
         coords: [36.5860, -121.8556],
         image: "assets/MQ_9_Reaper.jpg",
-        specs: { speed: "482 km/h", armament: "Hellfire, GBU-12", range: "1,850 km" },
+        specs: { speed: "482 km/h", armament: "Hellfire, GBU-12", operationalRange: "1,850 km" },
         inService: 2007,
         users: ["United States", "UK", "France", "Italy"],
         status: "Active",
@@ -1577,7 +1824,7 @@
         origin: "Iran",
         coords: [35.6892, 51.3890],
         image: "assets/Shahed_136.png",
-        specs: { speed: "185 km/h", armament: "40kg warhead", range: "2,000 km" },
+        specs: { speed: "185 km/h", armament: "40kg warhead", operationalRange: "2,000 km" },
         inService: 2021,
         users: ["Iran", "Russia"],
         status: "Active",
@@ -1590,7 +1837,7 @@
         origin: "China",
         coords: [39.9042, 116.4074],
         image: "assets/Wing_Loong2.jpg",
-        specs: { speed: "370 km/h", armament: "BA-7, YZ-212", range: "4,000 km" },
+        specs: { speed: "370 km/h", armament: "BA-7, YZ-212", operationalRange: "4,000 km" },
         inService: 2017,
         users: ["China", "UAE", "Saudi Arabia", "Pakistan"],
         status: "Active",
@@ -1603,7 +1850,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/Eleron_3SW.jpg",
-        specs: { speed: "130 km/h", armament: "Unarmed (EO/IR)", range: "25 km" },
+        specs: { speed: "130 km/h", armament: "Unarmed (EO/IR)", operationalRange: "25 km" },
         inService: 2012,
         users: ["Russia"],
         status: "Active",
@@ -1617,7 +1864,7 @@
         origin: "Russia",
         coords: [59.9343, 30.3351],
         image: "assets/Orlan_10.jpg",
-        specs: { speed: "150 km/h", armament: "Unarmed (ISR)", range: "600 km" },
+        specs: { speed: "150 km/h", armament: "Unarmed (ISR)", operationalRange: "600 km" },
         inService: 2010,
         users: ["Russia", "Kazakhstan", "Myanmar", "Syria", "Uzbekistan", "Kyrgyzstan"],
         status: "Active",
@@ -1631,7 +1878,7 @@
         origin: "Australia",
         coords: [-25.2744, 133.7751],
         image: "assets/Ghost_Bat.jpg",
-        specs: { speed: "Mach 0.9", armament: "Modular Bay", range: "3700 km" },
+        specs: { speed: "Mach 0.9", armament: "Modular Bay", operationalRange: "3700 km" },
         inService: 2021,
         users: ["Australia"],
         status: "Active",
@@ -1647,7 +1894,7 @@
         origin: "United States",
         coords: [41.4925, -72.8231],
         image: "assets/m4a1_carbine.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "500 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "500 m" },
         inService: 1994,
         users: ["United States", "NATO allies", "80+ countries worldwide"],
         status: "Active",
@@ -1667,7 +1914,7 @@
             "Photo: Vitaly Kuzmin / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: Pkm-betta / Wikimedia Commons / CC0 1.0"
         ],
-        specs: { speed: "N/A", armament: "5.45x39mm", range: "500 m" },
+        specs: { speed: "N/A", armament: "5.45x39mm", effectiveRange: "500 m" },
         inService: 1991,
         users: ["Russia", "Belarus", "Kazakhstan", "Former Soviet states"],
         status: "Active"
@@ -1679,7 +1926,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/AK_203.png",
-        specs: { speed: "N/A", armament: "7.62x39mm", range: "800 m" },
+        specs: { speed: "N/A", armament: "7.62x39mm", effectiveRange: "800 m" },
         inService: 2019,
         users: ["Russia", "India"],
         status: "Active",
@@ -1693,7 +1940,7 @@
         origin: "Russia",
         coords: [56.8431, 60.6454],
         image: "assets/AK47.jpg",
-        specs: { speed: "N/A", armament: "7.62x39mm", range: "350 m" },
+        specs: { speed: "N/A", armament: "7.62x39mm", effectiveRange: "350 m" },
         inService: 1949,
         users: ["Russia", "100+ countries worldwide"],
         status: "Active",
@@ -1707,7 +1954,7 @@
         origin: "Austria",
         coords: [47.5162, 14.5501],
         image: "assets/Steyr_AUG.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "300 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "300 m" },
         inService: 1978,
         users: ["Austria", "Australia", "New Zealand", "Ireland", "Malaysia", "Saudi Arabia", "40+ countries"],
         status: "Active",
@@ -1721,7 +1968,7 @@
         origin: "North Korea",
         coords: [39.0392, 125.7625],
         image: "assets/Type_88.jpg",
-        specs: { speed: "N/A", armament: "5.45x39mm", range: "440 m" },
+        specs: { speed: "N/A", armament: "5.45x39mm", effectiveRange: "440 m" },
         inService: 1988,
         users: ["North Korea"],
         status: "Active",
@@ -1734,7 +1981,7 @@
         origin: "Iran",
         coords: [32.4279, 53.6880],
         image: "assets/KH-2002.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "450 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "450 m" },
         inService: 2004,
         users: ["Iran"],
         status: "Active",
@@ -1747,7 +1994,7 @@
         origin: "Belgium",
         coords: [50.6698, 5.6179],
         image: "assets/FN_SCAR.png",
-        specs: { speed: "N/A", armament: "5.56x45mm / 7.62x51mm", range: "600 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm / 7.62x51mm", effectiveRange: "600 m" },
         inService: 2004,
         users: ["Belgium", "United States", "France", "Germany", "Japan", "South Korea"],
         status: "Active",
@@ -1761,7 +2008,7 @@
         origin: "France",
         coords: [45.4397, 4.3872],
         image: "assets/FAMAS.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm", range: "300 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm", effectiveRange: "300 m" },
         inService: 1978,
         users: ["France", "UAE", "Senegal", "Indonesia"],
         status: "Active - Being Replaced",
@@ -1775,7 +2022,7 @@
         origin: "Israel",
         coords: [32.0853, 34.7818],
         image: "assets/IWI_Tavor.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm", range: "500 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm", effectiveRange: "500 m" },
         inService: 2001,
         users: ["Israel", "India", "Thailand", "Vietnam", "Ukraine"],
         status: "Active",
@@ -1789,7 +2036,7 @@
         origin: "United Kingdom",
         coords: [51.5074, -0.1278],
         image: "assets/SA80.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm", range: "400 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm", effectiveRange: "400 m" },
         inService: 1987,
         users: ["United Kingdom", "Jamaica", "Nepal"],
         status: "Active",
@@ -1803,7 +2050,7 @@
         origin: "Germany",
         coords: [51.2993, 8.4168],
         image: "assets/G36.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm", range: "800 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm", effectiveRange: "800 m" },
         inService: 1997,
         users: ["Germany", "Spain", "Saudi Arabia", "United Kingdom"],
         status: "Active",
@@ -1823,7 +2070,7 @@
             "Photo: Dybdal / Wikimedia Commons / CC BY-SA 2.0",
             "Photo: Armée Française - Opérations militaires / defense.gouv.fr / Etalab-2.0"
         ],
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "600 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "600 m" },
         inService: 2005,
         users: ["United States", "France", "Norway", "Germany", "Australia", "Netherlands", "20+ countries"],
         status: "Active",
@@ -1843,7 +2090,7 @@
             "Photo: Shdowcrwler / Wikimedia Commons / CC BY-SA 3.0",
             "Photo: Brian Armstrong / Wikimedia Commons / CC BY-SA 3.0"
         ],
-        specs: { speed: "N/A", armament: "5.56x45mm", range: "800 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm", effectiveRange: "800 m" },
         inService: 2008,
         users: ["Mexico"],
         status: "Active",
@@ -1856,7 +2103,7 @@
         origin: "South Africa",
         coords: [-25.7479, 28.2293],
         image: "assets/Vektor_LM5.jpg",
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "500 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "500 m" },
         inService: 1980,
         users: ["South Africa"],
         status: "Active",
@@ -1872,7 +2119,7 @@
         origin: "United States",
         coords: [39.8283, -98.5795],
         image: "assets/HUMVEE.jpg",
-        specs: { speed: "105 km/h", armament: "Various MGs/Launchers", range: "400 km" },
+        specs: { speed: "105 km/h", armament: "Various MGs/Launchers", operationalRange: "400 km" },
         inService: 1985,
         users: ["United States", "Afghanistan", "Iraq", "Jordan", "Kuwait", "Kenya", "Honduras", "50+ countries"],
         status: "Active",
@@ -1886,7 +2133,7 @@
         origin: "United Kingdom",
         coords: [51.5074, -0.1278],
         image: "assets/Foxhound.jpg",
-        specs: { speed: "110 km/h", armament: "Optional 7.62mm MGs", range: "600 km" },
+        specs: { speed: "110 km/h", armament: "Optional 7.62mm MGs", operationalRange: "600 km" },
         inService: 2012,
         users: ["United Kingdom"],
         status: "Active",
@@ -1900,7 +2147,7 @@
         origin: "United Kingdom",
         coords: [51.5074, -0.1278],
         image: "assets/Jackal.jpg",
-        specs: { speed: "130 km/h", armament: "HMG/GMG/GPMG", range: "800 km" },
+        specs: { speed: "130 km/h", armament: "HMG/GMG/GPMG", operationalRange: "800 km" },
         inService: 2007,
         users: ["United Kingdom"],
         status: "Active",
@@ -1914,7 +2161,7 @@
         origin: "United States",
         coords: [39.8283, -98.5795],
         image: "assets/Oshkosh.jpg",
-        specs: { speed: "105 km/h", armament: "M2/M240/Mk19", range: "510 km" },
+        specs: { speed: "105 km/h", armament: "M2/M240/Mk19", operationalRange: "510 km" },
         inService: 2009,
         users: ["United States", "UAE", "Saudi Arabia", "Croatia", "Ukraine", "Portugal", "Uruguay"],
         status: "Active",
@@ -1928,7 +2175,7 @@
         origin: "Australia",
         coords: [-36.7570, 144.2786],
         image: "assets/Bushmaster.jpg",
-        specs: { speed: "100 km/h", armament: "7.62mm/12.7mm RWS", range: "800 km" },
+        specs: { speed: "100 km/h", armament: "7.62mm/12.7mm RWS", operationalRange: "800 km" },
         inService: 1997,
         users: ["Australia", "Netherlands", "United Kingdom", "Japan", "Ukraine", "Indonesia", "Jamaica", "Fiji", "New Zealand"],
         status: "Active",
@@ -1941,13 +2188,19 @@
         type: "Amphibious Combat Vehicle",
         origin: "United States",
         coords: [39.8283, -98.5795],
-        image: "assets/BAE_ACV.jpg",
-        specs: { speed: "105 km/h", armament: "30mm Cannon", range: "520 km" },
+        images: [
+            "assets/BAE_ACV.jpg",
+            "assets/BAE_ACV_Bravo.jpg"
+        ],
+        specs: { speed: "105 km/h", armament: "30mm Cannon", operationalRange: "520 km" },
         inService: 2020,
         users: ["United States"],
         status: "Active",
         fact: "The BAE ACV-30 replaces the aging AAV7 in U.S. Marine Corps service. Capable of swimming at 6 knots and carrying 13 Marines, it features an unmanned turret with 30mm Bushmaster cannon and can reach 65 mph on land while maintaining amphibious assault capabilities.",
-        imageCredit: "Photo: Kaitlin Kelly / U.S. Marine Corps / Public Domain"
+        imageCredits: [
+            "Photo: Kaitlin Kelly / U.S. Marine Corps / Public Domain",
+            "Photo: Amphibious Combat Vehicle 180619-M-Z7999-203.jpg / Wikimedia Commons / Public Domain"
+        ]
     },
     // Chinese APCs
 
@@ -1958,7 +2211,7 @@
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/ZBD_04.jpg",
-        specs: { speed: "75 km/h", armament: "30mm cannon", range: "600 km" },
+        specs: { speed: "75 km/h", armament: "30mm cannon", operationalRange: "600 km" },
         inService: 2004,
         users: ["China"],
         status: "Active",
@@ -1972,7 +2225,7 @@
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/ZBL_08.jpg",
-        specs: { speed: "100 km/h", armament: "30mm cannon", range: "800 km" },
+        specs: { speed: "100 km/h", armament: "30mm cannon", operationalRange: "800 km" },
         inService: 2009,
         users: ["China", "Venezuela"],
         status: "Active",
@@ -1986,7 +2239,7 @@
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/ZSD_89.jpg",
-        specs: { speed: "65 km/h", armament: "73mm gun", range: "500 km" },
+        specs: { speed: "65 km/h", armament: "73mm gun", operationalRange: "500 km" },
         inService: 1999,
         users: ["China", "Ethiopia", "Nigeria", "Sri Lanka", "Zimbabwe"],
         status: "Active",
@@ -2001,7 +2254,7 @@
         origin: "United States",
         coords: [39.8283, -98.5795],
         image: "assets/Bradley_Fighting_Vehicle.jpg",
-        specs: { speed: "66 km/h", armament: "25mm Bushmaster, TOW", range: "400 km" },
+        specs: { speed: "66 km/h", armament: "25mm Bushmaster, TOW", operationalRange: "400 km" },
         inService: 1981,
         users: ["United States", "Saudi Arabia", "Croatia"],
         status: "Active",
@@ -2015,7 +2268,7 @@
         origin: "United States",
         coords: [47.1158, -122.5695],
         image: "assets/Stryker.jpg",
-        specs: { speed: "100 km/h", armament: "M2 .50 Cal OR MK19", range: "500 km" },
+        specs: { speed: "100 km/h", armament: "M2 .50 Cal OR MK19", operationalRange: "500 km" },
         inService: 2002,
         users: ["United States", "Thailand", "North Macedonia", "Ukraine"],
         status: "Active",
@@ -2029,7 +2282,7 @@
         origin: "Germany",
         coords: [51.1657, 10.4515],
         image: "assets/Boxer.jpg",
-        specs: { speed: "105 km/h", armament: "30mm cannon", range: "1000 km" },
+        specs: { speed: "105 km/h", armament: "30mm cannon", operationalRange: "1000 km" },
         inService: 2009,
         users: ["Germany", "Netherlands", "Lithuania", "Australia", "United Kingdom", "Qatar", "Slovenia"],
         status: "Active",
@@ -2043,7 +2296,7 @@
         origin: "Germany",
         coords: [51.1657, 10.4515],
         image: "assets/Puma.jpg",
-        specs: { speed: "70 km/h", armament: "30mm MK30-2", range: "600 km" },
+        specs: { speed: "70 km/h", armament: "30mm MK30-2", operationalRange: "600 km" },
         inService: 2015,
         users: ["Germany"],
         status: "Active",
@@ -2064,7 +2317,7 @@
             "Photo: BAE Systems / Public Domain",
             "Photo: Andrii Nikolaienko / Pexels / CC0 1.0"
         ],
-        specs: { speed: "70 km/h", armament: "30mm/35mm/40mm cannon", range: "300 km" },
+        specs: { speed: "70 km/h", armament: "30mm/35mm/40mm cannon", operationalRange: "300 km" },
         inService: 1993,
         users: ["Sweden", "Norway", "Finland", "Denmark", "Netherlands", "Estonia", "Switzerland", "Czech Republic", "Slovakia", "Ukraine"],
         status: "Active",
@@ -2084,7 +2337,7 @@
             "Photo: Richard Watt / MOD / OGL v1.0",
             "Photo: Airwolfhound / Flickr / CC BY-SA 2.0"
         ],
-        specs: { speed: "70 km/h", armament: "40mm CTAS40", range: "500 km" },
+        specs: { speed: "70 km/h", armament: "40mm CTAS40", operationalRange: "500 km" },
         inService: 2025,
         users: ["United Kingdom"],
         status: "Active",
@@ -2097,7 +2350,7 @@
         origin: "Israel",
         coords: [31.0461, 34.8516],
         image: "assets/NAMER.jpg",
-        specs: { speed: "60 km/h", armament: "12.7mm MG", range: "500 km" },
+        specs: { speed: "60 km/h", armament: "12.7mm MG", operationalRange: "500 km" },
         inService: 2008,
         users: ["Israel"],
         status: "Active",
@@ -2113,7 +2366,7 @@
         origin: "Russia",
         coords: [61.5240, 105.3188],
         image: "assets/BTR_82a.jpg",
-        specs: { speed: "80 km/h", armament: "30mm 2A72", range: "600 km" },
+        specs: { speed: "80 km/h", armament: "30mm 2A72", operationalRange: "600 km" },
         inService: 2013,
         users: ["Russia", "Kazakhstan", "Belarus"],
         status: "Active",
@@ -2127,7 +2380,7 @@
         origin: "Russia",
         coords: [61.5240, 105.3188],
         image: "assets/BMP_2.jpg",
-        specs: { speed: "65 km/h", armament: "30mm 2A42", range: "600 km" },
+        specs: { speed: "65 km/h", armament: "30mm 2A42", operationalRange: "600 km" },
         inService: 1980,
         users: ["Russia", "India", "Finland", "Iran"],
         status: "Active",
@@ -2141,7 +2394,7 @@
         origin: "Russia",
         coords: [61.5240, 105.3188],
         image: "assets/BMP_3.jpg",
-        specs: { speed: "70 km/h", armament: "100mm gun", range: "600 km" },
+        specs: { speed: "70 km/h", armament: "100mm gun", operationalRange: "600 km" },
         inService: 1987,
         users: ["Russia", "UAE", "Kuwait", "South Korea"],
         status: "Active",
@@ -2155,7 +2408,7 @@
         origin: "Russia",
         coords: [61.5240, 105.3188],
         image: "assets/BTR_90.jpg",
-        specs: { speed: "100 km/h", armament: "30mm 2A42", range: "800 km" },
+        specs: { speed: "100 km/h", armament: "30mm 2A42", operationalRange: "800 km" },
         inService: 2004,
         users: ["Russia"],
         status: "Limited Service",
@@ -2171,7 +2424,7 @@
         origin: "Iran",
         coords: [32.4279, 53.6880],
         image: "assets/Rakhsh.jpg",
-        specs: { speed: "105 km/h", armament: "12.7mm MG", range: "700 km" },
+        specs: { speed: "105 km/h", armament: "12.7mm MG", operationalRange: "700 km" },
         inService: 2011,
         users: ["Iran"],
         status: "Active",
@@ -2185,7 +2438,7 @@
         origin: "Iran",
         coords: [32.4279, 53.6880],
         image: "assets/Boragh.jpg",
-        specs: { speed: "65 km/h", armament: "12.7mm MG", range: "500 km" },
+        specs: { speed: "65 km/h", armament: "12.7mm MG", operationalRange: "500 km" },
         inService: 2000,
         users: ["Iran"],
         status: "Active",
@@ -2203,7 +2456,7 @@
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/Type_05.jpg",
-        specs: { speed: "54 km/h", armament: "30mm cannon", range: "500 km" },
+        specs: { speed: "54 km/h", armament: "30mm cannon", operationalRange: "500 km" },
         inService: 2005,
         users: ["China"],
         status: "Active",
@@ -2220,7 +2473,7 @@
         origin: "Russia",
         coords: [61.5240, 105.3188],
         image: "assets/MTU_72.jpg",
-        specs: { speed: "60 km/h", armament: "None", range: "450 km" },
+        specs: { speed: "60 km/h", armament: "None", operationalRange: "450 km" },
         inService: 1974,
         users: ["Russia", "Ukraine", "Syria", "Poland"],
         status: "Active",
@@ -2234,13 +2487,14 @@
         origin: "Russia",
         coords: [61.5240, 105.3188],
         image: "assets/TMM_6.jpg",
-        specs: { speed: "60 km/h", armament: "None", range: "1000 km" },
+        specs: { speed: "60 km/h", armament: "None", operationalRange: "1000 km" },
         inService: 2000,
         users: ["Russia", "Azerbaijan", "Syria", "Vietnam"],
         status: "Active",
         fact: "The TMM-6 is a versatile truck-mounted scissor bridge system that can be transported long distances on roads and deployed to create river crossings.",
         imageCredit: "Photo: VoidWanderer / Wikimedia Commons / CC BY-SA 4.0"
     },
+
     {
         id: 109,
         name: "BMR-3M",
@@ -2248,7 +2502,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/BMR_3M.jpg",
-        specs: { speed: "50 km/h", armament: "12.7mm MG", range: "500 km" },
+        specs: { speed: "50 km/h", armament: "12.7mm MG", operationalRange: "500 km" },
         inService: 2010,
         users: ["Russia"],
         status: "Active",
@@ -2262,7 +2516,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/GMZ_3.jpg",
-        specs: { speed: "60 km/h", armament: "14.5mm MG", range: "500 km" },
+        specs: { speed: "60 km/h", armament: "14.5mm MG", operationalRange: "500 km" },
         inService: 1984,
         users: ["Russia", "Armenia", "Azerbaijan", "Belarus", "Kazakhstan", "Kyrgyzstan", "Moldova", "Tajikistan", "Turkmenistan", "Ukraine", "Uzbekistan"],
         status: "Active",
@@ -2278,7 +2532,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/Krasukha_2.jpg",
-        specs: { speed: "80 km/h", armament: "None (Jammer)", range: "250 km" },
+        specs: { speed: "80 km/h", armament: "None (Jammer)", operationalRange: "250 km" },
         inService: 2014,
         users: ["Russia", "Algeria", "Iran"],
         status: "Active",
@@ -2313,7 +2567,7 @@
             "Photo: Land68 / Wikimedia Commons / CC0 1.0",
             "Photo: Land08 / Wikimedia Commons / CC0 1.0"
         ],
-        specs: { speed: "N/A", armament: "5.56x45mm NATO / 7.62x39mm", range: "500 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO / 7.62x39mm", effectiveRange: "500 m" },
         inService: 2016,
         users: ["Czech Republic", "Hungary", "France", "Ukraine", "Egypt", "Indonesia", "Slovakia"],
         status: "Active",
@@ -2333,7 +2587,7 @@
             "Photo: Republic of Korea Armed Forces / Wikimedia Commons / CC BY-SA 2.0",
             "Photo: Sholgunlee / Wikimedia Commons / CC BY 3.0"
         ],
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "500 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "500 m" },
         inService: 1985,
         users: ["South Korea", "Indonesia", "Iraq", "Cambodia", "Peru", "Philippines", "Nigeria"],
         status: "Active",
@@ -2346,7 +2600,7 @@
         origin: "Finland",
         coords: [60.9929, 24.4646],
         image: "assets/Sako_TRG_M10.jpg",
-        specs: { speed: "N/A", armament: ".338 Lapua Magnum / .300 Win Mag / 7.62x51mm", range: "1500 m" },
+        specs: { speed: "N/A", armament: ".338 Lapua Magnum / .300 Win Mag / 7.62x51mm", effectiveRange: "1500 m" },
         inService: 2011,
         users: ["Finland", "Canada", "Estonia", "Poland", "Sweden"],
         status: "Active",
@@ -2360,7 +2614,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/Dragunov.jpg",
-        specs: { speed: "N/A", armament: "7.62x54mmR", range: "800 m" },
+        specs: { speed: "N/A", armament: "7.62x54mmR", effectiveRange: "800 m" },
         inService: 1963,
         users: ["Russia", "China", "India", "Iraq", "Syria", "Ukraine", "Vietnam", "50+ countries"],
         status: "Active",
@@ -2374,7 +2628,7 @@
         origin: "United States",
         coords: [33.4484, -112.0740],
         image: "assets/MCMILLAN_TAC_50.png",
-        specs: { speed: "N/A", armament: ".50 BMG", range: "1800 m" },
+        specs: { speed: "N/A", armament: ".50 BMG", effectiveRange: "1800 m" },
         inService: 2000,
         users: ["Canada", "United States", "France", "Israel", "Turkey", "Ukraine"],
         status: "Active",
@@ -2388,7 +2642,7 @@
         origin: "United Kingdom",
         coords: [52.6297, -1.1325],
         image: "assets/L115A3.jpg",
-        specs: { speed: "N/A", armament: ".338 Lapua Magnum", range: "1500 m" },
+        specs: { speed: "N/A", armament: ".338 Lapua Magnum", effectiveRange: "1500 m" },
         inService: 2008,
         users: ["United Kingdom", "Netherlands", "Germany", "Poland", "Malaysia", "New Zealand"],
         status: "Active",
@@ -2402,7 +2656,7 @@
         origin: "United States",
         coords: [33.4484, -112.0740],
         image: "assets/FGM_148_Javelin.jpg",
-        specs: { speed: "140 m/s", armament: "Tandem HEAT Warhead", range: "4000 m" },
+        specs: { speed: "140 m/s", armament: "Tandem HEAT Warhead", maximumRange: "4000 m" },
         inService: 1996,
         users: ["United States", "Ukraine", "United Kingdom", "France", "Australia", "Estonia", "Poland", "20+ countries"],
         status: "Active",
@@ -2416,15 +2670,21 @@
         origin: "United States",
         coords: [47.9065, -122.2826],
         image: "assets/EA_18G.jpg",
-        specs: { speed: "Mach 1.6", armament: "AGM-88 HARM, AIM-120", range: "2346 km" },
+        specs: { speed: "Mach 1.6", armament: "AGM-88 HARM, AIM-120", combatRadius: "2346 km" },
         inService: 2009,
         users: ["United States", "Australia"],
         status: "Active",
         fact: "The EA-18G Growler is the world's most advanced airborne electronic warfare aircraft, replacing the legendary EA-6B Prowler. Based on the F/A-18F Super Hornet, it disrupts enemy radar and communications using powerful jamming systems including the Next Generation Jammer. Operated by a crew of two, it's the only aircraft of its kind outside the U.S. to serve with Australia's RAAF.",
+        recognitionFeatures: {
+            wings: "Mid-mounted, swept wings with leading edge root extensions (LEX). Wingtip jamming pods.",
+            engine: "Twin turbofan engines. Rectangular air intakes under the wings.",
+            fuselage: "Two-seat cockpit (tandem). Enlarged dorsal spine for electronics.",
+            tail: "Twin outward-canted vertical stabilizers. All-moving horizontal stabilators."
+        },
         imageCredit: "Photo: Senior Airman John Linzmeier / U.S. Air Force / Public Domain"
     },
     {
-        id: 121,
+        id: 145,
         name: "C-5M Super Galaxy",
         type: "Strategic Heavy-Lift Aircraft",
         origin: "United States",
@@ -2437,11 +2697,17 @@
             "Photo: Kevin Clark / U.S. Air Force / Public Domain",
             "Photo: U.S. Air Force photo by Airman 1st Class Renee Nicole Finona / Public Domain"
         ],
-        specs: { speed: "Mach 0.77", armament: "None (Transport)", range: "8897 km" },
+        specs: { speed: "Mach 0.77", armament: "None (Transport)", ferryRange: "8897 km" },
         inService: 2014,
         users: ["United States"],
         status: "Active",
-        fact: "The C-5M Super Galaxy is the largest aircraft in the U.S. Air Force and one of the world's largest military transports. It can carry 129,274 kg (285,000 lbs) of cargo - including two M1 Abrams tanks or six Apache helicopters. With four upgraded GE engines producing 50,000+ lbs of thrust each, it features a unique 'kneeling' landing gear system and both front and rear cargo doors for simultaneous loading. The modernization extends its service life to at least 2045."
+        fact: "The C-5M Super Galaxy is the largest aircraft in the U.S. Air Force and one of the world's largest military transports. It can carry 129,274 kg (285,000 lbs) of cargo - including two M1 Abrams tanks or six Apache helicopters. With four upgraded GE engines producing 50,000+ lbs of thrust each, it features a unique 'kneeling' landing gear system and both front and rear cargo doors for simultaneous loading. The modernization extends its service life to at least 2045.",
+        recognitionFeatures: {
+            wings: "High-mounted, swept-back wings (25-degree sweep). Anhedral (droop) visible when on ground.",
+            engine: "Four large high-bypass turbofans mounted on pylons under the wings.",
+            fuselage: "Massive, bulbous fuselage. Cockpit sits high above the 'visor' nose cargo door.",
+            tail: "Large T-tail configuration. Horizontal stabilizer mounted at the top of the vertical fin."
+        }
     },
     {
         id: 122,
@@ -2457,11 +2723,17 @@
             "Photo: Alexxx1979 / Wikimedia Commons / CC BY-SA 3.0",
             "Photo: Michael Sender / jetphotos.net / CC BY-SA 3.0"
         ],
-        specs: { speed: "800 km/h", armament: "None (AWACS)", range: "5000 km" },
+        specs: { speed: "800 km/h", armament: "None (AWACS)", ferryRange: "5000 km" },
         inService: 1984,
         users: ["Russia", "India"],
         status: "Active",
-        fact: "The A-50 'Mainstay' features a distinctive 9-meter rotodome housing the Liana/Vega-M radar system, capable of detecting air targets up to 650 km away and tracking up to 150 targets simultaneously. Based on the Il-76 transport, it can guide 10 fighter aircraft for intercept missions. Russia's A-50 fleet has been significantly reduced during the Ukraine conflict, with multiple aircraft reportedly lost."
+        fact: "The A-50 'Mainstay' features a distinctive 9-meter rotodome housing the Liana/Vega-M radar system, capable of detecting air targets up to 650 km away and tracking up to 150 targets simultaneously. Based on the Il-76 transport, it can guide 10 fighter aircraft for intercept missions. Russia's A-50 fleet has been significantly reduced during the Ukraine conflict, with multiple aircraft reportedly lost.",
+        recognitionFeatures: {
+            wings: "High-mounted, swept-back wings with four turbofan engines mounted on pylons beneath them.",
+            engine: "4 x Soloviev D-30KP turbofans. Distinctive glass navigator station in the nose (from Il-76 base).",
+            fuselage: "Large, 9-meter diameter rotodome ('mushroom') radar mounted on struts above the rear fuselage.",
+            tail: "T-tail configuration with a gun turret at the base of the rudder (though often unarmed in A-50)."
+        }
     },
     {
         id: 123,
@@ -2470,11 +2742,17 @@
         origin: "United States",
         coords: [47.4979, -122.2188],
         image: "assets/Boeing_E3_Sentry.jpg",
-        specs: { speed: "854 km/h", armament: "None (AWACS)", range: "9250 km" },
+        specs: { speed: "854 km/h", armament: "None (AWACS)", ferryRange: "9250 km" },
         inService: 1977,
         users: ["United States", "NATO", "France", "Saudi Arabia", "Chile"],
         status: "Active",
         fact: "The E-3 Sentry features a distinctive 30-foot (9.1m) diameter rotating radar dome mounted above the fuselage that completes a full rotation every 10 seconds. Based on the Boeing 707, it can detect low-flying targets at 400 km and track air and sea targets simultaneously. The USAF operates 31 aircraft and plans to replace them with the E-7 Wedgetail starting in 2027. NATO's fleet will operate until 2035.",
+        recognitionFeatures: {
+            wings: "Low-mounted, swept-back wings (Boeing 707 airframe). 35-degree sweep.",
+            engine: "Four turbofan engines mounted on pylons beneath the wings.",
+            fuselage: "Commercial airliner profile (707-320B). Massive 30ft rotating radome mounted on struts above rear fuselage.",
+            tail: "Conventional single vertical stabilizer. HF radio antenna probe often visible on fin tip."
+        },
         imageCredit: "Photo: Airwolfhound / Wikimedia Commons / CC BY-SA 2.0"
     },
     {
@@ -2484,11 +2762,17 @@
         origin: "China",
         coords: [34.3416, 108.9398],
         image: "assets/KJ2000.jpg",
-        specs: { speed: "900 km/h", armament: "None (AWACS)", range: "5000 km" },
+        specs: { speed: "900 km/h", armament: "None (AWACS)", ferryRange: "5000 km" },
         inService: 2007,
         users: ["China"],
         status: "Active",
         fact: "The KJ-2000 'Mainring' features a unique fixed disc-shaped radome with three phased-array radar antennas arranged in a triangle, each providing 120-degree coverage for complete 360-degree surveillance. Unlike rotating radomes, this fixed design is more reliable. Based on the Russian Il-76, it was developed after the US blocked an Israeli-Russian AWACS deal. Only 4-5 units built due to limited Il-76 availability. Expected to be replaced by Y-20-based KJ-3000 after 2030.",
+        recognitionFeatures: {
+            wings: "High-mounted, swept wings (Il-76 airframe). Four turbofans.",
+            engine: "Four turbofan engines mounted on pylons. Distinctive cigar shape.",
+            fuselage: "Large transport body. Glass nose. Fixed non-rotating disc radome on top.",
+            tail: "T-tail configuration. Gunner position at base of tail (often removed)."
+        },
         imageCredit: "Photo: Danny Yu / Wikimedia Commons / CC BY-SA 4.0"
     },
     {
@@ -2498,7 +2782,7 @@
         origin: "United States",
         coords: [43.9147, -69.9644],
         image: "assets/USS_Zumwalt.jpg",
-        specs: { speed: "56 km/h", armament: "80 VLS cells, Hypersonic missiles", range: "N/A" },
+        specs: { speed: "30 knots", armament: "80 VLS cells, Hypersonic missiles", endurance: "N/A" },
         inService: 2016,
         users: ["United States"],
         status: "Active",
@@ -2512,7 +2796,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/Zubr_class_LCAC.jpg",
-        specs: { speed: "117 km/h", armament: "2x AK-630, 140mm Rockets", range: "560 km" },
+        specs: { speed: "63 knots", armament: "2x AK-630, 140mm Rockets", endurance: "560 km" },
         inService: 1986,
         users: ["Russia", "Greece", "China"],
         status: "Active",
@@ -2533,7 +2817,7 @@
             "Photo: Ken Lunde / lundestudio.com / CC BY-SA 3.0",
             "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0"
         ],
-        specs: { speed: "N/A", armament: "9x19mm Parabellum", range: "50 m" },
+        specs: { speed: "N/A", armament: "9x19mm Parabellum", effectiveRange: "50 m" },
         inService: 1982,
         users: ["Austria", "United States", "United Kingdom", "France", "Norway", "Sweden", "Netherlands", "Finland", "Switzerland", "Portugal", "Iraq", "Latvia"],
         status: "Active",
@@ -2553,7 +2837,7 @@
             "Photo: Andrey Mironov / artmiro.ru / CC BY-SA 3.0",
             "Photo: skhakirov / Flickr / CC BY-SA 2.0"
         ],
-        specs: { speed: "N/A", armament: "9x18mm Makarov", range: "50 m" },
+        specs: { speed: "N/A", armament: "9x18mm Makarov", effectiveRange: "50 m" },
         inService: 1951,
         users: ["Russia", "Ukraine", "Bulgaria", "China", "East Germany", "Vietnam", "North Korea", "Poland", "Czech Republic"],
         status: "Active",
@@ -2573,7 +2857,7 @@
             "Photo: Digitallymade / Wikimedia Commons / CC BY-SA 4.0",
             "Photo: Tony Webster / Flickr / CC BY 2.0"
         ],
-        specs: { speed: "N/A", armament: "9x19mm Parabellum", range: "50 m" },
+        specs: { speed: "N/A", armament: "9x19mm Parabellum", effectiveRange: "50 m" },
         inService: 2017,
         users: ["United States", "Australia", "Canada", "Denmark", "Switzerland", "Spain", "Thailand"],
         status: "Active",
@@ -2586,7 +2870,7 @@
         origin: "China",
         coords: [39.9042, 116.4074],
         image: "assets/QSZ_92.jpg",
-        specs: { speed: "N/A", armament: "9x19mm / 5.8x21mm", range: "50 m" },
+        specs: { speed: "N/A", armament: "9x19mm / 5.8x21mm", effectiveRange: "50 m" },
         inService: 1998,
         users: ["China", "Bangladesh", "Cambodia", "Hong Kong"],
         status: "Active",
@@ -2607,11 +2891,17 @@
             "Photo: Philippine Air Force / Public Domain",
             "Photo: Johnson Barros / Flickr / CC BY 2.0"
         ],
-        specs: { speed: "593 km/h", armament: "2x 12.7mm MGs, 1,550kg ordnance", range: "1330 km" },
+        specs: { speed: "593 km/h", armament: "2x 12.7mm MGs, 1,550kg ordnance", combatRadius: "1330 km" },
         inService: 2003,
         users: ["Brazil", "United States", "Colombia", "Philippines", "Indonesia", "Nigeria", "Afghanistan", "Portugal", "Lebanon", "Dominican Republic"],
         status: "Active",
-        fact: "The A-29 Super Tucano is a turboprop light attack and counter-insurgency aircraft that has become one of the world's most successful COIN platforms, operated by 22+ air forces. Its 6+ hour endurance, armored cockpit, and ability to carry precision munitions make it ideal for asymmetric warfare. The US Air Force operates it for training foreign allies, and it has seen extensive combat in Afghanistan, Colombia, and Nigeria."
+        fact: "The A-29 Super Tucano is a turboprop light attack and counter-insurgency aircraft that has become one of the world's most successful COIN platforms, operated by 22+ air forces. Its 6+ hour endurance, armored cockpit, and ability to carry precision munitions make it ideal for asymmetric warfare. The US Air Force operates it for training foreign allies, and it has seen extensive combat in Afghanistan, Colombia, and Nigeria.",
+        recognitionFeatures: {
+            wings: "Low-mounted, straight leading edge with tapered trailing edge. Wingtips have missile rails.",
+            engine: "Single turboprop engine mounted in the nose with a prominent exhaust on the right side.",
+            fuselage: "Tandem two-seat cockpit with a long, sloping nose. Retractable tricycle landing gear.",
+            tail: "Conventional tail configuration with a curved dorsal fin leading to the vertical stabilizer."
+        }
     },
     {
         id: 131,
@@ -2620,7 +2910,7 @@
         origin: "Italy",
         coords: [45.5416, 10.2118],
         image: "assets/Beretta_92.jpg",
-        specs: { speed: "N/A", armament: "9x19mm Parabellum", range: "50 m" },
+        specs: { speed: "N/A", armament: "9x19mm Parabellum", effectiveRange: "50 m" },
         inService: 1976,
         users: ["United States", "Italy", "France", "Brazil", "Egypt", "Iraq", "South Korea", "Turkey"],
         status: "Active",
@@ -2641,11 +2931,17 @@
             "Photo: Alex Beltyukov / airliners.net / CC BY-SA 3.0",
             "Photo: Roman Dergunov / Wikimedia Commons / CC BY-SA 4.0"
         ],
-        specs: { speed: "300 km/h", armament: "30mm cannon, Vikhr ATGMs, rockets", range: "520 km" },
+        specs: { speed: "300 km/h", armament: "30mm cannon, Vikhr ATGMs, rockets", combatRadius: "520 km" },
         inService: 2011,
         users: ["Russia", "Egypt"],
         status: "Active",
-        fact: "The Ka-52 'Alligator' features Kamov's distinctive coaxial contra-rotating rotors, eliminating the need for a tail rotor and providing exceptional maneuverability. Its side-by-side crew seating is unusual for attack helicopters. It can carry up to 12 Vikhr anti-tank missiles with 8-10km range. The Ka-52K naval variant is designed for Russia's Mistral-class carriers. It has seen extensive combat in Syria and Ukraine."
+        fact: "The Ka-52 'Alligator' features Kamov's distinctive coaxial contra-rotating rotors, eliminating the need for a tail rotor and providing exceptional maneuverability. Its side-by-side crew seating is unusual for attack helicopters. It can carry up to 12 Vikhr anti-tank missiles with 8-10km range. The Ka-52K naval variant is designed for Russia's Mistral-class carriers. It has seen extensive combat in Syria and Ukraine.",
+        recognitionFeatures: {
+            rotors: "Unique stacked (coaxial) contra-rotating 3-blade rotors. No tail rotor.",
+            engine: "Twin engines located high on the fuselage near the rotor mast.",
+            fuselage: "Side-by-side cockpit (unique for attack helicopters). Broad, blunt nose.",
+            tail: "Large vertical fin with rudder and small horizontal stabilizers. No tail rotor."
+        }
     },
     {
         id: 133,
@@ -2654,7 +2950,7 @@
         origin: "Germany",
         coords: [48.7758, 9.1829],
         image: "assets/MP5.jpg",
-        specs: { speed: "N/A", armament: "9x19mm Parabellum", range: "200 m" },
+        specs: { speed: "N/A", armament: "9x19mm Parabellum", effectiveRange: "200 m" },
         inService: 1966,
         users: ["Germany", "United States", "United Kingdom", "France", "Japan", "Australia", "Italy", "Norway"],
         status: "Active",
@@ -2675,11 +2971,17 @@
             "Photo: Rob Schleiffert / Flickr / CC BY-SA 2.0",
             "Photo: Aaron Allmon / U.S. Air Force / Public Domain"
         ],
-        specs: { speed: "Mach 1.4", armament: "SCALP EG, GBU-12, MICA", range: "1,480 km" },
+        specs: { speed: "Mach 1.4", armament: "SCALP EG, GBU-12, MICA", combatRadius: "1,480 km" },
         inService: 1995,
         users: ["France"],
         status: "Active",
-        fact: "The Mirage 2000D is a two-seat strike variant developed from the Mirage 2000N nuclear bomber. It has been the workhorse of the French Air Force, extensively deployed in the Balkans, Afghanistan, Libya, Mali, and Syria. A mid-life upgrade program is keeping 55 aircraft operational until at least 2035, integrating modern weapons like SCALP cruise missiles and precision-guided bombs."
+        fact: "The Mirage 2000D is a two-seat strike variant developed from the Mirage 2000N nuclear bomber. It has been the workhorse of the French Air Force, extensively deployed in the Balkans, Afghanistan, Libya, Mali, and Syria. A mid-life upgrade program is keeping 55 aircraft operational until at least 2035, integrating modern weapons like SCALP cruise missiles and precision-guided bombs.",
+        recognitionFeatures: {
+            wings: "Low-mounted delta wing with clipped tips. No separate horizontal tail.",
+            engine: "Single SNECMA M53 turbofan. Semi-circular air intakes with shock cones.",
+            fuselage: "Sleek area-ruled fuselage. Two-seat tandem cockpit.",
+            tail: "Large single vertical stabilizer. No horizontal stabilizers (delta design)."
+        }
     },
     {
         id: 135,
@@ -2695,10 +2997,16 @@
             "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 3.0",
             "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0"
         ],
-        specs: { speed: "65 km/h", armament: "125mm smoothbore", range: "400 km" },
+        specs: { speed: "65 km/h", armament: "125mm smoothbore", operationalRange: "400 km" },
         inService: 1997,
         users: ["China", "Sudan"],
         status: "Active",
+        recognitionFeatures: {
+            wheels: "6 rubber-tired road wheels. Torsion bar suspension. Drive sprocket at rear.",
+            hull: "Glacis plate steeply sloped. FY-4 ERA blocks often on front. Driver on left.",
+            armament: "125mm smoothbore gun with fume extractor. 12.7mm AA machine gun on turret roof.",
+            turret: "Welded turret with modular/ERA armor (arrow-shaped on Type 96A). Storage racks on sides/rear."
+        },
         fact: "The Type 96 is the backbone of China's armored forces with over 2,000 units in service. It was the first PLA tank to mount a 125mm gun with autoloader, derived from Soviet/Russian designs. The tank regularly competes in Russia's Tank Biathlon where it has proven competitive in gunnery. The latest Type 96B variant features a 1,000+ hp engine and advanced ERA armor."
     },
     {
@@ -2715,7 +3023,7 @@
             "Photo: Levvuori / Wikimedia Commons / Public Domain",
             "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0"
         ],
-        specs: { speed: "N/A", armament: "7.62x39mm", range: "350 m" },
+        specs: { speed: "N/A", armament: "7.62x39mm", effectiveRange: "350 m" },
         inService: 1959,
         users: ["Russia", "China", "Egypt", "Iraq", "Vietnam", "North Korea", "Cuba", "Syria", "Afghanistan"],
         status: "Active",
@@ -2735,7 +3043,7 @@
             "Photo: Staff Sgt. Candace Mundt / U.S. Army / Public Domain",
             "Photo: Master Sgt. Matt Hecht / U.S. Air National Guard / Public Domain"
         ],
-        specs: { speed: "N/A", armament: "5.56x45mm NATO", range: "550 m" },
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "550 m" },
         inService: 1964,
         users: ["United States", "Canada", "Australia", "Israel", "South Korea", "Philippines", "Thailand"],
         status: "Active",
@@ -2755,7 +3063,7 @@
             "Photo: Richard Watt / UK Ministry of Defence / OGL v3.0",
             "Photo: Lance Cpl. Drake Nickels / U.S. Marine Corps / Public Domain"
         ],
-        specs: { speed: "N/A", armament: "12 gauge", range: "50 m" },
+        specs: { speed: "N/A", armament: "12 gauge", effectiveRange: "50 m" },
         inService: 1999,
         users: ["United States", "United Kingdom", "Italy", "Portugal", "Serbia", "Slovakia", "Slovenia", "Spain"],
         status: "Active",
@@ -2770,7 +3078,7 @@
         origin: "Russia",
         coords: [55.7558, 37.6173],
         image: "assets/Kornet_EM.jpg",
-        specs: { speed: "N/A", armament: "ATGM", range: "10 km" },
+        specs: { speed: "N/A", armament: "ATGM", maximumRange: "10 km" },
         inService: 2012,
         users: ["Russia", "Syria", "Algeria", "India", "Iraq", "Iran", "Libya", "UAE", "20+ countries"],
         status: "Active",
@@ -2791,11 +3099,12 @@
             "Photo: IDF Spokesperson's Unit / CC BY-SA 3.0",
             "Photo: IDF Spokesperson's Unit / CC BY-SA 3.0"
         ],
-        specs: { speed: "N/A", armament: "155mm L/52", range: "40 km" },
+        specs: { speed: "N/A", armament: "155mm L/52", maximumRange: "40 km" },
         inService: 2024,
         users: ["Israel", "Asia-Pacific (undisclosed)"],
         status: "Active",
         fact: "The Sigma 155, designated 'Ro'em' (thunderous) in Israel, is a wheeled 155mm self-propelled howitzer manufactured by Elbit Systems. Mounted on an Oshkosh 10x10 truck, it features a fully automated remote-controlled turret that allows a crew of just 3 to operate from inside an armored cabin. It can fire 8-10 rounds per minute, carry 40 rounds onboard, and transition from travel to fire mode in one minute. First operational firing by IDF gunners occurred in June 2024, replacing older M109 howitzers."
-    }
+    },
+
 ];
 

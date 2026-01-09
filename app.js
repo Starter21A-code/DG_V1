@@ -813,7 +813,11 @@ function showEquipmentSummary() {
     // Populate detailed specs
     document.getElementById('summary-speed').textContent = equipment.specs.speed || '-';
     document.getElementById('summary-armament').textContent = equipment.specs.armament || '-';
-    document.getElementById('summary-range').textContent = equipment.specs.range || '-';
+
+    // Get range info with appropriate label
+    const rangeInfo = getRangeInfo(equipment.specs);
+    document.getElementById('summary-range').textContent = rangeInfo.value;
+    document.getElementById('summary-range-label').textContent = rangeInfo.label + ':';
 
     // Populate image credit if available
     const creditElement = document.getElementById('summary-image-credit');
@@ -834,11 +838,158 @@ function showEquipmentSummary() {
         creditElement.textContent = '';
     }
 
+    // Populate recognition features and set up navigation
+    populateResultRecognitionFeatures(equipment);
+    setupResultPageNavigation();
+
     // Show the summary section with a slight delay for effect
     setTimeout(() => {
         dom.summary.section.classList.remove('hidden');
     }, 300);
 }
+
+// Result Screen Page Navigation State
+let currentResultPage = 0;
+
+// Populate recognition features in result screen
+function populateResultRecognitionFeatures(equipment) {
+    const pageNav = document.getElementById('result-page-nav');
+    const recognitionPage = document.getElementById('result-page-recognition');
+
+    if (equipment.recognitionFeatures) {
+        // Determine if using WHAT (Tanks), WEFT (Aircraft), or REFT (Helicopters)
+        const features = equipment.recognitionFeatures;
+        let labels = [];
+        let values = [];
+
+        if (features.rotors) {
+            // REFT Format (Helicopters)
+            labels = ["R - ROTORS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
+            values = [features.rotors, features.engine, features.fuselage, features.tail];
+        } else if (features.wings) {
+            // WEFT Format (Aircraft)
+            labels = ["W - WINGS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
+            values = [features.wings, features.engine, features.fuselage, features.tail];
+        } else {
+            // WHAT Format (Tanks/Vehicles) - Default
+            labels = ["W - WHEELS:", "H - HULL:", "A - ARMAMENT:", "T - TURRET:"];
+            values = [features.wheels, features.hull, features.armament, features.turret];
+        }
+
+        // Populate generic fields
+        for (let i = 0; i < 4; i++) {
+            const labelElement = document.getElementById(`result-recognition-label-${i + 1}`);
+            const valueElement = document.getElementById(`result-recognition-value-${i + 1}`);
+            if (labelElement && valueElement) {
+                labelElement.textContent = labels[i];
+                valueElement.textContent = values[i] || '-';
+            }
+        }
+
+        // Show navigation and recognition page
+        if (pageNav) pageNav.classList.add('visible');
+        if (recognitionPage) recognitionPage.style.display = 'block';
+    } else {
+        // Hide navigation and recognition page
+        if (pageNav) pageNav.classList.remove('visible');
+        if (recognitionPage) recognitionPage.style.display = 'none';
+    }
+
+    // Reset to first page
+    currentResultPage = 0;
+    const pagesContainer = document.getElementById('result-pages-container');
+    if (pagesContainer) {
+        pagesContainer.scrollTo({ left: 0, behavior: 'auto' });
+    }
+    updateResultPageIndicators();
+}
+
+// Setup navigation for result screen pages
+function setupResultPageNavigation() {
+    const prevBtn = document.getElementById('result-page-nav-prev');
+    const nextBtn = document.getElementById('result-page-nav-next');
+    const pagesContainer = document.getElementById('result-pages-container');
+
+    // Remove any existing listeners by cloning and replacing
+    if (prevBtn) {
+        const newPrevBtn = prevBtn.cloneNode(true);
+        prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+        newPrevBtn.addEventListener('click', () => navigateResultPage(-1));
+    }
+
+    if (nextBtn) {
+        const newNextBtn = nextBtn.cloneNode(true);
+        nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+        newNextBtn.addEventListener('click', () => navigateResultPage(1));
+    }
+
+    // Dot click navigation
+    const dots = document.querySelectorAll('#result-page-nav .page-dot');
+    dots.forEach((dot, index) => {
+        const newDot = dot.cloneNode(true);
+        dot.parentNode.replaceChild(newDot, dot);
+        newDot.addEventListener('click', () => goToResultPage(index));
+    });
+
+    // Swipe detection on pages container
+    if (pagesContainer) {
+        // Remove existing listener by cloning
+        const newContainer = pagesContainer.cloneNode(true);
+        pagesContainer.parentNode.replaceChild(newContainer, pagesContainer);
+        const finalContainer = document.getElementById('result-pages-container');
+        finalContainer.addEventListener('scroll', handleResultPageScroll);
+    }
+
+    // Initialize indicators
+    updateResultPageIndicators();
+}
+
+function navigateResultPage(direction) {
+    const newPage = currentResultPage + direction;
+    if (newPage >= 0 && newPage <= 1) {
+        goToResultPage(newPage);
+    }
+}
+
+function goToResultPage(pageIndex) {
+    const pagesContainer = document.getElementById('result-pages-container');
+    if (pagesContainer) {
+        const pageWidth = pagesContainer.offsetWidth;
+        pagesContainer.scrollTo({
+            left: pageWidth * pageIndex,
+            behavior: 'smooth'
+        });
+        currentResultPage = pageIndex;
+        updateResultPageIndicators();
+    }
+}
+
+function handleResultPageScroll() {
+    const pagesContainer = document.getElementById('result-pages-container');
+    if (pagesContainer) {
+        const pageWidth = pagesContainer.offsetWidth;
+        const scrollPosition = pagesContainer.scrollLeft;
+        const newPage = Math.round(scrollPosition / pageWidth);
+        if (newPage !== currentResultPage) {
+            currentResultPage = newPage;
+            updateResultPageIndicators();
+        }
+    }
+}
+
+function updateResultPageIndicators() {
+    const dots = document.querySelectorAll('#result-page-nav .page-dot');
+    const prevBtn = document.getElementById('result-page-nav-prev');
+    const nextBtn = document.getElementById('result-page-nav-next');
+
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentResultPage);
+    });
+
+    if (prevBtn) prevBtn.disabled = currentResultPage === 0;
+    if (nextBtn) nextBtn.disabled = currentResultPage === 1;
+}
+
 
 function nextRound() {
     if (state.round >= state.maxRounds) {
@@ -1107,6 +1258,29 @@ function deg2rad(deg) {
     return deg * (Math.PI / 180);
 }
 
+// Helper function to get appropriate range field and label based on equipment specs
+function getRangeInfo(specs) {
+    // Define the range field types in order of priority
+    const rangeFields = [
+        { field: 'effectiveRange', label: 'EFFECTIVE RANGE' },
+        { field: 'maximumRange', label: 'MAXIMUM RANGE' },
+        { field: 'combatRadius', label: 'COMBAT RADIUS' },
+        { field: 'ferryRange', label: 'FERRY RANGE' },
+        { field: 'operationalRange', label: 'OPERATIONAL RANGE' },
+        { field: 'endurance', label: 'ENDURANCE' },
+        { field: 'engagementRange', label: 'ENGAGEMENT RANGE' },
+        { field: 'range', label: 'RANGE' }  // Fallback for backward compatibility
+    ];
+
+    for (const rangeType of rangeFields) {
+        if (specs[rangeType.field]) {
+            return { value: specs[rangeType.field], label: rangeType.label };
+        }
+    }
+
+    return { value: '-', label: 'RANGE' };
+}
+
 // Equipment Popup Controls
 function minimizeEquipment() {
     dom.equipmentPopup.classList.add('minimized');
@@ -1188,6 +1362,9 @@ function setupPracticeHub() {
             closePracticeModal();
         }
     });
+
+    // Setup modal page navigation for recognition features
+    setupModalPageNavigation();
 }
 
 function openPracticeHub() {
@@ -1289,25 +1466,54 @@ function renderEquipmentGrid() {
     // Filter by category
     if (practiceState.currentCategory !== 'all') {
         filteredEquipment = filteredEquipment.filter(eq => {
-            // Special handling for drone category - include both Combat and Reconnaissance drones
-            if (practiceState.currentCategory === 'Combat Drone') {
-                return eq.type === 'Combat Drone' || eq.type === 'Reconnaissance Drone';
+            // Special handling for APC/IFV category
+            if (practiceState.currentCategory === 'APC/IFV') {
+                return eq.type === 'Infantry Fighting Vehicle' ||
+                    eq.type === 'Armoured Personnel Carrier' ||
+                    eq.type === 'Armoured Fighting Vehicle' ||
+                    eq.type === 'Amphibious Combat Vehicle' ||
+                    eq.type === 'Amphibious Fighting Vehicle' ||
+                    eq.type === 'Protected Mobility Vehicle';
+            }
+            // Special handling for Light Vehicles category
+            if (practiceState.currentCategory === 'Light Vehicles') {
+                return eq.type === 'Light Utility Vehicle' ||
+                    eq.type === 'MRAP Vehicle' ||
+                    eq.type === 'Protected Patrol Vehicle' ||
+                    eq.type === 'Patrol Vehicle';
+            }
+            // Special handling for Drones & Missiles category
+            if (practiceState.currentCategory === 'Drones & Missiles') {
+                return eq.type === 'Combat Drone' ||
+                    eq.type === 'Reconnaissance Drone' ||
+                    eq.type === 'Cruise Missile' ||
+                    eq.type === 'Anti-Tank Missile' ||
+                    eq.type === 'Intercontinental Ballistic Missile' ||
+                    eq.type === 'Tactical Ballistic Missile';
+            }
+            // Special handling for Support Vehicles category
+            if (practiceState.currentCategory === 'Support Vehicles') {
+                return eq.type === 'Electronic Warfare System' ||
+                    eq.type === 'Command and Communication Vehicle' ||
+                    eq.type === 'Armoured Vehicle Launched Bridge' ||
+                    eq.type === 'Wheeled Vehicle-Launched Bridge' ||
+                    eq.type === 'Mine-Clearing Vehicle' ||
+                    eq.type === 'Minelayer' ||
+                    eq.type === 'Multi-Purpose Tracked Vehicle';
             }
             // Special handling for aircraft category - include all aircraft types including helicopters
             if (practiceState.currentCategory === 'Fighter Aircraft') {
                 return eq.type.includes('Aircraft') || eq.type.includes('Helicopter');
             }
-            // Special handling for Small Arms category - include rifles, pistols, sniper rifles, shotguns, and Javelin
+            // Special handling for Small Arms category - include rifles, pistols, sniper rifles, shotguns, machine guns
             if (practiceState.currentCategory === 'Small Arms') {
                 return eq.type === 'Assault Rifle' ||
                     eq.type === 'Sniper Rifle' ||
                     eq.type === 'Pistol' ||
                     eq.type === 'Combat Shotgun' ||
                     eq.type === 'Submachine Gun' ||
-                    eq.type === 'Anti-Tank Missile' ||
                     eq.type === 'Small Arms' ||
-                    eq.name === 'Javelin' ||
-                    eq.name.includes('Javelin');
+                    eq.type === 'Machine Gun';
             }
             return eq.type === practiceState.currentCategory;
         });
@@ -1432,7 +1638,11 @@ function openPracticeModal(equipment) {
     practiceDom.modalType.textContent = equipment.type;
     practiceDom.modalSpeed.textContent = equipment.specs.speed;
     practiceDom.modalArmament.textContent = equipment.specs.armament;
-    practiceDom.modalRange.textContent = equipment.specs.range;
+
+    // Get range info with appropriate label
+    const rangeInfo = getRangeInfo(equipment.specs);
+    practiceDom.modalRange.textContent = rangeInfo.value;
+    document.getElementById('practice-modal-range-label').textContent = rangeInfo.label + ':';
     practiceDom.modalService.textContent = equipment.inService;
     practiceDom.modalStatus.textContent = equipment.status;
     practiceDom.modalUsers.textContent = equipment.users.join(', ');
@@ -1440,13 +1650,172 @@ function openPracticeModal(equipment) {
     // Set initial image credit
     updateImageCredit(equipment, 0);
 
+    // Populate recognition features if available
+    populateRecognitionFeatures(equipment);
+
     // Show modal
     practiceDom.modal.classList.remove('hidden');
+
+    // Reset to first page and update height AFTER showing modal so dimensions are correct
+    resetModalPages();
 }
 
 function closePracticeModal() {
     practiceDom.modal.classList.add('hidden');
     practiceState.selectedEquipment = null;
+    // Reset to page 1 when closing
+    resetModalPages();
+}
+
+// Modal page navigation state
+let currentModalPage = 0;
+
+function resetModalPages() {
+    currentModalPage = 0;
+    const pagesContainer = document.getElementById('modal-pages-container');
+    if (pagesContainer) {
+        pagesContainer.scrollLeft = 0;
+    }
+    updatePageIndicators();
+
+    // Reset height to first page
+    setTimeout(() => updateModalHeight(0), 50);
+}
+
+function setupModalPageNavigation() {
+    const pagesContainer = document.getElementById('modal-pages-container');
+    const prevBtn = document.getElementById('page-nav-prev');
+    const nextBtn = document.getElementById('page-nav-next');
+    const pageNav = document.getElementById('modal-page-nav');
+
+    // Click navigation
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => navigateModalPage(-1));
+    }
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => navigateModalPage(1));
+    }
+
+    // Dot click navigation
+    const dots = document.querySelectorAll('.page-dot');
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => goToModalPage(index));
+    });
+
+    // Swipe detection on pages container
+    if (pagesContainer) {
+        pagesContainer.addEventListener('scroll', handleModalPageScroll);
+    }
+}
+
+function navigateModalPage(direction) {
+    const newPage = currentModalPage + direction;
+    if (newPage >= 0 && newPage <= 1) {
+        goToModalPage(newPage);
+    }
+}
+
+function goToModalPage(pageIndex) {
+    const pagesContainer = document.getElementById('modal-pages-container');
+    if (pagesContainer) {
+        const pageWidth = pagesContainer.offsetWidth;
+        pagesContainer.scrollTo({
+            left: pageWidth * pageIndex,
+            behavior: 'smooth'
+        });
+        currentModalPage = pageIndex;
+        updatePageIndicators();
+        updateModalHeight(pageIndex);
+    }
+}
+
+function updateModalHeight(pageIndex) {
+    const pagesContainer = document.getElementById('modal-pages-container');
+    if (!pagesContainer) return;
+
+    // Get the active page element
+    const pages = pagesContainer.querySelectorAll('.modal-page');
+    if (pages && pages[pageIndex]) {
+        // Calculate the height of the content within the page
+        const content = pages[pageIndex].firstElementChild;
+        if (content) {
+            const height = content.offsetHeight;
+            pagesContainer.style.height = height + 'px';
+        }
+    }
+}
+
+function handleModalPageScroll() {
+    const pagesContainer = document.getElementById('modal-pages-container');
+    if (pagesContainer) {
+        const pageWidth = pagesContainer.offsetWidth;
+        const scrollPosition = pagesContainer.scrollLeft;
+        const newPage = Math.round(scrollPosition / pageWidth);
+        if (newPage !== currentModalPage) {
+            currentModalPage = newPage;
+            updatePageIndicators();
+            updateModalHeight(newPage);
+        }
+    }
+}
+
+function updatePageIndicators() {
+    const dots = document.querySelectorAll('.page-dot');
+    const prevBtn = document.getElementById('page-nav-prev');
+    const nextBtn = document.getElementById('page-nav-next');
+
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentModalPage);
+    });
+
+    if (prevBtn) prevBtn.disabled = currentModalPage === 0;
+    if (nextBtn) nextBtn.disabled = currentModalPage === 1;
+}
+
+function populateRecognitionFeatures(equipment) {
+    const pageNav = document.getElementById('modal-page-nav');
+    const recognitionPage = document.getElementById('modal-page-recognition');
+
+    if (equipment.recognitionFeatures) {
+        // Determine if using WHAT (Tanks) or WEFT (Aircraft)
+        const features = equipment.recognitionFeatures;
+        let labels = [];
+        let values = [];
+
+        if (features.rotors) {
+            // REFT Format (Helicopters)
+            labels = ["R - ROTORS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
+            values = [features.rotors, features.engine, features.fuselage, features.tail];
+        } else if (features.wings) {
+            // WEFT Format (Aircraft)
+            labels = ["W - WINGS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
+            values = [features.wings, features.engine, features.fuselage, features.tail];
+        } else {
+            // WHAT Format (Tanks/Vehicles) - Default
+            labels = ["W - WHEELS:", "H - HULL:", "A - ARMAMENT:", "T - TURRET:"];
+            values = [features.wheels, features.hull, features.armament, features.turret];
+        }
+
+        // Populate generic fields
+        for (let i = 0; i < 4; i++) {
+            document.getElementById(`recognition-label-${i + 1}`).textContent = labels[i];
+            document.getElementById(`recognition-value-${i + 1}`).textContent = values[i] || '-';
+        }
+
+        // Show navigation and recognition page
+        if (pageNav) pageNav.classList.add('visible');
+        if (recognitionPage) recognitionPage.style.display = 'block';
+    } else {
+        // Hide navigation and recognition page
+        if (pageNav) pageNav.classList.remove('visible');
+        if (recognitionPage) recognitionPage.style.display = 'none';
+    }
+
+    // Reset to first page and update height
+    // resetModalPages(); // Moved to openPracticeModal to ensure visibility first
+
+    // Force height update after a microtask to ensure DOM is ready
+    setTimeout(() => updateModalHeight(0), 0);
 }
 
 // Helper function to update image credit display

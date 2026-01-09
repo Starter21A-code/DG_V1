@@ -2279,6 +2279,91 @@ body {
     font-style: italic;
 }
 
+/* Result Screen Swipeable Pages Container */
+.result-pages-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 0;
+    align-items: flex-start;
+    /* Don't set a fixed height, let content determine it */
+}
+
+.result-pages-container::-webkit-scrollbar {
+    display: none;
+}
+
+.result-page {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* Allow natural height based on content */
+}
+
+/* Result Page Navigation */
+.result-page-nav {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(0, 136, 255, 0.2);
+}
+
+.result-page-nav.visible {
+    display: flex;
+}
+
+/* Result Recognition Features */
+.result-recognition-features {
+    padding: 0.5rem 0;
+}
+
+.result-recognition-features .recognition-title {
+    font-size: 0.75rem;
+    color: #88ccff;
+    letter-spacing: 2px;
+    margin-bottom: 0.75rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.result-recognition-features .recognition-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid rgba(0, 136, 255, 0.1);
+}
+
+.result-recognition-features .recognition-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.result-recognition-features .recognition-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #88ccff;
+    letter-spacing: 1px;
+}
+
+.result-recognition-features .recognition-value {
+    font-size: 0.75rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+
 .image-credit:empty {
     display: none;
 }
@@ -2817,6 +2902,8 @@ body {
     position: relative;
     width: 100%;
     height: 350px;
+    min-height: 350px;
+    flex-shrink: 0;
     background: #000;
     overflow: hidden;
     /* Prevent multiple images from displaying */
@@ -2915,6 +3002,142 @@ body {
 .spec-value {
     font-size: 0.95rem;
     color: var(--text-primary);
+}
+
+/* Swipeable Modal Pages Container */
+.modal-pages-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 0;
+    transition: height 0.3s ease;
+    align-items: flex-start;
+}
+
+.modal-pages-container::-webkit-scrollbar {
+    display: none;
+}
+
+.modal-page {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    min-width: 100%;
+}
+
+/* Page Navigation */
+.modal-page-nav {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.modal-page-nav.visible {
+    display: flex;
+}
+
+.page-nav-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--accent-color);
+    background: transparent;
+    color: var(--accent-color);
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    padding: 0;
+    padding-bottom: 2px;
+}
+
+.page-nav-btn:hover {
+    background: var(--accent-color);
+    color: #000;
+}
+
+.page-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.page-nav-btn:disabled:hover {
+    background: transparent;
+    color: var(--accent-color);
+}
+
+.page-indicators {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.page-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--glass-border);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.page-dot.active {
+    background: var(--accent-color);
+    box-shadow: 0 0 8px var(--accent-color);
+}
+
+.page-dot:hover:not(.active) {
+    background: rgba(0, 255, 136, 0.4);
+}
+
+/* Recognition Features (WHAT Format) */
+.recognition-features {
+    padding: 0.5rem 0;
+}
+
+.recognition-title {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.recognition-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.recognition-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.recognition-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    letter-spacing: 1px;
+}
+
+.recognition-value {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    line-height: 1.4;
 }
 
 /* Mobile Responsiveness for Practice Hub */

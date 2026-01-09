@@ -1,5 +1,5 @@
 // Defence Guesser Service Worker
-const CACHE_NAME = 'defence-guesser-v83';
+const CACHE_NAME = 'defence-guesser-v90';
 
 // Files to cache for offline use
 const urlsToCache = [
@@ -25,7 +25,7 @@ const urlsToCache = [
     './assets/Type_99a_bravo.jpg',
     './assets/k2_black_panther.jpg',
     './assets/K2_black_panther_bravo.jpg',
-    './assets/pokpung_ho.jpg',
+
     './assets/zulfiqar_3.jpg',
     './assets/Zulfiqar_3_bravo.jpg',
     './assets/arjun_mk2.jpg',
@@ -40,6 +40,7 @@ const urlsToCache = [
     './assets/F16_Bravo.jpg',
     './assets/A10_Thunderbolt_2.jpg',
     './assets/A10_Thunderbolt2_bravo.jpg',
+
     './assets/gripen_1765118486549.jpg',
     './assets/f22_raptor.jpg',
     './assets/F22_Bravo.jpg',
@@ -60,7 +61,7 @@ const urlsToCache = [
     './assets/Rafale.jpg',
     './assets/Eurofighter_Typhoon.jpg',
     './assets/Eurofighter_Typhoon_Bravo.jpg',
-    './assets/Qaher_313.jpg',
+
     './assets/Type_055_Destroyer.jpg',
     './assets/Kirov_Class_Battlecruiser.jpg',
     './assets/QE.jpg',
@@ -165,6 +166,7 @@ const urlsToCache = [
     './assets/Al_Khalid_Bravo.jpg',
     './assets/Oshkosh.jpg',
     './assets/BAE_ACV.jpg',
+    './assets/BAE_ACV_Bravo.jpg',
     './assets/Ghost_Bat.jpg',
     './assets/MiG_31.jpg',
     './assets/Sukhoi_Su_30.jpg',
@@ -247,7 +249,9 @@ const urlsToCache = [
     './assets/Sigma155.jpg',
     './assets/Sigma155_Bravo.jpg',
     './assets/CV90.jpg',
-    './assets/CV90_Bravo.jpeg'
+    './assets/CV90_Bravo.jpeg',
+    './assets/Chonma_2.png',
+    './assets/Chonma_2_Bravo.png'
 ];
 
 // Install event - cache files

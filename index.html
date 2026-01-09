@@ -74,7 +74,7 @@
 
                 <button id="practice-btn" class="btn secondary">PRACTICE HUB</button>
             </div>
-            <div class="version-display">V1.2</div>
+            <div class="version-display">V1.3</div>
         </div>
 
         <!-- Daily Challenge Options Modal -->
@@ -465,12 +465,15 @@
                 <div class="category-selector">
                     <button class="category-btn active" data-category="all">ALL</button>
                     <button class="category-btn" data-category="Main Battle Tank">TANKS</button>
+                    <button class="category-btn" data-category="APC/IFV">APC/IFV</button>
+                    <button class="category-btn" data-category="Light Vehicles">LIGHT VEHICLES</button>
                     <button class="category-btn" data-category="Fighter Aircraft">AIRCRAFT</button>
                     <button class="category-btn" data-category="Naval Vessel">NAVAL</button>
                     <button class="category-btn" data-category="Air Defense System">AIR DEFENSE</button>
                     <button class="category-btn" data-category="Artillery">ARTILLERY</button>
-                    <button class="category-btn" data-category="Combat Drone">DRONES</button>
+                    <button class="category-btn" data-category="Drones & Missiles">DRONES & MISSILES</button>
                     <button class="category-btn" data-category="Small Arms">SMALL ARMS</button>
+                    <button class="category-btn" data-category="Support Vehicles">SUPPORT</button>
                 </div>
 
                 <!-- Country Filters -->
@@ -514,35 +517,75 @@
                     <div class="practice-modal-info">
                         <h3 id="practice-modal-name"></h3>
                         <p class="practice-modal-origin" id="practice-modal-origin"></p>
-                        <div class="practice-modal-specs">
-                            <div class="spec-row">
-                                <span class="spec-label">TYPE:</span>
-                                <span class="spec-value" id="practice-modal-type"></span>
+
+                        <!-- Swipeable Pages Container -->
+                        <div class="modal-pages-container" id="modal-pages-container">
+                            <!-- Page 1: Equipment Specs -->
+                            <div class="modal-page" id="modal-page-specs">
+                                <div class="practice-modal-specs">
+                                    <div class="spec-row">
+                                        <span class="spec-label">TYPE:</span>
+                                        <span class="spec-value" id="practice-modal-type"></span>
+                                    </div>
+                                    <div class="spec-row">
+                                        <span class="spec-label">SPEED:</span>
+                                        <span class="spec-value" id="practice-modal-speed"></span>
+                                    </div>
+                                    <div class="spec-row">
+                                        <span class="spec-label">ARMAMENT:</span>
+                                        <span class="spec-value" id="practice-modal-armament"></span>
+                                    </div>
+                                    <div class="spec-row">
+                                        <span class="spec-label" id="practice-modal-range-label">RANGE:</span>
+                                        <span class="spec-value" id="practice-modal-range"></span>
+                                    </div>
+                                    <div class="spec-row">
+                                        <span class="spec-label">IN SERVICE:</span>
+                                        <span class="spec-value" id="practice-modal-service"></span>
+                                    </div>
+                                    <div class="spec-row">
+                                        <span class="spec-label">STATUS:</span>
+                                        <span class="spec-value" id="practice-modal-status"></span>
+                                    </div>
+                                    <div class="spec-row full-width">
+                                        <span class="spec-label">OPERATORS:</span>
+                                        <span class="spec-value" id="practice-modal-users"></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="spec-row">
-                                <span class="spec-label">SPEED:</span>
-                                <span class="spec-value" id="practice-modal-speed"></span>
+
+                            <!-- Page 2: Recognition Features (WHAT Format) -->
+                            <div class="modal-page" id="modal-page-recognition">
+                                <div class="recognition-features">
+                                    <h4 class="recognition-title">VEHICLE RECOGNITION FEATURES</h4>
+                                    <div class="recognition-item">
+                                        <span class="recognition-label" id="recognition-label-1"></span>
+                                        <span class="recognition-value" id="recognition-value-1"></span>
+                                    </div>
+                                    <div class="recognition-item">
+                                        <span class="recognition-label" id="recognition-label-2"></span>
+                                        <span class="recognition-value" id="recognition-value-2"></span>
+                                    </div>
+                                    <div class="recognition-item">
+                                        <span class="recognition-label" id="recognition-label-3"></span>
+                                        <span class="recognition-value" id="recognition-value-3"></span>
+                                    </div>
+                                    <div class="recognition-item">
+                                        <span class="recognition-label" id="recognition-label-4"></span>
+                                        <span class="recognition-value" id="recognition-value-4"></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="spec-row">
-                                <span class="spec-label">ARMAMENT:</span>
-                                <span class="spec-value" id="practice-modal-armament"></span>
+                        </div>
+
+                        <!-- Page Navigation -->
+                        <div class="modal-page-nav" id="modal-page-nav">
+                            <button class="page-nav-btn prev" id="page-nav-prev" title="Previous">‹</button>
+                            <div class="page-indicators">
+                                <span class="page-dot active" data-page="0"></span>
+                                <span class="page-dot" data-page="1"></span>
                             </div>
-                            <div class="spec-row">
-                                <span class="spec-label">RANGE:</span>
-                                <span class="spec-value" id="practice-modal-range"></span>
-                            </div>
-                            <div class="spec-row">
-                                <span class="spec-label">IN SERVICE:</span>
-                                <span class="spec-value" id="practice-modal-service"></span>
-                            </div>
-                            <div class="spec-row">
-                                <span class="spec-label">STATUS:</span>
-                                <span class="spec-value" id="practice-modal-status"></span>
-                            </div>
-                            <div class="spec-row full-width">
-                                <span class="spec-label">OPERATORS:</span>
-                                <span class="spec-value" id="practice-modal-users"></span>
-                            </div>
+                            <button class="page-nav-btn next" id="page-nav-next" title="Next">›</button>
                         </div>
 
                         <!-- Image Attribution -->
@@ -604,44 +647,83 @@
                 <div class="equipment-summary hidden" id="equipment-summary">
                     <h3>EQUIPMENT PROFILE</h3>
 
-                    <!-- Interesting Fact -->
-                    <div class="equipment-fact" id="equipment-fact">
-                        <span class="fact-icon">💡</span>
-                        <span class="fact-text" id="fact-text"></span>
+                    <!-- Swipeable Pages Container -->
+                    <div class="result-pages-container" id="result-pages-container">
+                        <!-- Page 1: Equipment Specs -->
+                        <div class="result-page" id="result-page-specs">
+                            <!-- Interesting Fact (only on page 1) -->
+                            <div class="equipment-fact" id="equipment-fact">
+                                <span class="fact-icon">💡</span>
+                                <span class="fact-text" id="fact-text"></span>
+                            </div>
+
+                            <div class="summary-grid">
+                                <div class="summary-item">
+                                    <span class="summary-label">IN SERVICE:</span>
+                                    <span class="summary-value" id="summary-year">-</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">OPERATIONAL STATUS:</span>
+                                    <span class="summary-value" id="summary-status">-</span>
+                                </div>
+                                <div class="summary-item full-width">
+                                    <span class="summary-label">CURRENT USERS:</span>
+                                    <span class="summary-value" id="summary-users">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Technical Specifications -->
+                            <div class="tech-specs">
+                                <h4>SPECIFICATIONS</h4>
+                                <div class="specs-grid">
+                                    <div class="spec-item">
+                                        <span class="spec-label">SPEED:</span>
+                                        <span class="spec-value" id="summary-speed">-</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">ARMAMENT:</span>
+                                        <span class="spec-value" id="summary-armament">-</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label" id="summary-range-label">RANGE:</span>
+                                        <span class="spec-value" id="summary-range">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Page 2: Recognition Features -->
+                        <div class="result-page" id="result-page-recognition">
+                            <div class="result-recognition-features">
+                                <h4 class="recognition-title">VEHICLE RECOGNITION FEATURES</h4>
+                                <div class="recognition-item">
+                                    <span class="recognition-label" id="result-recognition-label-1"></span>
+                                    <span class="recognition-value" id="result-recognition-value-1"></span>
+                                </div>
+                                <div class="recognition-item">
+                                    <span class="recognition-label" id="result-recognition-label-2"></span>
+                                    <span class="recognition-value" id="result-recognition-value-2"></span>
+                                </div>
+                                <div class="recognition-item">
+                                    <span class="recognition-label" id="result-recognition-label-3"></span>
+                                    <span class="recognition-value" id="result-recognition-value-3"></span>
+                                </div>
+                                <div class="recognition-item">
+                                    <span class="recognition-label" id="result-recognition-label-4"></span>
+                                    <span class="recognition-value" id="result-recognition-value-4"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="summary-grid">
-                        <div class="summary-item">
-                            <span class="summary-label">IN SERVICE:</span>
-                            <span class="summary-value" id="summary-year">-</span>
+                    <!-- Page Navigation -->
+                    <div class="result-page-nav" id="result-page-nav">
+                        <button class="page-nav-btn prev" id="result-page-nav-prev" title="Previous">‹</button>
+                        <div class="page-indicators">
+                            <span class="page-dot active" data-page="0"></span>
+                            <span class="page-dot" data-page="1"></span>
                         </div>
-                        <div class="summary-item">
-                            <span class="summary-label">OPERATIONAL STATUS:</span>
-                            <span class="summary-value" id="summary-status">-</span>
-                        </div>
-                        <div class="summary-item full-width">
-                            <span class="summary-label">CURRENT USERS:</span>
-                            <span class="summary-value" id="summary-users">-</span>
-                        </div>
-                    </div>
-
-                    <!-- Technical Specifications -->
-                    <div class="tech-specs">
-                        <h4>SPECIFICATIONS</h4>
-                        <div class="specs-grid">
-                            <div class="spec-item">
-                                <span class="spec-label">SPEED:</span>
-                                <span class="spec-value" id="summary-speed">-</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">ARMAMENT:</span>
-                                <span class="spec-value" id="summary-armament">-</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">RANGE:</span>
-                                <span class="spec-value" id="summary-range">-</span>
-                            </div>
-                        </div>
+                        <button class="page-nav-btn next" id="result-page-nav-next" title="Next">›</button>
                     </div>
 
                     <!-- Image Attribution -->

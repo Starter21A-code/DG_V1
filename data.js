@@ -283,6 +283,46 @@
         fact: "The M109 is one of the most widely produced self-propelled artillery systems in the world, with over 10,000 units built. First introduced in 1963 for the Vietnam War, it has been continuously upgraded through variants (A1-A7), with the latest M109A7 featuring enhanced armor and automation. Its 155mm howitzer can fire GPS-guided Excalibur rounds up to 40km away."
     },
     {
+        id: 124,
+        name: "2S35 Koalitsiya-SV",
+        type: "Artillery",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/2s35.jpg",
+            "assets/2S35_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 3.0",
+            "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0"
+        ],
+        specs: { speed: "60 km/h", armament: "152mm 2A88", maximumRange: "70 km" },
+        inService: 2020,
+        users: ["Russia"],
+        status: "Active",
+        fact: "The 2S35 Koalitsiya-SV features a revolutionary unmanned turret with the crew housed in an armored capsule. Its 152mm gun can fire up to 16 rounds per minute and hit targets at 70km - nearly double the range of most Western howitzers. An early design considered twin barrels but this was abandoned."
+    },
+    {
+        id: 125,
+        name: "2S7 Pion",
+        type: "Artillery",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/2s7.jpg",
+            "assets/2S7_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Nickel nitride / Wikimedia Commons / CC0 1.0",
+            "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
+        ],
+        specs: { speed: "50 km/h", armament: "203mm 2A44", maximumRange: "47.5 km" },
+        inService: 1975,
+        users: ["Russia", "Ukraine", "Belarus", "Poland"],
+        status: "Active",
+        fact: "The 2S7 Pion is the world's most powerful self-propelled gun, firing 110kg shells from its massive 203mm cannon. It can deliver tactical nuclear strikes and has an audible alarm that sounds for 5 seconds before firing to warn nearby personnel of the immense concussive blast."
+    },
+    {
         id: 11,
         name: "Zulfiqar-3",
         type: "Main Battle Tank",
@@ -356,7 +396,8 @@
             hull: "Compact hull length (approx 6.9m). Driver positioned at front-left. Modular composite armor on glacis.",
             armament: "120mm CN 120-26 smoothbore gun (52 caliber) - notably longer than typical L/44 guns. Thermal sleeve and compressed air fume extractor.",
             turret: "Distinctive low-profile turret with modular armor. Autoloader bustle at rear separates crew from ammo."
-        }
+        },
+        fact: "The Leclerc was the first Western main battle tank to feature an automatic loading system, reducing crew to just three members and enabling a fire rate of 12 rounds per minute. It was also among the first tanks with integrated battlefield management, providing real-time positions of allied and hostile forces."
     },
     {
         id: 14,
@@ -491,7 +532,7 @@
         name: "MT-LB",
         type: "Multi-Purpose Tracked Vehicle",
         origin: "Russia",
-        coords: [49.9935, 36.2304],
+        coords: [55.7558, 37.6173],
         image: "assets/MTLB.jpg",
         specs: { speed: "61 km/h", armament: "7.62mm PKT MG", operationalRange: "500 km" },
         inService: 1970,
@@ -525,6 +566,58 @@
             engine: "Single turbofan engine. Conventional round exhaust nozzle.",
             fuselage: "Blended wing-body stealth design. Thicker/heavier appearance than F-22.",
             tail: "Twin outward-canted vertical stabilizers. Horizontal stabilators."
+        }
+    },
+    {
+        id: 122,
+        name: "Mitsubishi F-2",
+        type: "Fighter Aircraft",
+        origin: "Japan",
+        coords: [36.2048, 138.2529],
+        images: [
+            "assets/Mitsubishi_F2.jpg",
+            "assets/Mitsubishi_F2_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Marine Cpl. Ashleigh Bryant / U.S. Air Force / Public Domain",
+            "Photo: Jerry Gunner / Wikimedia Commons / CC BY-SA 2.0"
+        ],
+        specs: { speed: "Mach 2.0", armament: "20mm JM61A1, ASM-2", combatRadius: "833 km" },
+        inService: 2000,
+        users: ["Japan"],
+        status: "Active",
+        fact: "The Mitsubishi F-2, nicknamed 'Viper Zero', was the first operational military aircraft in the world to feature an AESA (Active Electronically Scanned Array) radar - beating even the F-22 Raptor. Based on the F-16 but 25% larger, it was developed specifically for Japan's anti-ship strike mission.",
+        recognitionFeatures: {
+            wings: "Larger, wider wings than F-16 (25% more area). Mid-mounted with extended leading edge.",
+            engine: "Single F110-GE-129 turbofan. Oval air intake under fuselage like F-16.",
+            fuselage: "Longer, wider nose than F-16 (houses AESA radar). Three-piece canopy instead of one-piece.",
+            tail: "Single vertical stabilizer. Two ventral fins. Similar to F-16 but slightly larger."
+        }
+    },
+    {
+        id: 123,
+        name: "F-15J Eagle",
+        type: "Fighter Aircraft",
+        origin: "Japan",
+        coords: [36.2048, 138.2529],
+        images: [
+            "assets/F15j.jpg",
+            "assets/F15j_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Balon Greyjoy / Wikimedia Commons / CC0 1.0",
+            "Photo: Balon Greyjoy / Wikimedia Commons / CC0 1.0"
+        ],
+        specs: { speed: "Mach 2.5", armament: "20mm M61 Vulcan, AAM-4", combatRadius: "2,037 km" },
+        inService: 1981,
+        users: ["Japan"],
+        status: "Active",
+        fact: "Japan is the largest operator of the F-15 Eagle outside the United States, with over 200 F-15J/DJs built under license by Mitsubishi. They scramble over 1,000 times annually to intercept Chinese and Russian aircraft approaching Japanese airspace.",
+        recognitionFeatures: {
+            wings: "High-mounted, swept wings with distinctive large area. Twin vertical stabilizers.",
+            engine: "Twin F100 turbofans with large rectangular intakes on fuselage sides.",
+            fuselage: "Large, wide fuselage with tandem cockpit. Broad flat underside.",
+            tail: "Twin outward-canted vertical stabilizers. All-moving horizontal stabilators."
         }
     },
     {
@@ -654,6 +747,7 @@
         inService: 1976,
         users: ["Iran"],
         status: "Active",
+        fact: "Iran is the only nation outside the United States to have operated the F-14 Tomcat. The Shah purchased 80 aircraft in 1974 for $2 billion - the largest single U.S. arms sale at the time. After the 1979 Islamic Revolution, despite decades of US embargoes, Iran has kept them flying through reverse-engineering and black-market parts, making their F-14s over 45 years old yet still operational.",
         recognitionFeatures: {
             wings: "Variable-sweep wings. High-mounted on the fuselage. Automatically sweep back in flight.",
             engine: "Twin engines in widely spaced nacelles. Rectangular air intakes with ramps.",
@@ -721,6 +815,32 @@
         }
     },
     {
+        id: 150,
+        name: "JF-17 Thunder",
+        type: "Fighter Aircraft",
+        origin: "China / Pakistan",
+        coords: [33.6844, 73.0479],
+        images: [
+            "assets/JF17.jpg",
+            "assets/JF17_Bravo.jpg"
+        ],
+        specs: { speed: "Mach 1.6", armament: "PL-15, SD-10, C-802AK", combatRadius: "1,350 km" },
+        inService: 2007,
+        users: ["Pakistan", "Myanmar", "Nigeria", "Azerbaijan"],
+        status: "Active",
+        fact: "The JF-17 Thunder (or FC-1 Xiaolong) is a lightweight multi-role combat aircraft developed jointly by Pakistan and China. Designed as a cost-effective replacement for aging fleets, it features modern avionics, a glass cockpit, and the ability to deploy long-range air-to-air missiles like the PL-15.",
+        recognitionFeatures: {
+            wings: "Mid-mounted cropped delta wings with Leading Edge Root Extensions (LERX).",
+            engine: "Single turbofan engine. Distinctive bifurcated DSI (diverterless supersonic inlet) 'hump' intakes on fuselage sides.",
+            fuselage: "Slender fuselage with a pointed radome. Bubble canopy.",
+            tail: "Large single vertical stabilizer with a dorsal spine extending to the mid-fuselage."
+        },
+        imageCredits: [
+            "Photo: Shimin Gu / Wikimedia Commons / GFDL 1.2",
+            "Photo: Ibex73 / Wikimedia Commons / CC BY-SA 4.0"
+        ]
+    }, ,
+    {
         id: 27,
         name: "Rafale",
         type: "Fighter Aircraft",
@@ -763,6 +883,32 @@
             engine: "Twin Eurojet EJ200 turbofans mounted side-by-side. Rectangular intakes under fuselage.",
             fuselage: "Single vertical stabilizer. Cockpit placed well forward. Canards on nose.",
             tail: "Large single vertical fin. No horizontal tail surfaces (delta wing design)."
+        }
+    },
+    {
+        id: 143,
+        name: "F/A-18 Hornet",
+        type: "Fighter Aircraft",
+        origin: "United States",
+        coords: [38.2527, -85.7585],
+        images: [
+            "assets/FA18.jpg",
+            "assets/FA18_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: LCPL John Mcgarity / U.S. Marine Corps / Public Domain",
+            "Photo: Photographer's Mate 3rd Class Jonathan Chandler / U.S. Navy / Public Domain"
+        ],
+        specs: { speed: "Mach 1.8", armament: "AIM-9, AIM-120, AGM-84", combatRadius: "740 km" },
+        inService: 1983,
+        users: ["United States", "Australia", "Canada", "Finland", "Kuwait", "Malaysia", "Spain", "Switzerland"],
+        status: "Active",
+        fact: "The F/A-18 Hornet's 'F/A' designation stands for Fighter/Attack, making it one of the first true multi-role combat aircraft. Its digital fly-by-wire system is so advanced that the aircraft can automatically prevent pilots from exceeding structural limits, and its twin engines provide such reliability that it became the first fighter trusted for single-engine-out carrier landings.",
+        recognitionFeatures: {
+            wings: "Mid-mounted swept wings with prominent LERX (Leading Edge Root Extensions). Folding wingtips for carrier storage. Square wingtips with missile rails.",
+            engine: "Twin F404 turbofans with oval-shaped air intakes under the wings. Exhausts extend past the tail.",
+            fuselage: "Barrel-shaped with solid pointed nose. Bubble canopy. Widest at air intakes, tapering rearward.",
+            tail: "Twin outward-canted vertical stabilizers (distinctive). Swept horizontal stabilators mounted at fuselage end."
         }
     },
 
@@ -999,6 +1145,58 @@
         imageCredit: "Photo: Cpl Lee Goddard RAF/MOD / OGL v1.0"
     },
     {
+        id: 151,
+        name: "V-22 Osprey",
+        type: "Transport Tiltrotor",
+        origin: "United States",
+        coords: [33.9425, -118.4081],
+        images: [
+            "assets/V22_Osprey.jpg",
+            "assets/V22_Osprey_Bravo.jpg"
+        ],
+        specs: { speed: "509 km/h", armament: "7.62mm/12.7mm MGs", combatRadius: "722 km" },
+        inService: 2007,
+        users: ["United States", "Japan"],
+        status: "Active",
+        fact: "The V-22 Osprey is the world's first production tiltrotor aircraft, combining the vertical takeoff and landing (VTOL) capabilities of a helicopter with the speed and range of a turboprop airplane. Its nacelles rotate 90 degrees to transition between helicopter and airplane modes.",
+        recognitionFeatures: {
+            rotors: "Two large 3-bladed proprotors on titling nacelles at wingtips.",
+            engine: "Rolls-Royce T406 turboshafts housed in tilting nacelles.",
+            fuselage: "Box-like transport fuselage with a rear loading ramp. Sponsons on lower sides.",
+            tail: "Short horizontal stabilizer with twin vertical fins (H-tail configuration)."
+        },
+        imageCredits: [
+            "Photo: Julian Herzog / Wikimedia Commons / CC BY 4.0",
+            "Photo: Julian Herzog / Wikimedia Commons / CC BY 4.0"
+        ]
+    },
+    {
+        id: 144,
+        name: "SA 330 Puma",
+        type: "Transport Helicopter",
+        origin: "United Kingdom / France",
+        coords: [48.8566, 2.3522],
+        images: [
+            "assets/Puma_Heli.jpg",
+            "assets/Puma_Heli_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Sgt Jack Pritchard / Royal Air Force / OGL v1.0",
+            "Photo: Aldo Bidini / Wikimedia Commons / GFDL 1.2"
+        ],
+        specs: { speed: "257 km/h", armament: "7.62mm MGs (optional)", ferryRange: "580 km" },
+        inService: 1969,
+        users: ["France", "United Kingdom", "Romania", "South Africa", "Portugal", "Algeria", "Chile", "Indonesia", "Morocco", "Pakistan", "40+ countries"],
+        status: "Active",
+        fact: "The SA 330 Puma was jointly developed by France and the UK, becoming one of the first major European helicopter collaborations. It has been operated by over 40 air forces worldwide and spawned numerous variants including the Romanian IAR 330 and South Africa's Atlas Oryx. The RAF's upgraded Puma HC Mk 2 features glass cockpit displays and can operate in temperatures from -40°C to +50°C.",
+        recognitionFeatures: {
+            rotors: "4-blade main rotor with distinctive square-tipped blades. 5-blade tail rotor.",
+            engine: "Twin Turbomeca Turmo turboshafts mounted above cabin. Large air intakes on either side.",
+            fuselage: "Boat-shaped hull with rounded nose. Large sliding cabin doors. Sponsons for fuel/gear.",
+            tail: "Swept-back tail boom ending in large vertical fin. Horizontal stabilizer mounted low."
+        }
+    },
+    {
         id: 116,
         name: "C-130 Hercules",
         type: "Transport Aircraft",
@@ -1023,6 +1221,32 @@
             fuselage: "Wide, cylindrical fuselage with a distinct 'snout' nose (weather radar). Ramp at rear.",
             tail: "Conventional tail with a very tall, distinctively shaped vertical stabilizer."
         }
+    },
+    {
+        id: 129,
+        name: "C-17 Globemaster III",
+        type: "Transport Aircraft",
+        origin: "United States",
+        coords: [32.8986, -80.0405],
+        images: [
+            "assets/C17.jpg",
+            "assets/C17_Bravo.jpg"
+        ],
+        specs: { speed: "830 km/h", armament: "Cargo/Troops", ferryRange: "4,480 km" },
+        inService: 1995,
+        users: ["United States", "UK", "Australia", "Canada", "India", "Qatar", "UAE", "NATO"],
+        status: "Active",
+        fact: "The C-17 Globemaster III is capable of rapid strategic delivery of troops and all types of cargo to main operating bases or directly to forward bases in the deployment area. It can perform tactical airlift and airdrop missions and can transport litters and ambulatory patients during aeromedical evacuations.",
+        recognitionFeatures: {
+            wings: "High-mounted, swept wings with distinctive winglets at the tips.",
+            engine: "Four turbofans mounted on pylons under the wings.",
+            fuselage: "Large, wide fuselage with a high-mounted cockpit and rear loading ramp.",
+            tail: "T-tail configuration with swept vertical and horizontal stabilizers."
+        },
+        imageCredits: [
+            "Photo: Airman 1st Class Christian Silvera / U.S. Air Force / Public Domain",
+            "Photo: MarcelX42 / Wikimedia Commons / CC BY-SA 4.0"
+        ]
     },
 
     // === NAVAL VESSELS ===
@@ -1175,6 +1399,74 @@
         imageCredit: "Photo: PEO Soldier / U.S. Army / Public Domain"
     },
     {
+        id: 145,
+        name: "PKM",
+        type: "Small Arms",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/PKM.jpg",
+            "assets/PKM_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: MoserB / Wikimedia Commons / Public Domain",
+            "Photo: U.S. Air Force photo by Staff Sgt. Vanessa Valentine / Public Domain"
+        ],
+        specs: { speed: "N/A", armament: "7.62x54mmR", effectiveRange: "1,000 m" },
+        inService: 1969,
+        users: ["Russia", "Ukraine", "Poland", "Hungary", "Vietnam", "Afghanistan", "Iraq", "Syria", "80+ countries"],
+        status: "Active",
+        fact: "The PKM is widely considered one of the best general-purpose machine guns ever made due to its extreme reliability, light weight (7.5kg vs M240's 12.5kg), and powerful rimmed cartridge. Designed by Mikhail Kalashnikov, it uses a non-disintegrating belt and ejects cases to the left."
+    },
+    {
+        id: 146,
+        name: "Uzi",
+        type: "Submachine Gun",
+        origin: "Israel",
+        coords: [31.0461, 34.8516],
+        image: "assets/Uzi.jpg",
+        imageCredit: "Photo: Uziel Galishto / Wikimedia Commons / CC BY-SA 3.0",
+        specs: { speed: "600 rounds/min", armament: "9x19mm Parabellum", effectiveRange: "200 m" },
+        inService: 1954,
+        users: ["Israel", "Germany", "Belgium", "Iran", "Thailand", "90+ countries"],
+        status: "Active",
+        fact: "Designed by Major Uziel Gal, the Uzi was one of the first weapons to use a telescoping bolt design, allowing the magazine to be housed in the pistol grip for a shorter, more compact weapon. Its legendary reliability and simplicity made it the most widely used submachine gun in the world from the 1960s to the 1980s."
+    },
+    {
+        id: 147,
+        name: "QCW-05",
+        type: "Submachine Gun",
+        origin: "China",
+        coords: [29.4316, 106.9123],
+        image: "assets/QCW05.jpg",
+        imageCredit: "Photo: Tyg728 / Wikimedia Commons / CC BY-SA 4.0",
+        specs: { speed: "900 rounds/min", armament: "5.8x21mm DCV05", effectiveRange: "150 m" },
+        inService: 2005,
+        users: ["China"],
+        status: "Active",
+        fact: "The QCW-05 (Type 05) is a bullpup submachine gun developed for the PLA, designed specifically to use the DCV05 5.8mm subsonic cartridge for suppressed operation. Its unique bullpup layout and large screw-on suppressor make it extremely compact yet quiet, earning it the nickname 'Small Gun' among Chinese special forces."
+    },
+    {
+        id: 148,
+        name: "M2 Browning",
+        type: "Small Arms",
+        origin: "United States",
+        coords: [39.8283, -98.5795],
+        images: [
+            "assets/M2_Browning.jpg",
+            "assets/M2_Browning_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Rama / Wikimedia Commons / CC BY-SA 2.0",
+            "Photo: Crescent moon / Wikimedia Commons / CC BY 3.0"
+        ],
+        specs: { speed: "450-600 rounds/min", armament: ".50 BMG (12.7x99mm)", effectiveRange: "1,830 m" },
+        inService: 1933,
+        users: ["United States", "United Kingdom", "France", "Australia", "Canada", "100+ countries"],
+        status: "Active",
+        fact: "The 'Ma Deuce' is one of the longest-serving weapons in history, having been in continuous service since 1933. Designed by John Browning, its .50 BMG round was developed to penetrate armored vehicles and aircraft. It is so effective and reliable that it remains the standard heavy machine gun for NATO and over 100 countries nearly a century after its design."
+    },
+    {
         id: 122,
         name: "NLAW",
         type: "Anti-Tank Missile",
@@ -1227,6 +1519,46 @@
         status: "Active",
         fact: "The Storm Shadow (UK) / SCALP (France) is a long-range air-launched cruise missile jointly developed by France and the United Kingdom. Its 450 kg BROACH (Bomb Royal Ordnance Augmented Charge) warhead is specifically designed to penetrate hardened bunkers and underground facilities. With a range of 550 km and advanced guidance combining GPS, INS, terrain-following radar, and infrared terminal seeker, it can strike high-value targets with precision while remaining undetected. The missile has been combat-proven in Libya, Syria, and Ukraine.",
         imageCredit: "Photo: Rept0n1x / Wikimedia Commons / CC BY-SA 3.0"
+    },
+    {
+        id: 126,
+        name: "Tomahawk",
+        type: "Cruise Missile",
+        origin: "United States",
+        coords: [38.8814, -77.0365],
+        images: [
+            "assets/Tomahawk.jpg",
+            "assets/Tomahawk_Bravo.JPEG"
+        ],
+        imageCredits: [
+            "Photo: Cliff / Flickr / CC BY 2.0",
+            "Photo: PH1 Morris / U.S. Navy / Public Domain"
+        ],
+        specs: { speed: "Mach 0.75", armament: "450 kg HE", maximumRange: "1,600 km" },
+        inService: 1983,
+        users: ["United States", "United Kingdom", "Australia", "Japan", "Netherlands"],
+        status: "Active",
+        fact: "The BGM-109 Tomahawk is the most combat-proven cruise missile in history with over 2,000 fired in conflicts from the Gulf War to Syria. It flies at low altitude using terrain-following guidance to evade radar, and the Block IV variant can loiter over targets and be retargeted in flight via satellite datalink. Its wings fold inside the body for storage and deploy after launch, which is why it appears wingless in some images."
+    },
+    {
+        id: 127,
+        name: "Brimstone",
+        type: "Air-to-Ground Missile",
+        origin: "United Kingdom",
+        coords: [51.5074, -0.1278],
+        images: [
+            "assets/Brimstone.jpg",
+            "assets/Brimstone_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Sergeant Laura Bibby / MOD / OGL v1.0",
+            "Photo: Hugh Llewelyn / Flickr / CC BY-SA 2.0"
+        ],
+        specs: { speed: "Mach 1.3", armament: "6.3 kg HEAT", maximumRange: "60 km" },
+        inService: 2005,
+        users: ["United Kingdom", "Saudi Arabia", "Poland", "Ukraine"],
+        status: "Active",
+        fact: "The Brimstone uses advanced millimetric wave radar that can distinguish a tank from a tree, and when fired in salvos, its smart targeting ensures missiles hit different targets in sequence. Its dual-mode laser/radar guidance allows 'fire and forget' or precise human-controlled strikes with minimal collateral damage."
     },
     {
         id: 125,
@@ -1537,6 +1869,26 @@
         users: ["France", "Denmark", "Czech Republic", "Ukraine", "Indonesia"],
         status: "Active",
         imageCredit: "Photo: Markus Rauchenberger / U.S. Army / Public Domain"
+    },
+    {
+        id: 149,
+        name: "RCH-155",
+        type: "Artillery",
+        origin: "Germany",
+        coords: [48.1351, 11.5820],
+        images: [
+            "assets/RCH155.jpg",
+            "assets/RCH155_Bravo.jpg"
+        ],
+        specs: { speed: "100 km/h", armament: "155mm L/52", maximumRange: "54 km" },
+        inService: 2024,
+        users: ["Germany", "Ukraine"],
+        status: "Active",
+        fact: "The RCH-155 is the world's first artillery system capable of firing while moving, allowing for unprecedented 'shoot-and-scoot' capabilities.",
+        imageCredits: [
+            "Photo: KNDS / KMW",
+            "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 3.0"
+        ]
     },
 
     {
@@ -2288,6 +2640,104 @@
         status: "Active",
         fact: "The Boxer features a modular design with interchangeable mission modules, allowing it to serve in roles from infantry transport to battlefield ambulance, reconnaissance, or command vehicle.",
         imageCredit: "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 152,
+        name: "VBCI",
+        type: "Infantry Fighting Vehicle",
+        origin: "France",
+        coords: [48.8049, 2.1204],
+        images: [
+            "assets/VBCI.jpg",
+            "assets/VBCI_Bravo.jpg"
+        ],
+        specs: { speed: "100 km/h", armament: "25mm autocannon, 7.62mm MG", range: "750 km" },
+        inService: 2008,
+        users: ["France", "Qatar"],
+        status: "Active",
+        fact: "The VBCI (Véhicule Blindé de Combat d'Infanterie) is a French wheeled infantry fighting vehicle designed to replace the tracked AMX-10P. It features a modular aluminum hull with add-on titanium armor and provides high mobility and protection for infantry squads.",
+        recognitionFeatures: {
+            wheels: "8x8 configuration. Large tires with central tire inflation system.",
+            hull: "Boxy, aluminum alloy hull with add-on armored modules. Driver front left, engine front right.",
+            armament: "One 25mm M811 autocannon and a coaxial 7.62mm machine gun.",
+            turret: "One-man Dragar turret located centrally on the hull."
+        },
+        imageCredits: [
+            "Photo: Selvejp / Wikimedia Commons / CC BY-SA 3.0",
+            "Photo: Kevin.B / Wikimedia Commons / CC BY-SA 4.0"
+        ]
+    },
+    {
+        id: 153,
+        name: "Borsuk",
+        type: "Infantry Fighting Vehicle",
+        origin: "Poland",
+        coords: [52.2297, 21.0122],
+        images: [
+            "assets/Borsuk.jpg",
+            "assets/Borsuk_Bravo.jpg"
+        ],
+        specs: { speed: "65 km/h", armament: "30mm Mk44S, 2x Spike-LR", operationalRange: "600 km" },
+        inService: 2023,
+        users: ["Poland"],
+        status: "Active",
+        fact: "The Borsuk is a fully amphibious modern IFV featuring a remote-controlled ZSSW-30 turret and composite rubber tracks, designed to replace Poland's Soviet-era BWP-1 fleet.",
+        recognitionFeatures: {
+            wheels: "6 road wheels with composite rubber tracks.",
+            hull: "High freeboard for buoyancy. Swim vanes/wave deflector on bow.",
+            armament: "30mm Mk44S Bushmaster II in unmanned ZSSW-30 turret. Spike-LR ATGM launcher on right side.",
+            turret: "Unmanned ZSSW-30 turret with panoramic commander's sight on top."
+        },
+        imageCredits: [
+            "Photo: U.S. Army National Guard photo by Staff Sgt. Matthew A. Foster / Public Domain",
+            "Photo: Michal Derela / Wikimedia Commons / CC BY-SA 4.0"
+        ]
+    },
+    {
+        id: 154,
+        name: "K808 White Tiger",
+        type: "Armored Personnel Carrier",
+        origin: "South Korea",
+        coords: [37.5665, 126.9780],
+        images: [
+            "assets/K808.jpg",
+            "assets/K808_Bravo.jpg"
+        ],
+        specs: { speed: "100 km/h", armament: "12.7mm HMG or 40mm AGL", operationalRange: "700 km" },
+        inService: 2016,
+        users: ["South Korea", "Peru"],
+        status: "Active",
+        fact: "The K808 White Tiger is an 8x8 amphibious wheeled armored personnel carrier developed by Hyundai Rotem. It features run-flat tires, a central tire inflation system, and water jets for crossing rivers, replacing older tracked vehicles in the ROK Army.",
+        recognitionFeatures: {
+            wheels: "8x8 configuration with run-flat tires.",
+            hull: "Welded steel armor. Driver front left, engine front right.",
+            armament: "Typically a shielded .50 caliber machine gun or 40mm grenade launcher.",
+            turret: "Usually a protected gunner station or RCWS."
+        },
+        imageCredits: [
+            "Photo: U.S. Army Reserve Spc. Jason Palacios / Public Domain",
+            "Photo: ROK Ministry of National Defense / Wikimedia Commons / KOGL Type 1"
+        ]
+    },
+    {
+        id: 155,
+        name: "Patria AMV",
+        type: "Armored Personnel Carrier",
+        origin: "Finland",
+        coords: [60.1699, 24.9384],
+        image: "assets/Patria_AMV.jpg",
+        specs: { speed: "100 km/h", armament: "Modular (up to 105mm/120mm)", operationalRange: "800 km" },
+        inService: 2004,
+        users: ["Finland", "Poland", "Slovenia", "Croatia", "South Africa", "UAE"],
+        status: "Active",
+        fact: "The Patria AMV (Armored Modular Vehicle) is a multi-role 8x8 military vehicle known for its modular design, allowing it to be fitted with various weapon systems ranging from machine guns to 120mm cannons.",
+        recognitionFeatures: {
+            wheels: "8x8 configuration with independent hydropneumatic suspension.",
+            hull: "High ground clearance and all-welded steel hull.",
+            design: "Driver front-left, engine front-right. Large rear ramp for troops.",
+            modular: "Roof can accept various turrets (remote weapon stations, medium caliber turrets, or heavy cannon systems)."
+        },
+        imageCredit: "Photo: Ex13 / Wikimedia Commons / CC BY-SA 3.0"
     },
     {
         id: 97,

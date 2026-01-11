@@ -14,7 +14,8 @@ const COUNTRY_ALIASES = {
     "China": ["China", "People's Republic of China"],
     "India": ["India", "Republic of India"],
     "United Kingdom / France": ["United Kingdom", "Great Britain", "UK", "Britain", "France", "French Republic"],
-    "United Kingdom / Sweden": ["United Kingdom", "Great Britain", "UK", "Britain", "Sweden", "Kingdom of Sweden"]
+    "United Kingdom / Sweden": ["United Kingdom", "Great Britain", "UK", "Britain", "Sweden", "Kingdom of Sweden"],
+    "China / Pakistan": ["China", "People's Republic of China", "Pakistan", "Islamic Republic of Pakistan"]
 };
 
 let state = {
@@ -805,10 +806,14 @@ function showEquipmentSummary() {
         factContainer.style.display = 'none';
     }
 
-    // Populate summary fields
-    dom.summary.year.textContent = equipment.inService;
-    dom.summary.status.textContent = equipment.status;
-    dom.summary.users.textContent = equipment.users.join(', ');
+    // Populate summary fields - query elements fresh each time to avoid stale references
+    // (setupResultPageNavigation uses cloneNode which disconnects cached element references)
+    const summaryYear = document.getElementById('summary-year');
+    const summaryStatus = document.getElementById('summary-status');
+    const summaryUsers = document.getElementById('summary-users');
+    if (summaryYear) summaryYear.textContent = equipment.inService;
+    if (summaryStatus) summaryStatus.textContent = equipment.status;
+    if (summaryUsers) summaryUsers.textContent = equipment.users.join(', ');
 
     // Populate detailed specs
     document.getElementById('summary-speed').textContent = equipment.specs.speed || '-';
@@ -1470,7 +1475,9 @@ function renderEquipmentGrid() {
             if (practiceState.currentCategory === 'APC/IFV') {
                 return eq.type === 'Infantry Fighting Vehicle' ||
                     eq.type === 'Armoured Personnel Carrier' ||
+                    eq.type === 'Armored Personnel Carrier' ||
                     eq.type === 'Armoured Fighting Vehicle' ||
+                    eq.type === 'Armored Fighting Vehicle' ||
                     eq.type === 'Amphibious Combat Vehicle' ||
                     eq.type === 'Amphibious Fighting Vehicle' ||
                     eq.type === 'Protected Mobility Vehicle';
@@ -1488,6 +1495,7 @@ function renderEquipmentGrid() {
                     eq.type === 'Reconnaissance Drone' ||
                     eq.type === 'Cruise Missile' ||
                     eq.type === 'Anti-Tank Missile' ||
+                    eq.type === 'Air-to-Ground Missile' ||
                     eq.type === 'Intercontinental Ballistic Missile' ||
                     eq.type === 'Tactical Ballistic Missile';
             }
@@ -1503,7 +1511,7 @@ function renderEquipmentGrid() {
             }
             // Special handling for aircraft category - include all aircraft types including helicopters
             if (practiceState.currentCategory === 'Fighter Aircraft') {
-                return eq.type.includes('Aircraft') || eq.type.includes('Helicopter');
+                return eq.type.includes('Aircraft') || eq.type.includes('Helicopter') || eq.type === 'Transport Tiltrotor';
             }
             // Special handling for Small Arms category - include rifles, pistols, sniper rifles, shotguns, machine guns
             if (practiceState.currentCategory === 'Small Arms') {

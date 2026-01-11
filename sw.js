@@ -1,5 +1,5 @@
 // Defence Guesser Service Worker
-const CACHE_NAME = 'defence-guesser-v90';
+const CACHE_NAME = 'defence-guesser-v132';
 
 // Files to cache for offline use
 const urlsToCache = [
@@ -40,6 +40,20 @@ const urlsToCache = [
     './assets/F16_Bravo.jpg',
     './assets/A10_Thunderbolt_2.jpg',
     './assets/A10_Thunderbolt2_bravo.jpg',
+    './assets/Mitsubishi_F2.jpg',
+    './assets/Mitsubishi_F2_Bravo.jpg',
+    './assets/F15j.jpg',
+    './assets/F15j_Bravo.jpg',
+    './assets/2s35.jpg',
+    './assets/2S35_Bravo.jpg',
+    './assets/2s7.jpg',
+    './assets/2S7_Bravo.jpg',
+    './assets/Tomahawk.jpg',
+    './assets/Tomahawk_Bravo.JPEG',
+    './assets/Brimstone.jpg',
+    './assets/Brimstone_Bravo.jpg',
+    './assets/FA18.jpg',
+    './assets/FA18_Bravo.jpg',
 
     './assets/gripen_1765118486549.jpg',
     './assets/f22_raptor.jpg',
@@ -135,7 +149,11 @@ const urlsToCache = [
     './assets/Chinook.jpg',
     './assets/C130.jpg',
     './assets/C130_Bravo.jpg',
+    './assets/C17.jpg',
+    './assets/C17_Bravo.jpg',
     './assets/Puma.jpg',
+    './assets/Puma_Heli.jpg',
+    './assets/Puma_Heli_Bravo.jpg',
     './assets/TOS_1a.jpg',
     './assets/T72.jpg',
     './assets/T72_Bravo.jpg',
@@ -251,7 +269,26 @@ const urlsToCache = [
     './assets/CV90.jpg',
     './assets/CV90_Bravo.jpeg',
     './assets/Chonma_2.png',
-    './assets/Chonma_2_Bravo.png'
+    './assets/Chonma_2_Bravo.png',
+    './assets/PKM.jpg',
+    './assets/PKM_Bravo.jpg',
+    './assets/Uzi.jpg',
+    './assets/QCW05.jpg',
+    './assets/M2_Browning.jpg',
+    './assets/M2_Browning_Bravo.jpg',
+    './assets/RCH155.jpg',
+    './assets/RCH155_Bravo.jpg',
+    './assets/JF17.jpg',
+    './assets/JF17_Bravo.jpg',
+    './assets/V22_Osprey.jpg',
+    './assets/V22_Osprey_Bravo.jpg',
+    './assets/VBCI.jpg',
+    './assets/VBCI_Bravo.jpg',
+    './assets/Borsuk.jpg',
+    './assets/Borsuk_Bravo.jpg',
+    './assets/K808.jpg',
+    './assets/K808_Bravo.jpg',
+    './assets/Patria_AMV.jpg'
 ];
 
 // Install event - cache files

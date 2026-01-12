@@ -175,6 +175,7 @@ function init() {
     initMap();
     setupDailyChallenge();
     setupSoundToggle();
+    initImageZoom();
     registerServiceWorker();
     console.log("Defence Guesser Initialized");
 }
@@ -245,6 +246,14 @@ function setupEventListeners() {
     dom.closeEquipmentBtn.addEventListener('click', minimizeEquipment);
     dom.equipmentThumbnail.addEventListener('click', maximizeEquipment);
 
+    // Result screen image preview (view equipment image from results)
+    const resultImagePreview = document.getElementById('result-image-preview');
+    if (resultImagePreview) {
+        resultImagePreview.addEventListener('click', () => {
+            showEquipmentPopup();
+        });
+    }
+
     // Practice Hub event listeners
     setupPracticeHub();
 
@@ -257,13 +266,335 @@ function setupEventListeners() {
 
 // Equipment Popup Controls
 function minimizeEquipment() {
-    dom.equipmentPopup.classList.add('minimized');
-    dom.equipmentThumbnail.classList.remove('hidden');
+    resetImageZoom(); // Reset zoom when minimizing
+    hideEquipmentPopup();
+    // Only show game thumbnail if on game screen
+    if (!screens.game.classList.contains('hidden')) {
+        dom.equipmentThumbnail.classList.remove('hidden');
+    }
 }
 
 function maximizeEquipment() {
-    dom.equipmentPopup.classList.remove('minimized');
+    showEquipmentPopup();
     dom.equipmentThumbnail.classList.add('hidden');
+}
+
+function showEquipmentPopup() {
+    dom.equipmentPopup.classList.remove('hidden');
+    dom.equipmentPopup.classList.remove('minimized');
+}
+
+function hideEquipmentPopup() {
+    resetImageZoom();
+    dom.equipmentPopup.classList.add('hidden');
+}
+
+// Image Pinch-Zoom System
+let imageZoomState = {
+    scale: 1,
+    translateX: 0,
+    translateY: 0,
+    startDistance: 0,
+    startScale: 1,
+    startTranslateX: 0,
+    startTranslateY: 0,
+    startCenterX: 0,
+    startCenterY: 0,
+    isPinching: false,
+    isPanning: false,
+    lastTouchX: 0,
+    lastTouchY: 0,
+    isMouseDragging: false,
+    lastMouseX: 0,
+    lastMouseY: 0
+};
+
+function initImageZoom() {
+    const container = document.getElementById('image-zoom-container');
+    const image = document.getElementById('equipment-image');
+
+    if (!container || !image) return;
+
+    // Touch events for pinch-zoom and pan
+    container.addEventListener('touchstart', handleTouchStart, { passive: false });
+    container.addEventListener('touchmove', handleTouchMove, { passive: false });
+    container.addEventListener('touchend', handleTouchEnd, { passive: false });
+    container.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+
+    // Zoom button controls
+    const zoomInBtn = document.getElementById('zoom-in-btn');
+    const zoomOutBtn = document.getElementById('zoom-out-btn');
+
+    if (zoomInBtn) {
+        zoomInBtn.addEventListener('click', () => zoomImageByButton(1.5));
+    }
+    if (zoomOutBtn) {
+        zoomOutBtn.addEventListener('click', () => zoomImageByButton(0.67));
+    }
+
+    // Double-tap to reset zoom
+    let lastTap = 0;
+    container.addEventListener('touchend', (e) => {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        if (tapLength < 300 && tapLength > 0 && e.changedTouches.length === 1) {
+            // Double tap - reset zoom
+            resetImageZoom();
+            e.preventDefault();
+        }
+        lastTap = currentTime;
+    });
+
+    // Mouse events for panning when zoomed
+    container.addEventListener('mousedown', handleMouseDown);
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('mouseup', handleMouseUp);
+    container.addEventListener('mouseleave', handleMouseUp);
+
+    // Double-click to reset zoom
+    container.addEventListener('dblclick', (e) => {
+        resetImageZoom();
+        e.preventDefault();
+    });
+}
+
+function handleTouchStart(e) {
+    const image = document.getElementById('equipment-image');
+    if (!image) return;
+
+    if (e.touches.length === 2) {
+        // Pinch gesture start
+        e.preventDefault();
+        imageZoomState.isPinching = true;
+        imageZoomState.isPanning = false;
+        imageZoomState.startDistance = getTouchDistance(e.touches);
+        imageZoomState.startScale = imageZoomState.scale;
+
+        // Calculate center point of the pinch
+        const center = getTouchCenter(e.touches);
+        imageZoomState.startCenterX = center.x;
+        imageZoomState.startCenterY = center.y;
+        imageZoomState.startTranslateX = imageZoomState.translateX;
+        imageZoomState.startTranslateY = imageZoomState.translateY;
+    } else if (e.touches.length === 1 && imageZoomState.scale > 1) {
+        // Single touch pan (only when zoomed in)
+        imageZoomState.isPanning = true;
+        imageZoomState.isPinching = false;
+        imageZoomState.lastTouchX = e.touches[0].clientX;
+        imageZoomState.lastTouchY = e.touches[0].clientY;
+        imageZoomState.startTranslateX = imageZoomState.translateX;
+        imageZoomState.startTranslateY = imageZoomState.translateY;
+    }
+}
+
+function handleTouchMove(e) {
+    const image = document.getElementById('equipment-image');
+    const container = document.getElementById('image-zoom-container');
+    if (!image || !container) return;
+
+    if (imageZoomState.isPinching && e.touches.length === 2) {
+        e.preventDefault();
+
+        // Calculate new scale
+        const currentDistance = getTouchDistance(e.touches);
+        const scaleChange = currentDistance / imageZoomState.startDistance;
+        let newScale = imageZoomState.startScale * scaleChange;
+
+        // Clamp scale between 1 and 5
+        newScale = Math.max(1, Math.min(5, newScale));
+
+        // Calculate new center
+        const center = getTouchCenter(e.touches);
+
+        // Only apply translation if scale > 1
+        if (newScale > 1) {
+            // Calculate how much the scale changed
+            const scaleRatio = newScale / imageZoomState.startScale;
+
+            // Adjust translation to zoom toward pinch center
+            const containerRect = container.getBoundingClientRect();
+            const containerCenterX = containerRect.width / 2;
+            const containerCenterY = containerRect.height / 2;
+
+            const pinchOffsetX = imageZoomState.startCenterX - containerRect.left - containerCenterX;
+            const pinchOffsetY = imageZoomState.startCenterY - containerRect.top - containerCenterY;
+
+            imageZoomState.translateX = imageZoomState.startTranslateX - pinchOffsetX * (scaleRatio - 1);
+            imageZoomState.translateY = imageZoomState.startTranslateY - pinchOffsetY * (scaleRatio - 1);
+        }
+
+        imageZoomState.scale = newScale;
+
+        // Apply bounds
+        applyZoomBounds(container, image);
+        applyImageTransform(image);
+
+    } else if (imageZoomState.isPanning && e.touches.length === 1 && imageZoomState.scale > 1) {
+        e.preventDefault();
+
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - imageZoomState.lastTouchX;
+        const deltaY = touch.clientY - imageZoomState.lastTouchY;
+
+        imageZoomState.translateX += deltaX;
+        imageZoomState.translateY += deltaY;
+
+        imageZoomState.lastTouchX = touch.clientX;
+        imageZoomState.lastTouchY = touch.clientY;
+
+        // Apply bounds
+        applyZoomBounds(container, image);
+        applyImageTransform(image);
+    }
+}
+
+function handleTouchEnd(e) {
+    if (e.touches.length === 0) {
+        imageZoomState.isPinching = false;
+        imageZoomState.isPanning = false;
+    } else if (e.touches.length === 1) {
+        // Transitioned from pinch to single finger - setup for pan
+        imageZoomState.isPinching = false;
+        if (imageZoomState.scale > 1) {
+            imageZoomState.isPanning = true;
+            imageZoomState.lastTouchX = e.touches[0].clientX;
+            imageZoomState.lastTouchY = e.touches[0].clientY;
+        }
+    }
+
+    // If scale is close to 1, snap back to 1
+    if (imageZoomState.scale < 1.05) {
+        resetImageZoom();
+    }
+}
+
+function handleMouseDown(e) {
+    if (imageZoomState.scale > 1) {
+        e.preventDefault();
+        imageZoomState.isMouseDragging = true;
+        imageZoomState.lastMouseX = e.clientX;
+        imageZoomState.lastMouseY = e.clientY;
+
+        // Update cursor style
+        const container = document.getElementById('image-zoom-container');
+        if (container) container.style.cursor = 'grabbing';
+    }
+}
+
+function handleMouseMove(e) {
+    if (!imageZoomState.isMouseDragging || imageZoomState.scale <= 1) return;
+
+    e.preventDefault();
+
+    const image = document.getElementById('equipment-image');
+    const container = document.getElementById('image-zoom-container');
+    if (!image || !container) return;
+
+    const deltaX = e.clientX - imageZoomState.lastMouseX;
+    const deltaY = e.clientY - imageZoomState.lastMouseY;
+
+    imageZoomState.translateX += deltaX;
+    imageZoomState.translateY += deltaY;
+
+    imageZoomState.lastMouseX = e.clientX;
+    imageZoomState.lastMouseY = e.clientY;
+
+    // Apply bounds and transform
+    applyZoomBounds(container, image);
+    applyImageTransform(image);
+}
+
+function handleMouseUp(e) {
+    if (imageZoomState.isMouseDragging) {
+        imageZoomState.isMouseDragging = false;
+
+        // Reset cursor style
+        const container = document.getElementById('image-zoom-container');
+        if (container) {
+            container.style.cursor = imageZoomState.scale > 1 ? 'grab' : 'default';
+        }
+    }
+}
+
+function getTouchDistance(touches) {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
+function getTouchCenter(touches) {
+    return {
+        x: (touches[0].clientX + touches[1].clientX) / 2,
+        y: (touches[0].clientY + touches[1].clientY) / 2
+    };
+}
+
+function applyZoomBounds(container, image) {
+    if (imageZoomState.scale <= 1) {
+        imageZoomState.translateX = 0;
+        imageZoomState.translateY = 0;
+        return;
+    }
+
+    const containerRect = container.getBoundingClientRect();
+    const imageWidth = image.offsetWidth * imageZoomState.scale;
+    const imageHeight = image.offsetHeight * imageZoomState.scale;
+
+    // Calculate max translation values to keep image within container
+    const maxTranslateX = Math.max(0, (imageWidth - containerRect.width) / 2);
+    const maxTranslateY = Math.max(0, (imageHeight - containerRect.height) / 2);
+
+    // Clamp translation
+    imageZoomState.translateX = Math.max(-maxTranslateX, Math.min(maxTranslateX, imageZoomState.translateX));
+    imageZoomState.translateY = Math.max(-maxTranslateY, Math.min(maxTranslateY, imageZoomState.translateY));
+}
+
+function applyImageTransform(image) {
+    image.style.transform = `scale(${imageZoomState.scale}) translate(${imageZoomState.translateX / imageZoomState.scale}px, ${imageZoomState.translateY / imageZoomState.scale}px)`;
+}
+
+function resetImageZoom() {
+    const image = document.getElementById('equipment-image');
+    const container = document.getElementById('image-zoom-container');
+    imageZoomState.scale = 1;
+    imageZoomState.translateX = 0;
+    imageZoomState.translateY = 0;
+    imageZoomState.isPinching = false;
+    imageZoomState.isPanning = false;
+    imageZoomState.isMouseDragging = false;
+    if (image) {
+        image.style.transform = 'scale(1) translate(0px, 0px)';
+    }
+    if (container) {
+        container.style.cursor = 'default';
+    }
+}
+
+function zoomImageByButton(multiplier) {
+    const image = document.getElementById('equipment-image');
+    const container = document.getElementById('image-zoom-container');
+    if (!image || !container) return;
+
+    // Calculate new scale
+    let newScale = imageZoomState.scale * multiplier;
+
+    // Clamp scale between 1 and 5
+    newScale = Math.max(1, Math.min(5, newScale));
+
+    // If zooming out to 1x, reset translation
+    if (newScale <= 1) {
+        resetImageZoom();
+        return;
+    }
+
+    imageZoomState.scale = newScale;
+
+    // Apply bounds and transform
+    applyZoomBounds(container, image);
+    applyImageTransform(image);
+
+    // Update cursor to indicate panning is available
+    container.style.cursor = 'grab';
 }
 
 // Map Logic & Data
@@ -519,6 +850,7 @@ function startGame(isDailyMode = false, filters = null) {
 
 function loadRound() {
     resetMapVisuals();
+    resetImageZoom(); // Reset zoom state for new round
     state.currentEquipment = state.gameData[state.round - 1];
     state.userGuess = null;
     state.selectedCountry = null;
@@ -540,10 +872,14 @@ function loadRound() {
     dom.image.src = imageSrc;
     dom.thumbnailImage.src = imageSrc;
 
-
+    // Also set the result preview image for the result screen
+    const resultPreviewImg = document.getElementById('result-preview-img');
+    if (resultPreviewImg) {
+        resultPreviewImg.src = imageSrc;
+    }
 
     // Show popup, hide thumbnail
-    dom.equipmentPopup.classList.remove('minimized');
+    showEquipmentPopup();
     dom.equipmentThumbnail.classList.add('hidden');
 
     const loader = document.querySelector('.loader');
@@ -1220,6 +1556,9 @@ function switchScreen(screenName) {
     if (screenName === 'result') {
         screens.game.classList.remove('hidden');
         screens.result.classList.remove('hidden');
+        // Hide the equipment popup when showing results (user can reopen via preview)
+        hideEquipmentPopup();
+        dom.equipmentThumbnail.classList.add('hidden');
     } else {
         screens[screenName].classList.remove('hidden');
     }

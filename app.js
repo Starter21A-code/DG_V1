@@ -759,29 +759,39 @@ function setupGameOptionsModal() {
 function getFilteredEquipment(filters) {
     let filtered = [...equipmentData];
 
+    // Helper function to check if an origin matches a target list
+    // Handles multi-origin entries like "United Kingdom / France"
+    function originMatchesAny(origin, targetCountries) {
+        if (!origin) return false;
+        // Split by " / " to handle multi-origin equipment
+        const origins = origin.split(' / ').map(o => o.trim());
+        return origins.some(o => targetCountries.includes(o));
+    }
+
+    function originIsUSOrEurope(origin) {
+        if (!origin) return false;
+        const origins = origin.split(' / ').map(o => o.trim());
+        return origins.some(o => o === 'United States' || EUROPEAN_COUNTRIES.includes(o));
+    }
+
+    function originIsRussiaChinaIran(origin) {
+        if (!origin) return false;
+        const origins = origin.split(' / ').map(o => o.trim());
+        return origins.some(o => o === 'Russia' || o === 'China' || o === 'Iran');
+    }
+
     // Filter by origin
     if (filters.origin !== 'all') {
         if (filters.origin === 'america-europe') {
             // America & Europe
-            filtered = filtered.filter(eq =>
-                eq.origin === 'United States' ||
-                EUROPEAN_COUNTRIES.includes(eq.origin)
-            );
+            filtered = filtered.filter(eq => eq && originIsUSOrEurope(eq.origin));
         } else if (filters.origin === 'russia-china-iran') {
             // Russia, China & Iran
-            filtered = filtered.filter(eq =>
-                eq.origin === 'Russia' ||
-                eq.origin === 'China' ||
-                eq.origin === 'Iran'
-            );
+            filtered = filtered.filter(eq => eq && originIsRussiaChinaIran(eq.origin));
         } else if (filters.origin === 'rest-of-world') {
             // Rest of World (not America, Europe, Russia, China, or Iran)
             filtered = filtered.filter(eq =>
-                eq.origin !== 'United States' &&
-                !EUROPEAN_COUNTRIES.includes(eq.origin) &&
-                eq.origin !== 'Russia' &&
-                eq.origin !== 'China' &&
-                eq.origin !== 'Iran'
+                eq && !originIsUSOrEurope(eq.origin) && !originIsRussiaChinaIran(eq.origin)
             );
         }
     }
@@ -789,20 +799,24 @@ function getFilteredEquipment(filters) {
     // Filter by type
     if (filters.type !== 'all') {
         if (filters.type === 'tanks') {
-            filtered = filtered.filter(eq => eq.type === 'Main Battle Tank');
+            filtered = filtered.filter(eq => eq && eq.type === 'Main Battle Tank');
         } else if (filters.type === 'aircraft') {
             filtered = filtered.filter(eq =>
-                eq.type.includes('Aircraft') ||
-                eq.type.includes('Helicopter') ||
-                eq.type.includes('Bomber')
+                eq && eq.type && (
+                    eq.type.includes('Aircraft') ||
+                    eq.type.includes('Helicopter') ||
+                    eq.type.includes('Bomber')
+                )
             );
         } else if (filters.type === 'smallarms') {
             filtered = filtered.filter(eq =>
-                eq.type === 'Assault Rifle' ||
-                eq.type === 'Pistol' ||
-                eq.type === 'Sniper Rifle' ||
-                eq.type === 'Anti-Tank Missile' ||
-                eq.type === 'Small Arms'
+                eq && (
+                    eq.type === 'Assault Rifle' ||
+                    eq.type === 'Pistol' ||
+                    eq.type === 'Sniper Rifle' ||
+                    eq.type === 'Anti-Tank Missile' ||
+                    eq.type === 'Small Arms'
+                )
             );
         }
     }

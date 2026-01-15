@@ -839,7 +839,7 @@
             "Photo: Shimin Gu / Wikimedia Commons / GFDL 1.2",
             "Photo: Ibex73 / Wikimedia Commons / CC BY-SA 4.0"
         ]
-    }, ,
+    },
     {
         id: 27,
         name: "Rafale",

@@ -1565,16 +1565,24 @@ function endGame() {
 
 // Helpers
 function switchScreen(screenName) {
-    Object.values(screens).forEach(el => el.classList.add('hidden'));
+    // Remove both 'hidden' and 'active' classes first, then add appropriate classes
+    // This fixes bug where 'active' class (display:flex !important) overrides 'hidden' class
+    Object.values(screens).forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('active');
+    });
 
     if (screenName === 'result') {
         screens.game.classList.remove('hidden');
+        screens.game.classList.add('active');
         screens.result.classList.remove('hidden');
+        screens.result.classList.add('active');
         // Hide the equipment popup when showing results (user can reopen via preview)
         hideEquipmentPopup();
         dom.equipmentThumbnail.classList.add('hidden');
     } else {
         screens[screenName].classList.remove('hidden');
+        screens[screenName].classList.add('active');
     }
 }
 

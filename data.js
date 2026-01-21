@@ -374,6 +374,32 @@
         }
     },
     {
+        id: 151,
+        name: "T-84 Oplot",
+        type: "Main Battle Tank",
+        origin: "Ukraine",
+        coords: [50.4501, 30.5234],
+        images: [
+            "assets/T84.jpg",
+            "assets/T84_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: VoidWanderer / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: VoidWanderer / Wikimedia Commons / CC BY-SA 4.0"
+        ],
+        specs: { speed: "70 km/h", armament: "125mm KBA-3", operationalRange: "500 km" },
+        inService: 1999,
+        users: ["Ukraine", "Thailand"],
+        status: "Active",
+        fact: "The T-84 Oplot is Ukraine's most advanced domestically-produced tank, evolved from the Soviet T-80. It features the Varta optronic countermeasures system with laser warning sensors and an infrared jammer that can deceive incoming anti-tank guided missiles. Thailand operates 49 Oplots alongside Chinese VT-4 tanks.",
+        recognitionFeatures: {
+            wheels: "6 dual rubber-tyred road wheels per side. Torsion bar suspension with hydraulic shock absorbers on 1st, 2nd, and 6th stations. Drive sprocket at rear.",
+            hull: "Low Soviet-style profile with well-sloped glacis. Modular Duplet ERA blocks on front and sides. Driver centrally positioned with hatch opening to right. Large hinged rubber side skirts.",
+            armament: "125mm KBA-3 smoothbore gun with thermal sleeve. 12.7mm anti-aircraft MG on commander's cupola. Coaxial 7.62mm MG.",
+            turret: "All-welded turret (unlike cast T-80UD turret). Hexagonal shape when viewed from above. Duplet ERA panels on front and sides. Commander's cupola on right, gunner's hatch on left."
+        }
+    },
+    {
         id: 13,
         name: "Leclerc",
         type: "Main Battle Tank",
@@ -398,6 +424,32 @@
             turret: "Distinctive low-profile turret with modular armor. Autoloader bustle at rear separates crew from ammo."
         },
         fact: "The Leclerc was the first Western main battle tank to feature an automatic loading system, reducing crew to just three members and enabling a fire rate of 12 rounds per minute. It was also among the first tanks with integrated battlefield management, providing real-time positions of allied and hostile forces."
+    },
+    {
+        id: 155,
+        name: "C1 Ariete",
+        type: "Main Battle Tank",
+        origin: "Italy",
+        coords: [41.9028, 12.4964],
+        images: [
+            "assets/C1_Ariete.jpg",
+            "assets/C1_Ariete_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Italian Army / esercito.difesa.it / CC BY 2.5",
+            "Photo: Kaminski / Wikimedia Commons / CC BY-SA 3.0"
+        ],
+        specs: { speed: "65 km/h", armament: "120mm OTO Melara L/44", operationalRange: "550 km" },
+        inService: 1995,
+        users: ["Italy"],
+        status: "Active",
+        fact: "The C1 Ariete is Italy's only domestically designed and produced main battle tank, with 200 units built by OTO Melara and IVECO. It shares the TURMS fire control system with the B1 Centauro tank destroyer and was designed specifically for the Italian Army's needs in the European theater.",
+        recognitionFeatures: {
+            wheels: "7 road wheels per side with pronounced gaps. Torsion bar suspension. Drive sprocket at rear, idler at front. Rubber side skirts.",
+            hull: "Welded steel hull with composite armor on front. Driver's hatch on front-left. Sloped glacis plate. Exhaust on rear left side.",
+            armament: "120mm OTO Melara L/44 smoothbore gun with thermal sleeve and bore evacuator. Coaxial 7.62mm MG. Commander's 7.62mm MG on roof.",
+            turret: "Angular welded turret with composite armor inserts. Distinctive flat turret roof. Smoke grenade launchers on turret sides. Large bustle rack at rear."
+        }
     },
     {
         id: 14,
@@ -1528,7 +1580,7 @@
         coords: [38.8814, -77.0365],
         images: [
             "assets/Tomahawk.jpg",
-            "assets/Tomahawk_Bravo.JPEG"
+            "assets/Tomahawk_Bravo.jpeg"
         ],
         imageCredits: [
             "Photo: Cliff / Flickr / CC BY 2.0",
@@ -1792,12 +1844,18 @@
         type: "Air Defense System",
         origin: "China",
         coords: [39.9042, 116.4074],
-        image: "assets/HQ_9.jpg",
+        images: [
+            "assets/HQ_9.jpg",
+            "assets/HQ9_Bravo.jpg"
+        ],
         specs: { speed: "Static", armament: "HQ-9 missiles", engagementRange: "200 km" },
         inService: 1997,
         users: ["China", "Pakistan"],
         status: "Active",
-        imageCredit: "Photo: Tyg728 / Wikimedia Commons / CC BY-SA 4.0"
+        imageCredits: [
+            "Photo: Tyg728 / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Jian Kang / Wikimedia Commons / CC BY 3.0"
+        ]
     },
     {
         id: 51,
@@ -1854,6 +1912,26 @@
         status: "Active",
         fact: "The Buk missile system (SA-17 Grizzly) is a tracked medium-range SAM system designed to engage aircraft, cruise missiles, and UAVs. Its 9M317 missiles reach Mach 4 with a 45 km range, and the target acquisition radar can detect targets up to 85 km away.",
         imageCredit: "Photo: Vitaly V. Kuzmin / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 153,
+        name: "THAAD",
+        type: "Air Defense System",
+        origin: "United States",
+        coords: [31.9686, -106.2514],
+        images: [
+            "assets/Thaad.jpg",
+            "assets/Thaad_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Lt. Amy Forsythe / U.S. Navy / Public Domain",
+            "Photo: Ralph Scott / U.S. Missile Defense Agency / Public Domain"
+        ],
+        specs: { speed: "Static", armament: "THAAD Interceptors", engagementRange: "200 km" },
+        inService: 2008,
+        users: ["United States", "UAE", "Saudi Arabia", "South Korea", "Israel"],
+        status: "Active",
+        fact: "THAAD (Terminal High Altitude Area Defense) is a mobile anti-ballistic missile system using 'hit-to-kill' technology to intercept short, medium, and intermediate-range ballistic missiles during their terminal flight phase. Each battery contains 48 interceptors that travel at Mach 8.2 and can engage targets at altitudes up to 150 km - both inside and outside Earth's atmosphere. The UAE became the first foreign operator, achieving the world's first operational intercept of a hostile ballistic missile by THAAD in January 2022."
     },
 
     // === ARTILLERY ===
@@ -1917,6 +1995,26 @@
         status: "Active",
         fact: "Unlike older, less accurate artillery, HIMARS uses GPS-guided munitions (GMLRS rockets) with \"sniper-like\" precision, capable of hitting a specific building or target from up to 57 miles (92 km) away.",
         imageCredit: "Photo: U.S. Army / Public Domain"
+    },
+    {
+        id: 156,
+        name: "BM-30 Smerch",
+        type: "Artillery",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/9a52_BM30.jpg",
+            "assets/9a52_BM30_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: One half 3544 / Wikimedia Commons / Public Domain",
+            "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0"
+        ],
+        specs: { speed: "60 km/h", armament: "300mm rockets", maximumRange: "90 km" },
+        inService: 1989,
+        users: ["Russia", "Ukraine", "Belarus", "Algeria", "Kuwait", "India", "Peru", "Syria", "UAE", "Azerbaijan", "Kazakhstan", "Turkmenistan"],
+        status: "Active",
+        fact: "The BM-30 Smerch (Russian for 'Tornado') is one of the world's most powerful multiple rocket launcher systems. Each 9A52 launch vehicle carries 12 x 300mm rockets that can deliver 280kg warheads to ranges up to 90km. A single salvo from one launcher can devastate an area of 67 hectares, making it one of the most destructive conventional artillery systems ever built."
     },
     {
         id: 58,
@@ -2135,12 +2233,18 @@
         type: "Combat Drone",
         origin: "Turkey",
         coords: [38.9637, 35.2433],
-        image: "assets/bayraktar_1765118506987.jpg",
+        images: [
+            "assets/bayraktar_1765118506987.jpg",
+            "assets/bayraktar_1765118506987_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Bayhaluk / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: אלי / Wikimedia Commons / CC BY-SA 4.0"
+        ],
         specs: { speed: "220 km/h", armament: "MAM-L, MAM-C", operationalRange: "150 km" },
         inService: 2014,
         users: ["Turkey", "Ukraine", "Azerbaijan", "Libya", "Poland"],
-        status: "Active",
-        imageCredit: "Photo: Bayhaluk / Wikimedia Commons / CC BY-SA 4.0"
+        status: "Active"
     },
     {
         id: 65,
@@ -2275,7 +2379,7 @@
         id: 74,
         name: "AK-203",
         type: "Assault Rifle",
-        origin: "Russia",
+        origin: "Russia / India",
         coords: [55.7558, 37.6173],
         image: "assets/AK_203.png",
         specs: { speed: "N/A", armament: "7.62x39mm", effectiveRange: "800 m" },
@@ -2642,6 +2746,26 @@
         imageCredit: "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
     },
     {
+        id: 154,
+        name: "B1 Centauro",
+        type: "Tank Destroyer",
+        origin: "Italy",
+        coords: [41.9028, 12.4964],
+        images: [
+            "assets/B1_Centauro.jpg",
+            "assets/B1_Centauro_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Italian Army / esercito.difesa.it / CC BY 2.5",
+            "Photo: Mario Antonio Pena Zapatería / Flickr / CC BY-SA 2.0"
+        ],
+        specs: { speed: "105 km/h", armament: "105mm OTO Melara", operationalRange: "800 km" },
+        inService: 1991,
+        users: ["Italy", "Spain", "Jordan", "Oman", "Ukraine"],
+        status: "Active",
+        fact: "The B1 Centauro is a wheeled 8x8 tank destroyer developed by IVECO and OTO Melara for the Italian Army. Its 105mm rifled gun is compatible with standard NATO ammunition and features the same TURMS fire control system used on the Ariete MBT. With a top speed of 105 km/h and 800km range, it offers exceptional strategic mobility - Italy produced 400 units while Spain operates 88 as the VRC-105."
+    },
+    {
         id: 152,
         name: "VBCI",
         type: "Infantry Fighting Vehicle",
@@ -2973,6 +3097,32 @@
         fact: "The GMZ-3 tracked minelayer can carry 208 anti-tank mines and rapidly deploy them at up to 16 km/h on the surface or 6 km/h when burying them up to 120mm deep. It automatically lays mines at 5 or 10 meter intervals using a plough assembly.",
         imageCredit: "Photo: Vitaly V. Kuzmin / Wikimedia Commons / CC BY-SA 4.0"
     },
+    {
+        id: 152,
+        name: "Trojan AVRE",
+        type: "Combat Engineer Vehicle",
+        origin: "United Kingdom",
+        coords: [51.5074, -0.1278],
+        images: [
+            "assets/Trojan_AVRE.jpg",
+            "assets/Trojan_AVRE_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Alan Wilson / Flickr / CC BY-SA 2.0",
+            "Photo: MoD/Crown Copyright / OGL v1.0"
+        ],
+        specs: { speed: "59 km/h", armament: "7.62mm L94A1", operationalRange: "450 km" },
+        inService: 2007,
+        users: ["United Kingdom"],
+        status: "Active",
+        fact: "The Trojan AVRE (Armoured Vehicle Royal Engineers) is built on the Challenger 2 tank chassis and carries the Python mine-clearing system, which fires a rocket-propelled explosive hose across minefields to clear a 7-meter wide, 230-meter long path. It was first deployed to Afghanistan in 2009 and only 33 units were built.",
+        recognitionFeatures: {
+            wheels: "6 road wheels per side (Challenger 2 chassis). Hydropneumatic suspension. Gap between 2nd and 3rd wheel.",
+            hull: "Challenger 2 tank hull with full armor protection. Large front-mounted dozer blade. Fascine cradle on hull sides.",
+            armament: "7.62mm L94A1 machine gun in Remote Weapon Station. Can tow Python mine-clearing trailer.",
+            turret: "No turret - replaced by large hydraulic excavator arm with 6.5-tonne lift capacity. Arm stows rearward when traveling."
+        }
+    },
 
     // === ELECTRONIC WARFARE ===
     {
@@ -3226,6 +3376,32 @@
         imageCredit: "Photo: Danny Yu / Wikimedia Commons / CC BY-SA 4.0"
     },
     {
+        id: 150,
+        name: "E-2 Hawkeye",
+        type: "Airborne Early Warning Aircraft",
+        origin: "United States",
+        coords: [40.7128, -73.2060],
+        images: [
+            "assets/E2_Hawkeye.jpg",
+            "assets/E2_Hawkeye_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Balon Greyjoy / Wikimedia Commons / CC0 1.0",
+            "Photo: Photographer's Mate Airman Ronald A. Dallatorre / U.S. Navy / Public Domain"
+        ],
+        specs: { speed: "650 km/h", armament: "None (AEW)", ferryRange: "2708 km" },
+        inService: 1964,
+        users: ["United States", "France", "Japan", "Egypt", "Taiwan", "Mexico"],
+        status: "Active",
+        fact: "The E-2 Hawkeye is affectionately called 'The Hummer' by Navy crews due to the distinctive humming sound its twin turboprop engines make, which sets it apart from the jet aircraft on a carrier. It is the only carrier-capable AEW aircraft in the world and has been continuously upgraded since 1964, with the latest E-2D Advanced Hawkeye featuring a new radar capable of tracking up to 2,000 targets simultaneously.",
+        recognitionFeatures: {
+            wings: "High-mounted, straight wings with Sto-Wing folding system. Wings fold rearward for carrier storage.",
+            engine: "Two Allison T56 turboprop engines mounted under wings. Eight-bladed propellers on E-2D variant.",
+            fuselage: "Distinctive 24-foot diameter rotating circular radome mounted above fuselage on pylons. Cockpit sits higher than main fuselage.",
+            tail: "Unique four-fin tail configuration with dihedral horizontal stabilizers. Vertical fins both above and below stabilizers. Tail hook for carrier landings."
+        }
+    },
+    {
         id: 125,
         name: "USS Zumwalt",
         type: "Naval Vessel",
@@ -3394,6 +3570,98 @@
         }
     },
     {
+        id: 156,
+        name: "AH-1Z Viper",
+        type: "Attack Helicopter",
+        origin: "United States",
+        coords: [33.6829, -117.2115],
+        images: [
+            "assets/AH1Z.jpg",
+            "assets/AH1Z_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Acroterion / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Lance Cpl. Christopher O'Quin / U.S. Marine Corps / Public Domain"
+        ],
+        specs: { speed: "411 km/h", armament: "20mm M197 cannon, AGM-114 Hellfire, AIM-9 Sidewinder", combatRadius: "231 km" },
+        inService: 2010,
+        users: ["United States", "Bahrain", "Czech Republic"],
+        status: "Active",
+        fact: "The AH-1Z 'Zulu Cobra' is the latest evolution of the legendary AH-1 Cobra lineage that dates back to the Vietnam War. It features a revolutionary four-bladed, bearingless composite rotor system that reduces its acoustic signature so effectively it's often undetected until overhead. The Viper shares 85% parts commonality with the UH-1Y Venom utility helicopter, dramatically reducing maintenance costs for the Marine Corps.",
+        recognitionFeatures: {
+            rotors: "Four-blade hingeless, bearingless composite main rotor. Four-blade tail rotor. Semi-automatic folding for shipboard storage.",
+            engine: "Twin GE T700-GE-401C turboshafts mounted above the cabin. Exhaust with IR suppression system (HIRSS).",
+            fuselage: "Narrow, tandem-seat configuration (gunner front, pilot rear). Stub wings with 6 hardpoints for weapons.",
+            tail: "Conventional tail boom with port-side tail rotor. Horizontal stabilizer on tail."
+        }
+    },
+    {
+        id: 157,
+        name: "Leonardo M-346 Master",
+        type: "Trainer Aircraft",
+        origin: "Italy",
+        coords: [45.4642, 9.1900],
+        images: [
+            "assets/M346.jpg",
+            "assets/M346_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Gian Marco Anzellotti / Wikimedia Commons / CC BY 2.0",
+            "Photo: Steve Lynes / Wikimedia Commons / CC BY 2.0"
+        ],
+        specs: { speed: "Mach 1.2", armament: "Up to 3,000 kg (training weapons, gun pods, missiles)", combatRadius: "1,890 km" },
+        inService: 2010,
+        users: ["Italy", "Israel", "Poland", "Singapore", "Greece", "Qatar", "Nigeria", "Egypt"],
+        status: "Active",
+        fact: "The M-346 Master is one of the world's most advanced lead-in fighter trainers (LIFT), designed to simulate 4th and 5th generation fighters. Its unique 'Embedded Tactical Training System' allows student pilots to train against virtual threats displayed on cockpit screens, reducing the need for expensive live-fly aggressor aircraft. The Israeli version, designated 'Lavi', can be rapidly converted into a light combat aircraft.",
+        recognitionFeatures: {
+            wings: "Mid-mounted, swept-back wings with prominent leading-edge root extensions (LERX). Slightly negative dihedral.",
+            engine: "Twin Honeywell F124 turbofans. Rectangular air intakes on fuselage sides below the cockpit.",
+            fuselage: "Tandem two-seat cockpit with large bubble canopy. Sleek, aerodynamic design resembling a small fighter.",
+            tail: "Single vertical stabilizer. All-moving horizontal stabilators mounted low at rear."
+        }
+    },
+    {
+        id: 158,
+        name: "AC-130",
+        type: "Gunship",
+        origin: "United States",
+        coords: [29.3852, -98.5808],
+        images: [
+            "assets/AC130.jpg",
+            "assets/AC130_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: MSgt Christopher Boitz / U.S. Air Force / Public Domain",
+            "Photo: SrA Julianne Showalter / U.S. Air Force / Public Domain"
+        ],
+        specs: { speed: "671 km/h", armament: "30mm GAU-23, 105mm M102 howitzer, GBU-39 SDB, AGM-176 Griffin", ferryRange: "4,828 km" },
+        inService: 2017,
+        users: ["United States"],
+        status: "Active",
+        fact: "The AC-130 is essentially a flying artillery battery, capable of loitering over battlefields for hours while providing devastating close air support. It performs 'pylon turns' - orbiting a fixed point on the ground - allowing all side-mounted weapons to concentrate fire on a single target. The AC-130U Spooky once set a record for the longest sustained C-130 flight at 36 hours with seven in-air refuelings.",
+        recognitionFeatures: {
+            wings: "High-mounted, straight wings with anhedral droop. Four-engine turboprop configuration.",
+            engine: "Four Rolls-Royce AE 2100D3 turboprops with six-bladed propellers.",
+            fuselage: "C-130 airframe with distinctive side-mounted weapons visible. Sensor pods and antennas on underside.",
+            tail: "Large conventional vertical stabilizer with dorsal fin. Low-mounted horizontal tailplane."
+        }
+    },
+    {
+        id: 159,
+        name: "SR-25",
+        type: "Sniper Rifle",
+        origin: "United States",
+        coords: [28.5831, -80.8197],
+        image: "assets/SR25.jpg",
+        specs: { speed: "N/A", armament: "7.62x51mm NATO", effectiveRange: "800 m" },
+        inService: 1990,
+        users: ["United States", "Israel", "Australia", "Poland", "Thailand", "Turkey"],
+        status: "Active",
+        fact: "The SR-25 (Stoner Rifle-25) was designed by Eugene Stoner, the father of the AR-15, and combines the inherent accuracy of a bolt-action rifle with the rapid follow-up shot capability of a semi-automatic. It shares 60% parts commonality with the AR-15 and has served as the basis for the U.S. Navy Mk 11 and U.S. Army M110 Semi-Automatic Sniper Systems.",
+        imageCredit: "Photo: Zachi Evenor / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
         id: 133,
         name: "MP5",
         type: "Submachine Gun",
@@ -3423,7 +3691,7 @@
         ],
         specs: { speed: "Mach 1.4", armament: "SCALP EG, GBU-12, MICA", combatRadius: "1,480 km" },
         inService: 1995,
-        users: ["France"],
+        users: ["France", "Egypt", "Greece", "India", "Peru", "Taiwan", "UAE"],
         status: "Active",
         fact: "The Mirage 2000D is a two-seat strike variant developed from the Mirage 2000N nuclear bomber. It has been the workhorse of the French Air Force, extensively deployed in the Balkans, Afghanistan, Libya, Mali, and Syria. A mid-life upgrade program is keeping 55 aircraft operational until at least 2035, integrating modern weapons like SCALP cruise missiles and precision-guided bombs.",
         recognitionFeatures: {
@@ -3555,6 +3823,144 @@
         status: "Active",
         fact: "The Sigma 155, designated 'Ro'em' (thunderous) in Israel, is a wheeled 155mm self-propelled howitzer manufactured by Elbit Systems. Mounted on an Oshkosh 10x10 truck, it features a fully automated remote-controlled turret that allows a crew of just 3 to operate from inside an armored cabin. It can fire 8-10 rounds per minute, carry 40 rounds onboard, and transition from travel to fire mode in one minute. First operational firing by IDF gunners occurred in June 2024, replacing older M109 howitzers."
     },
+    {
+        id: 160,
+        name: "ZALA Lancet-3",
+        type: "Loitering Munition",
+        origin: "Russia",
+        coords: [56.8519, 60.6122],
+        image: "assets/Lancet.jpg",
+        specs: { speed: "80-110 km/h", armament: "3kg HE Warhead", maximumRange: "40 km" },
+        inService: 2019,
+        users: ["Russia"],
+        status: "Active",
+        fact: "The ZALA Lancet-3 is a Russian loitering munition developed by ZALA Aero Group, a subsidiary of Kalashnikov Concern. Weighing just 12kg, it can loiter over battlefields for 40 minutes before diving at up to 300 km/h onto targets. Often paired with the Orlan-10 reconnaissance drone for target acquisition, it has proven devastatingly effective against artillery, air defense systems, and armored vehicles. Upgraded variants carry heavier 5kg warheads or thermobaric payloads.",
+        imageCredit: "Photo: Mztourist / Wikimedia Commons / CC BY 4.0"
+    },
+    {
+        id: 161,
+        name: "Aérospatiale Gazelle",
+        type: "Light Helicopter",
+        origin: "France",
+        coords: [48.8566, 2.3522],
+        images: [
+            "assets/Gazelle.jpg",
+            "assets/Gazelle_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Aircaft @ Gloucestershire Airport By James / Flickr / CC BY-SA 2.0",
+            "Photo: Airwolfhound / Wikimedia Commons / CC BY-SA 4.0"
+        ],
+        specs: { speed: "310 km/h", armament: "HOT ATGMs / 20mm Cannon", combatRadius: "670 km" },
+        inService: 1973,
+        users: ["France", "United Kingdom", "Egypt", "Kuwait", "Morocco", "Serbia", "Lebanon", "Qatar", "Syria", "Kenya"],
+        status: "Active",
+        fact: "The Aérospatiale Gazelle was the first helicopter to feature a fenestron (enclosed fan-in-fin tail rotor) instead of a conventional tail rotor, making it quieter and safer on the ground. Over 1,775 units were built between 1967-1996. British Army Gazelles saw action in the Falklands War, and French Gazelles armed with HOT missiles destroyed numerous Iraqi tanks during the Gulf War.",
+        recognitionFeatures: {
+            rotors: "Three-blade main rotor. Distinctive fenestron (enclosed fan-in-fin) tail rotor - no exposed tail rotor blades.",
+            engine: "Single Turbomeca Astazou turboshaft mounted above cabin. Exhaust on left side behind rotor mast.",
+            fuselage: "Sleek, streamlined cabin with large bubble canopy. Skid landing gear. Seats up to 5 (2 crew + 3 passengers).",
+            tail: "Long, slender tail boom with prominent fenestron shroud at end. Small horizontal stabilizer on tail boom."
+        }
+    },
+    {
+        id: 162,
+        name: "L129A1 Sharpshooter",
+        type: "Sharpshooter Rifle",
+        origin: "United States",
+        coords: [41.6111, -90.5207],
+        images: [
+            "assets/L129A1.jpg",
+            "assets/L129A1_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Stuart Hill/MOD / Open Government Licence version 1.0 (OGL v1.0)",
+            "Photo: Stuart Hill/MOD / Open Government Licence v3.0"
+        ],
+        specs: { speed: "N/A", armament: "7.62x51mm NATO", effectiveRange: "800 m" },
+        inService: 2010,
+        users: ["United Kingdom", "New Zealand"],
+        status: "Active",
+        fact: "The L129A1 is a 7.62mm Sharpshooter rifle procured by the British Army to engage targets beyond the effective range of the 5.56mm SA80. Manufactured by Lewis Machine & Tool (LMT) in the US as the LM308MWS, it was selected over the HK417 and FN SCAR-H for its superior accuracy. It features a monolithic upper receiver and a quick-change barrel system.",
+    },
+    {
+        id: 163,
+        name: "Tupolev Tu-160 'Blackjack'",
+        type: "Strategic Bomber",
+        origin: "Russia",
+        coords: [51.4880, 46.2120],
+        images: [
+            "assets/TU160.jpg",
+            "assets/TU160_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Alex Beltyukov / Wikimedia Commons / CC BY-SA 3.0",
+            "Photo: Igor Bubin / Wikimedia Commons / CC BY-SA 3.0"
+        ],
+        specs: { speed: "2,220 km/h (Mach 2.05)", armament: "Kh-55 / Kh-101 Cruise Missiles", ferryRange: "12,300 km" },
+        inService: 1987,
+        users: ["Russia"],
+        status: "Active",
+        fact: "The Tupolev Tu-160 (NATO: Blackjack) is the world's largest and heaviest combat aircraft, and the fastest bomber in service. Known to its pilots as the 'White Swan' due to its anti-flash white paint and graceful design, it features variable-sweep wings and can carry up to 40,000 kg of ordnance in two internal bays. It holds 44 world records for speed and altitude.",
+        recognitionFeatures: {
+            wings: "Variable-sweep wings (swing-wing). Long, tapered with blunt tips when extended. Swept back 65° for high speed.",
+            engine: "Four large turbofan engines in two pods under the fixed wing roots. Rectangular intakes.",
+            fuselage: "Massive, long tube-like fuselage with a pointed, slightly upturned nose. Blended wing-body design.",
+            tail: "Large, swept-back vertical fin with a small bullet fairing. Cruciform tail with swept horizontal stabilizers mounted high on the fin."
+        }
+    },
+    {
+        id: 164,
+        name: "Tupolev Tu-95 'Bear'",
+        type: "Strategic Bomber",
+        origin: "Russia",
+        coords: [51.4880, 46.2120],
+        images: [
+            "assets/TU95.jpg",
+            "assets/TU95_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: RAF/MOD / Open Government Licence v2.0",
+            "Photo: Ministry of Defence of the Russian Federation / Mil.ru / CC BY 4.0"
+        ],
+        specs: { speed: "925 km/h", armament: "Kh-55 / Kh-101 Cruise Missiles", ferryRange: "15,000 km" },
+        inService: 1956,
+        users: ["Russia"],
+        status: "Active",
+        fact: "The Tupolev Tu-95 (NATO: Bear) is a large, four-engine turboprop-powered strategic bomber and missile platform. First flown in 1952, it is the only propeller-driven strategic bomber still in operational use today. Its distinctive swept wings and contra-rotating propellers make it one of the loudest military aircraft in existence. It is expected to serve until at least 2040.",
+        recognitionFeatures: {
+            wings: "Swept-back wings (35° angle). High aspect ratio, mounted mid-fuselage. Four engine nacelles mounted on wings.",
+            engine: "Four Kuznetsov NK-12 turboprops. Distinctive contra-rotating propellers (two props per engine spinning in opposite directions).",
+            fuselage: "Long, slender tube-like fuselage. Pointed nose (often with refueling probe). Tail often features a gunner compartment.",
+            tail: "Swept-back vertical fin. Swept-back horizontal stabilizers mounted on the fuselage tail cone."
+        }
+    },
 
+    {
+        id: 112,
+        name: "WZ523",
+        type: "APC/IFV",
+        origin: "China",
+        coords: [39.9042, 116.4074],
+        images: [
+            "assets/WZ523.jpg",
+            "assets/WZ523_Bravo.PNG"
+        ],
+        specs: { speed: "85 km/h", armament: "12.7mm Heavy MG", operationalRange: "600 km" },
+        inService: 1984,
+        users: ["China", "Namibia", "Niger", "Gabon", "Ghana"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "6x6 wheeled configuration. Torsion bar suspension. Large gap between 2nd and 3rd wheel.",
+            hull: "Boxy, boat-shaped hull with trim vane on front glacis for amphibious ops. Engine in center.",
+            armament: "Typically a roof-mounted 12.7mm heavy machine gun (Type 54). Some variants have a small turret.",
+            turret: "Small turret or cupola for MG. 2 observation ports on hull sides."
+        },
+        fact: "The WZ523 is fully amphibious, propelled by two waterjets at the rear. It was developed alongside the WZ551 but uses a truck chassis (Hanyang HY472) making it cheaper but less mobile off-road.",
+        imageCredits: [
+            "Namibian Army WZ523 APC",
+            "Photo: Government of Ghana / Wikimedia Commons / CC0 1.0"
+        ]
+    },
 ];
 

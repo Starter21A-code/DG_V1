@@ -798,24 +798,29 @@ function getFilteredEquipment(filters) {
 
     // Filter by type
     if (filters.type !== 'all') {
-        if (filters.type === 'tanks') {
-            filtered = filtered.filter(eq => eq && eq.type === 'Main Battle Tank');
-        } else if (filters.type === 'aircraft') {
+        if (filters.type === 'air') {
             filtered = filtered.filter(eq =>
                 eq && eq.type && (
                     eq.type.includes('Aircraft') ||
                     eq.type.includes('Helicopter') ||
-                    eq.type.includes('Bomber')
+                    eq.type.includes('Bomber') ||
+                    eq.type.includes('Gunship') ||
+                    eq.type.includes('Tiltrotor')
                 )
             );
-        } else if (filters.type === 'smallarms') {
+        } else if (filters.type === 'sea') {
             filtered = filtered.filter(eq =>
-                eq && (
-                    eq.type === 'Assault Rifle' ||
-                    eq.type === 'Pistol' ||
-                    eq.type === 'Sniper Rifle' ||
-                    eq.type === 'Anti-Tank Missile' ||
-                    eq.type === 'Small Arms'
+                eq && eq.type === 'Naval Vessel'
+            );
+        } else if (filters.type === 'land') {
+            filtered = filtered.filter(eq =>
+                eq && eq.type && (
+                    !eq.type.includes('Aircraft') &&
+                    !eq.type.includes('Helicopter') &&
+                    !eq.type.includes('Bomber') &&
+                    !eq.type.includes('Gunship') &&
+                    !eq.type.includes('Tiltrotor') &&
+                    eq.type !== 'Naval Vessel'
                 )
             );
         }
@@ -1841,7 +1846,8 @@ function renderEquipmentGrid() {
                     eq.type === 'Armored Fighting Vehicle' ||
                     eq.type === 'Amphibious Combat Vehicle' ||
                     eq.type === 'Amphibious Fighting Vehicle' ||
-                    eq.type === 'Protected Mobility Vehicle';
+                    eq.type === 'Protected Mobility Vehicle' ||
+                    eq.type === 'APC/IFV';
             }
             // Special handling for Light Vehicles category
             if (practiceState.currentCategory === 'Light Vehicles') {
@@ -1858,7 +1864,8 @@ function renderEquipmentGrid() {
                     eq.type === 'Anti-Tank Missile' ||
                     eq.type === 'Air-to-Ground Missile' ||
                     eq.type === 'Intercontinental Ballistic Missile' ||
-                    eq.type === 'Tactical Ballistic Missile';
+                    eq.type === 'Tactical Ballistic Missile' ||
+                    eq.type === 'Loitering Munition';
             }
             // Special handling for Support Vehicles category
             if (practiceState.currentCategory === 'Support Vehicles') {
@@ -1868,11 +1875,12 @@ function renderEquipmentGrid() {
                     eq.type === 'Wheeled Vehicle-Launched Bridge' ||
                     eq.type === 'Mine-Clearing Vehicle' ||
                     eq.type === 'Minelayer' ||
-                    eq.type === 'Multi-Purpose Tracked Vehicle';
+                    eq.type === 'Multi-Purpose Tracked Vehicle' ||
+                    eq.type === 'Combat Engineer Vehicle';
             }
             // Special handling for aircraft category - include all aircraft types including helicopters
             if (practiceState.currentCategory === 'Fighter Aircraft') {
-                return eq.type.includes('Aircraft') || eq.type.includes('Helicopter') || eq.type === 'Transport Tiltrotor';
+                return eq.type.includes('Aircraft') || eq.type.includes('Helicopter') || eq.type === 'Light Helicopter' || eq.type === 'Transport Tiltrotor' || eq.type === 'Gunship' || eq.type === 'Strategic Bomber';
             }
             // Special handling for Small Arms category - include rifles, pistols, sniper rifles, shotguns, machine guns
             if (practiceState.currentCategory === 'Small Arms') {
@@ -1882,7 +1890,8 @@ function renderEquipmentGrid() {
                     eq.type === 'Combat Shotgun' ||
                     eq.type === 'Submachine Gun' ||
                     eq.type === 'Small Arms' ||
-                    eq.type === 'Machine Gun';
+                    eq.type === 'Machine Gun' ||
+                    eq.type === 'Sharpshooter Rifle';
             }
             return eq.type === practiceState.currentCategory;
         });

@@ -1,5 +1,5 @@
 // Defence Guesser Service Worker
-const CACHE_NAME = 'defence-guesser-v132';
+const CACHE_NAME = 'defence-guesser-v167';
 
 // Files to cache for offline use
 const urlsToCache = [
@@ -25,6 +25,8 @@ const urlsToCache = [
     './assets/Type_99a_bravo.jpg',
     './assets/k2_black_panther.jpg',
     './assets/K2_black_panther_bravo.jpg',
+    './assets/T84.jpg',
+    './assets/T84_Bravo.jpg',
 
     './assets/zulfiqar_3.jpg',
     './assets/Zulfiqar_3_bravo.jpg',
@@ -49,7 +51,7 @@ const urlsToCache = [
     './assets/2s7.jpg',
     './assets/2S7_Bravo.jpg',
     './assets/Tomahawk.jpg',
-    './assets/Tomahawk_Bravo.JPEG',
+    './assets/Tomahawk_Bravo.jpeg',
     './assets/Brimstone.jpg',
     './assets/Brimstone_Bravo.jpg',
     './assets/FA18.jpg',
@@ -65,6 +67,7 @@ const urlsToCache = [
     './assets/Tunguska_Bravo.jpg',
     './assets/caesar_1765118550941.jpg',
     './assets/bayraktar_1765118506987.jpg',
+    './assets/bayraktar_1765118506987_Bravo.jpg',
     './assets/m4a1_carbine.jpg',
     './assets/ak74m_rifle.png',
     './assets/AK74M_Bravo.jpg',
@@ -176,6 +179,8 @@ const urlsToCache = [
     './assets/Orlan_10.jpg',
     './assets/BMR_3M.jpg',
     './assets/GMZ_3.jpg',
+    './assets/Trojan_AVRE.jpg',
+    './assets/Trojan_AVRE_Bravo.jpg',
     './assets/HUMVEE.jpg',
     './assets/Foxhound.jpg',
     './assets/Jackal.jpg',
@@ -208,6 +213,8 @@ const urlsToCache = [
     './assets/A50_Mainstay_bravo.jpg',
     './assets/Boeing_E3_Sentry.jpg',
     './assets/KJ2000.jpg',
+    './assets/E2_Hawkeye.jpg',
+    './assets/E2_Hawkeye_Bravo.jpg',
     './assets/USS_Zumwalt.jpg',
     './assets/Glock17.jpg',
     './assets/Glock17_bravo.jpg',
@@ -288,7 +295,34 @@ const urlsToCache = [
     './assets/Borsuk_Bravo.jpg',
     './assets/K808.jpg',
     './assets/K808_Bravo.jpg',
-    './assets/Patria_AMV.jpg'
+    './assets/Patria_AMV.jpg',
+    './assets/AH1Z.jpg',
+    './assets/AH1Z_Bravo.jpg',
+    './assets/M346.jpg',
+    './assets/M346_Bravo.jpg',
+    './assets/AC130.jpg',
+    './assets/AC130_Bravo.jpg',
+    './assets/SR25.jpg',
+    './assets/HQ_9.jpg',
+    './assets/HQ9_Bravo.jpg',
+    './assets/Thaad.jpg',
+    './assets/Thaad_Bravo.jpg',
+    './assets/B1_Centauro.jpg',
+    './assets/B1_Centauro_Bravo.jpg',
+    './assets/C1_Ariete.jpg',
+    './assets/C1_Ariete_Bravo.jpg',
+    './assets/9a52_BM30.jpg',
+    './assets/9a52_BM30_Bravo.jpg',
+    './assets/Lancet.jpg',
+    './assets/Gazelle.jpg',
+    './assets/Gazelle_Bravo.jpg',
+    './assets/L129A1.jpg',
+    './assets/L129A1_Bravo.jpg',
+    './assets/TU160_Bravo.jpg',
+    './assets/TU95.jpg',
+    './assets/TU95_Bravo.jpg',
+    './assets/WZ523.jpg',
+    './assets/WZ523_Bravo.PNG'
 ];
 
 // Install event - cache files

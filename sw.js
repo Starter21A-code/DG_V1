@@ -322,7 +322,7 @@ const urlsToCache = [
     './assets/TU95.jpg',
     './assets/TU95_Bravo.jpg',
     './assets/WZ523.jpg',
-    './assets/WZ523_Bravo.PNG'
+    './assets/WZ523_Bravo.jpg'
 ];
 
 // Install event - cache files

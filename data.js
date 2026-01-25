@@ -3944,7 +3944,7 @@
         coords: [39.9042, 116.4074],
         images: [
             "assets/WZ523.jpg",
-            "assets/WZ523_Bravo.PNG"
+            "assets/WZ523_Bravo.jpg"
         ],
         specs: { speed: "85 km/h", armament: "12.7mm Heavy MG", operationalRange: "600 km" },
         inService: 1984,

@@ -15,7 +15,9 @@ const COUNTRY_ALIASES = {
     "India": ["India", "Republic of India"],
     "United Kingdom / France": ["United Kingdom", "Great Britain", "UK", "Britain", "France", "French Republic"],
     "United Kingdom / Sweden": ["United Kingdom", "Great Britain", "UK", "Britain", "Sweden", "Kingdom of Sweden"],
-    "China / Pakistan": ["China", "People's Republic of China", "Pakistan", "Islamic Republic of Pakistan"]
+    "China / Pakistan": ["China", "People's Republic of China", "Pakistan", "Islamic Republic of Pakistan"],
+    "United States / United Kingdom": ["United States of America", "USA", "United States", "US", "United Kingdom", "Great Britain", "UK", "Britain"],
+    "Germany / United Kingdom / Italy / Spain": ["Germany", "Federal Republic of Germany", "United Kingdom", "Great Britain", "UK", "Britain", "Italy", "Italian Republic", "Spain", "Kingdom of Spain"]
 };
 
 let state = {
@@ -36,7 +38,14 @@ let state = {
     roundResults: [],  // Track results for each round
     currentRoundResult: null,  // Track current round's result before bonus
     isDailyMode: false,  // Daily challenge mode
-    playerName: ''  // Player name for daily leaderboard
+    playerName: '',  // Player name for daily leaderboard
+    isHardMode: false,  // Hard mode with frost overlay
+    frostRevealPercentage: 0,  // 0-100, tracks how much has been revealed
+    triviaSubmitted: false,  // Hard Mode trivia question answered
+    currentTriviaQuestion: null, // Generated trivia question for current round
+    dailyRoundStartTime: null,   // Timestamp when daily round image loaded (time attack)
+    dailyTimerInterval: null,    // Interval ID for the live timer UI update loop
+    dailyTimeMultiplier: 100     // Score multiplier % from time attack (100 = full, 20 = minimum)
 };
 
 // Sound System using Web Audio API
@@ -166,6 +175,12 @@ const dom = {
         year: document.getElementById('summary-year'),
         status: document.getElementById('summary-status'),
         users: document.getElementById('summary-users')
+    },
+    trivia: {
+        section: document.getElementById('trivia-section'),
+        questionText: document.getElementById('trivia-question-text'),
+        choices: document.getElementById('trivia-choices'),
+        result: document.getElementById('trivia-result')
     }
 };
 
@@ -222,7 +237,7 @@ function setupEventListeners() {
         if (state.isDailyMode) {
             switchScreen('start');
         } else {
-            startGame(false);
+            startGame(false, gameFilters);
         }
     });
     document.getElementById('menu-btn').addEventListener('click', () => {
@@ -241,6 +256,11 @@ function setupEventListeners() {
             }
         });
     }
+
+    // Share buttons
+    document.getElementById('share-x-btn').addEventListener('click', shareToX);
+    document.getElementById('share-whatsapp-btn').addEventListener('click', shareToWhatsApp);
+    document.getElementById('share-copy-btn').addEventListener('click', copyShareText);
 
     // Equipment popup minimize/maximize
     dom.closeEquipmentBtn.addEventListener('click', minimizeEquipment);
@@ -262,6 +282,94 @@ function setupEventListeners() {
 
     // Daily Challenge setup
     setupDailyChallenge();
+
+    // Quit game button setup
+    setupQuitGame();
+
+    // First-time tutorial tooltip
+    setupFirstTimeTutorial();
+}
+
+// Quit Game functionality
+function setupQuitGame() {
+    const quitBtn = document.getElementById('quit-game-btn');
+    const quitModal = document.getElementById('quit-modal');
+    const quitConfirmBtn = document.getElementById('quit-confirm-btn');
+    const quitCancelBtn = document.getElementById('quit-cancel-btn');
+
+    if (quitBtn) {
+        quitBtn.addEventListener('click', showQuitModal);
+    }
+
+    if (quitConfirmBtn) {
+        quitConfirmBtn.addEventListener('click', () => {
+            hideQuitModal();
+            quitGame();
+        });
+    }
+
+    if (quitCancelBtn) {
+        quitCancelBtn.addEventListener('click', hideQuitModal);
+    }
+
+    // Close modal on background click
+    if (quitModal) {
+        quitModal.addEventListener('click', (e) => {
+            if (e.target === quitModal) {
+                hideQuitModal();
+            }
+        });
+    }
+}
+
+function showQuitModal() {
+    const quitModal = document.getElementById('quit-modal');
+    if (quitModal) {
+        quitModal.classList.remove('hidden');
+    }
+}
+
+function hideQuitModal() {
+    const quitModal = document.getElementById('quit-modal');
+    if (quitModal) {
+        quitModal.classList.add('hidden');
+    }
+}
+
+function quitGame() {
+    // Stop daily challenge timer if running
+    stopDailyTimer();
+
+    // Reset game state
+    state.score = 0;
+    state.round = 1;
+    state.currentEquipment = null;
+    state.userGuess = null;
+    state.selectedCountry = null;
+    state.bonusSubmitted = false;
+    state.roundResults = [];
+    state.currentRoundResult = null;
+
+    // Hide equipment popup and thumbnail
+    hideEquipmentPopup();
+    dom.equipmentThumbnail.classList.add('hidden');
+
+    // Clear any markers and lines on the map
+    if (state.marker) {
+        state.map.removeLayer(state.marker);
+        state.marker = null;
+    }
+    if (state.actualMarker) {
+        state.map.removeLayer(state.actualMarker);
+        state.actualMarker = null;
+    }
+    if (state.line) {
+        state.map.removeLayer(state.line);
+        state.line = null;
+    }
+
+    // Return to main menu
+    switchScreen('start');
 }
 
 // Equipment Popup Controls
@@ -271,22 +379,601 @@ function minimizeEquipment() {
     // Only show game thumbnail if on game screen
     if (!screens.game.classList.contains('hidden')) {
         dom.equipmentThumbnail.classList.remove('hidden');
+
+        // Apply blur to thumbnail in Hard Mode to prevent cheating
+        if (state.isHardMode) {
+            dom.equipmentThumbnail.classList.add('hard-mode-blur');
+        } else {
+            dom.equipmentThumbnail.classList.remove('hard-mode-blur');
+        }
     }
 }
 
 function maximizeEquipment() {
     showEquipmentPopup();
     dom.equipmentThumbnail.classList.add('hidden');
+    dom.equipmentThumbnail.classList.remove('hard-mode-blur');
 }
 
 function showEquipmentPopup() {
     dom.equipmentPopup.classList.remove('hidden');
     dom.equipmentPopup.classList.remove('minimized');
+
+    // Show first-time tutorial if user hasn't seen it
+    if (!hasSeenTutorial() && !screens.game.classList.contains('hidden')) {
+        showFirstTimeTutorial();
+    }
 }
 
 function hideEquipmentPopup() {
     resetImageZoom();
     dom.equipmentPopup.classList.add('hidden');
+
+    // Also hide the tutorial tooltip when closing
+    hideFirstTimeTutorial();
+}
+
+// First-time tutorial tooltip functions
+function hasSeenTutorial() {
+    return localStorage.getItem('hasSeenMinimizeTutorial') === 'true';
+}
+
+function markTutorialAsSeen() {
+    localStorage.setItem('hasSeenMinimizeTutorial', 'true');
+}
+
+function showFirstTimeTutorial() {
+    const tooltip = document.getElementById('first-time-tooltip');
+    if (tooltip && !hasSeenTutorial()) {
+        tooltip.classList.remove('hidden');
+    }
+}
+
+function hideFirstTimeTutorial() {
+    const tooltip = document.getElementById('first-time-tooltip');
+    if (tooltip) {
+        tooltip.classList.add('hidden');
+        markTutorialAsSeen();
+    }
+}
+
+function setupFirstTimeTutorial() {
+    const dismissBtn = document.getElementById('tooltip-dismiss-btn');
+    if (dismissBtn) {
+        dismissBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            hideFirstTimeTutorial();
+        });
+    }
+
+    // Hard Mode tutorial dismiss button
+    const hmDismissBtn = document.getElementById('hard-mode-tutorial-dismiss');
+    if (hmDismissBtn) {
+        hmDismissBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            hideHardModeTutorial();
+        });
+    }
+}
+
+// Hard Mode first-time tutorial functions
+function hasSeenHardModeTutorial() {
+    return localStorage.getItem('hasSeenHardModeTutorial') === 'true';
+}
+
+function markHardModeTutorialSeen() {
+    localStorage.setItem('hasSeenHardModeTutorial', 'true');
+}
+
+function showHardModeTutorial() {
+    const tutorial = document.getElementById('hard-mode-tutorial');
+    if (tutorial && !hasSeenHardModeTutorial()) {
+        tutorial.classList.remove('hidden');
+        // Pause frost interactions while tutorial is visible
+        removeFrostInteractions();
+    }
+}
+
+function hideHardModeTutorial() {
+    const tutorial = document.getElementById('hard-mode-tutorial');
+    if (tutorial) {
+        tutorial.classList.add('hidden');
+        markHardModeTutorialSeen();
+        // Resume frost interactions after dismissing tutorial
+        setupFrostInteractions();
+    }
+}
+
+// ===========================
+// HARD MODE - FROST CANVAS SYSTEM
+// ===========================
+
+// Frost state
+let frostState = {
+    canvas: null,
+    ctx: null,
+    image: null,
+    revealZones: [],  // Array of { x, y, radius, startTime }
+    activeTouches: new Map(),  // Map of touch/mouse ID to { x, y, startTime }
+    animationId: null,
+    isInitialized: false,
+    blurAmount: 20,  // pixels of blur
+    maxRevealRadius: 80,  // max radius in pixels
+    revealDuration: 5000,  // 5 seconds to full reveal
+    totalRevealedArea: 0,
+    canvasArea: 0,
+    totalRevealTime: 0,  // Total milliseconds spent actively revealing
+    lastAnimationTime: 0,  // For tracking delta time
+    gracePeriod: 4000  // 4 seconds before multiplier starts dropping
+};
+
+function initFrostCanvas() {
+    const canvas = document.getElementById('frost-canvas');
+    const container = document.getElementById('image-zoom-container');
+    const equipmentImage = document.getElementById('equipment-image');
+
+    if (!canvas || !container || !equipmentImage) return;
+
+    frostState.canvas = canvas;
+    frostState.ctx = canvas.getContext('2d');
+    frostState.image = equipmentImage;
+
+    // Wait for image to load before initializing
+    if (equipmentImage.complete && equipmentImage.naturalWidth > 0) {
+        setupFrostCanvasSize();
+    } else {
+        equipmentImage.addEventListener('load', setupFrostCanvasSize, { once: true });
+    }
+}
+
+function setupFrostCanvasSize() {
+    const canvas = frostState.canvas;
+    const container = document.getElementById('image-zoom-container');
+
+    if (!canvas || !container) return;
+
+    // Match canvas to container size
+    const rect = container.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    frostState.canvasArea = rect.width * rect.height;
+
+    frostState.isInitialized = true;
+
+    // Draw initial fully frosted state
+    drawFrostOverlay();
+}
+
+function showFrostOverlay() {
+    const canvas = document.getElementById('frost-canvas');
+    const multiplier = document.getElementById('frost-multiplier');
+
+    if (canvas) canvas.classList.remove('hidden');
+    if (multiplier) multiplier.classList.remove('hidden');
+
+    // Reset frost state for new round
+    frostState.revealZones = [];
+    frostState.activeTouches.clear();
+    frostState.totalRevealedArea = 0;
+    frostState.totalRevealTime = 0;
+    frostState.lastAnimationTime = 0;
+    state.frostRevealPercentage = 0;
+
+    // Initialize if needed
+    if (!frostState.isInitialized) {
+        initFrostCanvas();
+    } else {
+        setupFrostCanvasSize();
+    }
+
+    // Setup interactions
+    setupFrostInteractions();
+
+    // Update multiplier display
+    updateMultiplierDisplay();
+
+    // Start animation loop
+    startFrostAnimation();
+
+    // Show hard mode tutorial on first play
+    if (!hasSeenHardModeTutorial()) {
+        // Small delay so frost is visually rendered before overlay appears
+        setTimeout(() => showHardModeTutorial(), 200);
+    }
+}
+
+function hideFrostOverlay() {
+    const canvas = document.getElementById('frost-canvas');
+    const multiplier = document.getElementById('frost-multiplier');
+
+    if (canvas) canvas.classList.add('hidden');
+    if (multiplier) multiplier.classList.add('hidden');
+
+    // Stop animation
+    if (frostState.animationId) {
+        cancelAnimationFrame(frostState.animationId);
+        frostState.animationId = null;
+    }
+
+    // Remove event listeners
+    removeFrostInteractions();
+}
+
+function setupFrostInteractions() {
+    const canvas = frostState.canvas;
+    if (!canvas) return;
+
+    // Mouse events
+    canvas.addEventListener('mousedown', onFrostPointerDown);
+    canvas.addEventListener('mousemove', onFrostPointerMove);
+    canvas.addEventListener('mouseup', onFrostPointerUp);
+    canvas.addEventListener('mouseleave', onFrostPointerUp);
+
+    // Touch events
+    canvas.addEventListener('touchstart', onFrostTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', onFrostTouchMove, { passive: false });
+    canvas.addEventListener('touchend', onFrostTouchEnd);
+    canvas.addEventListener('touchcancel', onFrostTouchEnd);
+}
+
+function removeFrostInteractions() {
+    const canvas = frostState.canvas;
+    if (!canvas) return;
+
+    canvas.removeEventListener('mousedown', onFrostPointerDown);
+    canvas.removeEventListener('mousemove', onFrostPointerMove);
+    canvas.removeEventListener('mouseup', onFrostPointerUp);
+    canvas.removeEventListener('mouseleave', onFrostPointerUp);
+
+    canvas.removeEventListener('touchstart', onFrostTouchStart);
+    canvas.removeEventListener('touchmove', onFrostTouchMove);
+    canvas.removeEventListener('touchend', onFrostTouchEnd);
+    canvas.removeEventListener('touchcancel', onFrostTouchEnd);
+}
+
+function onFrostPointerDown(e) {
+    e.preventDefault();
+    const pos = getCanvasPosition(e);
+    frostState.activeTouches.set('mouse', {
+        x: pos.x,
+        y: pos.y,
+        startTime: Date.now(),
+        currentRadius: 0
+    });
+}
+
+function onFrostPointerMove(e) {
+    // Position is fixed at initial click - no movement tracking
+    // This prevents users from "sweeping" to reveal large areas
+}
+
+function onFrostPointerUp(e) {
+    if (frostState.activeTouches.has('mouse')) {
+        const touch = frostState.activeTouches.get('mouse');
+        // Lock in the reveal zone
+        if (touch.currentRadius > 5) {
+            frostState.revealZones.push({
+                x: touch.x,
+                y: touch.y,
+                radius: touch.currentRadius
+            });
+        }
+        frostState.activeTouches.delete('mouse');
+    }
+}
+
+function onFrostTouchStart(e) {
+    e.preventDefault();
+    for (const touch of e.changedTouches) {
+        const pos = getCanvasPositionFromTouch(touch);
+        frostState.activeTouches.set(touch.identifier, {
+            x: pos.x,
+            y: pos.y,
+            startTime: Date.now(),
+            currentRadius: 0
+        });
+    }
+}
+
+function onFrostTouchMove(e) {
+    e.preventDefault();
+    // Position is fixed at initial touch - no movement tracking
+    // This prevents users from "sweeping" to reveal large areas
+}
+
+function onFrostTouchEnd(e) {
+    for (const touch of e.changedTouches) {
+        if (frostState.activeTouches.has(touch.identifier)) {
+            const activeTouch = frostState.activeTouches.get(touch.identifier);
+            // Lock in the reveal zone
+            if (activeTouch.currentRadius > 5) {
+                frostState.revealZones.push({
+                    x: activeTouch.x,
+                    y: activeTouch.y,
+                    radius: activeTouch.currentRadius
+                });
+            }
+            frostState.activeTouches.delete(touch.identifier);
+        }
+    }
+}
+
+function getCanvasPosition(e) {
+    const canvas = frostState.canvas;
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+    };
+}
+
+function getCanvasPositionFromTouch(touch) {
+    const canvas = frostState.canvas;
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+    };
+}
+
+function startFrostAnimation() {
+    function animate() {
+        updateFrostReveal();
+        drawFrostOverlay();
+        calculateRevealPercentage();
+        updateMultiplierDisplay();
+
+        frostState.animationId = requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+function updateFrostReveal() {
+    const now = Date.now();
+
+    // Track total reveal time when user is actively revealing
+    if (frostState.activeTouches.size > 0) {
+        if (frostState.lastAnimationTime > 0) {
+            const deltaTime = now - frostState.lastAnimationTime;
+            frostState.totalRevealTime += deltaTime;
+        }
+    }
+    frostState.lastAnimationTime = now;
+
+    // Update active touch radii based on hold duration
+    for (const [id, touch] of frostState.activeTouches) {
+        const elapsed = now - touch.startTime;
+        const progress = Math.min(elapsed / frostState.revealDuration, 1);
+        // Ease-out for smooth reveal
+        const eased = 1 - Math.pow(1 - progress, 2);
+        touch.currentRadius = eased * frostState.maxRevealRadius;
+    }
+}
+
+function drawFrostOverlay() {
+    const ctx = frostState.ctx;
+    const canvas = frostState.canvas;
+    const image = frostState.image;
+
+    if (!ctx || !canvas || !image) return;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Create a slightly blurred background
+    // We'll simulate frost by drawing a semi-transparent white overlay
+    // The "revealed" areas will be clear
+
+    // Save context state
+    ctx.save();
+
+    // Draw full frosted overlay
+    ctx.fillStyle = 'rgba(220, 235, 250, 0.95)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Add noise/frost texture pattern
+    drawFrostTexture(ctx, canvas.width, canvas.height);
+
+    // Clear revealed zones using composite operation
+    ctx.globalCompositeOperation = 'destination-out';
+
+    // Draw locked reveal zones
+    for (const zone of frostState.revealZones) {
+        drawRevealGradient(ctx, zone.x, zone.y, zone.radius);
+    }
+
+    // Draw active touch reveal zones
+    for (const [id, touch] of frostState.activeTouches) {
+        if (touch.currentRadius > 0) {
+            drawRevealGradient(ctx, touch.x, touch.y, touch.currentRadius);
+        }
+    }
+
+    ctx.restore();
+}
+
+function drawFrostTexture(ctx, width, height) {
+    // Create heavy frost texture that significantly obscures the image
+
+    // Layer 1: Dense white dots for primary frost
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    const dotCount = Math.floor((width * height) / 100);  // Much denser
+    for (let i = 0; i < dotCount; i++) {
+        const x = (i * 7919) % width;
+        const y = (i * 104729) % height;
+        const size = ((i * 31) % 4) + 1;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Layer 2: Larger semi-transparent blobs for blur effect
+    ctx.fillStyle = 'rgba(230, 240, 250, 0.4)';
+    const blobCount = Math.floor((width * height) / 800);
+    for (let i = 0; i < blobCount; i++) {
+        const x = (i * 12347) % width;
+        const y = (i * 56789) % height;
+        const size = ((i * 17) % 8) + 4;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Layer 3: Ice crystal pattern
+    ctx.fillStyle = 'rgba(200, 220, 240, 0.3)';
+    const crystalCount = Math.floor((width * height) / 1500);
+    for (let i = 0; i < crystalCount; i++) {
+        const x = (i * 31337) % width;
+        const y = (i * 271828) % height;
+        const size = ((i * 23) % 12) + 6;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+function drawRevealGradient(ctx, x, y, radius) {
+    // Create radial gradient for smooth edges
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 1)');
+    gradient.addColorStop(0.7, 'rgba(0, 0, 0, 0.8)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function calculateRevealPercentage() {
+    if (frostState.canvasArea === 0) return;
+
+    let totalArea = 0;
+
+    // Calculate area of all reveal zones (simplified - assumes no overlap)
+    for (const zone of frostState.revealZones) {
+        totalArea += Math.PI * zone.radius * zone.radius;
+    }
+
+    // Add active touch areas
+    for (const [id, touch] of frostState.activeTouches) {
+        if (touch.currentRadius > 0) {
+            totalArea += Math.PI * touch.currentRadius * touch.currentRadius;
+        }
+    }
+
+    // Calculate percentage (cap at 100%)
+    state.frostRevealPercentage = Math.min((totalArea / frostState.canvasArea) * 100, 100);
+}
+
+function getScoreMultiplier() {
+    // Grace period: first 4 seconds of revealing = 100% multiplier
+    // After grace period: 3x faster penalty based on reveal percentage
+    // Formula: 100% reveal after grace = 20% score multiplier (minimum)
+
+    if (frostState.totalRevealTime <= frostState.gracePeriod) {
+        // Within grace period - always 100%
+        return 100;
+    }
+
+    // After grace period: 3x the original rate (original was 0.8, now 2.4)
+    const multiplier = 100 - (state.frostRevealPercentage * 2.4);
+    return Math.max(multiplier, 20);
+}
+
+function updateMultiplierDisplay() {
+    const multiplierEl = document.getElementById('frost-multiplier');
+    const valueEl = multiplierEl?.querySelector('.multiplier-value');
+
+    if (!multiplierEl || !valueEl) return;
+
+    const multiplier = Math.round(getScoreMultiplier());
+    valueEl.textContent = `${multiplier}%`;
+
+    // Update color class based on value
+    multiplierEl.classList.remove('high', 'medium', 'low');
+    if (multiplier >= 70) {
+        multiplierEl.classList.add('high');
+    } else if (multiplier >= 40) {
+        multiplierEl.classList.add('medium');
+    } else {
+        multiplierEl.classList.add('low');
+    }
+}
+
+// ===========================
+// DAILY CHALLENGE TIME ATTACK
+// ===========================
+
+const DAILY_GRACE_PERIOD_MS = 5000; // 5-second grace period before penalty starts
+const DAILY_PENALTY_RATE    = 5;    // % per second deducted after grace period
+const DAILY_MIN_MULTIPLIER  = 20;   // Minimum score multiplier % (floor)
+
+function getDailyTimeMultiplier() {
+    if (!state.dailyRoundStartTime) return 100;
+    const elapsed = Date.now() - state.dailyRoundStartTime;
+    if (elapsed <= DAILY_GRACE_PERIOD_MS) return 100;
+    const secondsAfterGrace = (elapsed - DAILY_GRACE_PERIOD_MS) / 1000;
+    return Math.max(100 - secondsAfterGrace * DAILY_PENALTY_RATE, DAILY_MIN_MULTIPLIER);
+}
+
+function startDailyTimer() {
+    if (!state.isDailyMode) return;
+    stopDailyTimer(); // Clear any leftover from a previous round
+
+    state.dailyRoundStartTime = Date.now();
+    state.dailyTimeMultiplier = 100;
+
+    const timerEl    = document.getElementById('daily-timer');
+    const timerValue = document.getElementById('daily-timer-value');
+    const timerLabel = document.getElementById('daily-timer-label');
+    if (!timerEl || !timerValue || !timerLabel) return;
+
+    timerEl.classList.remove('hidden');
+    let hasTransitioned = false;
+
+    state.dailyTimerInterval = setInterval(() => {
+        const elapsed = Date.now() - state.dailyRoundStartTime;
+        const inGrace = elapsed < DAILY_GRACE_PERIOD_MS;
+
+        if (inGrace) {
+            // Grace period: show countdown
+            const secondsLeft = Math.ceil((DAILY_GRACE_PERIOD_MS - elapsed) / 1000);
+            timerValue.textContent = secondsLeft;
+            timerLabel.textContent = 'GO IN';
+            timerEl.className = 'daily-timer grace';
+            hasTransitioned = false;
+        } else {
+            // Penalty phase: show live multiplier
+            if (!hasTransitioned) {
+                timerEl.classList.add('transition-flash');
+                setTimeout(() => timerEl.classList.remove('transition-flash'), 450);
+                hasTransitioned = true;
+            }
+            const multiplier = getDailyTimeMultiplier();
+            state.dailyTimeMultiplier = multiplier;
+            timerValue.textContent = `${Math.round(multiplier)}%`;
+            timerLabel.textContent = 'SCORE';
+            timerEl.className = 'daily-timer';
+            if (multiplier >= 70)      timerEl.classList.add('high');
+            else if (multiplier >= 40) timerEl.classList.add('medium');
+            else                       timerEl.classList.add('low');
+        }
+    }, 100);
+}
+
+function stopDailyTimer() {
+    // Capture the current multiplier BEFORE nulling the start time
+    if (state.dailyRoundStartTime) {
+        state.dailyTimeMultiplier = Math.round(getDailyTimeMultiplier());
+    }
+    if (state.dailyTimerInterval) {
+        clearInterval(state.dailyTimerInterval);
+        state.dailyTimerInterval = null;
+    }
+    state.dailyRoundStartTime = null;
+    const timerEl = document.getElementById('daily-timer');
+    if (timerEl) timerEl.classList.add('hidden');
 }
 
 // Image Pinch-Zoom System
@@ -741,6 +1428,12 @@ function setupGameOptionsModal() {
     document.getElementById('game-begin-btn').addEventListener('click', () => {
         gameFilters.origin = document.getElementById('game-origin-filter').value;
         gameFilters.type = document.getElementById('game-type-filter').value;
+
+        // Check Hard Mode toggle
+        const hardModeToggle = document.getElementById('hard-mode-toggle');
+        state.isHardMode = hardModeToggle ? hardModeToggle.checked : false;
+        console.log('DEBUG: Hard Mode toggle checked:', hardModeToggle?.checked, 'state.isHardMode:', state.isHardMode);
+
         hideGameOptionsModal();
         startGame(false, gameFilters);
     });
@@ -830,13 +1523,23 @@ function getFilteredEquipment(filters) {
 }
 
 function startGame(isDailyMode = false, filters = null) {
+    // Stop any timer that might be running from a previous game
+    stopDailyTimer();
+    state.dailyTimeMultiplier = 100;
+
     state.score = 0;
     state.round = 1;
+    state.maxRounds = 5;  // Always reset maxRounds in case a previous game changed it
     state.userGuess = null;
     state.selectedCountry = null;
     state.roundResults = [];  // Reset round results
     state.currentRoundResult = null;
     state.isDailyMode = isDailyMode;
+
+    // Daily Challenge always runs in Normal Mode regardless of Hard Mode toggle
+    if (isDailyMode) {
+        state.isHardMode = false;
+    }
 
     if (isDailyMode) {
         // Use seeded random based on today's date for daily challenge
@@ -850,8 +1553,9 @@ function startGame(isDailyMode = false, filters = null) {
                 alert('No equipment matches your filters. Try different options.');
                 return;
             }
-            // Adjust max rounds or repeat equipment
-            state.gameData = shuffleArray(filteredData).slice(0, Math.min(filteredData.length, state.maxRounds));
+            // Adjust max rounds to match available equipment count
+            state.maxRounds = filteredData.length;
+            state.gameData = shuffleArray(filteredData).slice(0, state.maxRounds);
         } else {
             state.gameData = shuffleArray(filteredData).slice(0, state.maxRounds);
         }
@@ -870,9 +1574,17 @@ function startGame(isDailyMode = false, filters = null) {
 function loadRound() {
     resetMapVisuals();
     resetImageZoom(); // Reset zoom state for new round
+
+    // Hide frost overlay from previous round (will be re-shown after image loads if Hard Mode)
+    hideFrostOverlay();
+    // Stop daily timer from previous round (new one starts when image loads)
+    stopDailyTimer();
+    state.frostRevealPercentage = 0;
+
     state.currentEquipment = state.gameData[state.round - 1];
     state.userGuess = null;
     state.selectedCountry = null;
+    state.guessSubmitted = false;
 
     dom.score.textContent = state.score;
     dom.round.textContent = `${state.round}/${state.maxRounds}`;
@@ -883,9 +1595,11 @@ function loadRound() {
         // Randomly select one image from the array
         const randomIndex = Math.floor(Math.random() * state.currentEquipment.images.length);
         imageSrc = state.currentEquipment.images[randomIndex];
+        state.currentImageIndex = randomIndex;
     } else {
         // Fallback to single image property
         imageSrc = state.currentEquipment.image;
+        state.currentImageIndex = 0;
     }
 
     dom.image.src = imageSrc;
@@ -906,9 +1620,34 @@ function loadRound() {
     loader.textContent = "ACCESSING ARCHIVE...";
     dom.image.classList.remove('loaded');
 
+    // In Hard Mode, hide the image immediately to prevent a flash of the clear image
+    // before the frost overlay can render on top
+    if (state.isHardMode) {
+        dom.image.style.opacity = '0';
+    } else {
+        dom.image.style.opacity = '';
+    }
+
     dom.image.onload = () => {
         loader.classList.add('hidden');
         dom.image.classList.add('loaded');
+
+        // Show frost overlay after image loads if Hard Mode is enabled
+        if (state.isHardMode) {
+            // Draw frost first, then reveal the (now covered) image
+            showFrostOverlay();
+            // Small delay to ensure frost canvas is painted before showing image
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    dom.image.style.opacity = '';
+                });
+            });
+        }
+
+        // Start daily challenge timer when image becomes visible
+        if (state.isDailyMode) {
+            startDailyTimer();
+        }
     };
 
     dom.image.onerror = () => {
@@ -927,6 +1666,10 @@ function submitGuess() {
         alert("Close the equipment image using the X icon and select a location on the map first!");
         return;
     }
+
+    // Prevent double-click from awarding points multiple times
+    if (state.guessSubmitted) return;
+    state.guessSubmitted = true;
 
     const equipment = state.currentEquipment;
     const actual = { lat: equipment.coords[0], lng: equipment.coords[1] };
@@ -956,6 +1699,26 @@ function submitGuess() {
         // Use distance-based scoring for all other clicks
         points = calculateScore(distanceKm);
         console.log(`Mismatch. Selected: ${state.selectedCountry}, Target: ${equipment.origin}, Distance: ${Math.round(distanceKm)}km`);
+    }
+
+    // Apply Hard Mode multiplier if enabled
+    if (state.isHardMode) {
+        const multiplier = getScoreMultiplier() / 100;  // Convert percentage to decimal
+        const originalPoints = points;
+        points = Math.round(points * multiplier);
+        console.log(`Hard Mode: ${originalPoints} × ${Math.round(multiplier * 100)}% = ${points} points`);
+
+        // Hide frost overlay after submitting guess
+        hideFrostOverlay();
+    }
+
+    // Apply Daily Challenge time penalty
+    if (state.isDailyMode) {
+        stopDailyTimer(); // Locks in the multiplier at the moment of submission
+        const multiplier = state.dailyTimeMultiplier / 100;
+        const originalPoints = points;
+        points = Math.round(points * multiplier);
+        console.log(`Daily Time Attack: ${originalPoints} × ${state.dailyTimeMultiplier}% = ${points} points`);
     }
 
     state.score += points;
@@ -1034,11 +1797,39 @@ function showRoundResult(distance, points, actual, detectedName, isCorrect) {
     dom.resultDetails.points.textContent = points;
     dom.score.textContent = state.score;
 
+    // Show or hide the speed modifier on the result screen
+    const dailyPenaltyEl = document.getElementById('daily-time-penalty');
+    const dailyMultiplierValueEl = document.getElementById('daily-multiplier-value');
+    if (dailyPenaltyEl && dailyMultiplierValueEl) {
+        if (state.isDailyMode && state.dailyTimeMultiplier < 100) {
+            const mult = state.dailyTimeMultiplier;
+            dailyMultiplierValueEl.textContent = `${mult}%`;
+            dailyMultiplierValueEl.className = mult >= 70 ? 'multiplier-high' : mult >= 40 ? 'multiplier-medium' : 'multiplier-low';
+            dailyPenaltyEl.classList.remove('hidden');
+        } else {
+            dailyPenaltyEl.classList.add('hidden');
+        }
+    }
+
     // Reset bonus section for new round
     state.bonusSubmitted = false;
     dom.bonus.section.classList.remove('disabled');
     dom.bonus.result.textContent = '';
     dom.bonus.result.className = 'bonus-result';
+
+    // Reset trivia section
+    state.triviaSubmitted = false;
+    state.currentTriviaQuestion = null;
+    dom.trivia.section.classList.add('hidden');
+    dom.trivia.section.classList.remove('disabled');
+    dom.trivia.result.textContent = '';
+    dom.trivia.result.className = 'bonus-result';
+
+    // Update bonus points label based on mode (Hard Mode: 2500, Normal: 5000)
+    const bonusPtsLabel = document.getElementById('bonus-pts-label');
+    if (bonusPtsLabel) {
+        bonusPtsLabel.textContent = state.isHardMode ? '+2500 pts' : '+5000 pts';
+    }
 
     // Hide summary section initially
     dom.summary.section.classList.add('hidden');
@@ -1120,7 +1911,7 @@ function handleBonusChoice(clickedBtn, selectedName, correctName) {
 
     if (isCorrect) {
         playBonusCorrectSound();
-        const bonusPoints = 5000;
+        const bonusPoints = state.isHardMode ? 2500 : 5000;
         state.score += bonusPoints;
         dom.score.textContent = state.score;
         dom.bonus.result.textContent = `CORRECT! +${bonusPoints} bonus points!`;
@@ -1138,13 +1929,235 @@ function handleBonusChoice(clickedBtn, selectedName, correctName) {
         dom.bonus.result.className = 'bonus-result incorrect';
     }
 
-    // Save the round result
+    // In Hard Mode: show trivia question next. In Normal Mode: show equipment profile.
+    if (state.isHardMode) {
+        // Don't save round result yet — trivia may still add points
+        setTimeout(() => showTriviaQuestion(), 600);
+    } else {
+        // Save the round result now (Normal Mode — no trivia phase)
+        if (state.currentRoundResult) {
+            state.roundResults.push({ ...state.currentRoundResult });
+            state.currentRoundResult = null;
+        }
+        showEquipmentSummary();
+    }
+}
+
+// ── Hard Mode Trivia ──────────────────────────────────────────────────────
+
+// Build a trivia question auto-generated from equipment data fields.
+// Returns { questionText, correctAnswer, choices: [string x4] }  or null.
+function generateTriviaQuestion(equipment) {
+    const pool = [];  // candidate question-builders
+
+    // 1. "Which country does NOT operate this equipment?"
+    if (equipment.users && equipment.users.length >= 2) {
+        pool.push(() => {
+            // Pick a genuine non-user as the correct answer ("NOT a user")
+            const allUsers = new Set(equipment.users);
+            const nonUsers = equipmentData
+                .flatMap(eq => eq.users || [])
+                .filter(u => !allUsers.has(u));
+            if (nonUsers.length === 0) return null;
+            const correctAnswer = nonUsers[Math.floor(Math.random() * nonUsers.length)];
+
+            // Wrong answers = actual users (pick 3)
+            const wrongAnswers = [...equipment.users]
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3);
+
+            return {
+                questionText: 'Which of these countries does NOT operate this equipment?',
+                correctAnswer,
+                choices: shuffle([correctAnswer, ...wrongAnswers])
+            };
+        });
+    }
+
+    // 2. Speed question — label varies by unit type (vehicle speed vs rate of fire)
+    if (equipment.specs && equipment.specs.speed) {
+        pool.push(() => {
+            const correctAnswer = equipment.specs.speed;
+
+            // Skip if the speed value is non-informative (N/A, Static, TBD, etc.)
+            if (/^(n\/a|static|tbd|unknown|-|n\.a\.)$/i.test(correctAnswer.trim())) return null;
+
+            // Classify the unit so we only compare like-for-like
+            const isRateOfFire = /rounds|rpm|rds|cyclic|burst/i.test(correctAnswer);
+            const isMach       = /mach/i.test(correctAnswer);
+            const isKnots      = /knots?/i.test(correctAnswer);
+            // Anything else (km/h, mph) = ground/vehicle speed
+
+            // Helper: true if speedStr belongs to the same measurement category
+            //         AND is a meaningful value (not N/A / Static / etc.)
+            function isUsableAlternative(speedStr) {
+                if (!speedStr) return false;
+                if (/^(n\/a|static|tbd|unknown|-|n\.a\.)$/i.test(speedStr.trim())) return false;
+                const rof  = /rounds|rpm|rds|cyclic|burst/i.test(speedStr);
+                const mach = /mach/i.test(speedStr);
+                const knot = /knots?/i.test(speedStr);
+                if (isRateOfFire) return rof;
+                if (isMach)       return mach;
+                if (isKnots)      return knot;
+                // vehicle speed: must NOT be rof/mach/knots and must contain a digit
+                return !rof && !mach && !knot && /\d/.test(speedStr);
+            }
+
+            const questionText = isRateOfFire
+                ? 'What is the rate of fire of this equipment?'
+                : isMach
+                    ? 'What is the maximum speed of this equipment?'
+                    : 'What is the top speed of this equipment?';
+
+            // Draw wrong answers from ANY equipment with a usable speed in the same category
+            const others = equipmentData
+                .filter(eq =>
+                    eq.name !== equipment.name &&
+                    eq.specs && eq.specs.speed &&
+                    eq.specs.speed !== correctAnswer &&
+                    isUsableAlternative(eq.specs.speed)
+                )
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3)
+                .map(eq => eq.specs.speed);
+
+            if (others.length < 3) return null;
+            return {
+                questionText,
+                correctAnswer,
+                choices: shuffle([correctAnswer, ...others])
+            };
+        });
+    }
+
+    // 3. "What is the primary armament?"
+    if (equipment.specs && equipment.specs.armament) {
+        pool.push(() => {
+            const correctAnswer = equipment.specs.armament;
+            const others = equipmentData
+                .filter(eq => eq.name !== equipment.name && eq.type === equipment.type && eq.specs && eq.specs.armament && eq.specs.armament !== correctAnswer)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3)
+                .map(eq => eq.specs.armament);
+            if (others.length < 3) return null;
+            return {
+                questionText: 'What is the primary armament of this equipment?',
+                correctAnswer,
+                choices: shuffle([correctAnswer, ...others])
+            };
+        });
+    }
+
+    // 4. "When did this equipment enter service?"
+    if (equipment.inService) {
+        pool.push(() => {
+            const correctAnswer = equipment.inService;
+            const others = equipmentData
+                .filter(eq => eq.name !== equipment.name && eq.inService && eq.inService !== correctAnswer)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3)
+                .map(eq => eq.inService);
+            if (others.length < 3) return null;
+            return {
+                questionText: 'When did this equipment enter service?',
+                correctAnswer,
+                choices: shuffle([correctAnswer, ...others])
+            };
+        });
+    }
+
+    // Shuffle the candidate pool and return the first one that succeeds
+    const shuffledPool = pool.sort(() => 0.5 - Math.random());
+    for (const builder of shuffledPool) {
+        const result = builder();
+        if (result) return result;
+    }
+    return null;
+}
+
+// Utility shuffle helper
+function shuffle(arr) {
+    return arr.sort(() => 0.5 - Math.random());
+}
+
+function showTriviaQuestion() {
+    const question = generateTriviaQuestion(state.currentEquipment);
+    if (!question) {
+        // No viable question — skip straight to equipment profile
+        if (state.currentRoundResult) {
+            state.roundResults.push({ ...state.currentRoundResult });
+            state.currentRoundResult = null;
+        }
+        showEquipmentSummary();
+        return;
+    }
+
+    state.currentTriviaQuestion = question;
+    state.triviaSubmitted = false;
+
+    // Populate question text
+    dom.trivia.questionText.textContent = question.questionText;
+
+    // Build choice buttons
+    dom.trivia.choices.innerHTML = '';
+    question.choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = 'bonus-choice-btn';
+        btn.textContent = choice;
+        btn.addEventListener('click', () => handleTriviaChoice(btn, choice, question.correctAnswer));
+        dom.trivia.choices.appendChild(btn);
+    });
+
+    dom.trivia.result.textContent = '';
+    dom.trivia.result.className = 'bonus-result';
+
+    // Reveal the trivia section
+    dom.trivia.section.classList.remove('hidden');
+    dom.trivia.section.classList.remove('disabled');
+}
+
+function handleTriviaChoice(clickedBtn, selectedAnswer, correctAnswer) {
+    if (state.triviaSubmitted) return;
+
+    state.triviaSubmitted = true;
+    dom.trivia.section.classList.add('disabled');
+
+    const isCorrect = selectedAnswer === correctAnswer;
+
+    // Highlight correct / incorrect buttons
+    const allBtns = dom.trivia.choices.querySelectorAll('.bonus-choice-btn');
+    allBtns.forEach(btn => {
+        if (btn.textContent === correctAnswer) {
+            btn.classList.add('correct');
+        } else if (btn === clickedBtn && !isCorrect) {
+            btn.classList.add('incorrect');
+        }
+    });
+
+    if (isCorrect) {
+        playBonusCorrectSound();
+        const triviaPoints = 2500;
+        state.score += triviaPoints;
+        dom.score.textContent = state.score;
+        dom.trivia.result.textContent = `CORRECT! +${triviaPoints} bonus points!`;
+        dom.trivia.result.className = 'bonus-result correct';
+
+        if (state.currentRoundResult) {
+            state.currentRoundResult.triviaCorrect = true;
+            state.currentRoundResult.triviaPoints = triviaPoints;
+            state.currentRoundResult.totalPoints += triviaPoints;
+        }
+    } else {
+        playBonusIncorrectSound();
+        dom.trivia.result.textContent = `INCORRECT! Answer: ${correctAnswer}`;
+        dom.trivia.result.className = 'bonus-result incorrect';
+    }
+
+    // Now save the round result and show the equipment profile
     if (state.currentRoundResult) {
         state.roundResults.push({ ...state.currentRoundResult });
         state.currentRoundResult = null;
     }
-
-    // Show equipment summary after bonus is answered
     showEquipmentSummary();
 }
 
@@ -1179,17 +2192,23 @@ function showEquipmentSummary() {
     document.getElementById('summary-range').textContent = rangeInfo.value;
     document.getElementById('summary-range-label').textContent = rangeInfo.label + ':';
 
-    // Populate image credit if available
+    // Populate image credit if available (support both imageCredits array and imageCredit singular)
     const creditElement = document.getElementById('summary-image-credit');
-    if (equipment.imageCredit) {
-        if (typeof equipment.imageCredit === 'string') {
-            creditElement.textContent = equipment.imageCredit;
+    let creditData = null;
+    if (equipment.imageCredits && Array.isArray(equipment.imageCredits)) {
+        creditData = equipment.imageCredits[state.currentImageIndex || 0] || null;
+    } else if (equipment.imageCredit) {
+        creditData = equipment.imageCredit;
+    }
+
+    if (creditData) {
+        if (typeof creditData === 'string') {
+            creditElement.textContent = creditData;
         } else {
             // Handle object format: { author, source, license, url }
-            const credit = equipment.imageCredit;
-            const creditText = `Photo: ${credit.author} / ${credit.source} / ${credit.license}`;
-            if (credit.url) {
-                creditElement.innerHTML = `<a href="${credit.url}" target="_blank" rel="noopener">${creditText}</a>`;
+            const creditText = `Photo: ${creditData.author} / ${creditData.source} / ${creditData.license}`;
+            if (creditData.url) {
+                creditElement.innerHTML = `<a href="${creditData.url}" target="_blank" rel="noopener">${creditText}</a>`;
             } else {
                 creditElement.textContent = creditText;
             }
@@ -1205,6 +2224,8 @@ function showEquipmentSummary() {
     // Show the summary section with a slight delay for effect
     setTimeout(() => {
         dom.summary.section.classList.remove('hidden');
+        // Update container height AFTER section is visible (offsetHeight is 0 when hidden)
+        setTimeout(() => updateResultHeight(0), 50);
     }, 300);
 }
 
@@ -1227,17 +2248,22 @@ function populateResultRecognitionFeatures(equipment) {
             labels = ["R - ROTORS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
             values = [features.rotors, features.engine, features.fuselage, features.tail];
         } else if (features.wings) {
-            // WEFT Format (Aircraft)
+            // WEFT Format (Fixed-Wing Aircraft)
             labels = ["W - WINGS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
             values = [features.wings, features.engine, features.fuselage, features.tail];
+        } else if (features.size || features.masts) {
+            // SMASH Format (Naval Vessels)
+            labels = ["S - SIZE/SHAPE:", "M - MASTS:", "A - ARMAMENT:", "S - SUPERSTRUCTURE:", "H - HULL:"];
+            values = [features.size, features.masts, features.armament, features.superstructure, features.hull];
         } else {
             // WHAT Format (Tanks/Vehicles) - Default
             labels = ["W - WHEELS:", "H - HULL:", "A - ARMAMENT:", "T - TURRET:"];
             values = [features.wheels, features.hull, features.armament, features.turret];
         }
 
-        // Populate generic fields
-        for (let i = 0; i < 4; i++) {
+        // Populate fields dynamically (SMASH has 5, all others have 4)
+        const item5 = document.getElementById('result-recognition-item-5');
+        for (let i = 0; i < labels.length; i++) {
             const labelElement = document.getElementById(`result-recognition-label-${i + 1}`);
             const valueElement = document.getElementById(`result-recognition-value-${i + 1}`);
             if (labelElement && valueElement) {
@@ -1245,6 +2271,8 @@ function populateResultRecognitionFeatures(equipment) {
                 valueElement.textContent = values[i] || '-';
             }
         }
+        // Show/hide the 5th slot based on format
+        if (item5) item5.style.display = labels.length >= 5 ? 'flex' : 'none';
 
         // Show navigation and recognition page
         if (pageNav) pageNav.classList.add('visible');
@@ -1262,6 +2290,8 @@ function populateResultRecognitionFeatures(equipment) {
         pagesContainer.scrollTo({ left: 0, behavior: 'auto' });
     }
     updateResultPageIndicators();
+
+    // Note: height update is deferred to showEquipmentSummary after section is visible
 }
 
 // Setup navigation for result screen pages
@@ -1321,6 +2351,22 @@ function goToResultPage(pageIndex) {
         });
         currentResultPage = pageIndex;
         updateResultPageIndicators();
+        updateResultHeight(pageIndex);
+    }
+}
+
+function updateResultHeight(pageIndex) {
+    const pagesContainer = document.getElementById('result-pages-container');
+    if (!pagesContainer) return;
+
+    // Get the active page element and measure its full content height
+    const pages = pagesContainer.querySelectorAll('.result-page');
+    if (pages && pages[pageIndex]) {
+        const page = pages[pageIndex];
+        const height = page.scrollHeight;
+        if (height > 0) {
+            pagesContainer.style.height = height + 'px';
+        }
     }
 }
 
@@ -1333,6 +2379,7 @@ function handleResultPageScroll() {
         if (newPage !== currentResultPage) {
             currentResultPage = newPage;
             updateResultPageIndicators();
+            updateResultHeight(newPage);
         }
     }
 }
@@ -1474,14 +2521,85 @@ function endGame() {
     const scoreRating = document.getElementById('score-rating');
     scoreRating.classList.remove('rating-red', 'rating-amber', 'rating-green', 'rating-gold');
 
+    // Handle performance trophy image
+    const trophyImg = document.getElementById('performance-trophy');
+    if (trophyImg) {
+        trophyImg.classList.add('hidden'); // default hidden
+    }
+
     if (percentage >= 100) {
         scoreRating.classList.add('rating-gold');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/GodofWar2.png';
+            // Also adding a short delay before showing the image can add to the dramatic effect, but standard unhiding is fine too
+            trophyImg.classList.remove('hidden');
+        }
+    } else if (percentage >= 90) {
+        scoreRating.classList.add('rating-green');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Rambo2.png';
+            trophyImg.classList.remove('hidden');
+        }
     } else if (percentage >= 80) {
         scoreRating.classList.add('rating-green');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Matrix.png';
+            trophyImg.classList.remove('hidden');
+        }
+    } else if (percentage >= 75) {
+        scoreRating.classList.add('rating-amber');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Sharpe2.png';
+            trophyImg.classList.remove('hidden');
+        }
+    } else if (percentage >= 70) {
+        scoreRating.classList.add('rating-amber');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Winters.png';
+            trophyImg.classList.remove('hidden');
+        }
+    } else if (percentage >= 60) {
+        scoreRating.classList.add('rating-amber');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Rico.png';
+            trophyImg.classList.remove('hidden');
+        }
     } else if (percentage >= 50) {
         scoreRating.classList.add('rating-amber');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Aldo.png';
+            trophyImg.classList.remove('hidden');
+        }
+    } else if (percentage >= 40) {
+        scoreRating.classList.add('rating-red');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Gump.png';
+            trophyImg.classList.remove('hidden');
+        }
+    } else if (percentage >= 30) {
+        scoreRating.classList.add('rating-red');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Sobel.png';
+            trophyImg.classList.remove('hidden');
+        }
+    } else if (percentage >= 20) {
+        scoreRating.classList.add('rating-red');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Melch.png';
+            trophyImg.classList.remove('hidden');
+        }
+    } else if (percentage >= 10) {
+        scoreRating.classList.add('rating-red');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Bald.png';
+            trophyImg.classList.remove('hidden');
+        }
     } else {
         scoreRating.classList.add('rating-red');
+        if (trophyImg) {
+            trophyImg.src = 'PerformanceSymbols/Lizzard.png';
+            trophyImg.classList.remove('hidden');
+        }
     }
 
     // Display performance quote if available for this rating
@@ -1652,18 +2770,7 @@ function getRangeInfo(specs) {
     return { value: '-', label: 'RANGE' };
 }
 
-// Equipment Popup Controls
-function minimizeEquipment() {
-    dom.equipmentPopup.classList.add('minimized');
-    dom.equipmentThumbnail.classList.remove('hidden');
-    // Set thumbnail image to match current equipment
-    dom.thumbnailImage.src = dom.image.src;
-}
 
-function maximizeEquipment() {
-    dom.equipmentPopup.classList.remove('minimized');
-    dom.equipmentThumbnail.classList.add('hidden');
-}
 
 // ====== PRACTICE HUB FUNCTIONS ======
 
@@ -1876,7 +2983,9 @@ function renderEquipmentGrid() {
                     eq.type === 'Mine-Clearing Vehicle' ||
                     eq.type === 'Minelayer' ||
                     eq.type === 'Multi-Purpose Tracked Vehicle' ||
-                    eq.type === 'Combat Engineer Vehicle';
+                    eq.type === 'Combat Engineer Vehicle' ||
+                    eq.type === 'Tank Support Vehicle' ||
+                    eq.type === 'Military Engineering Vehicle';
             }
             // Special handling for aircraft category - include all aircraft types including helicopters
             if (practiceState.currentCategory === 'Fighter Aircraft') {
@@ -2165,20 +3274,27 @@ function populateRecognitionFeatures(equipment) {
             labels = ["R - ROTORS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
             values = [features.rotors, features.engine, features.fuselage, features.tail];
         } else if (features.wings) {
-            // WEFT Format (Aircraft)
+            // WEFT Format (Fixed-Wing Aircraft)
             labels = ["W - WINGS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
             values = [features.wings, features.engine, features.fuselage, features.tail];
+        } else if (features.size || features.masts) {
+            // SMASH Format (Naval Vessels)
+            labels = ["S - SIZE/SHAPE:", "M - MASTS:", "A - ARMAMENT:", "S - SUPERSTRUCTURE:", "H - HULL:"];
+            values = [features.size, features.masts, features.armament, features.superstructure, features.hull];
         } else {
             // WHAT Format (Tanks/Vehicles) - Default
             labels = ["W - WHEELS:", "H - HULL:", "A - ARMAMENT:", "T - TURRET:"];
             values = [features.wheels, features.hull, features.armament, features.turret];
         }
 
-        // Populate generic fields
-        for (let i = 0; i < 4; i++) {
+        // Populate fields dynamically (SMASH has 5, all others have 4)
+        const item5 = document.getElementById('recognition-item-5');
+        for (let i = 0; i < labels.length; i++) {
             document.getElementById(`recognition-label-${i + 1}`).textContent = labels[i];
             document.getElementById(`recognition-value-${i + 1}`).textContent = values[i] || '-';
         }
+        // Show/hide the 5th slot based on format
+        if (item5) item5.style.display = labels.length >= 5 ? 'flex' : 'none';
 
         // Show navigation and recognition page
         if (pageNav) pageNav.classList.add('visible');
@@ -2918,4 +4034,66 @@ function setupSettingsModal() {
             settingsModal.classList.remove('active');
         }
     });
+}
+
+// -- Share Feature -----------------------------------------------------------
+
+function isAndroidMobile() {
+    return /Android/i.test(navigator.userAgent);
+}
+
+function getShareLink() {
+    return isAndroidMobile()
+        ? 'https://play.google.com/store/apps/details?id=com.defenceguesser.twa&hl=en_GB'
+        : 'https://www.defenceguesser.com';
+}
+
+function generateShareText() {
+    const modeLabel = state.isDailyMode ? '\uD83D\uDCC5 Daily Challenge' : '\uD83C\uDFAE Standard Game';
+    const hardLabel = state.isHardMode  ? '  \uD83D\uDD12 Hard Mode'     : '';
+    const header = `\uD83C\uDF96\uFE0F Defence Guesser \u2014 ${state.score.toLocaleString()} pts\n${modeLabel}${hardLabel}\n`;
+    const rounds = state.roundResults.map((r, i) => {
+        const locEmoji  = r.locationCorrect ? '\uD83C\uDFAF' : '\uD83D\uddFA\uFE0F';
+        const idEmoji   = r.bonusCorrect    ? '\u2705' : '\u274C';
+        const locPts    = (r.locationPoints  || 0).toLocaleString();
+        const bonusPts  = (r.bonusPoints     || 0).toLocaleString();
+        return `Round ${i + 1}: ${locEmoji}${idEmoji}  (${locPts} + ${bonusPts})`;
+    }).join('\n');
+    const link = getShareLink();
+    return `${header}\n${rounds}\n\n\uD83D\uDD17 ${link}`;
+}
+
+function shareToX() {
+    const text = generateShareText();
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+}
+
+function shareToWhatsApp() {
+    const text = generateShareText();
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+}
+
+async function copyShareText() {
+    const text      = generateShareText();
+    const copyBtn   = document.getElementById('share-copy-btn');
+    const copyLabel = document.getElementById('share-copy-label');
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity  = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+    }
+    copyBtn.classList.add('copied');
+    copyLabel.textContent = 'COPIED!';
+    setTimeout(() => {
+        copyBtn.classList.remove('copied');
+        copyLabel.textContent = 'COPY';
+    }, 2500);
 }

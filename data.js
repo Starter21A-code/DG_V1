@@ -1,4 +1,4 @@
-﻿window.equipmentData = [
+window.equipmentData = [
     // === MAIN BATTLE TANKS ===
     {
         id: 1,
@@ -104,33 +104,7 @@
             turret: "Angular wedge-shaped Dorchester armor with distinctive 'arrowhead' profile. Large stowage bins at rear."
         }
     },
-    {
-        id: 5,
-        name: "T-90MS",
-        type: "Main Battle Tank",
-        origin: "Russia",
-        coords: [61.5240, 105.3188],
-        images: [
-            "assets/t90_1765118367473.jpg",
-            "assets/T90MS_Bravo.jpg"
-        ],
-        imageCredits: [
-            "Photo: Aleksey Kitaev / Wikimedia Commons / CC BY-SA 3.0",
-            "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0"
-        ],
-        specs: { speed: "60 km/h", armament: "125mm 2A46M-5", operationalRange: "550 km" },
-        inService: 2011,
-        users: ["Russia", "India", "Algeria", "Iraq"],
-        status: "Active",
-        recognitionFeatures: {
-            wheels: "6 road wheels per side. Torsion bar suspension. Drive sprocket at rear.",
-            hull: "Modular ERA (Relikt) on glacis. Rear slat armor/cage visible. Driver's hatch offset to left.",
-            armament: "125mm 2A46M-5 smoothbore gun. Remote Weapon Station (RCWS) with 7.62mm MG on turret roof.",
-            turret: "New welded turret with extended bustle rack (ammunition storage). ERA panels on front/sides."
-        },
-        fact: "The T-90MS features the Shtora-1 defensive suite, which can detect laser targeting and automatically deploy smoke grenades or jam incoming guided missiles."
 
-    },
     {
         id: 6,
         name: "T-14 Armata",
@@ -380,8 +354,8 @@
         origin: "Ukraine",
         coords: [50.4501, 30.5234],
         images: [
-            "assets/T84.jpg",
-            "assets/T84_Bravo.jpg"
+            "assets/T84_Oplot.jpg",
+            "assets/T84_Oplot_Bravo.jpg"
         ],
         imageCredits: [
             "Photo: VoidWanderer / Wikimedia Commons / CC BY-SA 4.0",
@@ -915,7 +889,7 @@
         id: 28,
         name: "Eurofighter Typhoon",
         type: "Fighter Aircraft",
-        origin: "Germany",
+        origin: "Germany / United Kingdom / Italy / Spain",
         coords: [52.5200, 13.4050],
         images: [
             "assets/Eurofighter_Typhoon.jpg",
@@ -927,7 +901,7 @@
         ],
         specs: { speed: "Mach 2.0", armament: "AMRAAM, ASRAAM, Meteor", combatRadius: "3,790 km" },
         inService: 2003,
-        users: ["Germany", "UK", "Italy", "Spain", "Saudi Arabia"],
+        users: ["Germany", "United Kingdom", "Italy", "Spain", "Saudi Arabia", "Kuwait", "Qatar", "Oman", "Austria"],
         status: "Active",
         fact: "The Eurofighter Typhoon is a highly agile aircraft, designed to be effectively unstable in flight to maximize maneuverability. It is flown by computers that make thousands of adjustments per second to keep it stable.",
         recognitionFeatures: {
@@ -2121,8 +2095,8 @@
         id: 110,
         name: "M777 Howitzer",
         type: "Artillery",
-        origin: "United States",
-        coords: [39.8283, -98.5795],
+        origin: "United States / United Kingdom",
+        coords: [54.1135, -3.2254],
         images: [
             "assets/M777_howitzer.jpg",
             "assets/M777_howitzer_Bravo.jpg"
@@ -2328,6 +2302,26 @@
         imageCredit: "Photo: Mike1979 Russia / Wikimedia Commons / CC BY-SA 4.0"
     },
     {
+        id: 177,
+        name: "RQ-7B Shadow",
+        type: "Reconnaissance Drone",
+        origin: "United States",
+        coords: [39.4143, -77.4105], // AAI Corporation, Hunt Valley, Maryland
+        image: "assets/RQ7.jpg",
+        specs: { speed: "222 km/h", armament: "Unarmed (EO/IR/Laser)", operationalRange: "125 km" },
+        inService: 2002,
+        users: ["United States", "Australia", "Jordan", "Romania", "Turkey"],
+        status: "Active",
+        fact: "The RQ-7B Shadow is the US Army's primary tactical UAV, providing brigade-level intelligence, surveillance, and reconnaissance (ISR). It carries electro-optical and infrared cameras with a laser designator and can relay live video to ground troops in real time. It is launched from a trailer-mounted catapult and recovered using an arresting wire system — one of the few UAVs designed for short-field arrested landings.",
+        recognitionFeatures: {
+            wings: "High-wing monoplane with twin tail booms extending from a straight, unswept wing. Winglets on outer wing tips.",
+            engine: "Single pusher propeller engine mounted at the rear of the central pod nacelle.",
+            fuselage: "Short central pod/nacelle housing sensors with a bulbous nose. No undercarriage — launches via catapult.",
+            tail: "Twin tail booms with a rectangular horizontal stabilizer connecting both booms. Small vertical fins at each boom tip."
+        },
+        imageCredit: "Photo: Staff Sgt. Malcolm Cohens-Ashley, 40th Public Affairs Detachment / U.S. Army / Public Domain"
+    },
+    {
         id: 71,
         name: "Ghost Bat (MQ-28)",
         type: "Combat Drone",
@@ -2491,13 +2485,19 @@
         type: "Assault Rifle",
         origin: "United Kingdom",
         coords: [51.5074, -0.1278],
-        image: "assets/SA80.jpg",
+        images: [
+            "assets/SA80.jpg",
+            "assets/SA80_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Mike Weston ABIPP/MOD / OGL v1.0",
+            "Photo: Steve Dock/MOD / OGL v1.0"
+        ],
         specs: { speed: "N/A", armament: "5.56x45mm", effectiveRange: "400 m" },
         inService: 1987,
         users: ["United Kingdom", "Jamaica", "Nepal"],
         status: "Active",
-        fact: "The SA80 (L85) is the standard issue service rifle of the British Armed Forces. After initial reliability issues, it was significantly upgraded by Heckler & Koch into the highly reliable A2 and A3 variants.",
-        imageCredit: "Photo: Mike Weston ABIPP/MOD / OGL v1.0"
+        fact: "The SA80 (L85) is the standard issue service rifle of the British Armed Forces. After initial reliability issues, it was significantly upgraded by Heckler & Koch into the highly reliable A2 and A3 variants."
     },
     {
         id: 83,
@@ -2712,7 +2712,7 @@
         image: "assets/Bradley_Fighting_Vehicle.jpg",
         specs: { speed: "66 km/h", armament: "25mm Bushmaster, TOW", operationalRange: "400 km" },
         inService: 1981,
-        users: ["United States", "Saudi Arabia", "Croatia"],
+        users: ["United States", "Saudi Arabia", "Croatia", "Lebanon", "Ukraine"],
         status: "Active",
         fact: "The M2 Bradley is amphibious and can reach speeds of 7.2 km/h in water, powered by its tracks, making it capable of crossing rivers and water obstacles.",
         imageCredit: "Photo: Sgt. Timothy Kingston / U.S. Army / Public Domain"
@@ -2988,6 +2988,26 @@
         status: "Limited Service",
         fact: "Despite being one of the most advanced Russian APCs, the BTR-90 was produced in limited numbers due to high costs.",
         imageCredit: "Photo: Vitaly V. Kuzmin / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 179,
+        name: "Otokar Tulpar",
+        type: "Infantry Fighting Vehicle",
+        origin: "Turkey",
+        coords: [40.7303, 29.9880], // Otokar facility, Sakarya
+        image: "assets/TULPAR.jpg",
+        specs: { speed: "70 km/h", armament: "30mm cannon / ATGM", operationalRange: "600 km" },
+        inService: 2015,
+        users: ["Turkey"],
+        status: "Prototype / Trials",
+        recognitionFeatures: {
+            wheels: "7 road wheels per side, typically with rubber tracks to reduce noise and ground vibration.",
+            hull: "High-profile, well-sloped modular hull specifically designed for high survivability against IEDs and mines.",
+            armament: "Modular Mizrak-30 unmanned turret housing a 30mm cannon and coaxial 7.62mm machine gun.",
+            turret: "Mizrak-30 unmanned remote-controlled turret, heavily integrated with optics and often flanked by L-UMTAS ATGM launchers."
+        },
+        fact: "Named after the mythical winged horse 'Tulpar' from Central Asian and Turkic mythology, this IFV was developed parallel to the Turkish Altay main battle tank. It is heavily focused on modularity, allowing the same chassis to be adapted into a light tank, APC, or air defense vehicle.",
+        imageCredit: "Photo: Swadim / Wikimedia Commons / CC BY-SA 4.0"
     },
 
     // Iranian APCs
@@ -3728,6 +3748,84 @@
         fact: "The Type 96 is the backbone of China's armored forces with over 2,000 units in service. It was the first PLA tank to mount a 125mm gun with autoloader, derived from Soviet/Russian designs. The tank regularly competes in Russia's Tank Biathlon where it has proven competitive in gunnery. The latest Type 96B variant features a 1,000+ hp engine and advanced ERA armor."
     },
     {
+        id: 180,
+        name: "K1",
+        type: "Main Battle Tank",
+        origin: "South Korea",
+        coords: [37.5665, 126.9780],
+        images: [
+            "assets/K1.jpg",
+            "assets/K1_Bravo.jpg"
+        ],
+        specs: { speed: "65 km/h", armament: "105mm M68A1", operationalRange: "500 km" },
+        inService: 1987,
+        users: ["South Korea"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "6 road wheels per side. Hydropneumatic suspension system.",
+            hull: "Low profile design, bearing a strong resemblance to the American M1 Abrams.",
+            armament: "105mm rifled main gun, characteristic of the original K1 models.",
+            turret: "Angular, Abrams-like turret with composite armor."
+        },
+        fact: "The K1 MBT was developed for the Republic of Korea Army with assistance from General Dynamics, heavily basing its design on the American M1 Abrams. Because of its visual similarity and origin, it is often nicknamed the 'Baby Abrams'.",
+        imageCredits: [
+            "Photo: SGT CHRISTOPHER KAUFMANN, USA / U.S. Army / Public Domain",
+            "Photo: TSGT James E. Lotz, U.S. Air Force / Public Domain"
+        ]
+    },
+    {
+        id: 181,
+        name: "Type 90",
+        type: "Main Battle Tank",
+        origin: "Japan",
+        coords: [35.6762, 139.6503],
+        images: [
+            "assets/Type90.jpg",
+            "assets/Type90_Bravo.jpg"
+        ],
+        specs: { speed: "70 km/h", armament: "120mm L44 smoothbore", operationalRange: "350 km" },
+        inService: 1990,
+        users: ["Japan"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "6 road wheels per side. Hydropneumatic and torsion bar hybrid suspension.",
+            hull: "Flat and boxed hull typical of late Cold War MBT designs, distinct angular glacis.",
+            armament: "120mm smoothbore gun with a prominent fume extractor.",
+            turret: "Noticeably boxy and vertical-faced composite armor on the turret front and sides, resembling the Leopard 2A4."
+        },
+        fact: "The Type 90 was developed to replace all Type 61 and a portion of Type 74 tanks in the Japan Ground Self-Defense Force. At the time of its introduction, it was one of the most expensive main battle tanks in the world. It features an automatic loader, which reduces the crew size to three.",
+        imageCredits: [
+            "Photo: User:Megapixie / Public Domain",
+            "Photo: i_yudai / Flickr / CC BY 2.0"
+        ]
+    },
+    {
+        id: 182,
+        name: "T-90",
+        type: "Main Battle Tank",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/T90.jpg",
+            "assets/T90_Bravo.jpg"
+        ],
+        specs: { speed: "60 km/h", armament: "125mm 2A46M smoothbore", operationalRange: "550 km" },
+        inService: 1992,
+        users: ["Russia", "India", "Algeria", "Syria"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "6 road wheels per side, resembling the T-72 system.",
+            hull: "Low-profile hull equipped with Kontakt-5 or Relikt explosive reactive armor blocks.",
+            armament: "125mm main gun capable of firing ATGMs, with distinctive 'red eyes' (Shtora electro-optical jammers) flanking the gun on many models.",
+            turret: "Cast or welded turret covered heavily with ERA blocks, giving it an angular, cluttered appearance compared to western tanks."
+        },
+        fact: "The T-90 is a third-generation Russian main battle tank that essentially combines the reliable chassis of the T-72 with the advanced turret and combat systems of the T-80. It frequently features the 'Shtora-1' active protection system, renowned for its red-glowing infrared dazzlers designed to spoof incoming wire-guided missiles.",
+        imageCredits: [
+            "Photo: Vyacheslav Argenberg / Wikimedia Commons / CC BY 4.0",
+            "Photo: Vyacheslav Argenberg / Wikimedia Commons / CC BY 4.0"
+        ]
+    },
+    {
         id: 136,
         name: "AKM",
         type: "Assault Rifle",
@@ -3841,7 +3939,7 @@
         id: 161,
         name: "Aérospatiale Gazelle",
         type: "Light Helicopter",
-        origin: "France",
+        origin: "United Kingdom / France",
         coords: [48.8566, 2.3522],
         images: [
             "assets/Gazelle.jpg",
@@ -3862,6 +3960,32 @@
             fuselage: "Sleek, streamlined cabin with large bubble canopy. Skid landing gear. Seats up to 5 (2 crew + 3 passengers).",
             tail: "Long, slender tail boom with prominent fenestron shroud at end. Small horizontal stabilizer on tail boom."
         }
+    },
+    {
+        id: 176,
+        name: "MH-6 Little Bird",
+        type: "Light Helicopter",
+        origin: "United States",
+        coords: [36.5748, -76.0278], // Naval Station Norfolk / SOCOM base
+        images: [
+            "assets/MH6.jpg",
+            "assets/MH6_Bravo.jpg"
+        ],
+        specs: { speed: "282 km/h", armament: "M134 Minigun / Hydra 70 rockets", combatRadius: "430 km" },
+        inService: 1980,
+        users: ["United States"],
+        status: "Active",
+        fact: "The MH-6 Little Bird is operated exclusively by the 160th Special Operations Aviation Regiment ('Night Stalkers'), the US Army's elite special operations aviation unit. So small it can land on a city rooftop or a ship's deck, it famously carried Delta Force operators on the external bench seats during the 1993 Battle of Mogadishu, as depicted in 'Black Hawk Down'.",
+        recognitionFeatures: {
+            rotors: "Five-blade main rotor. Conventional small tail rotor on right side. Very compact rotor disc.",
+            engine: "Single Rolls-Royce 250-C30 turboshaft. Engine exhaust exits on the left side above and behind the cabin.",
+            fuselage: "Tiny egg-shaped bubble canopy cabin seating 2 pilots side by side. Skid landing gear. External bench seats ('Little Bird benches') on each side can carry up to 3 operators per side.",
+            tail: "Long, slender tail boom. Small fixed horizontal stabilizer with end plates near the tail rotor."
+        },
+        imageCredits: [
+            "Photo: USASOC / U.S. Army / Public Domain",
+            "Photo: Air Force Staff Sgt. Alexander Cook / U.S. Air Force / Public Domain"
+        ]
     },
     {
         id: 162,
@@ -3962,5 +4086,389 @@
             "Photo: Government of Ghana / Wikimedia Commons / CC0 1.0"
         ]
     },
+    {
+        id: 165,
+        name: "Panzerhaubitze 2000",
+        type: "Artillery",
+        origin: "Germany",
+        coords: [51.1657, 10.4515],
+        images: [
+            "assets/Panzerhaubitz_2000.jpg",
+            "assets/Panzerhaubitz_2000_Bravo.jpg"
+        ],
+        imageCredits: [
+            "Photo: Gerben van Es/Ministerie van Defensie / CC BY-SA 4.0",
+            "Photo: A. Piladis, KAM / GFDL"
+        ],
+        specs: { speed: "60 km/h", armament: "155mm L52", maximumRange: "40 km" },
+        inService: 1998,
+        users: ["Germany", "Italy", "Netherlands", "Greece", "Lithuania", "Croatia", "Hungary", "Qatar", "Ukraine"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "7 road wheels per side with track return rollers. Drive sprocket at front.",
+            hull: "Heavy, boxy hull. Driver's hatch on front right. Very noticeable travel lock for main gun on front glacis.",
+            armament: "Distinctive 155mm L52 barrel with slotted muzzle brake and prominent bore evacuator.",
+            turret: "Massive rear-mounted turret with sloped, wedge-like front and sides. Phased array radar for muzzle velocity measurement often visible above main gun."
+        },
+        fact: "The Panzerhaubitze 2000 (PzH 2000) is one of the most powerful conventional artillery systems deployed. It is capable of Multiple Rounds Simultaneous Impact (MRSI), automatically adjusting elevation between shots so up to five shells land on the target at the exact same moment. Dutch PzH 2000s saw extensive action in Afghanistan, proving highly effective in combat."
+    },
+    {
+        id: 166,
+        name: "M113 Armored Personnel Carrier",
+        type: "APC/IFV",
+        origin: "United States",
+        coords: [38.8814, -77.0365],
+        images: [
+            "assets/M113.jpg",
+            "assets/M113_Bravo.jpg"
+        ],
+        specs: { speed: "67 km/h", armament: "12.7mm M2 Browning", operationalRange: "480 km" },
+        inService: 1960,
+        users: ["United States", "Israel", "Australia", "Turkey", "Egypt", "Taiwan", "Greece", "South Korea", "Ukraine", "50+ countries"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "5 road wheels per side. Drive sprocket at front, idler at rear. No track return rollers.",
+            hull: "Distinctive boxy, rectangular aluminum hull. Flat, slightly sloped front glacis with trim vane. Large fold-down rear ramp.",
+            armament: "Typically a single .50 cal (12.7mm) M2 Browning heavy machine gun exposed on roof.",
+            turret: "No enclosed turret on base models. Commander's cupola features gun mount and vision blocks."
+        },
+        fact: "The M113 is one of the most widely used armored vehicles in history, with over 80,000 produced worldwide. Its lightweight aluminum hull makes it air-transportable and capable of amphibious operations. It earned the nickname 'Green Dragon' by the Viet Cong during the Vietnam War due to its ability to break through heavy jungle.",
+        imageCredits: [
+            "Photo: U.S. Army photo by Sgt. Spencer Rhodes / Public Domain",
+            "Photo: 208th Kaišiadorys infantry company KASP (MoD Lithuania) / GFDL"
+        ]
+    },
+    {
+        id: 167,
+        name: "BM-21 Grad",
+        type: "Artillery",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/BM21.jpg",
+            "assets/BM21_Bravo.jpg"
+        ],
+        specs: { speed: "75 km/h", armament: "122mm 40-barrel MLRS", maximumRange: "40 km" },
+        inService: 1963,
+        users: ["Russia", "Ukraine", "Syria", "Egypt", "India", "Vietnam", "50+ countries"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Mounted on 6x6 truck chassis (typically Ural-375D or Ural-4320).",
+            hull: "Standard military truck cab, engine at front. Launchers mounted on rear bed.",
+            armament: "Massive rectangular bank of 40 launch tubes (4 rows of 10 tubes).",
+            turret: "No turret. The entire tube bank swivels and elevates for launching."
+        },
+        fact: "The BM-21 'Grad' (Russian for Hail) is the world's most widely used multiple rocket launcher. A single battalion of 18 launchers can deliver 720 rockets in 20 seconds, devastating an area of several square kilometers. It serves as the benchmark for modern MLRS systems.",
+        imageCredits: [
+            "Photo: Robert Wray / CC BY-SA 3.0",
+            "Photo: Maksym Kozlenko / CC BY-SA 4.0"
+        ]
+    },
+    {
+        id: 168,
+        name: "Flakpanzer Gepard",
+        type: "Air Defense System",
+        origin: "Germany",
+        coords: [51.1657, 10.4515],
+        images: [
+            "assets/Gepard_1a2.jpg",
+            "assets/Gepard_1a2_Bravo.jpg"
+        ],
+        specs: { speed: "65 km/h", armament: "2x 35mm Oerlikon KDA", effectiveRange: "5.5 km" },
+        inService: 1976,
+        users: ["Germany", "Brazil", "Jordan", "Romania", "Qatar", "Ukraine"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "7 road wheels per side with track return rollers. Leopard 1 chassis.",
+            hull: "Standard Leopard 1 tank hull design with exhaust grilles on rear sides.",
+            armament: "Two very long 35mm autocannons mounted externally on the turret sides.",
+            turret: "Large, boxy turret housing crew. Tracking radar dish on front, spinning surveillance radar on rear roof."
+        },
+        fact: "The Flakpanzer Gepard is an all-weather, self-propelled anti-aircraft gun based on the Leopard 1 tank chassis. Designed during the Cold War to protect armored columns from attack helicopters and low-flying jets, it gained massive modern prominence in Ukraine where it proved highly effective at shooting down loitering munitions and cruise missiles using minimal and inexpensive 35mm ammunition.",
+        imageCredits: [
+            "Photo: Hans-Hermann Bühling / CC BY-SA 3.0",
+            "Photo: Hans-Hermann Bühling / CC BY-SA 2.0"
+        ]
+    },
+    {
+        id: 178,
+        name: "FIM-92 Stinger",
+        type: "Air Defense System",
+        origin: "United States",
+        coords: [39.8283, -98.5795],
+        images: [
+            "assets/FIM92_Stinger.jpg",
+            "assets/FIM92_Stinger_Bravo.png"
+        ],
+        specs: { speed: "Mach 2.54", armament: "3 kg HE warhead", engagementRange: "4.8 km" },
+        inService: 1981,
+        users: ["United States", "Ukraine", "Taiwan", "NATO allies", "29+ countries"],
+        status: "Active",
+        recognitionFeatures: {
+            design: "Shoulder-fired MANPADS with a distinctive box-like IFF antenna (the 'hockey puck' or folding grid) often attached to the launcher tube/gripstock.",
+            tube: "Long cylindrical launch tube with a flared front end and a prominent gripstock assembly housing the battery/coolant unit (BCU) pointing downwards.",
+            sight: "Optical sight assembly mounted on the left side of the launch tube."
+        },
+        fact: "The FIM-92 Stinger is a Man-Portable Air-Defense System (MANPADS) that relies on an infrared seeker to track and engage aircraft. It famously shifted the balance of power during the Soviet-Afghan War in the 1980s when supplied to the Mujahideen, and remains heavily used today, particularly in Ukraine.",
+        imageCredits: [
+            "Photo: STAFF SGT. George / Public Domain",
+            "Photo: Maryu / Wikimedia Commons / CC BY-SA 3.0"
+        ]
+    },
+    {
+        id: 169,
+        name: "Type 075 LHD",
+        type: "Naval Vessel",
+        origin: "China",
+        coords: [31.2304, 121.4737],
+        images: ["assets/Type_075_LHD.jpg", "assets/Type_075_LHD_Bravo.jpg"],
+        specs: {
+            speed: "23 knots",
+            armament: "2x H/PJ-11 30mm CIWS, 2x HHQ-10 SAM",
+            operationalRange: "6,000 nautical miles"
+        },
+        inService: 2021,
+        users: ["China"],
+        status: "Active",
+        recognitionFeatures: {
+            size: "Massive amphibious assault ship (~250m long, ~36m beam). Broad, flat silhouette sits very low in the water compared to aircraft carriers, with no pronounced raised bow.",
+            masts: "Two enclosed mast towers with large flat-panel AESA radar arrays on all four faces. Forward mast is taller and positioned just ahead of the island; a smaller secondary mast sits aft.",
+            armament: "Two H/PJ-11 11-barrel 30mm CIWS mounts (fore and aft of the island) and two HHQ-10 short-range SAM launchers on deck-edge sponsons. No large gun turrets or VLS cells.",
+            superstructure: "Compact, boxy island superstructure set well to the starboard side and positioned aft of amidships — leaving the forward two-thirds of the flight deck completely clear.",
+            hull: "Full-length flat flight deck with no ski-jump ramp. Squared-off transom stern with a large floodable well-deck gate for launching landing craft. Raked plumb bow with a slight knuckle at the waterline."
+        },
+        fact: "China's first domestically produced Landing Helicopter Dock, the Type 075 can simultaneously operate up to 30 helicopters and land a full marine battalion by air and sea in a single wave. Three vessels were built in rapid succession between 2018 and 2024, a pace that surprised Western naval analysts.",
+        imageCredits: [
+            { author: "迪圖春秋", source: "Wikimedia Commons", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Hainan_(31)_moored_at_China_Merchants_Wharf.jpg" },
+            { author: "星海军事", source: "Wikimedia Commons", license: "CC BY 4.0", url: "https://commons.wikimedia.org/wiki/File:Type_075.jpg" }
+        ]
+    },
+    {
+        id: 170,
+        name: "Ohio-class SSBN",
+        type: "Naval Vessel",
+        origin: "United States",
+        coords: [47.7423, -122.7275], // Naval Base Kitsap (Bangor)
+        images: ["assets/Ohio_Class_SSBN.jpg"],
+        specs: {
+            speed: "25 knots (submerged)",
+            armament: "20x Trident II D5 SLBMs, 4x 533mm torpedo tubes",
+            operationalRange: "Unlimited (nuclear)"
+        },
+        inService: 1981,
+        users: ["United States"],
+        status: "Active",
+        recognitionFeatures: {
+            size: "Extremely large nuclear submarine (170m length, 13m beam) with a long continuous flat 'turtleback' behind the sail.",
+            masts: "Retractable sensor/periscope masts housed within the sail; rarely visible when surfaced for transit.",
+            armament: "No visible surface armament. Two rows of 10 large missile hatches run flush along the turtleback behind the sail.",
+            superstructure: "Relatively small, streamlined sail positioned far forward on the hull, featuring traditional sail-mounted diving planes.",
+            hull: "Long cylindrical pressure hull with a rounded blunt bow and a single seven-bladed propeller at the tapered stern."
+        },
+        fact: "The largest submarines ever built for the U.S. Navy, the Ohio-class carries roughly half of all active U.S. strategic thermonuclear warheads. Because their nuclear reactors provide near-unlimited endurance, their patrol lengths are constrained only by the amount of food they can carry for the 155-man crew.",
+        imageCredits: [
+            { author: "U.S. Navy", source: "Wikimedia Commons", license: "Public Domain", url: "https://commons.wikimedia.org/wiki/File:USS_Maryland_(SSBN_738).jpg" }
+        ]
+    },
+    {
+        id: 171,
+        name: "Astute-class Submarine",
+        type: "Naval Vessel",
+        origin: "United Kingdom",
+        coords: [56.0664, -4.8197], // HMNB Clyde (Faslane)
+        images: ["assets/Astute.jpg", "assets/Astute_Bravo.jpg"],
+        specs: {
+            speed: "30 knots (submerged)",
+            armament: "6x 533mm torpedo tubes (Spearfish, Tomahawk Block IV)",
+            operationalRange: "Unlimited (nuclear)"
+        },
+        inService: 2010,
+        users: ["United Kingdom"],
+        status: "Active",
+        recognitionFeatures: {
+            size: "Large nuclear fleet submarine (97m length, 11m beam). Sleek profile that appears significantly more angled and angular than older cylindrical submarines.",
+            masts: "Features two non-hull-penetrating optronic masts instead of traditional periscopes, housed within the sail.",
+            armament: "Hidden internally. Six torpedo tubes located in the bow section.",
+            superstructure: "Distinctively angled, stepped sail (fin) positioned forward of amidships. The sail flares out at the base where it meets the hull, giving it a unique chined appearance.",
+            hull: "Stealthy, angular hull completely covered in over 39,000 anechoic acoustic tiles. The bow slopes down sharply, and the stern ends in a pump-jet propulsor rather than an exposed propeller."
+        },
+        fact: "The Astute-class is the largest and most advanced attack submarine ever built for the Royal Navy. Its Rolls-Royce PWR2 nuclear reactor never needs to be refueled over the submarine's 25-year lifespan, and it can manufacture its own oxygen and fresh water from the ocean, meaning it only needs to surface to resupply food.",
+        imageCredits: [
+            { author: "LA(Phot) Paul Halliwell/MOD", source: "Defence Imagery", license: "OGL v1.0", url: "https://commons.wikimedia.org/wiki/File:Royal_Navy_Submarine_HMS_Astute_Returns_to_HMNB_Clyde_MOD_45153736.jpg" },
+            { author: "LA(Phot) Will Haigh", source: "Wikimedia Commons", license: "OGL v1.0", url: "https://commons.wikimedia.org/wiki/File:HMS_Ambush.jpg" }
+        ]
+    },
+    {
+        id: 172,
+        name: "Arleigh Burke-class Destroyer",
+        type: "Naval Vessel",
+        origin: "United States",
+        coords: [36.9389, -76.3242], // Naval Station Norfolk
+        images: ["assets/Burke.jpg", "assets/Burke_Bravo.jpg"],
+        specs: {
+            speed: "30+ knots",
+            armament: "90-96x Mk 41 VLS cells, 1x 5-inch Mk 45 gun, CIWS",
+            operationalRange: "4,400 nautical miles"
+        },
+        inService: 1991,
+        users: ["United States"],
+        status: "Active",
+        recognitionFeatures: {
+            size: "Medium-to-large surface combatant (154m length, 18m beam). Broad-shouldered hull designed for stability rather than just speed.",
+            masts: "Considerably angled, swept-back tripod mainmast. To reduce its radar signature, the mast is enclosed rather than leaving the lattice framework exposed.",
+            armament: "Prominent 5-inch Mk 45 deck gun on the bow. Flush Mk 41 VLS cells built into the deck forward of the bridge and aft of the superstructure.",
+            superstructure: "Stealth-influenced 'faceted' superstructure built with raked, angled surfaces rather than vertical bulkheads. Mounts four large, flat octagonal SPY-1 radar arrays.",
+            hull: "Steel hull and superstructure (rather than aluminum) with angled sides. Has a raised bow that flares outward vigorously, and a flight deck at the stern."
+        },
+        fact: "The Arleigh Burke-class is the longest-running destroyer production program in U.S. Navy history. Built around the revolutionary Aegis Combat System, these ships were the first U.S. Navy vessels to be designed specifically to combat the threat of massive Soviet anti-ship missile raids during the Cold War.",
+        imageCredits: [
+            { author: "U.S. Navy photo by Journalist 2nd Class Patrick Reilly", source: "Navy.mil", license: "Public Domain", url: "http://www.navy.mil/view_image.asp?id=5114" },
+            { author: "MC2 James R. Evans/U.S. Navy", source: "Wikimedia Commons", license: "Public Domain", url: "https://commons.wikimedia.org/wiki/File:Flickr_-_Official_U.S._Navy_Imagery_-_The_Arleigh_Burke-class_guided-missile_destroyer_USS_Momsen_(DDG_92)_arrives_alongside_the_Nimitz-class_aircraft_carrier_USS_Carl_Vinson_(CVN_70).jpg" }
+        ]
+    },
+    {
+        id: 173,
+        name: "Type 052D Destroyer",
+        type: "Naval Vessel",
+        origin: "China",
+        coords: [18.2255, 109.5212], // Yulin Naval Base, Hainan
+        images: ["assets/Type052D.jpg", "assets/Type052D_Bravo.jpg"],
+        specs: {
+            speed: "30 knots",
+            armament: "64x universal VLS cells, 1x 130mm gun, CIWS",
+            operationalRange: "4,500 nautical miles"
+        },
+        inService: 2014,
+        users: ["China"],
+        status: "Active",
+        recognitionFeatures: {
+            size: "Medium-to-large guided missile destroyer (157-161m length, 17-18m beam). Sleek profile compared to older Chinese combatants.",
+            masts: "Large enclosed, radar-absorbent mainmast sitting directly above the bridge. A shorter, secondary structural mast sits further aft near the funnel.",
+            armament: "A very large, stealthy-cupola 130mm main gun dominates the bow. Type 730/1130 CIWS is mounted atop the bridge, and an HHQ-10 missile CIWS is mounted atop the aft hangar.",
+            superstructure: "Stealthy, angled forward superstructure housing four flat-panel Type 346A active electronically scanned array (AESA) radars, similar to the US Aegis system.",
+            hull: "Flush deck design transitioning to a lowered helicopter flight deck at the aft extreme. No stepped forecastle."
+        },
+        fact: "Nicknamed the 'Chinese Aegis', the Type 052D is a modern, mass-produced multi-role surface combatant. It's the first Chinese destroyer to adopt a universal, canister-based Vertical Launch System (VLS) instead of dedicated launch systems for different missile types.",
+        imageCredits: [
+            { author: "Bestalex", source: "Wikimedia Commons", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Type-052D_destroyer_Jiaozuo_%E7%84%A6%E4%BD%9C_(163)_during_a_visit_to_Saint_Petersburg,_Russia_(July_26,_2024).jpg" },
+            { author: "日本防衛省・統合幕僚監部", source: "Wikimedia Commons", license: "CC BY 4.0", url: "https://www.mod.go.jp/js/Press/press2019/press_pdf/p20190726_03.pdf" }
+        ]
+    },
+    {
+        id: 174,
+        name: "Slava-class Cruiser",
+        type: "Naval Vessel",
+        origin: "Russia",
+        coords: [69.0689, 33.4162], // Severomorsk Naval Base
+        images: ["assets/Slava.jpg", "assets/Slava_Bravo.jpg"],
+        specs: {
+            speed: "32 knots",
+            armament: "16x P-1000 Vulkan ASMs, 64x S-300F SAMs, Twin 130mm gun",
+            operationalRange: "10,000 nautical miles"
+        },
+        inService: 1982,
+        users: ["Russia"],
+        status: "Active",
+        recognitionFeatures: {
+            size: "Large guided missile cruiser (186m length, 21m beam). Characterized by a very long, heavily customized forward deck.",
+            masts: "Features a massive pyramidal forward mast overloaded with raked sensor arrays and EW antennas, and a secondary mast midships.",
+            armament: "Twin 130mm gun turret on the bow. The most striking feature is the eight massive twin-tube launch canisters (16 total) for P-1000 Vulkan anti-ship missiles flanking the forward superstructure.",
+            superstructure: "Blocky, tiered forward superstructure. A large standalone structure aft houses the massive spherical 'Top Dome' radar (for S-300F missile guidance).",
+            hull: "Long stepped hull with a noticeably raised forecastle (front deck). Features a helicopter flight deck at the very rear, below the level of the main deck."
+        },
+        fact: "The Slava-class (Project 1164 Atlant) was designed as a highly-armed, conventionally powered, and less expensive alternative to the massive Kirov-class nuclear battlecruisers. The lead ship of the class, Moskva, served as the flagship of the Russian Black Sea Fleet until it was sunk by Ukrainian Neptune missiles in April 2022.",
+        imageCredits: [
+            { author: "George Chernilevsky", source: "Wikimedia Commons", license: "Public Domain", url: "https://commons.wikimedia.org/wiki/File:Project_1164_Moskva_2009_G1.jpg" },
+            { author: "LPHOT SEELEY/MOD", source: "Defence Imagery", license: "OGL v1.0", url: "https://commons.wikimedia.org/wiki/File:Russian_cruiser_Marshal_Ustinov_MOD_45164875.jpg" }
+        ]
+    },
+    {
+        id: 175,
+        name: "Visby-class Corvette",
+        type: "Naval Vessel",
+        origin: "Sweden",
+        coords: [56.1033, 15.5866], // Karlskrona Naval Base
+        images: ["assets/Visby.jpg", "assets/Visby_Bravo.jpg"],
+        specs: {
+            speed: "35+ knots",
+            armament: "1x 57mm Bofors gun, 8x RBS15 ASMs, 4x 400mm torpedoes",
+            operationalRange: "2,500 nautical miles"
+        },
+        inService: 2002,
+        users: ["Sweden"],
+        status: "Active",
+        recognitionFeatures: {
+            size: "Small-to-medium coastal corvette (73m length, 10m beam). Extreme geometric stealth profile with almost no exposed equipment.",
+            masts: "A single, highly integrated enclosed pyramidal 'stealth mast' housing all radar and communication systems. No exposed lattice wiring or spinning arrays.",
+            armament: "The 57mm Bofors main gun rests inside a stealthy, multi-faceted cupola whose barrel can literally fold away and hide inside the turret when not firing to reduce radar signature. Anti-ship missiles and torpedoes are hidden entirely within the hull.",
+            superstructure: "A single, sloping continuous block that blends seamlessly into the hull. Features heavily raked, flat surfaces designed to deflect radar waves.",
+            hull: "Extremely angular, multi-faceted hull with a pointed bow and a flat, flush flight deck at the stern. Exhaust is expelled underwater at the stern rather than through traditional funnels."
+        },
+        fact: "The Visby-class was the first vessel in the world to feature fully operational stealth technology. Its hull is constructed almost entirely from a carbon-fiber-reinforced plastic sandwich, making it completely non-magnetic, highly shock-resistant, and roughly 50% lighter than equivalent steel.",
+        imageCredits: [
+            { author: "Mark Harkin", source: "Wikimedia Commons", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:K31_HSwMS_Visby_(8643086211).jpg" },
+            { author: "Einarspetz", source: "Wikimedia Commons", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Helsingb_(2).JPG" }
+        ]
+    },
+    {
+        id: 200,
+        name: "Type 08",
+        type: "Infantry Fighting Vehicle",
+        origin: "China",
+        coords: [35.8617, 104.1954],
+        image: "assets/Type08.jpg",
+        specs: { speed: "100 km/h", armament: "105mm gun (ZTL-11) or 30mm (ZBL-08)", operationalRange: "800 km" },
+        inService: 2008,
+        users: ["China", "Venezuela", "Thailand", "Nigeria"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "8x8 wheeled chassis. Evenly spaced large wheels.",
+            hull: "Boat-shaped hull for amphibious operations with a trim vane at the front.",
+            armament: "105mm rifled gun on the ZTL-11 assault gun variant, or 30mm autocannon on the ZBL-08 variant.",
+            turret: "Angular welded turret mounted towards the rear of the hull on the assault gun variant."
+        },
+        fact: "The Type 08 is a family of eight-wheeled amphibious, modular armored vehicles. The ZTL-11 variant functions as an assault gun and tank destroyer, armed with a 105mm rifled gun capable of firing armor-piercing rounds and anti-tank guided missiles.",
+        imageCredit: "Photo: Tyg728 / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 201,
+        name: "LAV VI",
+        type: "Infantry Fighting Vehicle",
+        origin: "Canada",
+        coords: [45.4215, -75.6972],
+        image: "assets/Lav6.jpg",
+        specs: { speed: "100 km/h", armament: "25mm M242 Bushmaster", operationalRange: "600 km" },
+        inService: 2015,
+        users: ["Canada", "Saudi Arabia"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "8x8 wheeled chassis with noticeable wheel hubs. Upgraded, heavy-duty suspension.",
+            hull: "Double-V hull (DVH) for improved mine protection. Noticeably bulkier and higher profile than earlier LAVs due to heavy add-on armor.",
+            armament: "25mm Bushmaster chain gun mounted in a two-man turret.",
+            turret: "Sloped, angular turret with thermal sights, laser warning receivers, and smoke grenade dischargers."
+        },
+        fact: "The LAV VI (LAV 6) is a heavily upgraded version of the LAV III, developed in response to Canadian military experiences in Afghanistan. Its Double-V Hull (DVH) provides significantly improved protection against improvised explosive devices (IEDs) and landmines.",
+        imageCredit: "Photo: Amqui / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 202,
+        name: "GQL-111",
+        type: "Military Engineering Vehicle",
+        origin: "China",
+        coords: [35.8617, 104.1954],
+        image: "assets/GQL111.jpg",
+        specs: { speed: "90 km/h", armament: "None", operationalRange: "800 km" },
+        inService: 2005,
+        users: ["China", "Peru"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "8x8 heavy truck chassis, typically with large off-road tires.",
+            hull: "Standard forward cab configuration with a massive folding bridge payload carried on the rear flatbed.",
+            deployment: "Utilizes a scissors-type unfolding mechanism operated hydraulically from the rear of the vehicle to extend the bridge section.",
+            payload: "Carries a distinct foldable bridge span that rests flat and extends over the cab during transport."
+        },
+        fact: "The GQL-111 is a Chinese truck-mounted scissors-type heavy mechanized bridge system designed to quickly span rivers and anti-tank ditches. A single vehicle can deploy a 15-meter bridge segment in under 10 minutes, and multiple segments can be connected for wider crossings.",
+        imageCredit: "Photo: Bryan L. Castro / Wikimedia Commons / CC BY-SA 4.0"
+    }
 ];
 

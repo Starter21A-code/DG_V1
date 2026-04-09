@@ -1,5 +1,5 @@
 // Defence Guesser Service Worker
-const CACHE_NAME = 'defence-guesser-v167';
+const CACHE_NAME = 'defence-guesser-v187';
 
 // Files to cache for offline use
 const urlsToCache = [
@@ -17,16 +17,15 @@ const urlsToCache = [
     './assets/Leopard_2A7_bravo.jpg',
     './assets/challenger2_1765118411349.jpg',
     './assets/Challenger_2_Bravo.jpg',
-    './assets/t90_1765118367473.jpg',
-    './assets/T90MS_Bravo.jpg',
+
     './assets/merkava4_1765118431134.jpg',
     './assets/Merkava_Mk4_bravo.jpg',
     './assets/type99a_tank.jpg',
     './assets/Type_99a_bravo.jpg',
     './assets/k2_black_panther.jpg',
     './assets/K2_black_panther_bravo.jpg',
-    './assets/T84.jpg',
-    './assets/T84_Bravo.jpg',
+    './assets/T84_Oplot.jpg',
+    './assets/T84_Oplot_Bravo.jpg',
 
     './assets/zulfiqar_3.jpg',
     './assets/Zulfiqar_3_bravo.jpg',
@@ -322,7 +321,22 @@ const urlsToCache = [
     './assets/TU95.jpg',
     './assets/TU95_Bravo.jpg',
     './assets/WZ523.jpg',
-    './assets/WZ523_Bravo.jpg'
+    './assets/WZ523_Bravo.jpg',
+    './assets/MH6.jpg',
+    './assets/MH6_Bravo.jpg',
+    './assets/RQ7.jpg',
+    './assets/FIM92_Stinger.jpg',
+    './assets/FIM92_Stinger_Bravo.png',
+    './assets/TULPAR.jpg',
+    './assets/K1.jpg',
+    './assets/K1_Bravo.jpg',
+    './assets/Type90.jpg',
+    './assets/Type90_Bravo.jpg',
+    './assets/T90.jpg',
+    './assets/T90_Bravo.jpg',
+    './assets/Type08.jpg',
+    './assets/Lav6.jpg',
+    './assets/GQL111.jpg'
 ];
 
 // Install event - cache files

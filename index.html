@@ -74,7 +74,7 @@
 
                 <button id="practice-btn" class="btn secondary">PRACTICE HUB</button>
             </div>
-            <div class="version-display">V1.9</div>
+            <div class="version-display">V2.0</div>
         </div>
 
         <!-- Daily Challenge Options Modal -->
@@ -283,12 +283,25 @@
 
                     <h3>Game Modes</h3>
                     <ul>
-                        <li><strong>Start Game:</strong> Play 5 random rounds</li>
-                        <li><strong>Daily Challenge:</strong> Complete the same 5 equipment items as all other players
-                            today and compete on the leaderboard</li>
+                        <li><strong>Start Game:</strong> Play 5 random rounds at your own pace</li>
+                        <li><strong>Daily Challenge:</strong> A <strong>60-second speedrun</strong> — identify as many targets as possible before time runs out. The same target set is shared by all players each day</li>
                         <li><strong>Practice Hub:</strong> Browse and study all available equipment to improve your
                             knowledge</li>
                     </ul>
+
+                    <h3>Daily Challenge — Speedrun Rules</h3>
+
+                    <h4>⏱ 60-Second Clock</h4>
+                    <p>You have <strong>60 seconds</strong> to correctly identify the origin of as many targets as possible. The game auto-advances after every guess — no result screen, no delays.</p>
+
+                    <h4>❌ Time Penalty</h4>
+                    <p>A <strong>wrong country costs you 3 seconds</strong> off the clock. Accuracy matters as much as speed.</p>
+
+                    <h4>🔥 Combo Multiplier</h4>
+                    <p>Chain <strong>4 or more correct answers in a row</strong> to activate a <strong>×1.5 combo multiplier</strong> on every subsequent correct guess — until you break the streak.</p>
+
+                    <h4>▲ vs PB</h4>
+                    <p>Your score is compared in real time against your <strong>personal best run</strong>. A green <strong>▲</strong> means you're ahead; a red <strong>▼</strong> means you're behind.</p>
 
                     <h3>Tips</h3>
                     <ul>
@@ -296,6 +309,7 @@
                         <li>Pay attention to details like shape, size, and visible markings</li>
                         <li>Western equipment often differs in design from Eastern equipment</li>
                         <li>Some countries are known for specific types of military technology</li>
+                        <li>In the Daily Challenge, <strong>prioritise correct guesses over speed</strong> — a 3-second penalty hurts more than a slow correct answer</li>
                     </ul>
 
                     <p class="terms-footer"><strong>Good luck, and may your geographical knowledge be sharp!</strong>
@@ -477,7 +491,7 @@
                 <div class="practice-header">
                     <button id="practice-back-btn" class="back-btn">← BACK</button>
                     <h2>PRACTICE <span class="highlight">HUB</span></h2>
-                    <p>Familiarize yourself with defence equipment</p>
+                    <p>Familiarise yourself with defence equipment</p>
                 </div>
 
                 <div class="category-selector">
@@ -524,7 +538,7 @@
 
                     <!-- Image Container with Overlaid Thumbnails -->
                     <div class="practice-image-container">
-                        <img id="practice-modal-image" src="" alt="Equipment">
+                        <img id="practice-modal-image" src="" alt="Equipment" loading="lazy">
 
                         <!-- Image Gallery Thumbnails (overlaid at bottom of image) -->
                         <div id="practice-image-gallery" class="practice-image-gallery hidden">
@@ -622,14 +636,30 @@
         <!-- Game Screen -->
         <div id="game-screen" class="screen hidden">
             <div class="top-bar">
-                <div class="score-container">SCORE: <span id="score">0</span></div>
-                <!-- Daily Challenge Time Attack Timer -->
+                <div class="score-container">
+                    <div class="score-main">SCORE: <span id="score">0</span></div>
+                    <!-- Ghost Score (Daily Speedrun) -->
+                    <div id="ghost-score-display" class="ghost-score-display hidden">
+                        <span id="ghost-delta" class="ghost-delta-value"></span>
+                        <span class="ghost-label">vs PB</span>
+                    </div>
+                </div>
+                <!-- 60-Second Speedrun Global Timer -->
+                <div id="speedrun-timer" class="speedrun-timer hidden">
+                    <span id="speedrun-timer-value" class="speedrun-timer-value">60</span>
+                    <span class="speedrun-timer-label">SEC</span>
+                </div>
+                <!-- Daily Challenge Time Attack Timer (legacy, kept for non-speedrun) -->
                 <div id="daily-timer" class="daily-timer hidden">
                     <span id="daily-timer-value" class="daily-timer-value">5</span>
                     <span id="daily-timer-label" class="daily-timer-label">GO IN</span>
                 </div>
                 <div class="top-bar-right">
-                    <div class="round-container">ROUND: <span id="round">1</span></div>
+                    <!-- Combo Indicator -->
+                    <div id="combo-indicator" class="combo-indicator hidden">
+                        <span id="combo-streak-count">0</span><span class="combo-fire">🔥</span>
+                    </div>
+                    <div class="round-container"><span id="round-label">ROUND: </span><span id="round">1</span></div>
                     <button id="quit-game-btn" class="quit-btn" title="Quit Game">✕</button>
                 </div>
             </div>
@@ -638,6 +668,15 @@
             <div class="map-container-fullscreen">
                 <div id="map"></div>
                 <button id="guess-btn" class="btn primary">CONFIRM DROP</button>
+            </div>
+
+            <!-- Speedrun Quick Feedback Overlay -->
+            <div id="speedrun-feedback" class="speedrun-feedback hidden">
+                <div id="sf-result-badge" class="sf-result-badge"></div>
+                <div id="sf-points" class="sf-points"></div>
+                <div id="sf-penalty" class="sf-penalty hidden"></div>
+                <div id="sf-combo" class="sf-combo hidden"></div>
+                <div id="sf-ghost" class="sf-ghost hidden"></div>
             </div>
 
             <!-- Minimized Equipment Thumbnail (Bottom Right) - Game Screen Only -->
@@ -856,6 +895,33 @@
                             <span class="score-label">FINAL SCORE</span>
                             <span class="score-value" id="final-score">0</span>
                         </div>
+
+                        <!-- Archetype Card (daily speedrun only - replaces performance rating) -->
+                        <div class="archetype-section hidden" id="archetype-section">
+                            <div class="archetype-body">
+                                <div class="archetype-card-wrapper">
+                                    <div class="archetype-card-flip" id="archetype-card-flip">
+                                        <div class="archetype-card-face archetype-card-back">
+                                            <div class="card-back-pattern"></div>
+                                            <span class="card-back-label">?</span>
+                                        </div>
+                                        <div class="archetype-card-face archetype-card-front">
+                                            <img class="archetype-card-img" id="archetype-card-img" src="" alt="">
+                                            <span class="archetype-card-symbol hidden" id="archetype-card-symbol"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="archetype-info">
+                                    <span class="archetype-section-label">PLAYSTYLE ARCHETYPE</span>
+                                    <span class="archetype-card-label-text" id="archetype-card-label"></span>
+                                    <span class="archetype-name" id="archetype-name"></span>
+                                    <span class="archetype-subtitle" id="archetype-subtitle"></span>
+                                    <p class="archetype-caption" id="archetype-caption"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance Rating (standard game only) -->
                         <div class="score-rating" id="score-rating">
                             <img id="performance-trophy" src="" alt="Performance Trophy" class="performance-trophy hidden">
                             <span class="rating-label">PERFORMANCE RATING</span>
@@ -873,7 +939,7 @@
                             </div>
                             <div class="stat-item">
                                 <span class="stat-value" id="stat-correct-ids">0</span>
-                                <span class="stat-label">Correct IDs</span>
+                                <span class="stat-label" id="label-correct-ids">Correct IDs</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-value" id="stat-accuracy">0%</span>
@@ -888,7 +954,8 @@
                             <!-- Will be populated by JavaScript: high score message + streak -->
                         </div>
                     </div>
-                </div>
+
+                </div><!-- end debrief-content -->
 
                 <!-- Share Score Bar -->
                 <div class="share-bar" id="share-bar">
@@ -912,6 +979,34 @@
                     <button id="view-daily-stats-btn" class="btn secondary hidden">YOUR STATS</button>
                     <button id="menu-btn" class="btn secondary">MAIN MENU</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Replay Reel Modal (Daily Speedrun) -->
+        <div id="replay-reel-modal" class="modal hidden">
+            <div class="modal-content replay-reel-content">
+                <h2>TIME'S <span class="highlight">UP!</span></h2>
+                <p class="replay-subtitle">Here's your run breakdown:</p>
+                <div id="replay-reel-grid" class="replay-reel-grid"></div>
+                <div class="replay-reel-summary">
+                    <div class="replay-stat-card">
+                        <span id="reel-targets" class="replay-stat-value">0</span>
+                        <span class="replay-stat-label">Cleared</span>
+                    </div>
+                    <div class="replay-stat-card">
+                        <span id="reel-correct" class="replay-stat-value">0</span>
+                        <span class="replay-stat-label">On Target</span>
+                    </div>
+                    <div class="replay-stat-card">
+                        <span id="reel-best-combo" class="replay-stat-value">0</span>
+                        <span class="replay-stat-label">Best Combo</span>
+                    </div>
+                    <div class="replay-stat-card">
+                        <span id="reel-score" class="replay-stat-value">0</span>
+                        <span class="replay-stat-label">Score</span>
+                    </div>
+                </div>
+                <button id="replay-reel-continue-btn" class="btn primary">VIEW FULL DEBRIEF</button>
             </div>
         </div>
     </div>

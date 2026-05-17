@@ -155,12 +155,13 @@ window.equipmentData = [
             hull: "Front-mounted engine (exhaust on right side). Rear clamshell doors for infantry/ammo access. Flat, angled glacis.",
             armament: "120mm smoothbore gun with thermal sleeve. 12.7mm M2 heavy MG often on mantlet. Internal 60mm mortar.",
             turret: "Large, saucer/disc-like shape. Distinctive 'ball and chain' curtain on rear bustle overhang."
-        }
+        },
+        fact: "Unlike any other MBT, the Merkava places its engine at the front — deliberately using it as extra armour to protect the crew. The rear clamshell hatch means the tank can even evacuate casualties mid-battle, a design philosophy born from Israel's early and painful tank losses."
 
     },
     {
         id: 8,
-        name: "Type 99A",
+        name: "Type 99A (ZTZ-99)",
         type: "Main Battle Tank",
         origin: "China",
         coords: [35.8617, 104.1954],
@@ -181,7 +182,8 @@ window.equipmentData = [
             hull: "Arrow-shaped ERA/composite armor on front. Rear engine deck is raised (unlike Type 96).",
             armament: "125mm ZPT-98 smoothbore gun (50 caliber). 12.7mm QJC-88 heavy MG on roof.",
             turret: "Large, angular welded turret with heavy ERA coverage (arrow-shaped). Large bustle rack. Laser dazzler system (JD-3) on roof."
-        }
+        },
+        fact: "The Type 99A can fire laser-guided anti-tank missiles directly through its 125mm barrel, hitting targets at over 5km — well beyond the range of conventional tank ammunition. It can even use this to engage low-flying helicopters, something most tanks simply cannot do."
 
     },
     {
@@ -207,7 +209,8 @@ window.equipmentData = [
             hull: "Driver positioned front-center. Heavy composite armor with Explosive Reactive Armor (ERA) blocks often visible on skirts.",
             armament: "Long 120mm L/55 smoothbore gun with thermal sleeve. Bustle-mounted autoloader eliminates need for loader's hatch.",
             turret: "Flat, angular turret with MAWS radar plates on frontal cheeks. Large bustle rack at rear."
-        }
+        },
+        fact: "The K2's hydropneumatic suspension can actively raise, lower, and tilt the entire hull — allowing the tank to 'bow' its nose to fire uphill or adopt a low hull-down position that would be physically impossible for a conventional tank."
     },
 
     {
@@ -319,7 +322,8 @@ window.equipmentData = [
             hull: "Boxy hull resembling US Abrams. Driver's hatch front-center. Sloped glacis.",
             armament: "125mm 2A46M smoothbore gun (auto-loaded). 12.7mm DShK MG on commander's hatch.",
             turret: "Angular, welded turret resembling Abrams. Large bustle rack. Meteorological mast often visible."
-        }
+        },
+        fact: "Iran developed the Zulfiqar using design cues from American M60 Pattons — inherited from the Shah's pre-revolution army — and Soviet T-72s, making it one of the few tanks in the world built by blending the hardware of Cold War rivals."
 
     },
     {
@@ -345,11 +349,12 @@ window.equipmentData = [
             hull: "Heavy Kanchan composite armor with wedge-shaped reactive armor blocks on glacis. Driver's hatch on right.",
             armament: "120mm rifled gun with thermal sleeve and fume extractor. Resembles British 120mm guns but on a larger turret.",
             turret: "Boxy composite turret with arrow-shaped add-on armor modules on front. Prominent RCWS (Remote Controlled Weapon Station) on roof."
-        }
+        },
+        fact: "Despite taking over 30 years from initial concept to service — one of the longest MBT development timelines in history — the Arjun reportedly outperformed the Russian T-90S in Indian Army desert trials in 2010, vindicating decades of domestic investment."
     },
     {
         id: 151,
-        name: "T-84 Oplot",
+        name: "BM Oplot",
         type: "Main Battle Tank",
         origin: "Ukraine",
         coords: [50.4501, 30.5234],
@@ -449,7 +454,8 @@ window.equipmentData = [
             hull: "Modular ceramic/composite armor. Rubber side skirts. Headlights recessed in front armor.",
             armament: "120mm L/44 smoothbore gun with thermal sleeve. 12.7mm M2 MG on roof.",
             turret: "Wedge-shaped modular armor on front/sides. Boxy bustle with autoloader. Smoke dischargers embedded under armor."
-        }
+        },
+        fact: "Japan's Type 10 was engineered to fit the country's civilian road network and bridge weight limits, making it one of the lightest modern MBTs at around 44 tonnes. Its digital C4I system also lets an entire armoured unit share real-time targeting data — a capability NATO only began standardising years later."
 
     },
     {
@@ -700,21 +706,22 @@ window.equipmentData = [
     },
     {
         id: 20,
-        name: "JAS 39 Gripen E",
+        name: "JAS 39 Gripen D",
         type: "Fighter Aircraft",
         origin: "Sweden",
         coords: [60.1282, 18.6435],
         image: "assets/gripen_1765118486549.jpg",
-        specs: { speed: "Mach 2", armament: "Meteor, RBS-15", combatRadius: "3,200 km" },
-        inService: 2019,
-        users: ["Sweden", "Brazil", "South Africa", "Thailand", "Czech Republic", "Hungary", "Colombia", "Ukraine"],
+        specs: { speed: "Mach 2", armament: "IRIS-T, AIM-120, RBS-15", combatRadius: "800 km" },
+        inService: 2003,
+        users: ["Sweden", "Czech Republic", "Hungary", "South Africa", "Thailand"],
         status: "Active",
         recognitionFeatures: {
             wings: "Delta wing configuration. Large all-moving canards mounted on air intakes.",
-            engine: "Single turbofan engine (Volvo RM12/RM16). Round exhaust nozzle.",
-            fuselage: "Sleek, unstable aerodynamic design. Pitot tube on nose.",
+            engine: "Single Volvo RM12 turbofan engine. Round exhaust nozzle.",
+            fuselage: "Sleek, unstable aerodynamic design. Tandem two-seat cockpit. Pitot tube on nose.",
             tail: "Vertical stabilizer only (no horizontal tail). Delta wing provides lift/control."
         },
+        fact: "The JAS 39 Gripen D is the two-seat tandem variant of the Gripen C, developed for operational training and specialist missions while retaining full combat capability. Unlike the single-seat C-model, the D forgoes the internal 27mm Mauser BK-27 cannon to accommodate the rear cockpit. The Czech Republic and Hungary lease their Gripen C/Ds from Sweden — a unique arrangement in modern NATO alliance history.",
         imageCredit: "Photo: Milan Nykodym / Wikimedia Commons / CC BY-SA 2.0"
     },
     {
@@ -761,6 +768,32 @@ window.equipmentData = [
             tail: "Twin all-moving canted vertical stabilizers. 'Stinger' tail cone for countermeasures."
         },
         imageCredit: "Photo: Anna Zvereva / Flickr / CC BY-SA 2.0"
+    },
+    {
+        id: 303,
+        name: "Su-35",
+        type: "Fighter Aircraft",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/SU35.jpg",
+            "assets/SU35_Bravo.jpg"
+        ],
+        specs: { speed: "Mach 2.25", armament: "30mm GSh-30-1 cannon, 8,000 kg payload", operationalRange: "3,600 km" },
+        inService: 2014,
+        users: ["Russia", "China", "Iran"],
+        status: "Active",
+        fact: "The Su-35 (NATO reporting name 'Flanker-E') is an advanced 4.5-generation Russian multirole fighter. As a deep modernization of the Su-27, it features highly advanced avionics and potent thrust-vectoring engines for super-maneuverability.",
+        recognitionFeatures: {
+            wings: "Mid-mounted swept-back wings. Notably lacks the canards found on some other advanced Flanker variants like the Su-30SM/Su-33.",
+            engine: "Twin Saturn AL-41F1S thrust-vectoring turbofans. The exhaust nozzles often droop at different angles when parked.",
+            fuselage: "Long blended wing-body with a sleek downward slope nose. Completely lacks the prominent nose pitot tube found on almost all original Su-27 variants.",
+            tail: "Twin outward-canted vertical stabilizers. Long, thick 'stinger' extension between the engine exhausts housing rear-facing radar/electronics for defense."
+        },
+        imageCredits: [
+            "Photo: Aleksandr Markin / Wikimedia Commons / CC BY-SA 2.0",
+            "Photo: Mike Freer - Touchdown-aviation / Wikimedia Commons / GFDL 1.2"
+        ]
     },
     {
         id: 23,
@@ -941,7 +974,7 @@ window.equipmentData = [
     {
         id: 30,
         name: "B-2 Spirit",
-        type: "Stealth Bomber Aircraft",
+        type: "Strategic Bomber",
         origin: "United States",
         coords: [38.3090, -93.7144],
         images: [
@@ -967,7 +1000,7 @@ window.equipmentData = [
     {
         id: 31,
         name: "B-52 Stratofortress",
-        type: "Strategic Bomber Aircraft",
+        type: "Strategic Bomber",
         origin: "United States",
         coords: [46.9102, -98.6832],
         images: [
@@ -994,7 +1027,7 @@ window.equipmentData = [
     {
         id: 31.5,
         name: "B-1 Lancer",
-        type: "Strategic Bomber Aircraft",
+        type: "Strategic Bomber",
         origin: "United States",
         coords: [32.8998, -97.4415],
         images: [
@@ -1020,7 +1053,7 @@ window.equipmentData = [
     {
         id: 121,
         name: "B-21 Raider",
-        type: "Strategic Bomber Aircraft",
+        type: "Strategic Bomber",
         origin: "United States",
         coords: [34.6037, -118.0848],
         images: [
@@ -1223,6 +1256,32 @@ window.equipmentData = [
         }
     },
     {
+        id: 302,
+        name: "Mi-17",
+        type: "Transport Helicopter",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/Mi_17.jpg",
+            "assets/Mi_17_Bravo.jpg"
+        ],
+        specs: { speed: "250 km/h", armament: "S-8 Rockets, PKT MGs", ferryRange: "580 km" },
+        inService: 1981,
+        users: ["Russia", "India", "China", "Iran", "Over 80 countries"],
+        status: "Active",
+        fact: "The Mi-17 (NATO reporting name 'Hip') is one of the most prolific helicopters in the world, serving in over 80 countries. It is an improved derivative of the ubiquitous Mi-8, featuring more powerful engines designed to ensure performance at high altitudes and in hot weather.",
+        recognitionFeatures: {
+            rotors: "Five-bladed main rotor. Three-bladed tail rotor mounted on the LEFT side of the tail boom (unlike the Mi-8 where it is on the right).",
+            engine: "Twin turboshafts mounted on top of the cabin. Often features distinctive mushroom-shaped dust deflectors on air intakes.",
+            fuselage: "Bulky, rounded transport fuselage with large clamshell rear doors. External fuel tanks mounted on lower sides.",
+            tail: "Long straight tail boom ending in a swept-back vertical stabilizer. Most notably, the tail rotor is on the left side."
+        },
+        imageCredits: [
+            "Photo: Provided by User / Wikimedia Commons",
+            "Photo: Vitaly V. Kuzmin / Wikimedia Commons / CC BY-SA 4.0"
+        ]
+    },
+    {
         id: 116,
         name: "C-130 Hercules",
         type: "Transport Aircraft",
@@ -1327,6 +1386,54 @@ window.equipmentData = [
         users: ["United Kingdom"],
         status: "Active",
         imageCredit: "Photo: Aircrew/MOD / Wikimedia Commons / OGL v1.0"
+    },
+    {
+        id: 304,
+        name: "Nimitz-class Aircraft Carrier",
+        type: "Naval Vessel",
+        origin: "United States",
+        coords: [36.9458, -76.3264],
+        images: [
+            "assets/Nimitz.jpg",
+            "assets/Nimitz_Bravo.jpg"
+        ],
+        specs: { speed: "30+ knots", armament: "Sea Sparrow, RAM, CIWS", endurance: "Unlimited (nuclear powered)" },
+        inService: 1975,
+        users: ["United States"],
+        status: "Active",
+        fact: "The Nimitz-class comprises 10 massive nuclear-powered aircraft carriers. Acting as sovereign, floating air bases, they can each embark around 90 fixed-wing planes and helicopters. Powered by two nuclear reactors, a Nimitz-class carrier can theoretically steam for over 20 years without needing to refuel.",
+        recognitionFeatures: {
+            size: "Massive, flat continuous flight deck angled off-axis. Approx 332 meters (1,092 ft) long.",
+            masts: "Large, tall communications and sensor mast rising prominently above the island superstructure.",
+            armament: "Defensive systems (like CIWS and missile launchers) are mounted on sponsons extending sideways just below the flight deck level.",
+            superstructure: "Relatively compact single 'island' structure situated far to the starboard (right) side of the deck.",
+            hull: "Deep draft with a bulbous bow. The hull aggressively flares outwards to support the enormous flight deck above."
+        },
+        imageCredits: [
+            "Photo: U.S. Navy / Mass Communication Specialist 2nd Class Angel Contreras / Public Domain",
+            "Photo: U.S. Navy / Public Domain"
+        ]
+    },
+    {
+        id: 305,
+        name: "Type 212 Submarine",
+        type: "Naval Vessel",
+        origin: "Germany/Italy",
+        coords: [54.3233, 10.1228],
+        image: "assets/Type_212.jpg",
+        specs: { speed: "20 knots (submerged)", armament: "6x 533mm torpedo tubes", endurance: "Up to 3 weeks submerged" },
+        inService: 2005,
+        users: ["Germany", "Italy"],
+        status: "Active",
+        fact: "The Type 212 is a highly advanced non-nuclear submarine utilizing an air-independent propulsion (AIP) system powered by hydrogen fuel cells. This allows it to stay submerged for up to three weeks with almost zero acoustic or thermal signature.",
+        recognitionFeatures: {
+            size: "Relatively compact diesel-electric attack submarine. Roughly 56 meters (184 ft) in length.",
+            masts: "Retractable telescopic masts housing periscopes, radar, and communications equipment inside the sail.",
+            armament: "Six forward-facing 533mm torpedo tubes internally housed. No visible external deck guns or missile silos.",
+            superstructure: "Streamlined, gently swept sail (conning tower) located forward of midships, with diving planes mounted directly on the sail.",
+            hull: "Smooth teardrop-shaped hull made of non-magnetic steel. Distinctive X-shaped tail planes for high maneuverability."
+        },
+        imageCredit: "Photo: Stahlkocher / Wikimedia Commons / CC BY-SA 3.0"
     },
     {
         id: 42,
@@ -1800,6 +1907,79 @@ window.equipmentData = [
         imageCredit: "Photo: Israel Defense Forces / Flickr / CC BY 2.0"
     },
     {
+        id: 306,
+        name: "SAMP/T",
+        type: "Air Defense System",
+        origin: "France/Italy",
+        coords: [48.8566, 2.3522],
+        image: "assets/SampT.jpg",
+        specs: { speed: "Mach 4.5 (Interceptor)", armament: "8x Aster 30 missiles", engagementRange: "120 km" },
+        inService: 2011,
+        users: ["France", "Italy", "Singapore", "Ukraine"],
+        status: "Active",
+        fact: "The SAMP/T is an advanced European anti-aircraft and anti-missile system developed by Eurosam. Utilizing the hit-to-kill Aster 30 missile, it is specifically designed to intercept highly maneuverable threats, including supersonic cruise missiles and tactical ballistic missiles.",
+        recognitionFeatures: {
+            weapons: "Vertical launch system (VLS) module holding 8 circular missile canisters mounted on the rear of a heavy truck chassis.",
+            hull: "Mounted on 8x8 heavy tactical trucks (Renault Kerax in France or Astra in Italy). Features a large, boxy command/launch cabin behind the cab.",
+            armor: "Light splinter and small arms protection for the crew cabin. The system avoids attack through high mobility rather than heavy armor.",
+            trackWheels: "Eight large wheels (8x8 configuration), ensuring it can rapidly redeploy over varied terrain."
+        },
+        imageCredit: "Photo: Kevin.B / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 307,
+        name: "AMX-10 RC",
+        type: "Tank Destroyer",
+        origin: "France",
+        coords: [48.8566, 2.3522],
+        image: "assets/AMX10_RC_01.jpg",
+        images: [
+            "assets/AMX10_RC_01.jpg",
+            "assets/AMX10_RC_02.jpg"
+        ],
+        specs: { speed: "85 km/h", armament: "105mm F2 BK MECA", operationalRange: "800 km" },
+        inService: 1981,
+        users: ["France", "Morocco", "Qatar", "Ukraine"],
+        status: "Active",
+        fact: "Although it carries a 105mm gun capable of defeating light armor, the AMX-10 RC is classified as a wheeled reconnaissance vehicle, not a tank. Its hydropneumatic suspension allows the driver to adjust ride height on the fly, and it is fully amphibious — propelled through water by two rear-mounted waterjets with no preparation required. France deployed it to Ukraine in early 2023, marking one of the first Western 'tank-like' vehicles sent to the conflict.",
+        recognitionFeatures: {
+            wheels: "6 large road wheels (6x6) in a distinctive 3-axle layout. Tires are notably tall and wide. No tracks whatsoever — a key recognition point vs. similar-looking tracked vehicles.",
+            hull: "Low-profile, boxy welded steel hull. Slopes sharply at the front glacis. Driver's hatch on front-left. Rear hull drops off steeply to housing for two waterjets.",
+            armament: "Long 105mm F2 rifled gun with a prominent thermal sleeve and muzzle brake. Notably longer barrel than most IFVs. Coaxial 7.62mm NF1 machine gun on the left of the main gun.",
+            turret: "Large, angular two-man turret (commander + gunner) that takes up over half the vehicle's length when viewed from above. Periscopic sights and a rangefinder box are prominent on the turret roof."
+        },
+        imageCredits: [
+            "Photo: АрміяInform / Ministry of Defense of Ukraine / CC BY 4.0",
+            "Photo: Officier communication du 4e RCh / Wikimedia Commons / CC BY-SA 4.0"
+        ]
+    },
+    {
+        id: 308,
+        name: "Type 16 MCV",
+        type: "Tank Destroyer",
+        origin: "Japan",
+        coords: [36.2048, 138.2529],
+        images: [
+            "assets/Type16_MCV.jpg",
+            "assets/Type16_MCV_Bravo.jpg"
+        ],
+        specs: { speed: "100 km/h", armament: "105mm L/52 rifled gun", operationalRange: "400 km" },
+        inService: 2016,
+        users: ["Japan"],
+        status: "Active",
+        fact: "The Type 16 MCV (Maneuver Combat Vehicle) was developed by Mitsubishi Heavy Industries specifically for Japan's strategic geography — its 8x8 wheeled configuration allows it to be rapidly airlifted by C-2 transport aircraft to Japan's remote outer islands, such as the Nansei island chain near Taiwan. Despite weighing 26 tonnes and carrying a 105mm gun capable of penetrating most light-to-medium armor, the JGSDF officially classifies it as a 'fire support vehicle' rather than a tank, allowing Japan to circumvent constitutional limits on offensive weapons.",
+        recognitionFeatures: {
+            wheels: "8 large road wheels (8x8) in a four-axle layout. Distinctive wide low-profile tires. All four axles are clearly visible with pronounced wheel arches.",
+            hull: "Very sleek, angular, low-profile hull with a heavily sloped front glacis. Noticeably more aerodynamic and futuristic in appearance than comparable Western wheeled AFVs. Driver's hatch on front-left.",
+            armament: "Long 105mm L/52 rifled gun. Prominent bore evacuator midway along the barrel. 12.7mm M2 Browning on the commander's cupola. No muzzle brake (unlike the AMX-10 RC or Centauro).",
+            turret: "Low, highly angular two-man turret with sharp faceted surfaces. Laser warning receivers and a commander's panoramic sight on the turret roof. The turret has a distinctly modern, almost stealth-faceted appearance."
+        },
+        imageCredits: [
+            "Photo: Hunini / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: JGSDF / Wikimedia Commons / CC BY 2.0"
+        ]
+    },
+    {
         id: 49,
         name: "Bavar-373",
         type: "Air Defense System",
@@ -1957,6 +2137,26 @@ window.equipmentData = [
         imageCredit: "Photo: SSG Richard Hart / U.S. Department of Defense / Public Domain"
     },
     {
+        id: 300,
+        name: "K239 Chunmoo",
+        type: "Artillery",
+        origin: "South Korea",
+        coords: [35.9078, 127.7669],
+        images: [
+            "assets/K239.jpg",
+            "assets/K239_Bravo.jpg"
+        ],
+        specs: { speed: "90 km/h", armament: "239mm Guided Rockets", maximumRange: "80-290 km" },
+        inService: 2015,
+        users: ["South Korea", "Poland", "UAE"],
+        status: "Active",
+        fact: "The K239 Chunmoo is a highly mobile, multi-caliber rocket artillery system developed by South Korea. Designed for rapid 'shoot-and-scoot' tactics, it can fire various unguided and guided rockets, including 239mm guided rockets with an 80km range and heavier tactical missiles reaching up to 290km. Poland has procured a localized version called Homar-K.",
+        imageCredits: [
+            "Photo: ROK Ministry of National Defense / Wikimedia Commons / KOGL Type 1",
+            "Photo: ROK Ministry of National Defense / Wikimedia Commons / KOGL Type 1"
+        ]
+    },
+    {
         id: 57,
         name: "M142 HIMARS",
         type: "Artillery",
@@ -2020,7 +2220,7 @@ window.equipmentData = [
     {
         id: 60,
         name: "TOS-1A Solntsepek",
-        type: "Heavy Flamethrower System",
+        type: "Artillery",
         origin: "Russia",
         coords: [55.5587, 37.0514],
         image: "assets/TOS_1a.jpg",
@@ -2495,7 +2695,7 @@ window.equipmentData = [
         ],
         specs: { speed: "N/A", armament: "5.56x45mm", effectiveRange: "400 m" },
         inService: 1987,
-        users: ["United Kingdom", "Jamaica", "Nepal"],
+        users: ["United Kingdom", "Jamaica"],
         status: "Active",
         fact: "The SA80 (L85) is the standard issue service rifle of the British Armed Forces. After initial reliability issues, it was significantly upgraded by Heckler & Koch into the highly reliable A2 and A3 variants."
     },
@@ -2585,7 +2785,7 @@ window.equipmentData = [
     {
         id: 86,
         name: "Foxhound",
-        type: "Protected Patrol Vehicle",
+        type: "MRAP Vehicle",
         origin: "United Kingdom",
         coords: [51.5074, -0.1278],
         image: "assets/Foxhound.jpg",
@@ -2627,7 +2827,7 @@ window.equipmentData = [
     {
         id: 89,
         name: "Bushmaster PMV",
-        type: "Protected Mobility Vehicle",
+        type: "APC",
         origin: "Australia",
         coords: [-36.7570, 144.2786],
         image: "assets/Bushmaster.jpg",
@@ -2641,7 +2841,7 @@ window.equipmentData = [
     {
         id: 90,
         name: "BAE ACV",
-        type: "Amphibious Combat Vehicle",
+        type: "APC",
         origin: "United States",
         coords: [39.8283, -98.5795],
         images: [
@@ -2663,7 +2863,7 @@ window.equipmentData = [
     {
         id: 91,
         name: "ZBD-04",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/ZBD_04.jpg",
@@ -2677,7 +2877,7 @@ window.equipmentData = [
     {
         id: 92,
         name: "ZBL-08",
-        type: "Armoured Personnel Carrier",
+        type: "APC",
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/ZBL_08.jpg",
@@ -2691,7 +2891,7 @@ window.equipmentData = [
     {
         id: 93,
         name: "ZSD 89",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/ZSD_89.jpg",
@@ -2706,7 +2906,7 @@ window.equipmentData = [
     {
         id: 94,
         name: "M2 Bradley",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "United States",
         coords: [39.8283, -98.5795],
         image: "assets/Bradley_Fighting_Vehicle.jpg",
@@ -2720,7 +2920,7 @@ window.equipmentData = [
     {
         id: 95,
         name: "Stryker ICV",
-        type: "Armoured Personnel Carrier",
+        type: "APC",
         origin: "United States",
         coords: [47.1158, -122.5695],
         image: "assets/Stryker.jpg",
@@ -2734,7 +2934,7 @@ window.equipmentData = [
     {
         id: 96,
         name: "Boxer",
-        type: "Armoured Personnel Carrier",
+        type: "APC",
         origin: "Germany",
         coords: [51.1657, 10.4515],
         image: "assets/Boxer.jpg",
@@ -2768,7 +2968,7 @@ window.equipmentData = [
     {
         id: 152,
         name: "VBCI",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "France",
         coords: [48.8049, 2.1204],
         images: [
@@ -2794,7 +2994,7 @@ window.equipmentData = [
     {
         id: 153,
         name: "Borsuk",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "Poland",
         coords: [52.2297, 21.0122],
         images: [
@@ -2820,7 +3020,7 @@ window.equipmentData = [
     {
         id: 154,
         name: "K808 White Tiger",
-        type: "Armored Personnel Carrier",
+        type: "APC",
         origin: "South Korea",
         coords: [37.5665, 126.9780],
         images: [
@@ -2846,7 +3046,7 @@ window.equipmentData = [
     {
         id: 155,
         name: "Patria AMV",
-        type: "Armored Personnel Carrier",
+        type: "APC",
         origin: "Finland",
         coords: [60.1699, 24.9384],
         image: "assets/Patria_AMV.jpg",
@@ -2866,7 +3066,7 @@ window.equipmentData = [
     {
         id: 97,
         name: "Puma",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "Germany",
         coords: [51.1657, 10.4515],
         image: "assets/Puma.jpg",
@@ -2880,7 +3080,7 @@ window.equipmentData = [
     {
         id: 143,
         name: "CV90",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "Sweden / Czech Republic / Lithuania",
         coords: [60.1282, 18.6435],
         images: [
@@ -2900,7 +3100,7 @@ window.equipmentData = [
     {
         id: 98,
         name: "AJAX",
-        type: "Armoured Fighting Vehicle",
+        type: "IFV",
         origin: "United Kingdom",
         coords: [55.3781, -3.4360],
         images: [
@@ -2920,7 +3120,7 @@ window.equipmentData = [
     {
         id: 99,
         name: "Namer",
-        type: "Armoured Personnel Carrier",
+        type: "APC",
         origin: "Israel",
         coords: [31.0461, 34.8516],
         image: "assets/NAMER.jpg",
@@ -2931,12 +3131,38 @@ window.equipmentData = [
         fact: "The Namer (Hebrew for 'leopard') is based on the Merkava tank chassis and is one of the world's most heavily armored APCs. Weighing 60 tons with advanced armor protection, it can carry 9 troops plus 3 crew and was specifically designed for urban combat operations.",
         imageCredit: "Photo: Ishaiabigail / Wikimedia Commons / CC BY-SA 4.0"
     },
+    {
+        id: 309,
+        name: "Eitan",
+        type: "APC",
+        origin: "Israel",
+        coords: [31.0461, 34.8516],
+        images: [
+            "assets/Eytan.jpg",
+            "assets/Eytan_Bravo.jpg"
+        ],
+        specs: { speed: "90 km/h", armament: "12.7mm Samson RCWS", operationalRange: "1,000 km" },
+        inService: 2023,
+        users: ["Israel"],
+        status: "Active",
+        fact: "The Eitan (Hebrew for 'strong' or 'steadfast') is the IDF's first domestically developed wheeled APC, designed to replace the ageing M113 fleet. Its 8x8 platform was purpose-built to be cheaper to operate and faster to deploy than tracked alternatives, while still incorporating the Iron Fist Light Decoupled active protection system — the same family used on the Namer. It saw its combat debut in Gaza just months after entering service with the Nahal Brigade in May 2023, making it one of the most rapidly combat-tested new AFVs in recent history.",
+        recognitionFeatures: {
+            wheels: "8 large high-profile wheels (8x8) in a four-axle layout. Pronounced, heavily armoured wheel arches that flare outward significantly — a very distinctive silhouette compared to other 8x8 APCs.",
+            hull: "Extremely tall and boxy hull with a near-vertical front plate. Much higher profile than the Stryker or Boxer. Multi-layered NERA composite armour with visible add-on plates. Rear ramp for troop exit.",
+            armament: "Samson Remote Controlled Weapon Station (RCWS) on the roof, typically mounting a 12.7mm M2 Browning. The RCWS has no crew inside — it is operated remotely from within the vehicle.",
+            turret: "No traditional turret — the roof-mounted Samson RCWS is unmanned and relatively low-profile. Iron Fist active protection system launchers are visible on the hull corners."
+        },
+        imageCredits: [
+            "Photo: Zachi Evenor / Wikimedia Commons / CC BY 2.0",
+            "Photo: MoserB / Wikimedia Commons / CC0 1.0"
+        ]
+    },
 
     // Russian APCs
     {
         id: 100,
         name: "BTR-82A",
-        type: "Armoured Personnel Carrier",
+        type: "APC",
         origin: "Russia",
         coords: [61.5240, 105.3188],
         image: "assets/BTR_82a.jpg",
@@ -2950,7 +3176,7 @@ window.equipmentData = [
     {
         id: 101,
         name: "BMP-2",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "Russia",
         coords: [61.5240, 105.3188],
         image: "assets/BMP_2.jpg",
@@ -2964,7 +3190,7 @@ window.equipmentData = [
     {
         id: 102,
         name: "BMP-3",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "Russia",
         coords: [61.5240, 105.3188],
         image: "assets/BMP_3.jpg",
@@ -2978,7 +3204,7 @@ window.equipmentData = [
     {
         id: 103,
         name: "BTR-90",
-        type: "Armoured Personnel Carrier",
+        type: "APC",
         origin: "Russia",
         coords: [61.5240, 105.3188],
         image: "assets/BTR_90.jpg",
@@ -2992,7 +3218,7 @@ window.equipmentData = [
     {
         id: 179,
         name: "Otokar Tulpar",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "Turkey",
         coords: [40.7303, 29.9880], // Otokar facility, Sakarya
         image: "assets/TULPAR.jpg",
@@ -3014,7 +3240,7 @@ window.equipmentData = [
     {
         id: 104,
         name: "Rakhsh",
-        type: "Armoured Personnel Carrier",
+        type: "APC",
         origin: "Iran",
         coords: [32.4279, 53.6880],
         image: "assets/Rakhsh.jpg",
@@ -3028,7 +3254,7 @@ window.equipmentData = [
     {
         id: 105,
         name: "Boragh",
-        type: "Armoured Personnel Carrier",
+        type: "APC",
         origin: "Iran",
         coords: [32.4279, 53.6880],
         image: "assets/Boragh.jpg",
@@ -3046,7 +3272,7 @@ window.equipmentData = [
     {
         id: 106,
         name: "Type 05",
-        type: "Amphibious Fighting Vehicle",
+        type: "IFV",
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/Type_05.jpg",
@@ -3284,6 +3510,20 @@ window.equipmentData = [
         imageCredit: "Photo: U.S. Army Alaska / Wikimedia Commons / CC BY 2.0"
     },
     {
+        id: 301,
+        name: "RPG-7",
+        type: "Anti-Tank Weapon",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        image: "assets/RPG.jpg",
+        specs: { speed: "115 m/s", armament: "HEAT / Tandem HEAT", maximumRange: "500 m" },
+        inService: 1961,
+        users: ["Russia", "China", "Iran", "North Korea", "Over 40 countries"],
+        status: "Active",
+        fact: "The RPG-7 is the most widely produced and utilized anti-tank weapon in military history. Simple, cheap, and reliable, it has been used in almost every global conflict since the 1960s. Its iconic shape comes from the reusable launch tube and the over-caliber warheads inserted into the front.",
+        imageCredit: "Photo: Michal Maňas / Wikimedia Commons / CC BY 2.5"
+    },
+    {
         id: 120,
         name: "EA-18G Growler",
         type: "Electronic Warfare Aircraft",
@@ -3332,7 +3572,7 @@ window.equipmentData = [
     {
         id: 122,
         name: "A-50 (Mainstay)",
-        type: "Airborne Early Warning and Control Aircraft",
+        type: "Airborne Early Warning Aircraft",
         origin: "Russia",
         coords: [55.7558, 37.6173],
         images: [
@@ -3358,7 +3598,7 @@ window.equipmentData = [
     {
         id: 123,
         name: "Boeing E-3 Sentry",
-        type: "Airborne Early Warning and Control Aircraft",
+        type: "Airborne Early Warning Aircraft",
         origin: "United States",
         coords: [47.4979, -122.2188],
         image: "assets/Boeing_E3_Sentry.jpg",
@@ -3378,7 +3618,7 @@ window.equipmentData = [
     {
         id: 124,
         name: "KJ-2000",
-        type: "Airborne Early Warning and Control Aircraft",
+        type: "Airborne Early Warning Aircraft",
         origin: "China",
         coords: [34.3416, 108.9398],
         image: "assets/KJ2000.jpg",
@@ -3801,7 +4041,7 @@ window.equipmentData = [
     },
     {
         id: 182,
-        name: "T-90",
+        name: "T-90A",
         type: "Main Battle Tank",
         origin: "Russia",
         coords: [55.7558, 37.6173],
@@ -4063,7 +4303,7 @@ window.equipmentData = [
     {
         id: 112,
         name: "WZ523",
-        type: "APC/IFV",
+        type: "APC",
         origin: "China",
         coords: [39.9042, 116.4074],
         images: [
@@ -4115,7 +4355,7 @@ window.equipmentData = [
     {
         id: 166,
         name: "M113 Armored Personnel Carrier",
-        type: "APC/IFV",
+        type: "APC",
         origin: "United States",
         coords: [38.8814, -77.0365],
         images: [
@@ -4413,7 +4653,7 @@ window.equipmentData = [
     {
         id: 200,
         name: "Type 08",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/Type08.jpg",
@@ -4433,7 +4673,7 @@ window.equipmentData = [
     {
         id: 201,
         name: "LAV VI",
-        type: "Infantry Fighting Vehicle",
+        type: "IFV",
         origin: "Canada",
         coords: [45.4215, -75.6972],
         image: "assets/Lav6.jpg",
@@ -4453,7 +4693,7 @@ window.equipmentData = [
     {
         id: 202,
         name: "GQL-111",
-        type: "Military Engineering Vehicle",
+        type: "Combat Engineer Vehicle",
         origin: "China",
         coords: [35.8617, 104.1954],
         image: "assets/GQL111.jpg",

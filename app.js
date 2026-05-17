@@ -17,8 +17,74 @@ const COUNTRY_ALIASES = {
     "United Kingdom / Sweden": ["United Kingdom", "Great Britain", "UK", "Britain", "Sweden", "Kingdom of Sweden"],
     "China / Pakistan": ["China", "People's Republic of China", "Pakistan", "Islamic Republic of Pakistan"],
     "United States / United Kingdom": ["United States of America", "USA", "United States", "US", "United Kingdom", "Great Britain", "UK", "Britain"],
-    "Germany / United Kingdom / Italy / Spain": ["Germany", "Federal Republic of Germany", "United Kingdom", "Great Britain", "UK", "Britain", "Italy", "Italian Republic", "Spain", "Kingdom of Spain"]
+    "Germany / United Kingdom / Italy / Spain": ["Germany", "Federal Republic of Germany", "United Kingdom", "Great Britain", "UK", "Britain", "Italy", "Italian Republic", "Spain", "Kingdom of Spain"],
+    "Germany/Italy": ["Germany", "Federal Republic of Germany", "Italy", "Italian Republic"]
 };
+
+// ── Country flag emoji helper ────────────────────────────────────────────────
+// Maps every equipment origin name to its ISO 3166-1 alpha-2 code.
+const COUNTRY_TO_ISO = {
+    'Argentina':              'AR',
+    'Australia':              'AU',
+    'Austria':                'AT',
+    'Belgium':                'BE',
+    'Brazil':                 'BR',
+    'Canada':                 'CA',
+    'China':                  'CN',
+    'Czech Republic':         'CZ',
+    'Finland':                'FI',
+    'France':                 'FR',
+    'Germany':                'DE',
+    'India':                  'IN',
+    'Indonesia':              'ID',
+    'Iran':                   'IR',
+    'Israel':                 'IL',
+    'Italy':                  'IT',
+    'Japan':                  'JP',
+    'Lithuania':              'LT',
+    'Mexico':                 'MX',
+    'North Korea':            'KP',
+    'Norway':                 'NO',
+    'Pakistan':               'PK',
+    'Poland':                 'PL',
+    'Russia':                 'RU',
+    'Singapore':              'SG',
+    'South Africa':           'ZA',
+    'South Korea':            'KR',
+    'Spain':                  'ES',
+    'Sweden':                 'SE',
+    'Switzerland':            'CH',
+    'Taiwan':                 'TW',
+    'Turkey':                 'TR',
+    'Ukraine':                'UA',
+    'United Kingdom':         'GB',
+    'United States':          'US'
+};
+
+// Converts an ISO 3166-1 alpha-2 code to a small flag <img> tag using flagcdn.com.
+// flagcdn.com is a free, reliable CDN — the same internet connection used for
+// the Leaflet map tiles is sufficient.
+function isoToFlagImg(iso) {
+    const code = iso.toLowerCase();
+    return `<img src="https://flagcdn.com/20x15/${code}.png"
+                 alt="${iso}"
+                 style="height:14px;vertical-align:middle;margin-right:3px;border-radius:1px;display:inline-block;"
+                 onerror="this.style.display='none'">`;
+}
+
+// Returns flag <img> HTML for an origin string.
+// Handles simple names ('Turkey' → 🇹🇷 img) and multi-country origins
+// ('United States / United Kingdom' → two flag imgs).
+function getCountryFlagHTML(origin) {
+    if (!origin) return '';
+    const parts = origin.split(/\s*\/\s*/);
+    const imgs = parts
+        .map(p => p.trim())
+        .map(p => COUNTRY_TO_ISO[p])
+        .filter(Boolean)
+        .map(isoToFlagImg);
+    return imgs.join(' ');
+}
 
 let state = {
     score: 0,
@@ -35,17 +101,27 @@ let state = {
     geoJsonLayer: null,
     mapDataLoaded: false,
     bonusSubmitted: false,
-    roundResults: [],  // Track results for each round
-    currentRoundResult: null,  // Track current round's result before bonus
-    isDailyMode: false,  // Daily challenge mode
-    playerName: '',  // Player name for daily leaderboard
-    isHardMode: false,  // Hard mode with frost overlay
-    frostRevealPercentage: 0,  // 0-100, tracks how much has been revealed
-    triviaSubmitted: false,  // Hard Mode trivia question answered
-    currentTriviaQuestion: null, // Generated trivia question for current round
-    dailyRoundStartTime: null,   // Timestamp when daily round image loaded (time attack)
-    dailyTimerInterval: null,    // Interval ID for the live timer UI update loop
-    dailyTimeMultiplier: 100     // Score multiplier % from time attack (100 = full, 20 = minimum)
+    roundResults: [],
+    currentRoundResult: null,
+    isDailyMode: false,
+    playerName: '',
+    isHardMode: false,
+    frostRevealPercentage: 0,
+    triviaSubmitted: false,
+    currentTriviaQuestion: null,
+    dailyRoundStartTime: null,
+    dailyTimerInterval: null,
+    dailyTimeMultiplier: 100,
+    // ── Speedrun state ──
+    speedrunTimeRemaining: 60,
+    speedrunTimerInterval: null,
+    speedrunResults: [],          // [{name, imageSrc, correct, points, origin}]
+    consecutiveCorrect: 0,        // Current correct streak for combo
+    comboMultiplier: 1.0,         // 1.0 or 1.5
+    bestCombo: 0,                 // Best combo streak this run
+    targetsCleared: 0,            // Targets completed in speedrun
+    speedrunScoreProgression: [], // Cumulative score after each target (for ghost)
+    ghostProgression: null        // Previous best run's progression array
 };
 
 // Sound System using Web Audio API
@@ -122,6 +198,286 @@ function playGameOverSound() {
 function playClickSound() {
     if (!soundEnabled) return;
     playTone(800, 0.05, 'sine', 0.1);
+}
+
+function playTickSound() { playTone(880, 0.06, 'square', 0.08); }
+
+// ── Speedrun Timer ──────────────────────────────────────────────
+function startSpeedrunTimer() {
+    state.speedrunTimeRemaining = 60;
+    updateSpeedrunTimerDisplay();
+    document.getElementById('speedrun-timer')?.classList.remove('hidden');
+    state.speedrunTimerInterval = setInterval(() => {
+        state.speedrunTimeRemaining--;
+        updateSpeedrunTimerDisplay();
+        if (state.speedrunTimeRemaining <= 10 && state.speedrunTimeRemaining > 0) playTickSound();
+        if (state.speedrunTimeRemaining <= 0) { stopSpeedrunTimer(); endSpeedrun(); }
+    }, 1000);
+}
+function stopSpeedrunTimer() {
+    if (state.speedrunTimerInterval) { clearInterval(state.speedrunTimerInterval); state.speedrunTimerInterval = null; }
+    document.getElementById('speedrun-timer')?.classList.add('hidden');
+}
+function addSpeedrunTimePenalty(secs) {
+    state.speedrunTimeRemaining = Math.max(0, state.speedrunTimeRemaining - secs);
+    updateSpeedrunTimerDisplay();
+    if (state.speedrunTimeRemaining <= 0) { stopSpeedrunTimer(); endSpeedrun(); }
+}
+function updateSpeedrunTimerDisplay() {
+    const el = document.getElementById('speedrun-timer');
+    const val = document.getElementById('speedrun-timer-value');
+    if (!el || !val) return;
+    val.textContent = state.speedrunTimeRemaining;
+    el.classList.remove('speedrun-high','speedrun-medium','speedrun-low','speedrun-critical');
+    const t = state.speedrunTimeRemaining;
+    if (t > 30) el.classList.add('speedrun-high');
+    else if (t > 15) el.classList.add('speedrun-medium');
+    else if (t > 5) el.classList.add('speedrun-low');
+    else el.classList.add('speedrun-critical');
+}
+
+// ── Combo Display ────────────────────────────────────────────
+function updateComboDisplay() {
+    const el = document.getElementById('combo-indicator');
+    const cnt = document.getElementById('combo-streak-count');
+    if (!el || !cnt) return;
+    el.classList.remove('hidden');
+    cnt.textContent = state.consecutiveCorrect;
+    el.classList.toggle('combo-active', state.consecutiveCorrect >= 4);
+}
+function hideComboDisplay() { document.getElementById('combo-indicator')?.classList.add('hidden'); }
+
+// ── Ghost Score ─────────────────────────────────────────────
+function loadGhostProgression() {
+    try {
+        const data = getDailyData(); const todayKey = getTodaysSeed().toString(); let best = null;
+        Object.entries(data.history || {}).forEach(([k, e]) => {
+            if (k !== todayKey && e.scoreProgression && (!best || e.score > best.score)) best = e;
+        });
+        state.ghostProgression = best ? best.scoreProgression : null;
+    } catch(e2) { state.ghostProgression = null; }
+}
+function getGhostDelta() {
+    if (!state.ghostProgression || state.targetsCleared === 0) return null;
+    const idx = state.targetsCleared - 1;
+    return idx < state.ghostProgression.length ? state.score - state.ghostProgression[idx] : null;
+}
+function updateGhostDisplay() {
+    const el = document.getElementById('ghost-score-display');
+    const dEl = document.getElementById('ghost-delta');
+    if (!el || !dEl || !state.ghostProgression) return;
+    const d = getGhostDelta(); if (d === null) return;
+    el.classList.remove('hidden','ahead','behind','tied');
+    if (d > 0) { dEl.textContent = `▲ +${d.toLocaleString()}`; el.classList.add('ahead'); }
+    else if (d < 0) { dEl.textContent = `▼ ${d.toLocaleString()}`; el.classList.add('behind'); }
+    else { dEl.textContent = '= 0'; el.classList.add('tied'); }
+}
+
+// ── Speedrun Feedback Overlay ─────────────────────────────────
+function showSpeedrunFeedback(isCorrect, points, penaltySecs) {
+    const fb = document.getElementById('speedrun-feedback'); if (!fb) return;
+    const badge = document.getElementById('sf-result-badge');
+    badge.textContent = isCorrect ? '✓ ON TARGET' : '✗ MISSED';
+    badge.className = 'sf-result-badge ' + (isCorrect ? 'correct' : 'incorrect');
+    const ptsEl = document.getElementById('sf-points');
+    ptsEl.textContent = '+' + points.toLocaleString();
+    ptsEl.style.color = isCorrect ? '#00ff88' : '#ff6600';
+    fb.className = 'speedrun-feedback ' + (isCorrect ? 'correct-fb' : 'incorrect-fb');
+    const penEl = document.getElementById('sf-penalty');
+    if (penaltySecs > 0) { penEl.textContent = `⏱ -${penaltySecs}s PENALTY`; penEl.classList.remove('hidden'); } else penEl.classList.add('hidden');
+    const comboEl = document.getElementById('sf-combo');
+    const streak = state.consecutiveCorrect;
+    if (streak >= 4) { comboEl.textContent = '🔥 COMBO ×1.5'; comboEl.classList.remove('hidden'); }
+    else if (streak > 0) { comboEl.textContent = `${streak} streak`; comboEl.classList.remove('hidden'); }
+    else comboEl.classList.add('hidden');
+    const ghostEl = document.getElementById('sf-ghost'); const d = getGhostDelta();
+    if (d !== null) {
+        ghostEl.classList.remove('hidden','ahead','behind');
+        if (d > 0) { ghostEl.textContent = `▲ +${d.toLocaleString()} vs PB`; ghostEl.classList.add('ahead'); }
+        else if (d < 0) { ghostEl.textContent = `▼ ${d.toLocaleString()} vs PB`; ghostEl.classList.add('behind'); }
+        else { ghostEl.textContent = `= vs PB`; ghostEl.classList.add('ahead'); }
+    } else ghostEl.classList.add('hidden');
+    fb.classList.remove('hidden','animating'); void fb.offsetWidth; fb.classList.add('animating');
+    setTimeout(() => fb.classList.add('hidden'), 1500);
+}
+
+// ── Replay Reel ─────────────────────────────────────────────
+function showReplayReel() {
+    const modal = document.getElementById('replay-reel-modal');
+    const grid = document.getElementById('replay-reel-grid');
+    if (!modal || !grid) { endGame(); return; }
+    grid.innerHTML = '';
+    state.speedrunResults.forEach(r => {
+        const item = document.createElement('div');
+        item.className = 'reel-item ' + (r.correct ? 'reel-correct' : 'reel-incorrect');
+        item.innerHTML = `<img src="${r.imageSrc}" alt="${r.name}" loading="lazy"><div class="reel-item-badge">${r.correct?'✓':'✗'}</div><div class="reel-item-name">${r.name}</div>`;
+        grid.appendChild(item);
+    });
+    const correct = state.speedrunResults.filter(r => r.correct).length;
+    document.getElementById('reel-targets').textContent = state.speedrunResults.length;
+    document.getElementById('reel-correct').textContent = correct;
+    document.getElementById('reel-best-combo').textContent = state.bestCombo;
+    document.getElementById('reel-score').textContent = state.score.toLocaleString();
+    const btn = document.getElementById('replay-reel-continue-btn');
+    if (btn) btn.onclick = () => { modal.classList.add('hidden'); endGame(); };
+    modal.classList.remove('hidden');
+}
+function endSpeedrun() {
+    stopSpeedrunTimer(); state.guessSubmitted = true;
+    hideEquipmentPopup();
+    dom.equipmentThumbnail.classList.add('hidden');
+    hideComboDisplay();
+    document.getElementById('ghost-score-display')?.classList.add('hidden');
+    showReplayReel();
+}
+function getSpeedrunRating(score) {
+    if (score >= 120000) return 'God of War';   if (score >= 90000) return 'John Rambo';
+    if (score >= 70000)  return 'John Matrix (Commando)'; if (score >= 55000) return 'Maj Richard Sharpe';
+    if (score >= 40000)  return 'Maj Winters';   if (score >= 30000) return 'Johnny Rico';
+    if (score >= 20000)  return 'Lt Aldo Rain';  if (score >= 12000) return 'Pte Gump';
+    if (score >= 6000)   return 'Capt Sobel';    if (score >= 2000)  return 'Gen Melchett';
+    if (score >= 500)    return 'Pte Baldrick';  return 'LIZZARD';
+}
+
+// ── Speedrun Archetype Detection ────────────────────────────────────────────
+const ARCHETYPES = [
+    {
+        id: 'sniper',
+        name: 'The Sniper',
+        subtitle: 'Designated Marksman',
+        card: 'A♦',
+        cardLabel: 'Ace of Diamonds',
+        img: 'Archetypes/AceOfDiamonds.png',
+        caption: "One shot, one kill. You spent 45 seconds staring at a single piece of tank track, but hey — you got it right.",
+        detect: (r, targets, accuracy) => accuracy >= 90 && targets <= 6 && targets > 0
+    },
+    {
+        id: 'tier1',
+        name: 'Tier 1 Operator',
+        subtitle: 'The Ace',
+        card: 'A♠',
+        cardLabel: 'Ace of Spades',
+        img: 'Archetypes/AceOfSpades.png',
+        caption: "Fast, lethal, and suspiciously accurate. The CIA would like to know your location.",
+        detect: (r, targets, accuracy) => targets >= 9 && accuracy >= 90
+    },
+    {
+        id: 'suppression',
+        name: 'Suppressing Fire',
+        subtitle: 'The Machine Gunner',
+        card: 'J♣',
+        cardLabel: 'Jack of Clubs',
+        img: 'Archetypes/JackOfClubs.png',
+        caption: "Accuracy by volume! You couldn't hit the broad side of a barn, but you definitely scared it.",
+        detect: (r, targets, accuracy) => targets >= 9 && accuracy < 45
+    },
+    {
+        id: 'brokenarrow',
+        name: 'Broken Arrow',
+        subtitle: 'Last Stand',
+        card: 'K♥',
+        cardLabel: 'King of Hearts',
+        img: 'Archetypes/KingOfHearts.png',
+        caption: "You spent the first 30 seconds getting your teeth kicked in, then woke up and chose violence. A legendary comeback.",
+        detect: (r, targets) => {
+            if (targets < 6) return false;
+            const mid = Math.floor(r.length / 2);
+            const firstHalf = r.slice(0, mid);
+            const secondHalf = r.slice(mid);
+            const acc1 = firstHalf.length ? firstHalf.filter(x => x.correct).length / firstHalf.length : 1;
+            const acc2 = secondHalf.length ? secondHalf.filter(x => x.correct).length / secondHalf.length : 0;
+            return acc1 < 0.4 && acc2 >= 0.75;
+        }
+    },
+    {
+        id: 'shocker',
+        name: 'Shock Trooper',
+        subtitle: 'Point Man',
+        card: 'J♠',
+        cardLabel: 'Jack of Spades',
+        img: 'Archetypes/JackOfSpades.png',
+        caption: "You kicked the door down like a hero, then tripped over the rug and panicked for the last 15 seconds.",
+        detect: (r, targets) => {
+            if (targets < 6) return false;
+            const mid = Math.floor(r.length / 2);
+            const firstHalf = r.slice(0, mid);
+            const secondHalf = r.slice(mid);
+            const acc1 = firstHalf.length ? firstHalf.filter(x => x.correct).length / firstHalf.length : 0;
+            const acc2 = secondHalf.length ? secondHalf.filter(x => x.correct).length / secondHalf.length : 1;
+            return acc1 >= 0.75 && acc2 < 0.4;
+        }
+    },
+    {
+        id: 'loosecannon',
+        name: 'Loose Cannon',
+        subtitle: 'FUBAR',
+        card: '🃏',
+        cardLabel: 'The Joker',
+        img: 'Archetypes/Joker.png',
+        caption: "You instantly identified a prototype drone, then missed a globally famous tank. Your strategy is a coin flip with extra steps.",
+        detect: (r, targets, accuracy) => accuracy >= 40 && accuracy <= 65 && targets >= 5
+    },
+    {
+        id: 'rookie',
+        name: 'The Rookie',
+        subtitle: 'Shell Shocked',
+        card: '2♣',
+        cardLabel: 'Two of Clubs',
+        img: 'Archetypes/TwoOfClubs.png',
+        caption: "The lads have been informed. They've agreed not to bring it up. Much.",
+        detect: (r, targets) => targets <= 4
+    },
+    {
+        id: 'firemission',
+        name: 'Fire Mission',
+        subtitle: 'The Artillery',
+        card: 'K♦',
+        cardLabel: 'King of Diamonds',
+        img: 'Archetypes/KingOfDiamonds.png',
+        caption: "No rushing, no hesitation. Just the cold, mechanical clicking of a sociopath. Are you a metronome?",
+        detect: () => true  // Fallback — steady, methodical
+    }
+];
+
+function detectSpeedrunArchetype() {
+    const r = state.speedrunResults;
+    const targets = r.length;
+    const correct = r.filter(x => x.correct).length;
+    const accuracy = targets > 0 ? Math.round((correct / targets) * 100) : 0;
+    return ARCHETYPES.find(a => a.detect(r, targets, accuracy)) || ARCHETYPES[ARCHETYPES.length - 1];
+}
+
+function showArchetypeCard(archetype) {
+    const section = document.getElementById('archetype-section');
+    if (!section) return;
+    section.classList.remove('hidden');
+
+    // Card label and values
+    document.getElementById('archetype-name').textContent = archetype.name;
+    document.getElementById('archetype-subtitle').textContent = archetype.subtitle;
+    document.getElementById('archetype-card-label').textContent = archetype.cardLabel;
+    document.getElementById('archetype-caption').textContent = archetype.caption;
+
+    // Card image (front face)
+    const img = document.getElementById('archetype-card-img');
+    if (img) {
+        img.src = archetype.img;
+        img.alt = archetype.cardLabel;
+        img.onerror = () => {
+            // Image not yet created — show card symbol as text fallback
+            img.style.display = 'none';
+            const fallback = document.getElementById('archetype-card-symbol');
+            if (fallback) { fallback.textContent = archetype.card; fallback.classList.remove('hidden'); }
+        };
+    }
+
+    // Trigger the flip animation after a short delay for drama
+    const cardEl = document.getElementById('archetype-card-flip');
+    if (cardEl) {
+        cardEl.classList.remove('flipped');
+        void cardEl.offsetWidth; // force reflow
+        setTimeout(() => cardEl.classList.add('flipped'), 800);
+    }
 }
 
 function toggleSound() {
@@ -337,10 +693,15 @@ function hideQuitModal() {
 }
 
 function quitGame() {
-    // Stop daily challenge timer if running
     stopDailyTimer();
+    stopSpeedrunTimer();
+    hideComboDisplay();
+    document.getElementById('ghost-score-display')?.classList.add('hidden');
+    // Reset round display label safely (no innerHTML — preserves dom.round reference)
+    const roundLabel = document.getElementById('round-label');
+    if (roundLabel) roundLabel.textContent = 'ROUND: ';
+    dom.round.textContent = '1';
 
-    // Reset game state
     state.score = 0;
     state.round = 1;
     state.currentEquipment = null;
@@ -350,27 +711,16 @@ function quitGame() {
     state.roundResults = [];
     state.currentRoundResult = null;
 
-    // Hide equipment popup and thumbnail
     hideEquipmentPopup();
     dom.equipmentThumbnail.classList.add('hidden');
 
-    // Clear any markers and lines on the map
-    if (state.marker) {
-        state.map.removeLayer(state.marker);
-        state.marker = null;
-    }
-    if (state.actualMarker) {
-        state.map.removeLayer(state.actualMarker);
-        state.actualMarker = null;
-    }
-    if (state.line) {
-        state.map.removeLayer(state.line);
-        state.line = null;
-    }
+    if (state.marker) { state.map.removeLayer(state.marker); state.marker = null; }
+    if (state.actualMarker) { state.map.removeLayer(state.actualMarker); state.actualMarker = null; }
+    if (state.line) { state.map.removeLayer(state.line); state.line = null; }
 
-    // Return to main menu
     switchScreen('start');
 }
+
 
 // Equipment Popup Controls
 function minimizeEquipment() {
@@ -504,7 +854,11 @@ let frostState = {
     canvasArea: 0,
     totalRevealTime: 0,  // Total milliseconds spent actively revealing
     lastAnimationTime: 0,  // For tracking delta time
-    gracePeriod: 4000  // 4 seconds before multiplier starts dropping
+    gracePeriod: 4000,  // 4 seconds before multiplier starts dropping
+    // Fixed reference area used to normalise the reveal percentage so that
+    // the multiplier drop is the same regardless of the actual image/canvas size.
+    // Chosen as a typical mid-size display canvas (~600×350 px).
+    REFERENCE_AREA: 210000
 };
 
 function initFrostCanvas() {
@@ -846,24 +1200,25 @@ function drawRevealGradient(ctx, x, y, radius) {
 }
 
 function calculateRevealPercentage() {
-    if (frostState.canvasArea === 0) return;
-
     let totalArea = 0;
 
-    // Calculate area of all reveal zones (simplified - assumes no overlap)
+    // Sum the area of all locked reveal zones
     for (const zone of frostState.revealZones) {
         totalArea += Math.PI * zone.radius * zone.radius;
     }
 
-    // Add active touch areas
+    // Add currently-active (in-progress) touch areas
     for (const [id, touch] of frostState.activeTouches) {
         if (touch.currentRadius > 0) {
             totalArea += Math.PI * touch.currentRadius * touch.currentRadius;
         }
     }
 
-    // Calculate percentage (cap at 100%)
-    state.frostRevealPercentage = Math.min((totalArea / frostState.canvasArea) * 100, 100);
+    // Normalise against a FIXED reference area rather than the actual canvas size.
+    // This ensures the multiplier penalty is the same regardless of image dimensions:
+    // a small image won't be unfairly penalised just because each reveal circle
+    // covers a larger fraction of its smaller canvas.
+    state.frostRevealPercentage = Math.min((totalArea / frostState.REFERENCE_AREA) * 100, 100);
 }
 
 function getScoreMultiplier() {
@@ -1523,42 +1878,36 @@ function getFilteredEquipment(filters) {
 }
 
 function startGame(isDailyMode = false, filters = null) {
-    // Stop any timer that might be running from a previous game
     stopDailyTimer();
+    stopSpeedrunTimer();
     state.dailyTimeMultiplier = 100;
-
     state.score = 0;
     state.round = 1;
-    state.maxRounds = 5;  // Always reset maxRounds in case a previous game changed it
+    state.maxRounds = 5;
     state.userGuess = null;
     state.selectedCountry = null;
-    state.roundResults = [];  // Reset round results
+    state.roundResults = [];
     state.currentRoundResult = null;
     state.isDailyMode = isDailyMode;
+    // Speedrun state reset
+    state.speedrunResults = [];
+    state.consecutiveCorrect = 0;
+    state.comboMultiplier = 1.0;
+    state.bestCombo = 0;
+    state.targetsCleared = 0;
+    state.speedrunScoreProgression = [];
+    state.ghostProgression = null;
 
-    // Daily Challenge always runs in Normal Mode regardless of Hard Mode toggle
     if (isDailyMode) {
         state.isHardMode = false;
-    }
-
-    if (isDailyMode) {
-        // Use seeded random based on today's date for daily challenge
+        state.maxRounds = 50;
         state.gameData = getDailyEquipment();
+        loadGhostProgression();
     } else if (filters) {
-        // Use filtered equipment
         let filteredData = getFilteredEquipment(filters);
-        if (filteredData.length < state.maxRounds) {
-            // Not enough equipment with these filters, use what we have or show warning
-            if (filteredData.length === 0) {
-                alert('No equipment matches your filters. Try different options.');
-                return;
-            }
-            // Adjust max rounds to match available equipment count
-            state.maxRounds = filteredData.length;
-            state.gameData = shuffleArray(filteredData).slice(0, state.maxRounds);
-        } else {
-            state.gameData = shuffleArray(filteredData).slice(0, state.maxRounds);
-        }
+        if (filteredData.length === 0) { alert('No equipment matches your filters. Try different options.'); return; }
+        state.maxRounds = Math.min(filteredData.length, 5);
+        state.gameData = shuffleArray(filteredData).slice(0, state.maxRounds);
     } else {
         state.gameData = shuffleArray(equipmentData).slice(0, state.maxRounds);
     }
@@ -1566,10 +1915,22 @@ function startGame(isDailyMode = false, filters = null) {
     switchScreen('game');
     loadRound();
 
-    requestAnimationFrame(() => {
-        state.map.invalidateSize();
-    });
+    if (isDailyMode) {
+        const roundContainer = document.querySelector('.round-container');
+        if (roundContainer) roundContainer.style.display = 'none';
+        updateComboDisplay();
+        startSpeedrunTimer();
+        if (state.ghostProgression) document.getElementById('ghost-score-display')?.classList.remove('hidden');
+    } else {
+        const roundContainer = document.querySelector('.round-container');
+        if (roundContainer) roundContainer.style.display = '';
+        hideComboDisplay();
+        document.getElementById('ghost-score-display')?.classList.add('hidden');
+    }
+
+    requestAnimationFrame(() => { state.map.invalidateSize(); });
 }
+
 
 function loadRound() {
     resetMapVisuals();
@@ -1587,7 +1948,15 @@ function loadRound() {
     state.guessSubmitted = false;
 
     dom.score.textContent = state.score;
-    dom.round.textContent = `${state.round}/${state.maxRounds}`;
+    // Update round label and value using separate spans — never replaces innerHTML
+    const roundLabel = document.getElementById('round-label');
+    if (state.isDailyMode) {
+        if (roundLabel) roundLabel.textContent = 'CLEARED: ';
+        dom.round.textContent = state.targetsCleared;
+    } else {
+        if (roundLabel) roundLabel.textContent = 'ROUND: ';
+        dom.round.textContent = `${state.round}/${state.maxRounds}`;
+    }
 
     // Get random image if equipment has multiple images (support both old 'image' and new 'images' format)
     let imageSrc;
@@ -1644,9 +2013,9 @@ function loadRound() {
             });
         }
 
-        // Start daily challenge timer when image becomes visible
+        // Start per-round daily timer only in legacy mode (not speedrun)
         if (state.isDailyMode) {
-            startDailyTimer();
+            // Speedrun uses global timer, not per-round timer — do nothing here
         }
     };
 
@@ -1679,9 +2048,7 @@ function submitGuess() {
     if (state.selectedCountry) {
         const aliases = COUNTRY_ALIASES[equipment.origin] || [equipment.origin];
         isCorrectCountry = aliases.some(alias =>
-            state.selectedCountry.toLowerCase() === alias.toLowerCase() ||
-            state.selectedCountry.toLowerCase().includes(alias.toLowerCase()) ||
-            alias.toLowerCase().includes(state.selectedCountry.toLowerCase())
+            state.selectedCountry.toLowerCase() === alias.toLowerCase()
         );
     }
 
@@ -1701,29 +2068,75 @@ function submitGuess() {
         console.log(`Mismatch. Selected: ${state.selectedCountry}, Target: ${equipment.origin}, Distance: ${Math.round(distanceKm)}km`);
     }
 
-    // Apply Hard Mode multiplier if enabled
-    if (state.isHardMode) {
-        const multiplier = getScoreMultiplier() / 100;  // Convert percentage to decimal
-        const originalPoints = points;
-        points = Math.round(points * multiplier);
-        console.log(`Hard Mode: ${originalPoints} × ${Math.round(multiplier * 100)}% = ${points} points`);
+    // ── SPEEDRUN PATH (Daily Mode) ───────────────────────────────────────────
+    if (state.isDailyMode) {
+        // Combo multiplier: 4+ consecutive correct = 1.5x (capped)
+        if (isCorrectCountry) {
+            state.consecutiveCorrect++;
+            if (state.consecutiveCorrect > state.bestCombo) state.bestCombo = state.consecutiveCorrect;
+            if (state.consecutiveCorrect >= 4) { state.comboMultiplier = 1.5; }
+        } else {
+            state.consecutiveCorrect = 0;
+            state.comboMultiplier = 1.0;
+        }
+        // Apply combo to points
+        if (state.comboMultiplier > 1.0) points = Math.round(points * state.comboMultiplier);
 
-        // Hide frost overlay after submitting guess
-        hideFrostOverlay();
+        state.score += points;
+        state.targetsCleared++;
+        state.speedrunScoreProgression.push(state.score);
+
+        // Log for replay reel (timestamp in ms since run start for half-split analysis)
+        state.speedrunResults.push({
+            name: equipment.name,
+            imageSrc: dom.image.src,
+            correct: isCorrectCountry,
+            points,
+            origin: equipment.origin,
+            ts: 60 - state.speedrunTimeRemaining   // seconds elapsed at time of guess
+        });
+
+        dom.score.textContent = state.score;
+        updateComboDisplay();
+        updateGhostDisplay();
+
+        // Time penalty for wrong country (-3 seconds)
+        const penaltySecs = isCorrectCountry ? 0 : 3;
+        if (!isCorrectCountry) {
+            if (isCorrectCountry) playCorrectSound(); else playIncorrectSound();
+            addSpeedrunTimePenalty(penaltySecs);
+        } else {
+            playCorrectSound();
+        }
+
+        showSpeedrunFeedback(isCorrectCountry, points, penaltySecs);
+        preloadNextRoundImage();
+
+        // Auto-advance after feedback animation
+        setTimeout(() => {
+            if (state.speedrunTimeRemaining > 0 && state.round < state.maxRounds) {
+                state.round++;
+                loadRound();
+            } else if (state.speedrunTimeRemaining <= 0) {
+                // Timer already called endSpeedrun, nothing to do
+            } else {
+                // Ran out of items (all 50 done)
+                endSpeedrun();
+            }
+        }, 1550);
+        return;
     }
 
-    // Apply Daily Challenge time penalty
-    if (state.isDailyMode) {
-        stopDailyTimer(); // Locks in the multiplier at the moment of submission
-        const multiplier = state.dailyTimeMultiplier / 100;
-        const originalPoints = points;
+    // ── NORMAL / HARD MODE PATH ──────────────────────────────────────────────
+    // Apply Hard Mode multiplier if enabled
+    if (state.isHardMode) {
+        const multiplier = getScoreMultiplier() / 100;
         points = Math.round(points * multiplier);
-        console.log(`Daily Time Attack: ${originalPoints} × ${state.dailyTimeMultiplier}% = ${points} points`);
+        hideFrostOverlay();
     }
 
     state.score += points;
 
-    // Store current round result (will be completed after bonus)
     state.currentRoundResult = {
         round: state.round,
         equipment: state.currentEquipment.name,
@@ -1731,7 +2144,7 @@ function submitGuess() {
         type: state.currentEquipment.type,
         locationCorrect: isCorrectCountry,
         locationPoints: points,
-        bonusCorrect: false,  // Will be updated after bonus
+        bonusCorrect: false,
         bonusPoints: 0,
         totalPoints: points
     };
@@ -1739,7 +2152,33 @@ function submitGuess() {
     showRoundResult(distanceKm, points, actual, state.selectedCountry || "Unknown Territory", isCorrectCountry);
 }
 
+// Silently fetch the next round's image in the background while the user
+// reads their round result, so the browser cache has it ready for loadRound().
+function preloadNextRoundImage() {
+    const nextIndex = state.round; // rounds are 1-based; index = round (i.e. the *next* item)
+    if (!state.gameData || nextIndex >= state.gameData.length) return;
+    const nextEquipment = state.gameData[nextIndex];
+    if (!nextEquipment) return;
+
+    // Resolve the image src the same way loadRound() does
+    let src;
+    if (nextEquipment.images && nextEquipment.images.length > 0) {
+        // Pick a random image — same logic as loadRound
+        src = nextEquipment.images[Math.floor(Math.random() * nextEquipment.images.length)];
+    } else {
+        src = nextEquipment.image;
+    }
+    if (!src) return;
+
+    const img = new Image();
+    img.src = src; // browser quietly fetches and caches; no DOM attachment needed
+}
+
 function showRoundResult(distance, points, actual, detectedName, isCorrect) {
+    // Kick off background preload of the next round's image immediately,
+    // so by the time the user clicks "Next Target" it is already cached.
+    preloadNextRoundImage();
+
     // Play sound based on whether location guess was correct
     if (isCorrect) {
         playCorrectSound();
@@ -1780,7 +2219,11 @@ function showRoundResult(distance, points, actual, detectedName, isCorrect) {
         [actual.lat, actual.lng]
     ], { padding: [50, 50] });
 
-    dom.resultDetails.origin.textContent = state.currentEquipment.origin;
+    // Prepend country flag img to the origin display
+    const originFlag = getCountryFlagHTML(state.currentEquipment.origin);
+    dom.resultDetails.origin.innerHTML = originFlag
+        ? `${originFlag} ${state.currentEquipment.origin}`
+        : state.currentEquipment.origin;
 
     const resultTitle = document.getElementById('result-title');
 
@@ -1953,18 +2396,29 @@ function generateTriviaQuestion(equipment) {
     // 1. "Which country does NOT operate this equipment?"
     if (equipment.users && equipment.users.length >= 2) {
         pool.push(() => {
-            // Pick a genuine non-user as the correct answer ("NOT a user")
+            // Reject aggregate/bulk entries like "100+ countries worldwide", "40+ countries", etc.
+            // These are not real individual country names and make nonsensical answer choices.
+            function isRealCountry(name) {
+                return !/\d/.test(name) && !/\+/.test(name) && !/countries|nations|worldwide/i.test(name);
+            }
+
+            // Wrong answers = actual named users of this equipment (pick up to 3, no aggregates)
+            const namedUsers = equipment.users.filter(isRealCountry);
+            if (namedUsers.length < 1) return null;
+            const wrongAnswers = [...namedUsers]
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3);
+
+            // Correct answer = a genuine non-user country (not an aggregate string)
             const allUsers = new Set(equipment.users);
             const nonUsers = equipmentData
                 .flatMap(eq => eq.users || [])
-                .filter(u => !allUsers.has(u));
+                .filter(u => !allUsers.has(u) && isRealCountry(u));
             if (nonUsers.length === 0) return null;
             const correctAnswer = nonUsers[Math.floor(Math.random() * nonUsers.length)];
 
-            // Wrong answers = actual users (pick 3)
-            const wrongAnswers = [...equipment.users]
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 3);
+            // Need at least 1 wrong answer to make a valid question (correct + up to 3 wrongs)
+            if (wrongAnswers.length < 1) return null;
 
             return {
                 questionText: 'Which of these countries does NOT operate this equipment?',
@@ -1973,6 +2427,7 @@ function generateTriviaQuestion(equipment) {
             };
         });
     }
+
 
     // 2. Speed question — label varies by unit type (vehicle speed vs rate of fire)
     if (equipment.specs && equipment.specs.speed) {
@@ -2009,17 +2464,46 @@ function generateTriviaQuestion(equipment) {
                     ? 'What is the maximum speed of this equipment?'
                     : 'What is the top speed of this equipment?';
 
-            // Draw wrong answers from ANY equipment with a usable speed in the same category
-            const others = equipmentData
-                .filter(eq =>
-                    eq.name !== equipment.name &&
-                    eq.specs && eq.specs.speed &&
-                    eq.specs.speed !== correctAnswer &&
-                    isUsableAlternative(eq.specs.speed)
-                )
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 3)
-                .map(eq => eq.specs.speed);
+            // For km/h ground speeds, bracket candidates to the same speed range
+            // (sub-200 km/h vs 200+ km/h) so a slow APC is never paired with a jet speed.
+            function extractKmh(speedStr) {
+                if (!speedStr) return null;
+                const m = speedStr.match(/(\d[\d,]*)/);
+                return m ? parseFloat(m[1].replace(/,/g, '')) : null;
+            }
+            const isVehicleKmh = !isRateOfFire && !isMach && !isKnots;
+            const correctKmh = isVehicleKmh ? extractKmh(correctAnswer) : null;
+            const SPEED_BRACKET_THRESHOLD = 200; // km/h — below this = slow, above = fast
+
+            // Draw wrong answers from equipment with a usable speed in the same category
+            // AND (for km/h speeds) within the same speed bracket as the correct answer.
+            // Greedily collect unique speed values to prevent duplicate answer buttons.
+            const seenSpeeds = new Set([correctAnswer]);
+            const others = [];
+            const speedCandidates = equipmentData
+                .filter(eq => {
+                    if (eq.name === equipment.name) return false;
+                    if (!eq.specs || !eq.specs.speed) return false;
+                    if (eq.specs.speed === correctAnswer) return false;
+                    if (!isUsableAlternative(eq.specs.speed)) return false;
+                    // Apply bracket filter only for km/h vehicle speeds
+                    if (isVehicleKmh && correctKmh !== null) {
+                        const altKmh = extractKmh(eq.specs.speed);
+                        if (altKmh === null) return false;
+                        const correctFast = correctKmh >= SPEED_BRACKET_THRESHOLD;
+                        const altFast    = altKmh    >= SPEED_BRACKET_THRESHOLD;
+                        if (correctFast !== altFast) return false;
+                    }
+                    return true;
+                })
+                .sort(() => 0.5 - Math.random());
+            for (const eq of speedCandidates) {
+                if (others.length >= 3) break;
+                if (!seenSpeeds.has(eq.specs.speed)) {
+                    seenSpeeds.add(eq.specs.speed);
+                    others.push(eq.specs.speed);
+                }
+            }
 
             if (others.length < 3) return null;
             return {
@@ -2034,11 +2518,52 @@ function generateTriviaQuestion(equipment) {
     if (equipment.specs && equipment.specs.armament) {
         pool.push(() => {
             const correctAnswer = equipment.specs.armament;
-            const others = equipmentData
-                .filter(eq => eq.name !== equipment.name && eq.type === equipment.type && eq.specs && eq.specs.armament && eq.specs.armament !== correctAnswer)
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 3)
-                .map(eq => eq.specs.armament);
+
+            // Normalise an armament string to its first meaningful token so we can
+            // detect near-duplicates (e.g. "5.56x45mm NATO" vs "5.56×45mm NATO").
+            function normaliseArmament(str) {
+                return str
+                    .toLowerCase()
+                    .replace(/[×x]/g, 'x')   // unify × and x
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            // Extract the "key token" – the first comma/slash-separated chunk,
+            // which is usually the calibre or primary weapon designation.
+            function keyToken(str) {
+                return normaliseArmament(str).split(/[,/]/)[0].trim();
+            }
+
+            const correctKey = keyToken(correctAnswer);
+
+            // Skip N/A or clearly meaningless armament values
+            if (/^(n\/a|none|unarmed|static|tbd|unknown|-)/i.test(correctAnswer.trim())) return null;
+
+            // Draw candidates from ALL equipment (not just same type) so there
+            // is a wide pool of visually distinct options.
+            const candidates = equipmentData
+                .filter(eq =>
+                    eq.name !== equipment.name &&
+                    eq.specs && eq.specs.armament &&
+                    normaliseArmament(eq.specs.armament) !== normaliseArmament(correctAnswer) &&
+                    !/^(n\/a|none|unarmed|static|tbd|unknown|-)/i.test(eq.specs.armament.trim())
+                )
+                .sort(() => 0.5 - Math.random());
+
+            // Greedily pick 3 distractors, each with a key token different from
+            // the correct answer AND from every already-chosen distractor.
+            const chosenKeys = new Set([correctKey]);
+            const others = [];
+            for (const eq of candidates) {
+                if (others.length >= 3) break;
+                const tok = keyToken(eq.specs.armament);
+                if (!chosenKeys.has(tok)) {
+                    chosenKeys.add(tok);
+                    others.push(eq.specs.armament);
+                }
+            }
+
             if (others.length < 3) return null;
             return {
                 questionText: 'What is the primary armament of this equipment?',
@@ -2052,11 +2577,20 @@ function generateTriviaQuestion(equipment) {
     if (equipment.inService) {
         pool.push(() => {
             const correctAnswer = equipment.inService;
-            const others = equipmentData
+            // Greedily collect unique inService years to prevent duplicate answer buttons
+            // (many equipment entries can share the same service-entry year).
+            const seenYears = new Set([correctAnswer]);
+            const others = [];
+            const yearCandidates = equipmentData
                 .filter(eq => eq.name !== equipment.name && eq.inService && eq.inService !== correctAnswer)
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 3)
-                .map(eq => eq.inService);
+                .sort(() => 0.5 - Math.random());
+            for (const eq of yearCandidates) {
+                if (others.length >= 3) break;
+                if (!seenYears.has(eq.inService)) {
+                    seenYears.add(eq.inService);
+                    others.push(eq.inService);
+                }
+            }
             if (others.length < 3) return null;
             return {
                 questionText: 'When did this equipment enter service?',
@@ -2419,62 +2953,92 @@ const PERFORMANCE_QUOTES = {
         { text: '"Victory belongs to the most persevering."', author: 'Napoleon Bonaparte' },
         { text: '"There is no substitute for victory."', author: 'General Douglas MacArthur' },
         { text: '"It\'s hard to be humble when you\'re as great as I am."', author: 'Muhammad Ali' },
-        { text: '"I\'m an expert in everything. Except for the things I don\'t know, and those things aren\'t worth knowing."', author: 'Lord Flashheart (Blackadder)' },
         { text: '"Success is a science; if you have the conditions, you get the result."', author: 'Oscar Wilde' },
         { text: '"I have nothing to declare except my genius."', author: 'Oscar Wilde' },
-        { text: '"Soldiers! I am pleased with you. On the day of Austerlitz, you have justified all that I expected from your intrepidity; you have adorned your eagles with immortal glory."', author: 'Napoleon Bonaparte' },
         { text: '"Far better it is to dare mighty things, to win glorious triumphs… than to rank with those poor spirits who neither enjoy nor suffer much."', author: 'Theodore Roosevelt' },
         { text: '"Victorious warriors win first and then go to war."', author: 'Sun Tzu' },
         { text: '"Excellence is never an accident."', author: 'Aristotle' },
         { text: '"To improve is to change; to be perfect is to change often."', author: 'Winston Churchill' },
-        { text: '"Excellence is a continuous process, not an accident."', author: 'Leonardo da Vinci' },
         { text: '"The superior man is modest in his speech, but exceeds in his actions."', author: 'Confucius' }
     ],
-    'John Rambo': [
-        { text: '"To survive a war, you gotta become war."', author: 'Rambo' },
-        { text: '"They drew first blood, not me."', author: 'Rambo' },
-        { text: '"I\'m no tourist."', author: 'Rambo' },
-        { text: '"Who are you?" — "Your worst nightmare."', author: 'Rambo' }
+    'Lieutenant Colonel': [
+        { text: '"The general who wins a battle makes many calculations in his temple before the battle is fought."', author: 'Sun Tzu, The Art of War, Ch. 1 (trans. Lionel Giles, 1910)' },
+        { text: '"The nation that will insist on drawing a broad line of demarcation between the fighting man and the thinking man is liable to find its fighting done by fools and its thinking done by cowards."', author: 'Sir William Francis Butler (Charles George Gordon, 1889)' },
+        { text: '"The courage of a soldier is heightened by his knowledge of his profession."', author: 'Vegetius, De Re Militari, Book I' },
+        { text: '"Victory in war does not depend entirely upon numbers or mere courage; only skill and discipline will insure it."', author: 'Vegetius, De Re Militari, Book I, Ch. 1' },
+        { text: '"Experience is the teacher of all things."', author: 'Julius Caesar, De Bello Civili, Book II, Ch. 8' },
+        { text: '"Know ye not that the end and object of conquest is to avoid doing the same thing as the conquered?"', author: 'Alexander the Great, as recorded by Plutarch (Life of Alexander, Ch. 40.2)' }
     ],
-    'John Matrix (Commando)': [
-        { text: '"I eat Green Berets for breakfast. And right now I\'m very hungry!"', author: 'John Matrix' },
-        { text: '"Let off some steam, Bennett."', author: 'John Matrix' },
-        { text: '"Leave anything for us?" — "Just bodies."', author: 'General Kirby & John Matrix' }
+    'Major': [
+        { text: '"Therefore, he who desires peace, let him prepare for war."', author: 'Vegetius (Epitoma Rei Militaris, Book 3)' },
+        { text: '"Never in the field of human conflict was so much owed by so many to so few."', author: 'Winston Churchill (House of Commons, 20 August 1940)' },
+        { text: '"Duty, Honour, Country: Those three hallowed words reverently dictate what you ought to be, what you can be, what you will be."', author: 'General Douglas MacArthur (Address to West Point, 12 May 1962)' },
+        { text: '"All the business of war, and indeed all the business of life, is to endeavour to find out what you don\'t know by what you do; that\'s what I called \'guessing what was at the other side of the hill\'."', author: 'Duke of Wellington (The Croker Papers, 1885)' },
+        { text: '"But life is warfare, and a sojourn in a foreign land; and after-fame is oblivion."', author: 'Marcus Aurelius (Meditations, 2.17)' },
+        { text: '"We rely, not on secret weapons, but on our own real courage and loyalty."', author: 'Pericles (Funeral Oration, via Thucydides, Book 2)' }
     ],
-    'Maj Richard Sharpe': [
-        { text: '"War\'s not about glory. It\'s about staying alive long enough to see the next dawn."', author: 'Sharpe' },
-        { text: '"Fight well, fight hard!"', author: 'Sharpe' }
+    'Captain': [
+        { text: '"War is not an affair of chance; a great deal of knowledge, study, and meditation is necessary to conduct it well."', author: 'Frederick the Great (Instructions for his Generals, 1747)' },
+        { text: '"Waste no more time arguing what a good man should be. Be one."', author: 'Marcus Aurelius (Meditations, 10.16)' },
+        { text: '"No captain can do very wrong if he places his ship alongside that of the enemy."', author: 'Admiral Lord Nelson (Dispatches and Letters of Lord Nelson)' },
+        { text: '"War is cruelty, and you cannot refine it."', author: 'General William T. Sherman (Letter to the Mayor of Atlanta, September 1864)' },
+        { text: '"In war there is but one favorable moment; the great art is to seize it."', author: 'Attributed to Napoleon Bonaparte (Napoleon\'s Maxims)' },
+        { text: '"Both are equally deserters from their post: the man who runs from fear, and the one who yields to anger."', author: 'Marcus Aurelius (Meditations, 11.9)' }
     ],
-    'Maj Winters': [
-        { text: '"We\'re paratroopers, Lieutenant. We\'re supposed to be surrounded."', author: 'Maj Winters' },
-        { text: '"I\'m not asking you to do anything I wouldn\'t do myself. Now, let\'s go."', author: 'Maj Winters' },
-        { text: '"Captain Sobel, we salute the rank, not the man."', author: 'Maj Winters' }
+    'Warrant Officer (Class 1)': [
+        { text: '"The strong do what they can and the weak suffer what they must."', author: 'Thucydides, History of the Peloponnesian War (Melian Dialogue, Book 5)' },
+        { text: '"I came through and I shall return."', author: 'General Douglas MacArthur (Adelaide, Australia, 20 March 1942)' },
+        { text: '"Among the Americans serving on Iwo island, uncommon valor was a common virtue."', author: 'Fleet Admiral Chester W. Nimitz (1945)' },
+        { text: '"In a man-to-man fight, the winner is he who has one more round in his magazine."', author: 'Field Marshal Erwin Rommel (Infantry Attacks, 1937)' },
+        { text: '"My centre is giving way, my right is retreating, situation excellent, I am attacking."', author: 'Attributed to Marshal Ferdinand Foch (First Battle of the Marne, 1914)' },
+        { text: '"Boldness becomes rarer the higher the rank."', author: 'Carl von Clausewitz (On War, Book 3, Ch. 6)' }
     ],
-    'Johnny Rico': [
-        { text: '"Come on you apes, you wanna live forever?!"', author: 'Johnny Rico' },
-        { text: '"The only good bug is a dead bug!"', author: 'Johnny Rico' },
-        { text: '"No guts, no glory."', author: 'Johnny Rico' }
+    'Warrant Officer (Class 2)': [
+        { text: '"The art of war is simple enough. Find out where your enemy is. Get at him as soon as you can. Strike him as hard as you can, and keep moving on."', author: 'Ulysses S. Grant (Personal Memoirs of John H. Brinton, 1914)' },
+        { text: '"England expects that every man will do his duty."', author: 'Admiral Lord Nelson, Battle of Trafalgar (1805)' },
+        { text: '"In case of doubt, attack."', author: 'General George S. Patton (Tactical & Technical Trends, U.S. Army, 1943)' },
+        { text: '"Audacity, and again audacity, and always audacity!"', author: 'Georges Danton (Speech to the Legislative Assembly, 1792)' },
+        { text: '"The supreme art of war is to subdue the enemy without fighting."', author: 'Sun Tzu, The Art of War' },
+        { text: '"Mortal danger is an effective antidote for fixed ideas."', author: 'Field Marshal Erwin Rommel (The Rommel Papers, Ch. 11)' }
     ],
-    'Lt Aldo Rain': [
-        { text: '"You know somethin\', Utivich? I think this just might be my masterpiece."', author: 'Lt Aldo Rain' }
+    'Staff Sergeant': [
+        { text: '"If you know the enemy and know yourself, you need not fear the result of a hundred battles."', author: 'Sun Tzu, The Art of War' },
+        { text: '"No plan of operations extends with any certainty beyond the first contact with the main hostile force."', author: 'Field Marshal Helmuth von Moltke the Elder (Über Strategie, 1871)' },
+        { text: '"Hard pounding this, gentlemen; let\'s see who will pound longest."', author: 'Duke of Wellington, Battle of Waterloo (1815)' },
+        { text: '"A good plan, violently executed now, is better than a perfect plan next week."', author: 'Attributed to General George S. Patton' },
+        { text: '"Plans are worthless, but planning is everything."', author: 'Dwight D. Eisenhower (National Defense Executive Reserve Conference, 1957)' },
+        { text: '"War is merely the continuation of political intercourse with the addition of other means."', author: 'Carl von Clausewitz, On War' }
     ],
-    'Pte Gump': [
-        { text: '"I\'m pretty tired... I think I\'ll go home now."', author: 'Pte Gump' },
-        { text: '"I may not be a smart man, but I know what love is."', author: 'Pte Gump' },
-        { text: '"Sometimes, there just aren\'t enough rocks."', author: 'Pte Gump' }
+    'Sergeant': [
+        { text: '"The backbone of the Army is the Non-commissioned Man."', author: 'Rudyard Kipling, The \'Eathen (1896)' },
+        { text: '"Soldiers generally win battles; generals get credit for them."', author: 'Attributed to Napoleon Bonaparte' },
+        { text: '"The more you sweat in peace, the less you bleed in war."', author: 'Military maxim' },
+        { text: '"Victorious warriors win first and then go to war, while defeated warriors go to war first and then seek to win."', author: 'Sun Tzu, The Art of War' },
+        { text: '"Wars may be fought with weapons, but they are won by men."', author: 'General George S. Patton (Cavalry Journal, 1933)' },
+        { text: '"In war, the moral is to the physical as three is to one."', author: 'Napoleon Bonaparte' }
     ],
-    'Capt Sobel': [
-        { text: '"Your weekend pass is revoked."', author: 'Capt Sobel' },
-        { text: '"Hi-ho, Silver!"', author: 'Capt Sobel' },
-        { text: '"You people are the sorriest excuse for soldiers I\'ve ever seen."', author: 'Capt Sobel' }
+    'Corporal': [
+        { text: '"It does not matter how slowly you go as long as you do not stop."', author: 'Chinese proverb' },
+        { text: '"Success is not final, failure is not fatal: it is the courage to continue that counts."', author: '' },
+        { text: '"Genius is one percent inspiration and ninety-nine percent perspiration."', author: 'Thomas Edison' },
+        { text: '"I am not afraid of an army of lions led by a sheep; I am afraid of an army of sheep led by a lion."', author: 'Attributed to Charles de Talleyrand' },
+        { text: '"To be prepared for war is one of the most effective means of preserving peace."', author: 'George Washington (First Annual Message to Congress, 1790)' },
+        { text: '"The soldier is the Army. No army is better than its soldiers."', author: 'General George S. Patton' }
     ],
-    'Gen Melchett': [
-        { text: '"There is one thing that will help you through this, Blackadder: total, utter, blind stupidity!"', author: 'Gen Melchett' },
-        { text: '"Doing precisely what we\'ve done eighteen times before is exactly the last thing they would expect us to do this time!"', author: 'Gen Melchett' }
+    'Lance Corporal': [
+        { text: '"The secret of getting ahead is getting started."', author: '' },
+        { text: '"In war there is no prize for the runner-up."', author: 'Attributed to General Omar Bradley' },
+        { text: '"You can\'t build a reputation on what you\'re going to do."', author: 'Attributed to Henry Ford' },
+        { text: '"The first quality that is needed is audacity."', author: 'Winston Churchill (Painting as a Pastime, 1932)' },
+        { text: '"Well begun is half done."', author: 'Aristotle' }
     ],
-    'Pte Baldrick': [
-        { text: '"I\'m not a complete idiot. Some parts are missing."', author: 'Pte Baldrick' },
-        { text: '"Don\'t worry, sir. I\'ve got a cunning plan."', author: 'Pte Baldrick' }
+    'Private': [
+        { text: '"I don\'t know what effect these men will have upon the enemy, but, by God, they frighten me."', author: 'Attributed to Duke of Wellington' },
+        { text: '"There are no bad soldiers, only bad officers."', author: 'Attributed to Napoleon Bonaparte' },
+        { text: '"The beatings will continue until morale improves."', author: 'Attributed to various naval commanders' },
+        { text: '"A leader is best when people barely know he exists."', author: 'Lao Tzu, Tao Te Ching' },
+        { text: '"Even the longest march begins with a single step. You appear to have managed the one step."', author: 'Defence Guesser' },
+        { text: '"If everyone is thinking alike, then somebody isn\'t thinking."', author: '' }
     ],
     'LIZZARD': [
         { text: '"He is a modest man, with much to be modest about."', author: 'Winston Churchill' },
@@ -2492,199 +3056,148 @@ function getRandomQuote(rating) {
 }
 
 function endGame() {
-    // Play game over fanfare
     playGameOverSound();
+    document.getElementById('final-score').textContent = state.score.toLocaleString();
 
-    // Populate final score
-    document.getElementById('final-score').textContent = state.score;
-
-    // Calculate performance rating
-    const maxPossibleScore = state.maxRounds * 10000; // 5000 location + 5000 bonus
-    const percentage = (state.score / maxPossibleScore) * 100;
-    let rating = 'LIZZARD'; // 0-9%
-
-    if (percentage >= 100) rating = 'God of War';
-    else if (percentage >= 90) rating = 'John Rambo';
-    else if (percentage >= 80) rating = 'John Matrix (Commando)';
-    else if (percentage >= 75) rating = 'Maj Richard Sharpe';
-    else if (percentage >= 70) rating = 'Maj Winters';
-    else if (percentage >= 60) rating = 'Johnny Rico';
-    else if (percentage >= 50) rating = 'Lt Aldo Rain';
-    else if (percentage >= 40) rating = 'Pte Gump';
-    else if (percentage >= 30) rating = 'Capt Sobel';
-    else if (percentage >= 20) rating = 'Gen Melchett';
-    else if (percentage >= 10) rating = 'Pte Baldrick';
-
-    document.getElementById('rating-value').textContent = rating;
-
-    // Apply RAG color class based on percentage
-    const scoreRating = document.getElementById('score-rating');
-    scoreRating.classList.remove('rating-red', 'rating-amber', 'rating-green', 'rating-gold');
-
-    // Handle performance trophy image
-    const trophyImg = document.getElementById('performance-trophy');
-    if (trophyImg) {
-        trophyImg.classList.add('hidden'); // default hidden
-    }
-
-    if (percentage >= 100) {
-        scoreRating.classList.add('rating-gold');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/GodofWar2.png';
-            // Also adding a short delay before showing the image can add to the dramatic effect, but standard unhiding is fine too
-            trophyImg.classList.remove('hidden');
-        }
-    } else if (percentage >= 90) {
-        scoreRating.classList.add('rating-green');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Rambo2.png';
-            trophyImg.classList.remove('hidden');
-        }
-    } else if (percentage >= 80) {
-        scoreRating.classList.add('rating-green');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Matrix.png';
-            trophyImg.classList.remove('hidden');
-        }
-    } else if (percentage >= 75) {
-        scoreRating.classList.add('rating-amber');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Sharpe2.png';
-            trophyImg.classList.remove('hidden');
-        }
-    } else if (percentage >= 70) {
-        scoreRating.classList.add('rating-amber');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Winters.png';
-            trophyImg.classList.remove('hidden');
-        }
-    } else if (percentage >= 60) {
-        scoreRating.classList.add('rating-amber');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Rico.png';
-            trophyImg.classList.remove('hidden');
-        }
-    } else if (percentage >= 50) {
-        scoreRating.classList.add('rating-amber');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Aldo.png';
-            trophyImg.classList.remove('hidden');
-        }
-    } else if (percentage >= 40) {
-        scoreRating.classList.add('rating-red');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Gump.png';
-            trophyImg.classList.remove('hidden');
-        }
-    } else if (percentage >= 30) {
-        scoreRating.classList.add('rating-red');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Sobel.png';
-            trophyImg.classList.remove('hidden');
-        }
-    } else if (percentage >= 20) {
-        scoreRating.classList.add('rating-red');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Melch.png';
-            trophyImg.classList.remove('hidden');
-        }
-    } else if (percentage >= 10) {
-        scoreRating.classList.add('rating-red');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Bald.png';
-            trophyImg.classList.remove('hidden');
-        }
+    // Use absolute score thresholds for speedrun daily mode, percentage for standard
+    let rating;
+    if (state.isDailyMode) {
+        rating = getSpeedrunRating(state.score);
     } else {
-        scoreRating.classList.add('rating-red');
-        if (trophyImg) {
-            trophyImg.src = 'PerformanceSymbols/Lizzard.png';
-            trophyImg.classList.remove('hidden');
-        }
+        const maxPossibleScore = state.maxRounds * 10000;
+        const percentage = (state.score / maxPossibleScore) * 100;
+        rating = 'LIZZARD';
+        if (percentage >= 98) rating = 'God of War';
+        else if (percentage >= 93) rating = 'Lieutenant Colonel';
+        else if (percentage >= 87) rating = 'Major';
+        else if (percentage >= 81) rating = 'Captain';
+        else if (percentage >= 74) rating = 'Warrant Officer (Class 1)';
+        else if (percentage >= 66) rating = 'Warrant Officer (Class 2)';
+        else if (percentage >= 56) rating = 'Staff Sergeant';
+        else if (percentage >= 48) rating = 'Sergeant';
+        else if (percentage >= 40) rating = 'Corporal';
+        else if (percentage >= 26) rating = 'Lance Corporal';
+        else if (percentage >= 10) rating = 'Private';
     }
 
-    // Display performance quote if available for this rating
+    // In daily mode: hide performance rating, show archetype card instead
+    // In standard mode: show performance rating, hide archetype section
+    const scoreRatingEl = document.getElementById('score-rating');
     const quoteContainer = document.getElementById('rating-quote');
-    const quoteText = document.getElementById('quote-text');
-    const quoteAuthor = document.getElementById('quote-author');
-    const quote = getRandomQuote(rating);
 
-    if (quote) {
-        quoteText.textContent = quote.text;
-        quoteAuthor.textContent = `— ${quote.author}`;
-        quoteContainer.classList.remove('hidden');
+    if (state.isDailyMode) {
+        // Hide the old performance rating block entirely
+        if (scoreRatingEl) scoreRatingEl.classList.add('hidden');
+        if (quoteContainer) quoteContainer.classList.add('hidden');
     } else {
-        quoteContainer.classList.add('hidden');
+        // Standard mode: populate and show rating block
+        if (scoreRatingEl) scoreRatingEl.classList.remove('hidden');
+        document.getElementById('rating-value').textContent = rating;
+
+        scoreRatingEl.classList.remove('rating-red', 'rating-amber', 'rating-green', 'rating-gold');
+        const trophyImg = document.getElementById('performance-trophy');
+        if (trophyImg) trophyImg.classList.add('hidden');
+
+        const RATING_META = {
+            'God of War':               { colour: 'rating-gold',  img: 'GodofWar2.png' },
+            'Lieutenant Colonel':        { colour: 'rating-green', img: 'Lieutenant_Colonel.png' },
+            'Major':                    { colour: 'rating-green', img: 'Major.png' },
+            'Captain':                  { colour: 'rating-amber', img: 'Captain.png' },
+            'Warrant Officer (Class 1)':{ colour: 'rating-amber', img: 'Warrant_Officer_Class_1.png' },
+            'Warrant Officer (Class 2)':{ colour: 'rating-amber', img: 'Warrant_Officer_Class_2.png' },
+            'Staff Sergeant':           { colour: 'rating-amber', img: 'Staff_Sergeant.png' },
+            'Sergeant':                 { colour: 'rating-red',   img: 'Sergeant.png' },
+            'Corporal':                 { colour: 'rating-red',   img: 'Corporal.png' },
+            'Lance Corporal':           { colour: 'rating-red',   img: 'Lance_Corporal.png' },
+            'Private':                  { colour: 'rating-red',   img: 'Private.png' },
+            'LIZZARD':                  { colour: 'rating-red',   img: 'Lizzard.png' }
+        };
+        const meta = RATING_META[rating] || { colour: 'rating-red', img: 'Lizzard.png' };
+        scoreRatingEl.classList.add(meta.colour);
+        if (trophyImg) {
+            trophyImg.src = `PerformanceSymbols/${meta.img}`;
+            trophyImg.classList.remove('hidden');
+        }
+
+        // Performance quote
+        const quoteText = document.getElementById('quote-text');
+        const quoteAuthor = document.getElementById('quote-author');
+        const quote = getRandomQuote(rating);
+        if (quote) {
+            quoteText.textContent = quote.text;
+            quoteAuthor.textContent = quote.author ? `— ${quote.author}` : '';
+            quoteContainer.classList.remove('hidden');
+        } else {
+            quoteContainer.classList.add('hidden');
+        }
     }
-
-
 
     // Calculate stats
-    const correctLocations = state.roundResults.filter(r => r.locationCorrect).length;
-    const correctIds = state.roundResults.filter(r => r.bonusCorrect).length;
-    const accuracy = Math.round((state.score / maxPossibleScore) * 100);
+    if (state.isDailyMode) {
+        const correctLocs = state.speedrunResults.filter(r => r.correct).length;
+        const accuracy = state.speedrunResults.length > 0 ? Math.round((correctLocs / state.speedrunResults.length) * 100) : 0;
+        document.getElementById('stat-correct-locations').textContent = `${correctLocs}/${state.speedrunResults.length}`;
+        document.getElementById('stat-correct-ids').textContent = `${state.bestCombo}x`;
+        const labelCorrectIds = document.getElementById('label-correct-ids');
+        if (labelCorrectIds) labelCorrectIds.textContent = 'Best Combo';
+        document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
 
-    document.getElementById('stat-correct-locations').textContent = `${correctLocations}/${state.maxRounds}`;
-    document.getElementById('stat-correct-ids').textContent = `${correctIds}/${state.maxRounds}`;
-    document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
+        // Archetype card reveal
+        const archetype = detectSpeedrunArchetype();
+        showArchetypeCard(archetype);
+    } else {
+        const correctLocations = state.roundResults.filter(r => r.locationCorrect).length;
+        const correctIds = state.roundResults.filter(r => r.bonusCorrect).length;
+        const maxPossible = state.maxRounds * 10000;
+        const accuracy = Math.round((state.score / maxPossible) * 100);
+        document.getElementById('stat-correct-locations').textContent = `${correctLocations}/${state.maxRounds}`;
+        document.getElementById('stat-correct-ids').textContent = `${correctIds}/${state.maxRounds}`;
+        const labelCorrectIds = document.getElementById('label-correct-ids');
+        if (labelCorrectIds) labelCorrectIds.textContent = 'Correct IDs';
+        document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
+
+        // Hide archetype section for non-daily games
+        document.getElementById('archetype-section')?.classList.add('hidden');
+    }
+
+    // RE-DEPLOY button: hide for daily (can't replay), show for normal
+    const restartBtn = document.getElementById('restart-btn');
+    if (restartBtn) restartBtn.classList.toggle('hidden', !!state.isDailyMode);
 
     // Handle daily summary display and stats button
     const dailySummaryBar = document.getElementById('daily-summary-bar');
     const viewDailyStatsBtn = document.getElementById('view-daily-stats-btn');
 
     if (state.isDailyMode && state.playerName) {
-        // Show the stats button for daily challenges
-        if (viewDailyStatsBtn) {
-            viewDailyStatsBtn.classList.remove('hidden');
-        }
+        if (viewDailyStatsBtn) viewDailyStatsBtn.classList.remove('hidden');
 
-        // Get previous best score BEFORE submitting new score
         const dataBeforeSubmit = getDailyData();
         const previousBestScore = dataBeforeSubmit.stats?.bestScore || 0;
 
-        // Submit score
         submitDailyScore(state.playerName, state.score);
 
-        // Get updated stats
         const dataAfterSubmit = getDailyData();
         const stats = dataAfterSubmit.stats;
 
-        // Check if this is a new high score
         const isNewHighScore = state.score > previousBestScore && previousBestScore > 0;
         const isFirstScore = previousBestScore === 0;
 
-        // Build summary content
         const summaryContent = document.getElementById('daily-summary-content');
         let html = '';
-
-        if (isNewHighScore) {
-            html += `<span class="summary-highlight new-high">🏆 NEW HIGH SCORE!</span>`;
-        } else if (isFirstScore) {
-            html += `<span class="summary-highlight first-score">⭐ First Daily Challenge Complete!</span>`;
-        }
-
-        // Add streak info
-        if (stats && stats.currentStreak > 0) {
-            html += `<span class="summary-streak">🔥 ${stats.currentStreak} Day Streak</span>`;
-        }
-
+        if (isNewHighScore) html += `<span class="summary-highlight new-high">🏆 NEW HIGH SCORE!</span>`;
+        else if (isFirstScore) html += `<span class="summary-highlight first-score">⭐ First Speedrun Complete!</span>`;
+        if (stats && stats.currentStreak > 0) html += `<span class="summary-streak">🔥 ${stats.currentStreak} Day Streak</span>`;
         summaryContent.innerHTML = html;
-
-        // Show the bar (only if there's content to show)
-        if (html) {
-            dailySummaryBar.classList.remove('hidden');
-        } else {
-            dailySummaryBar.classList.add('hidden');
-        }
+        if (html) dailySummaryBar.classList.remove('hidden');
+        else dailySummaryBar.classList.add('hidden');
     } else {
-        // Hide summary bar and stats button for non-daily games
         dailySummaryBar.classList.add('hidden');
-        if (viewDailyStatsBtn) {
-            viewDailyStatsBtn.classList.add('hidden');
-        }
+        if (viewDailyStatsBtn) viewDailyStatsBtn.classList.add('hidden');
     }
 
     switchScreen('gameOver');
 }
+
 
 // Helpers
 function switchScreen(screenName) {
@@ -2944,26 +3457,17 @@ function renderEquipmentGrid() {
     // Filter by category
     if (practiceState.currentCategory !== 'all') {
         filteredEquipment = filteredEquipment.filter(eq => {
-            // Special handling for APC/IFV category
+            // APC/IFV category — all armoured personnel carriers and infantry fighting vehicles
             if (practiceState.currentCategory === 'APC/IFV') {
-                return eq.type === 'Infantry Fighting Vehicle' ||
-                    eq.type === 'Armoured Personnel Carrier' ||
-                    eq.type === 'Armored Personnel Carrier' ||
-                    eq.type === 'Armoured Fighting Vehicle' ||
-                    eq.type === 'Armored Fighting Vehicle' ||
-                    eq.type === 'Amphibious Combat Vehicle' ||
-                    eq.type === 'Amphibious Fighting Vehicle' ||
-                    eq.type === 'Protected Mobility Vehicle' ||
-                    eq.type === 'APC/IFV';
+                return eq.type === 'APC' || eq.type === 'IFV';
             }
-            // Special handling for Light Vehicles category
+            // Light Vehicles category
             if (practiceState.currentCategory === 'Light Vehicles') {
                 return eq.type === 'Light Utility Vehicle' ||
                     eq.type === 'MRAP Vehicle' ||
-                    eq.type === 'Protected Patrol Vehicle' ||
                     eq.type === 'Patrol Vehicle';
             }
-            // Special handling for Drones & Missiles category
+            // Drones & Missiles category
             if (practiceState.currentCategory === 'Drones & Missiles') {
                 return eq.type === 'Combat Drone' ||
                     eq.type === 'Reconnaissance Drone' ||
@@ -2974,7 +3478,7 @@ function renderEquipmentGrid() {
                     eq.type === 'Tactical Ballistic Missile' ||
                     eq.type === 'Loitering Munition';
             }
-            // Special handling for Support Vehicles category
+            // Support Vehicles category
             if (practiceState.currentCategory === 'Support Vehicles') {
                 return eq.type === 'Electronic Warfare System' ||
                     eq.type === 'Command and Communication Vehicle' ||
@@ -2985,13 +3489,17 @@ function renderEquipmentGrid() {
                     eq.type === 'Multi-Purpose Tracked Vehicle' ||
                     eq.type === 'Combat Engineer Vehicle' ||
                     eq.type === 'Tank Support Vehicle' ||
-                    eq.type === 'Military Engineering Vehicle';
+                    eq.type === 'Tank Destroyer';
             }
-            // Special handling for aircraft category - include all aircraft types including helicopters
+            // Aircraft category — all aircraft and helicopter types
             if (practiceState.currentCategory === 'Fighter Aircraft') {
-                return eq.type.includes('Aircraft') || eq.type.includes('Helicopter') || eq.type === 'Light Helicopter' || eq.type === 'Transport Tiltrotor' || eq.type === 'Gunship' || eq.type === 'Strategic Bomber';
+                return eq.type.includes('Aircraft') ||
+                    eq.type.includes('Helicopter') ||
+                    eq.type === 'Transport Tiltrotor' ||
+                    eq.type === 'Gunship' ||
+                    eq.type === 'Strategic Bomber';
             }
-            // Special handling for Small Arms category - include rifles, pistols, sniper rifles, shotguns, machine guns
+            // Small Arms category
             if (practiceState.currentCategory === 'Small Arms') {
                 return eq.type === 'Assault Rifle' ||
                     eq.type === 'Sniper Rifle' ||
@@ -3000,7 +3508,8 @@ function renderEquipmentGrid() {
                     eq.type === 'Submachine Gun' ||
                     eq.type === 'Small Arms' ||
                     eq.type === 'Machine Gun' ||
-                    eq.type === 'Sharpshooter Rifle';
+                    eq.type === 'Sharpshooter Rifle' ||
+                    eq.type === 'Anti-Tank Weapon';
             }
             return eq.type === practiceState.currentCategory;
         });
@@ -3050,7 +3559,7 @@ function createEquipmentCard(equipment) {
 
     card.innerHTML = `
         <div class="equipment-card-hover-name">${equipment.name}</div>
-        <img class="equipment-card-image" src="${imageSrc}" alt="${equipment.name}" onerror="this.src='https://placehold.co/200x220/1a1a1a/00ff88?text=${encodeURIComponent(equipment.name)}'">
+        <img class="equipment-card-image" src="${imageSrc}" alt="${equipment.name}" loading="lazy" onerror="this.src='https://placehold.co/200x220/1a1a1a/00ff88?text=${encodeURIComponent(equipment.name)}'">
         <div class="equipment-card-info">
             <div class="equipment-card-name">${equipment.name}</div>
             <div class="equipment-card-origin">${equipment.origin}</div>
@@ -3571,8 +4080,8 @@ function updateProgressChart(history) {
     // Clear canvas
     ctx.clearRect(0, 0, width, height);
 
-    // Fixed Y-axis scale: 0 - 50,000
-    const maxScore = 50000;
+    // Dynamic Y-axis scale: max of 50,000 or highest recorded score (speedrun can exceed 50k)
+    const maxScore = Math.max(50000, ...Object.values(history).map(e => e.score || 0));
     const padding = { left: 30, right: 15, top: 20, bottom: 25 };
     const chartWidth = width - padding.left - padding.right;
     const chartHeight = height - padding.top - padding.bottom;
@@ -3734,15 +4243,23 @@ function getTodaysSeed() {
 
 function getDailyEquipment() {
     const seed = getTodaysSeed();
+    const subSeed = seed * 31 + 37; // Different seed for ordering — varies the sequence each day
     const shuffled = [...equipmentData];
 
-    // Fisher-Yates shuffle with seeded random
+    // Step 1: determine the set of 50 items using the primary daily seed
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(seededRandom(seed + i) * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
+    const selectedItems = shuffled.slice(0, 50);
 
-    return shuffled.slice(0, state.maxRounds);
+    // Step 2: reorder those 50 items with the sub-seed so the play order varies daily
+    for (let i = selectedItems.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom(subSeed + i) * (i + 1));
+        [selectedItems[i], selectedItems[j]] = [selectedItems[j], selectedItems[i]];
+    }
+
+    return selectedItems;
 }
 
 function hasPlayedToday() {
@@ -3834,12 +4351,14 @@ function submitDailyScore(name, score) {
     const data = getDailyData();
     const todayKey = getTodaysSeed().toString();
 
-    // Add to history
+    // Add to history (include scoreProgression for ghost feature)
     if (!data.history) data.history = {};
     data.history[todayKey] = {
         name: name,
         score: score,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        targetsCleared: state.targetsCleared,
+        scoreProgression: state.speedrunScoreProgression  // Array of cumulative scores for ghost
     };
 
     // Clean up old entries (keep last 30 days)

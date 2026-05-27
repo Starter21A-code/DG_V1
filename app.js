@@ -120,8 +120,7 @@ let state = {
     comboMultiplier: 1.0,         // 1.0 or 1.5
     bestCombo: 0,                 // Best combo streak this run
     targetsCleared: 0,            // Targets completed in speedrun
-    speedrunScoreProgression: [], // Cumulative score after each target (for ghost)
-    ghostProgression: null        // Previous best run's progression array
+    speedrunScoreProgression: []  // Cumulative score after each target
 };
 
 // Sound System using Web Audio API
@@ -247,32 +246,6 @@ function updateComboDisplay() {
 }
 function hideComboDisplay() { document.getElementById('combo-indicator')?.classList.add('hidden'); }
 
-// ── Ghost Score ─────────────────────────────────────────────
-function loadGhostProgression() {
-    try {
-        const data = getDailyData(); const todayKey = getTodaysSeed().toString(); let best = null;
-        Object.entries(data.history || {}).forEach(([k, e]) => {
-            if (k !== todayKey && e.scoreProgression && (!best || e.score > best.score)) best = e;
-        });
-        state.ghostProgression = best ? best.scoreProgression : null;
-    } catch(e2) { state.ghostProgression = null; }
-}
-function getGhostDelta() {
-    if (!state.ghostProgression || state.targetsCleared === 0) return null;
-    const idx = state.targetsCleared - 1;
-    return idx < state.ghostProgression.length ? state.score - state.ghostProgression[idx] : null;
-}
-function updateGhostDisplay() {
-    const el = document.getElementById('ghost-score-display');
-    const dEl = document.getElementById('ghost-delta');
-    if (!el || !dEl || !state.ghostProgression) return;
-    const d = getGhostDelta(); if (d === null) return;
-    el.classList.remove('hidden','ahead','behind','tied');
-    if (d > 0) { dEl.textContent = `▲ +${d.toLocaleString()}`; el.classList.add('ahead'); }
-    else if (d < 0) { dEl.textContent = `▼ ${d.toLocaleString()}`; el.classList.add('behind'); }
-    else { dEl.textContent = '= 0'; el.classList.add('tied'); }
-}
-
 // ── Speedrun Feedback Overlay ─────────────────────────────────
 function showSpeedrunFeedback(isCorrect, points, penaltySecs) {
     const fb = document.getElementById('speedrun-feedback'); if (!fb) return;
@@ -290,13 +263,6 @@ function showSpeedrunFeedback(isCorrect, points, penaltySecs) {
     if (streak >= 4) { comboEl.textContent = '🔥 COMBO ×1.5'; comboEl.classList.remove('hidden'); }
     else if (streak > 0) { comboEl.textContent = `${streak} streak`; comboEl.classList.remove('hidden'); }
     else comboEl.classList.add('hidden');
-    const ghostEl = document.getElementById('sf-ghost'); const d = getGhostDelta();
-    if (d !== null) {
-        ghostEl.classList.remove('hidden','ahead','behind');
-        if (d > 0) { ghostEl.textContent = `▲ +${d.toLocaleString()} vs PB`; ghostEl.classList.add('ahead'); }
-        else if (d < 0) { ghostEl.textContent = `▼ ${d.toLocaleString()} vs PB`; ghostEl.classList.add('behind'); }
-        else { ghostEl.textContent = `= vs PB`; ghostEl.classList.add('ahead'); }
-    } else ghostEl.classList.add('hidden');
     fb.classList.remove('hidden','animating'); void fb.offsetWidth; fb.classList.add('animating');
     setTimeout(() => fb.classList.add('hidden'), 1500);
 }
@@ -310,7 +276,13 @@ function showReplayReel() {
     state.speedrunResults.forEach(r => {
         const item = document.createElement('div');
         item.className = 'reel-item ' + (r.correct ? 'reel-correct' : 'reel-incorrect');
+        item.title = `View ${r.name} in Practice Hub`;
         item.innerHTML = `<img src="${r.imageSrc}" alt="${r.name}" loading="lazy"><div class="reel-item-badge">${r.correct?'✓':'✗'}</div><div class="reel-item-name">${r.name}</div>`;
+        item.addEventListener('click', () => {
+            const equipment = equipmentData.find(e => e.name === r.name);
+            if (!equipment) return;
+            openPracticeModal(equipment);
+        });
         grid.appendChild(item);
     });
     const correct = state.speedrunResults.filter(r => r.correct).length;
@@ -327,7 +299,6 @@ function endSpeedrun() {
     hideEquipmentPopup();
     dom.equipmentThumbnail.classList.add('hidden');
     hideComboDisplay();
-    document.getElementById('ghost-score-display')?.classList.add('hidden');
     showReplayReel();
 }
 function getSpeedrunRating(score) {
@@ -544,7 +515,10 @@ const dom = {
 function init() {
     setupEventListeners();
     initMap();
-    setupDailyChallenge();
+    setupLeaderboardModal();
+    setupCallsignModal();
+    setupCallsignSubmitModal();
+    setupReviewPromptModal();
     setupSoundToggle();
     initImageZoom();
     registerServiceWorker();
@@ -604,12 +578,27 @@ function setupEventListeners() {
     const viewDailyStatsBtn = document.getElementById('view-daily-stats-btn');
     if (viewDailyStatsBtn) {
         viewDailyStatsBtn.addEventListener('click', () => {
-            // Open the daily leaderboard modal to view stats
+            // Open the daily leaderboard modal to view personal stats
             const leaderboardModal = document.getElementById('daily-leaderboard-modal');
             if (leaderboardModal) {
                 updateLeaderboardModal();
+                lbSwitchToTab('stats');
                 leaderboardModal.classList.remove('hidden');
             }
+        });
+    }
+
+    // View daily leaderboard button (on mission debrief)
+    const viewDailyLeaderboardBtn = document.getElementById('view-daily-leaderboard-btn');
+    if (viewDailyLeaderboardBtn) {
+        viewDailyLeaderboardBtn.addEventListener('click', () => {
+            viewDailyLeaderboardBtn.classList.remove('btn-pulse-cta');
+            // If a daily score was just earned and hasn't been submitted, prompt for callsign first
+            if (state.isDailyMode && state.score > 0 && !hasSubmittedDailyScoreToday()) {
+                openCallsignSubmitModal();
+                return;
+            }
+            openDailyLeaderboardOnGlobal();
         });
     }
 
@@ -696,7 +685,6 @@ function quitGame() {
     stopDailyTimer();
     stopSpeedrunTimer();
     hideComboDisplay();
-    document.getElementById('ghost-score-display')?.classList.add('hidden');
     // Reset round display label safely (no innerHTML — preserves dom.round reference)
     const roundLabel = document.getElementById('round-label');
     if (roundLabel) roundLabel.textContent = 'ROUND: ';
@@ -1896,13 +1884,11 @@ function startGame(isDailyMode = false, filters = null) {
     state.bestCombo = 0;
     state.targetsCleared = 0;
     state.speedrunScoreProgression = [];
-    state.ghostProgression = null;
 
     if (isDailyMode) {
         state.isHardMode = false;
         state.maxRounds = 50;
         state.gameData = getDailyEquipment();
-        loadGhostProgression();
     } else if (filters) {
         let filteredData = getFilteredEquipment(filters);
         if (filteredData.length === 0) { alert('No equipment matches your filters. Try different options.'); return; }
@@ -1920,12 +1906,10 @@ function startGame(isDailyMode = false, filters = null) {
         if (roundContainer) roundContainer.style.display = 'none';
         updateComboDisplay();
         startSpeedrunTimer();
-        if (state.ghostProgression) document.getElementById('ghost-score-display')?.classList.remove('hidden');
     } else {
         const roundContainer = document.querySelector('.round-container');
         if (roundContainer) roundContainer.style.display = '';
         hideComboDisplay();
-        document.getElementById('ghost-score-display')?.classList.add('hidden');
     }
 
     requestAnimationFrame(() => { state.map.invalidateSize(); });
@@ -2098,7 +2082,6 @@ function submitGuess() {
 
         dom.score.textContent = state.score;
         updateComboDisplay();
-        updateGhostDisplay();
 
         // Time penalty for wrong country (-3 seconds)
         const penaltySecs = isCorrectCountry ? 0 : 3;
@@ -3164,35 +3147,48 @@ function endGame() {
     const restartBtn = document.getElementById('restart-btn');
     if (restartBtn) restartBtn.classList.toggle('hidden', !!state.isDailyMode);
 
-    // Handle daily summary display and stats button
+    // Handle daily summary display, stats button, and inline callsign panel (Option 1)
     const dailySummaryBar = document.getElementById('daily-summary-bar');
     const viewDailyStatsBtn = document.getElementById('view-daily-stats-btn');
+    const viewDailyLeaderboardBtn = document.getElementById('view-daily-leaderboard-btn');
+    const inlineCallsignPanel = document.getElementById('inline-callsign-panel');
 
-    if (state.isDailyMode && state.playerName) {
-        if (viewDailyStatsBtn) viewDailyStatsBtn.classList.remove('hidden');
+    if (state.isDailyMode) {
+        if (viewDailyStatsBtn) {
+            viewDailyStatsBtn.classList.remove('hidden');
+            viewDailyStatsBtn.classList.remove('btn-pulse-cta'); // clear old animations
+        }
+        if (viewDailyLeaderboardBtn) {
+            viewDailyLeaderboardBtn.classList.remove('hidden');
+        }
 
-        const dataBeforeSubmit = getDailyData();
-        const previousBestScore = dataBeforeSubmit.stats?.bestScore || 0;
+        const todayKey = getTodaysSeed().toString();
+        const data = getDailyData();
+        const alreadySubmitted = data.history && data.history[todayKey];
 
-        submitDailyScore(state.playerName, state.score);
+        // Callsign submission is now triggered from the LEADERBOARD button, not shown inline
+        if (inlineCallsignPanel) inlineCallsignPanel.classList.add('hidden');
 
-        const dataAfterSubmit = getDailyData();
-        const stats = dataAfterSubmit.stats;
-
-        const isNewHighScore = state.score > previousBestScore && previousBestScore > 0;
-        const isFirstScore = previousBestScore === 0;
-
-        const summaryContent = document.getElementById('daily-summary-content');
-        let html = '';
-        if (isNewHighScore) html += `<span class="summary-highlight new-high">🏆 NEW HIGH SCORE!</span>`;
-        else if (isFirstScore) html += `<span class="summary-highlight first-score">⭐ First Speedrun Complete!</span>`;
-        if (stats && stats.currentStreak > 0) html += `<span class="summary-streak">🔥 ${stats.currentStreak} Day Streak</span>`;
-        summaryContent.innerHTML = html;
-        if (html) dailySummaryBar.classList.remove('hidden');
-        else dailySummaryBar.classList.add('hidden');
+        if (alreadySubmitted) {
+            const stats = data.stats;
+            const summaryContent = document.getElementById('daily-summary-content');
+            if (summaryContent && dailySummaryBar) {
+                let html = '';
+                if (stats && stats.currentStreak > 0) html += `<span class="summary-streak">🔥 ${stats.currentStreak} Day Streak</span>`;
+                summaryContent.innerHTML = html;
+                if (html) dailySummaryBar.classList.remove('hidden');
+                else dailySummaryBar.classList.add('hidden');
+            }
+        } else {
+            if (dailySummaryBar) dailySummaryBar.classList.add('hidden');
+            // Highlight LEADERBOARD button to draw attention to score submission
+            if (viewDailyLeaderboardBtn) viewDailyLeaderboardBtn.classList.add('btn-pulse-cta');
+        }
     } else {
-        dailySummaryBar.classList.add('hidden');
+        if (inlineCallsignPanel) inlineCallsignPanel.classList.add('hidden');
+        if (dailySummaryBar) dailySummaryBar.classList.add('hidden');
         if (viewDailyStatsBtn) viewDailyStatsBtn.classList.add('hidden');
+        if (viewDailyLeaderboardBtn) viewDailyLeaderboardBtn.classList.add('hidden');
     }
 
     switchScreen('gameOver');
@@ -3316,6 +3312,12 @@ const practiceState = {
 };
 
 function setupPracticeHub() {
+    // Move detail modal out of #practice-screen so it can be opened from any context
+    // (e.g. the daily replay reel) without being hidden by the parent screen's display:none
+    if (practiceDom.modal && practiceDom.modal.parentElement && practiceDom.modal.parentElement.id === 'practice-screen') {
+        document.body.appendChild(practiceDom.modal);
+    }
+
     // Practice button click
     practiceDom.practiceBtn.addEventListener('click', openPracticeHub);
 
@@ -4010,17 +4012,36 @@ function setupDailyChallenge() {
         startGame(true); // Start in daily mode
     });
 
-    // Options modal - View Leaderboard button
+    // Options modal - Global Leaderboard button
+    const viewGlobalLeaderboardBtn = document.getElementById('daily-global-leaderboard-btn');
+    if (viewGlobalLeaderboardBtn) {
+        viewGlobalLeaderboardBtn.addEventListener('click', () => {
+            optionsModal.classList.add('hidden');
+            updateLeaderboardModal();
+            lbSwitchToTab('global');
+            const period = document.querySelector('.lb-period-tab.active')?.dataset.period || 'daily';
+            loadGlobalLeaderboard(period);
+            leaderboardModal.classList.remove('hidden');
+        });
+    }
+
+    // Options modal - View Stats button
     viewLeaderboardBtn.addEventListener('click', () => {
         optionsModal.classList.add('hidden');
         updateLeaderboardModal();
+        lbSwitchToTab('stats');
         leaderboardModal.classList.remove('hidden');
     });
 
     // Leaderboard modal - Close button (top X)
     leaderboardCloseBtn.addEventListener('click', () => {
         leaderboardModal.classList.add('hidden');
-        optionsModal.classList.remove('hidden');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        if (gameOverScreen && gameOverScreen.classList.contains('hidden')) {
+            optionsModal.classList.remove('hidden');
+        }
+        // If a daily-PB submission queued a review prompt, show it now
+        maybeShowReviewPrompt();
     });
 
     // Leaderboard modal - Close button (bottom)
@@ -4028,7 +4049,11 @@ function setupDailyChallenge() {
     if (leaderboardCloseBottomBtn) {
         leaderboardCloseBottomBtn.addEventListener('click', () => {
             leaderboardModal.classList.add('hidden');
-            optionsModal.classList.remove('hidden');
+            const gameOverScreen = document.getElementById('game-over-screen');
+            if (gameOverScreen && gameOverScreen.classList.contains('hidden')) {
+                optionsModal.classList.remove('hidden');
+            }
+            maybeShowReviewPrompt();
         });
     }
 }
@@ -4351,14 +4376,14 @@ function submitDailyScore(name, score) {
     const data = getDailyData();
     const todayKey = getTodaysSeed().toString();
 
-    // Add to history (include scoreProgression for ghost feature)
+    // Add to history
     if (!data.history) data.history = {};
     data.history[todayKey] = {
         name: name,
         score: score,
         timestamp: Date.now(),
         targetsCleared: state.targetsCleared,
-        scoreProgression: state.speedrunScoreProgression  // Array of cumulative scores for ghost
+        scoreProgression: state.speedrunScoreProgression  // cumulative score after each target
     };
 
     // Clean up old entries (keep last 30 days)
@@ -4616,3 +4641,607 @@ async function copyShareText() {
         copyLabel.textContent = 'COPY';
     }, 2500);
 }
+
+// ============================================================
+// GLOBAL LEADERBOARD — Firebase / Firestore integration
+// ============================================================
+
+// ── Helpers ─────────────────────────────────────────────────
+
+/** ISO week key e.g. "2026-W21" (Monday-based) */
+function getWeekKey() {
+    const now = new Date();
+    const jan1 = new Date(now.getFullYear(), 0, 1);
+    const dayOffset = (jan1.getDay() + 6) % 7; // shift so Monday = 0
+    const weekNum = Math.ceil(((now - jan1) / 86400000 + dayOffset + 1) / 7);
+    return `${now.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+}
+
+/** Month key e.g. "2026-05" */
+function getMonthKey() {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+}
+
+/** Strip anything that is not a letter, digit, hyphen or underscore */
+function sanitiseCallsign(raw) {
+    return (raw || '').trim().replace(/[^A-Za-z0-9\-_]/g, '').substring(0, 16).toUpperCase();
+}
+
+/** 1→"1st", 2→"2nd", 150→"150th" */
+function ordinalSuffix(n) {
+    const s = ['th', 'st', 'nd', 'rd'];
+    const v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+/** Minimal HTML escape so callsigns cannot inject markup */
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+// ── Firestore submission ─────────────────────────────────────
+
+/**
+ * Get (or create on first use) a stable per-installation device ID stored
+ * in localStorage. This is a random UUID — NOT a hardware identifier —
+ * used purely to distinguish leaderboard submissions from different devices
+ * that happen to choose the same callsign.
+ */
+function getOrCreateDeviceId() {
+    let id = localStorage.getItem('dg_device_id');
+    if (!id) {
+        id = (window.crypto && typeof window.crypto.randomUUID === 'function')
+            ? window.crypto.randomUUID()
+            : 'dg-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+        localStorage.setItem('dg_device_id', id);
+    }
+    return id;
+}
+
+/**
+ * Write one leaderboard document.
+ * Doc ID = dateKey_DEVICEID so each device owns its own slot for the day.
+ * Two different real players sharing a callsign no longer overwrite each
+ * other; the same player resubmitting (e.g. after a score correction)
+ * still overwrites only their own entry.
+ */
+async function submitScoreToFirebase(callsign, score) {
+    if (typeof db === 'undefined') {
+        console.warn('[Leaderboard] Firestore not ready — skipping submit.');
+        return;
+    }
+    try {
+        const dateKey  = getTodaysSeed().toString();
+        const deviceId = getOrCreateDeviceId();
+        await db.collection('leaderboards').doc(`${dateKey}_${deviceId}`).set({
+            playerName : callsign,
+            deviceId   : deviceId,
+            score      : score,
+            dateKey    : dateKey,
+            weekKey    : getWeekKey(),
+            monthKey   : getMonthKey(),
+            timestamp  : firebase.firestore.FieldValue.serverTimestamp()
+        });
+        console.log('[Leaderboard] Submitted:', callsign, score);
+    } catch (err) {
+        console.warn('[Leaderboard] Submit failed:', err);
+    }
+}
+
+// ── Firestore fetching ───────────────────────────────────────
+
+/**
+ * Fetch up to 100 docs for the period, deduplicate by deviceId
+ * (keeping each device's best score), sort and return the top 10.
+ * Legacy docs without a deviceId fall back to keying by playerName.
+ * Sorted client-side to avoid needing composite Firestore indexes.
+ * Returns null on error so the renderer can show an error state.
+ */
+async function fetchLeaderboard(period) {
+    if (typeof db === 'undefined') return null;
+    try {
+        const dateKey = getTodaysSeed().toString();
+        let query = db.collection('leaderboards');
+        if (period === 'daily')        query = query.where('dateKey',  '==', dateKey);
+        else if (period === 'weekly')  query = query.where('weekKey',  '==', getWeekKey());
+        else if (period === 'monthly') query = query.where('monthKey', '==', getMonthKey());
+
+        const snap = await query.limit(100).get();
+
+        const best = new Map();
+        snap.forEach(doc => {
+            const d = doc.data();
+            const key = d.deviceId || `legacy:${d.playerName}`;
+            const existing = best.get(key);
+            if (!existing || d.score > existing.score) {
+                best.set(key, {
+                    name: d.playerName,
+                    score: d.score,
+                    deviceId: d.deviceId || null
+                });
+            }
+        });
+
+        return Array.from(best.values())
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 10);
+    } catch (err) {
+        console.warn('[Leaderboard] Fetch failed:', err);
+        return null;
+    }
+}
+
+/**
+ * Count documents with a higher score for rank estimation.
+ * Uses count() aggregation when available (SDK ≥ 9.9.0),
+ * falls back to fetching doc IDs and counting locally.
+ */
+async function fetchUserRank(period, userScore) {
+    if (typeof db === 'undefined') return null;
+    try {
+        const dateKey = getTodaysSeed().toString();
+        let query = db.collection('leaderboards').where('score', '>', userScore);
+        if (period === 'daily')        query = query.where('dateKey',  '==', dateKey);
+        else if (period === 'weekly')  query = query.where('weekKey',  '==', getWeekKey());
+        else if (period === 'monthly') query = query.where('monthKey', '==', getMonthKey());
+
+        if (typeof query.count === 'function') {
+            const snap = await query.count().get();
+            return snap.data().count + 1;
+        }
+        const snap = await query.get();
+        return snap.size + 1;
+    } catch (err) {
+        console.warn('[Leaderboard] Rank fetch failed:', err);
+        return null;
+    }
+}
+
+// ── Rendering ────────────────────────────────────────────────
+
+function renderLeaderboard(entries, userScore, userRank, userCallsign, userDeviceId) {
+    const list = document.getElementById('lb-list');
+    if (!list) return;
+
+    if (entries === null) {
+        list.innerHTML = `<div class="lb-error">
+            ⚠️ Couldn't load scores right now.<br>
+            Check your connection and try again.
+        </div>`;
+        return;
+    }
+
+    if (entries.length === 0) {
+        list.innerHTML = `<div class="lb-empty">
+            <span class="lb-empty-icon">🎯</span>
+            No scores yet for this period.<br>
+            Be the first to claim the top spot!
+        </div>`;
+        return;
+    }
+
+    // Count duplicate callsigns so we know whether to disambiguate
+    const nameCounts = entries.reduce((acc, { name }) => {
+        const key = (name || '').toUpperCase();
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+    }, {});
+    // Track running occurrence index per callsign (entries are score-sorted,
+    // so the highest scorer named "ED" gets (1), next gets (2), etc.)
+    const nameSeen = {};
+
+    let html = '';
+    let userInTopTen = false;
+
+    entries.forEach(({ name, score, deviceId }, index) => {
+        const rank   = index + 1;
+        // Match on deviceId when available (precise); fall back to callsign for legacy rows
+        const isUser = (userDeviceId && deviceId && deviceId === userDeviceId)
+            || (!deviceId && userCallsign && name && name.toUpperCase() === userCallsign.toUpperCase());
+        if (isUser) userInTopTen = true;
+
+        const rankClass = rank <= 3 ? `rank-${rank}` : '';
+        const rankLabel = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
+        const rowClass  = isUser ? 'lb-entry lb-user-entry' : 'lb-entry';
+        const youBadge  = isUser ? '<span class="you-tag">YOU</span>' : '';
+
+        // If multiple entries share this callsign, append a sequential (n) suffix
+        const nameKey = (name || '').toUpperCase();
+        const isDuplicate = nameCounts[nameKey] > 1;
+        nameSeen[nameKey] = (nameSeen[nameKey] || 0) + 1;
+        const displayName = isDuplicate ? `${name} (${nameSeen[nameKey]})` : name;
+
+        html += `<div class="${rowClass}">
+            <span class="lb-rank ${rankClass}">${rankLabel}</span>
+            <span class="lb-callsign">${escapeHtml(displayName)}${youBadge}</span>
+            <span class="lb-score">${Number(score).toLocaleString()}</span>
+        </div>`;
+    });
+
+    // Append user row below the separator when they are outside the top 10
+    if (!userInTopTen && userCallsign && userScore > 0 && userRank !== null) {
+        html += `<div class="lb-separator">· · ·</div>
+        <div class="lb-entry lb-user-entry">
+            <span class="lb-rank">${ordinalSuffix(userRank)}</span>
+            <span class="lb-callsign">${escapeHtml(userCallsign)}<span class="you-tag">YOU</span></span>
+            <span class="lb-score">${Number(userScore).toLocaleString()}</span>
+        </div>`;
+    }
+
+    list.innerHTML = html;
+}
+
+// ── Orchestrator ─────────────────────────────────────────────
+
+async function loadGlobalLeaderboard(period) {
+    const list = document.getElementById('lb-list');
+    if (!list) return;
+
+    list.innerHTML = `<div class="lb-loading">
+        <div class="lb-skeleton"></div>
+        <div class="lb-skeleton"></div>
+        <div class="lb-skeleton"></div>
+        <div class="lb-skeleton"></div>
+        <div class="lb-skeleton"></div>
+    </div>`;
+
+    const userCallsign = localStorage.getItem('dg_callsign') || '';
+    const userDeviceId = localStorage.getItem('dg_device_id') || '';
+    const userScore    = (state && state.isDailyMode) ? (state.score || 0) : 0;
+
+    const [entries, userRank] = await Promise.all([
+        fetchLeaderboard(period),
+        (userCallsign && userScore > 0)
+            ? fetchUserRank(period, userScore)
+            : Promise.resolve(null)
+    ]);
+
+    renderLeaderboard(entries, userScore, userRank, userCallsign, userDeviceId);
+}
+
+// ── Tab helpers ──────────────────────────────────────────────
+
+/** Switch the main stats / leaderboard tab programmatically */
+function lbSwitchToTab(tabName) {
+    document.querySelectorAll('.lb-main-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.tab === tabName);
+    });
+    const showStats = (tabName === 'stats');
+    document.getElementById('lb-panel-stats')?.classList.toggle('hidden', !showStats);
+    document.getElementById('lb-panel-global')?.classList.toggle('hidden', showStats);
+    // Update modal title to match the active view (tabs are hidden — each button opens its own view)
+    const title = document.getElementById('lb-modal-title');
+    if (title) {
+        title.innerHTML = showStats
+            ? 'YOUR <span class="highlight">STATS</span>'
+            : 'DAILY <span class="highlight">LEADERBOARD</span>';
+    }
+}
+
+// ── Setup: tab event listeners ───────────────────────────────
+
+function setupLeaderboardModal() {
+    // Main tabs: MY STATS ↔ LEADERBOARD
+    document.querySelectorAll('.lb-main-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.dataset.tab;
+            lbSwitchToTab(target);
+            if (target === 'global') {
+                const period =
+                    document.querySelector('.lb-period-tab.active')?.dataset.period || 'daily';
+                loadGlobalLeaderboard(period);
+            }
+        });
+    });
+
+    // Period sub-tabs: DAILY | WEEKLY | MONTHLY
+    document.querySelectorAll('.lb-period-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.lb-period-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            loadGlobalLeaderboard(tab.dataset.period);
+        });
+    });
+}
+
+// ── Post-game inline callsign panel (Option 1) ───────────────
+
+function setupCallsignModal() {
+    const panel     = document.getElementById('inline-callsign-panel');
+    const input     = document.getElementById('inline-callsign-input');
+    const submitBtn = document.getElementById('inline-callsign-submit-btn');
+
+    if (!panel || !input || !submitBtn) return;
+
+    // Live-sanitise input: strip illegal chars, force uppercase
+    input.addEventListener('input', () => {
+        const cleaned = input.value.replace(/[^A-Za-z0-9\-_]/g, '').toUpperCase();
+        if (input.value !== cleaned) input.value = cleaned;
+    });
+
+    async function handleSubmit() {
+        const callsign = sanitiseCallsign(input.value || '');
+        if (!callsign) {
+            input.style.borderColor = '#ff4455';
+            input.focus();
+            setTimeout(() => { input.style.borderColor = ''; }, 1300);
+            return;
+        }
+
+        // Disable input and button
+        submitBtn.disabled = true;
+        input.disabled = true;
+
+        localStorage.setItem('dg_callsign', callsign);
+        state.playerName = callsign;
+
+        // Visual feedback
+        submitBtn.textContent = 'SUBMITTING...';
+
+        const dataBeforeSubmit = getDailyData();
+        const previousBestScore = dataBeforeSubmit.stats?.bestScore || 0;
+
+        // Submit both locally and to Firestore
+        submitDailyScore(callsign, state.score);
+        await submitScoreToFirebase(callsign, state.score);
+
+        // Success transition
+        submitBtn.textContent = 'SUBMITTED! 🏆';
+        panel.classList.add('submitted');
+
+        // Dynamically compute and reveal streak/high score stats banner
+        const dataAfterSubmit = getDailyData();
+        const stats = dataAfterSubmit.stats;
+
+        const isNewHighScore = state.score > previousBestScore && previousBestScore > 0;
+        const isFirstScore = previousBestScore === 0;
+
+        const dailySummaryBar = document.getElementById('daily-summary-bar');
+        const summaryContent = document.getElementById('daily-summary-content');
+        if (dailySummaryBar && summaryContent) {
+            let html = '';
+            if (isNewHighScore) html += `<span class="summary-highlight new-high">🏆 NEW HIGH SCORE!</span>`;
+            else if (isFirstScore) html += `<span class="summary-highlight first-score">⭐ First Speedrun Complete!</span>`;
+            if (stats && stats.currentStreak > 0) html += `<span class="summary-streak">🔥 ${stats.currentStreak} Day Streak</span>`;
+            summaryContent.innerHTML = html;
+            if (html) {
+                dailySummaryBar.classList.remove('hidden');
+                dailySummaryBar.style.opacity = '0';
+                dailySummaryBar.style.transition = 'opacity 0.4s ease';
+                setTimeout(() => { dailySummaryBar.style.opacity = '1'; }, 100);
+            }
+        }
+
+        // Highlight stats/leaderboard button on the debrief screen
+        const statsBtn = document.getElementById('view-daily-stats-btn');
+        if (statsBtn) {
+            statsBtn.classList.add('btn-pulse-cta');
+        }
+
+        // Queue the review prompt — fires next time the leaderboard is closed
+        markReviewPromptCandidate({ wasNewPb: isNewHighScore });
+
+        // Smoothly collapse panel
+        setTimeout(() => {
+            panel.style.transition = 'all 0.5s ease';
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+            setTimeout(() => {
+                panel.style.maxHeight = '0';
+                panel.style.padding = '0';
+                panel.style.marginTop = '0';
+                panel.style.border = 'none';
+                panel.style.opacity = '0';
+                setTimeout(() => panel.classList.add('hidden'), 500);
+            }, 100);
+        }, 1200);
+    }
+
+    submitBtn.addEventListener('click', handleSubmit);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') handleSubmit(); });
+}
+
+// ── Post-game Callsign Submit Modal (triggered from LEADERBOARD button) ──────
+
+function hasSubmittedDailyScoreToday() {
+    const data = getDailyData();
+    const todayKey = getTodaysSeed().toString();
+    return !!(data.history && data.history[todayKey]);
+}
+
+function openDailyLeaderboardOnGlobal() {
+    const leaderboardModal = document.getElementById('daily-leaderboard-modal');
+    if (!leaderboardModal) return;
+    updateLeaderboardModal();
+    lbSwitchToTab('global');
+    const period = document.querySelector('.lb-period-tab.active')?.dataset.period || 'daily';
+    loadGlobalLeaderboard(period);
+    leaderboardModal.classList.remove('hidden');
+}
+
+function openCallsignSubmitModal() {
+    const modal = document.getElementById('callsign-submit-modal');
+    const input = document.getElementById('callsign-submit-input');
+    const submitBtn = document.getElementById('callsign-submit-btn');
+    if (!modal || !input || !submitBtn) return;
+    input.disabled = false;
+    input.value = localStorage.getItem('dg_callsign') || '';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'POST SCORE 🏆';
+    modal.classList.remove('hidden');
+    setTimeout(() => input.focus(), 50);
+}
+
+function setupCallsignSubmitModal() {
+    const modal = document.getElementById('callsign-submit-modal');
+    const input = document.getElementById('callsign-submit-input');
+    const submitBtn = document.getElementById('callsign-submit-btn');
+    const skipBtn = document.getElementById('callsign-submit-skip-btn');
+    if (!modal || !input || !submitBtn || !skipBtn) return;
+
+    input.addEventListener('input', () => {
+        const cleaned = input.value.replace(/[^A-Za-z0-9\-_]/g, '').toUpperCase();
+        if (input.value !== cleaned) input.value = cleaned;
+    });
+
+    async function handleSubmit() {
+        const callsign = sanitiseCallsign(input.value || '');
+        if (!callsign) {
+            input.style.borderColor = '#ff4455';
+            input.focus();
+            setTimeout(() => { input.style.borderColor = ''; }, 1300);
+            return;
+        }
+
+        submitBtn.disabled = true;
+        input.disabled = true;
+        submitBtn.textContent = 'SUBMITTING...';
+
+        localStorage.setItem('dg_callsign', callsign);
+        state.playerName = callsign;
+
+        const dataBeforeSubmit = getDailyData();
+        const previousBestScore = dataBeforeSubmit.stats?.bestScore || 0;
+
+        submitDailyScore(callsign, state.score);
+        await submitScoreToFirebase(callsign, state.score);
+
+        submitBtn.textContent = 'SUBMITTED! 🏆';
+
+        // Update summary bar on debrief screen
+        const dataAfterSubmit = getDailyData();
+        const stats = dataAfterSubmit.stats;
+        const isNewHighScore = state.score > previousBestScore && previousBestScore > 0;
+        const isFirstScore = previousBestScore === 0;
+
+        const dailySummaryBar = document.getElementById('daily-summary-bar');
+        const summaryContent = document.getElementById('daily-summary-content');
+        if (dailySummaryBar && summaryContent) {
+            let html = '';
+            if (isNewHighScore) html += `<span class="summary-highlight new-high">🏆 NEW HIGH SCORE!</span>`;
+            else if (isFirstScore) html += `<span class="summary-highlight first-score">⭐ First Speedrun Complete!</span>`;
+            if (stats && stats.currentStreak > 0) html += `<span class="summary-streak">🔥 ${stats.currentStreak} Day Streak</span>`;
+            summaryContent.innerHTML = html;
+            if (html) dailySummaryBar.classList.remove('hidden');
+        }
+
+        // Queue the review prompt for after the leaderboard is dismissed
+        markReviewPromptCandidate({ wasNewPb: isNewHighScore });
+
+        // Close submit modal then open the leaderboard
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            openDailyLeaderboardOnGlobal();
+        }, 800);
+    }
+
+    submitBtn.addEventListener('click', handleSubmit);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') handleSubmit(); });
+    skipBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        openDailyLeaderboardOnGlobal();
+    });
+    // Click outside to close (skips submission)
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
+}
+
+// ── Play Store Review Prompt ─────────────────────────────────
+
+const REVIEW_PROMPT_KEY = 'dg_review_prompt';
+const REVIEW_MIN_DAILIES = 3;          // require ≥3 completed daily challenges
+const REVIEW_REASK_DAYS = 30;          // 30-day cooldown after "Maybe later"
+const REVIEW_REASK_MIN_NEW_DAILIES = 5; // and at least 5 more dailies played
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.defenceguesser.twa';
+
+// Flag set by the submission flow; consumed when the leaderboard modal closes.
+let _reviewPromptPending = false;
+
+function getReviewPromptState() {
+    try {
+        const raw = localStorage.getItem(REVIEW_PROMPT_KEY);
+        if (!raw) return { status: null, lastDismissedAt: 0, totalDaysAtDismiss: 0 };
+        return JSON.parse(raw);
+    } catch {
+        return { status: null, lastDismissedAt: 0, totalDaysAtDismiss: 0 };
+    }
+}
+
+function setReviewPromptState(patch) {
+    const current = getReviewPromptState();
+    const next = { ...current, ...patch };
+    try { localStorage.setItem(REVIEW_PROMPT_KEY, JSON.stringify(next)); } catch {}
+}
+
+/**
+ * Decide whether the review prompt should be shown right now.
+ * Triggered only after a daily-challenge score has just been submitted and
+ * we've confirmed it was a new personal best (handled by caller).
+ */
+function shouldShowReviewPrompt(totalDays) {
+    const st = getReviewPromptState();
+    if (st.status === 'rated') return false;
+    if (typeof totalDays !== 'number' || totalDays < REVIEW_MIN_DAILIES) return false;
+    if (st.status === 'dismissed') {
+        const daysSince = (Date.now() - (st.lastDismissedAt || 0)) / (1000 * 60 * 60 * 24);
+        if (daysSince < REVIEW_REASK_DAYS) return false;
+        const newDailiesSince = totalDays - (st.totalDaysAtDismiss || 0);
+        if (newDailiesSince < REVIEW_REASK_MIN_NEW_DAILIES) return false;
+    }
+    return true;
+}
+
+/**
+ * Marks the user as a candidate for the review prompt. Called after a
+ * successful daily-challenge submission that produced a new personal best.
+ * The actual prompt is shown later — when the user closes the leaderboard —
+ * so it doesn't interrupt the "see myself on the board" moment.
+ */
+function markReviewPromptCandidate({ wasNewPb }) {
+    if (!wasNewPb) return;
+    const stats = getDailyData().stats;
+    const totalDays = stats?.totalDays || 0;
+    if (shouldShowReviewPrompt(totalDays)) {
+        _reviewPromptPending = true;
+    }
+}
+
+function maybeShowReviewPrompt() {
+    if (!_reviewPromptPending) return;
+    _reviewPromptPending = false;
+    const modal = document.getElementById('review-prompt-modal');
+    if (modal) modal.classList.remove('hidden');
+}
+
+function setupReviewPromptModal() {
+    const modal = document.getElementById('review-prompt-modal');
+    const rateBtn = document.getElementById('review-rate-btn');
+    const laterBtn = document.getElementById('review-later-btn');
+    if (!modal || !rateBtn || !laterBtn) return;
+
+    rateBtn.addEventListener('click', () => {
+        setReviewPromptState({ status: 'rated' });
+        modal.classList.add('hidden');
+        // On Android the https URL is captured by the Play Store app via intent;
+        // off-Android it opens the web Play Store page.
+        window.open(PLAY_STORE_URL, '_blank', 'noopener');
+    });
+
+    laterBtn.addEventListener('click', () => {
+        const totalDays = getDailyData().stats?.totalDays || 0;
+        setReviewPromptState({
+            status: 'dismissed',
+            lastDismissedAt: Date.now(),
+            totalDaysAtDismiss: totalDays
+        });
+        modal.classList.add('hidden');
+    });
+}
+

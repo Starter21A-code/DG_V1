@@ -74,7 +74,7 @@
 
                 <button id="practice-btn" class="btn secondary">PRACTICE HUB</button>
             </div>
-            <div class="version-display">V2.0</div>
+            <div class="version-display">V2.1</div>
         </div>
 
         <!-- Daily Challenge Options Modal -->
@@ -86,6 +86,10 @@
                     <button id="daily-play-btn" class="btn daily-option">
                         <span class="option-icon">🎮</span>
                         <span class="option-text">PLAY TODAY'S CHALLENGE</span>
+                    </button>
+                    <button id="daily-global-leaderboard-btn" class="btn daily-option secondary">
+                        <span class="option-icon">🌍</span>
+                        <span class="option-text">LEADERBOARD</span>
                     </button>
                     <button id="daily-leaderboard-btn" class="btn daily-option secondary">
                         <span class="option-icon">🏆</span>
@@ -154,60 +158,120 @@
             </div>
         </div>
 
-        <!-- Daily Leaderboard View Modal -->
+        <!-- Review Prompt Modal (shown after a new PB + ≥3 daily completions) -->
+        <div id="review-prompt-modal" class="modal hidden">
+            <div class="modal-content review-prompt-content">
+                <div class="review-prompt-icon">⭐</div>
+                <h2>ENJOYING <span class="highlight">DEFENCE GUESSER?</span></h2>
+                <p>A quick review on the Play Store helps other players discover the game.</p>
+                <div class="modal-buttons">
+                    <button id="review-rate-btn" class="btn primary">RATE ON PLAY STORE</button>
+                    <button id="review-later-btn" class="btn secondary">MAYBE LATER</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post-game Callsign Submit Modal (shown when clicking LEADERBOARD on debrief) -->
+        <div id="callsign-submit-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>SECURE DAILY <span class="highlight">RANK</span></h2>
+                <p>Post your score to the global leaderboard:</p>
+                <input type="text" id="callsign-submit-input" placeholder="ENTER CALLSIGN..." maxlength="16" autocomplete="off" spellcheck="false">
+                <p class="daily-info">Up to 16 characters — letters, numbers, hyphens and underscores only</p>
+                <div class="modal-buttons">
+                    <button id="callsign-submit-btn" class="btn primary">POST SCORE 🏆</button>
+                    <button id="callsign-submit-skip-btn" class="btn secondary">SKIP</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Leaderboard / Stats Modal -->
         <div id="daily-leaderboard-modal" class="modal hidden">
             <div class="modal-content leaderboard-modal-content">
                 <button id="leaderboard-close-btn" class="close-btn">✕</button>
-                <h2>YOUR DAILY <span class="highlight">CHALLENGE</span></h2>
+                <h2 id="lb-modal-title">DAILY <span class="highlight">CHALLENGE</span></h2>
 
-                <!-- Stats Dashboard -->
-                <div class="stats-dashboard">
-                    <div class="stat-card">
-                        <div class="stat-icon">🏆</div>
-                        <div class="stat-value" id="stat-best">-</div>
-                        <div class="stat-label">Best Score</div>
-                        <div class="stat-date" id="stat-best-date"></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">📊</div>
-                        <div class="stat-value" id="stat-average">-</div>
-                        <div class="stat-label">Average</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">🔥</div>
-                        <div class="stat-value" id="stat-streak">0</div>
-                        <div class="stat-label">Day Streak</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">⭐</div>
-                        <div class="stat-value" id="stat-total">0</div>
-                        <div class="stat-label">Total Days</div>
-                    </div>
+                <!-- Top-level tabs: MY STATS | LEADERBOARD (hidden — opened directly via buttons) -->
+                <div class="lb-main-tabs hidden">
+                    <button class="lb-main-tab active" data-tab="stats">MY STATS</button>
+                    <button class="lb-main-tab" data-tab="global">🌍 LEADERBOARD</button>
                 </div>
 
-                <!-- Progress Chart -->
-                <div class="progress-section">
-                    <h3>Last 7 Days</h3>
-                    <div class="chart-container">
-                        <canvas id="progress-chart" width="360" height="120"></canvas>
+                <!-- ── MY STATS TAB ── -->
+                <div class="lb-tab-panel" id="lb-panel-stats">
+                    <!-- Stats Dashboard -->
+                    <div class="stats-dashboard">
+                        <div class="stat-card">
+                            <div class="stat-icon">🏆</div>
+                            <div class="stat-value" id="stat-best">-</div>
+                            <div class="stat-label">Best Score</div>
+                            <div class="stat-date" id="stat-best-date"></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-value" id="stat-average">-</div>
+                            <div class="stat-label">Average</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-value" id="stat-streak">0</div>
+                            <div class="stat-label">Day Streak</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-value" id="stat-total">0</div>
+                            <div class="stat-label">Total Days</div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- History List -->
-                <!-- Total Points - Compact -->
-                <div class="history-section">
-                    <div class="total-points-display">
-                        <div class="total-points-icon">🎯</div>
-                        <div class="total-points-info">
-                            <div class="total-points-value" id="total-points">0</div>
-                            <div class="total-points-label">Total Points Achieved</div>
+                    <!-- Progress Chart -->
+                    <div class="progress-section">
+                        <h3>Last 7 Days</h3>
+                        <div class="chart-container">
+                            <canvas id="progress-chart" width="360" height="120"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Total Points -->
+                    <div class="history-section">
+                        <div class="total-points-display">
+                            <div class="total-points-icon">🎯</div>
+                            <div class="total-points-info">
+                                <div class="total-points-value" id="total-points">0</div>
+                                <div class="total-points-label">Total Points Achieved</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <button id="leaderboard-close-btn-bottom" class="btn secondary">CLOSE</button>
+                <!-- ── GLOBAL LEADERBOARD TAB ── -->
+                <div class="lb-tab-panel hidden" id="lb-panel-global">
+                    <!-- Period sub-tabs -->
+                    <div class="lb-period-tabs">
+                        <button class="lb-period-tab active" data-period="daily">DAILY</button>
+                        <button class="lb-period-tab" data-period="weekly">WEEKLY</button>
+                        <button class="lb-period-tab" data-period="monthly">MONTHLY</button>
+                    </div>
+
+                    <!-- Leaderboard list -->
+                    <div class="lb-list-container">
+                        <div id="lb-list" class="lb-list">
+                            <!-- Populated by JS -->
+                            <div class="lb-loading">
+                                <div class="lb-skeleton"></div>
+                                <div class="lb-skeleton"></div>
+                                <div class="lb-skeleton"></div>
+                                <div class="lb-skeleton"></div>
+                                <div class="lb-skeleton"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
+
 
         <!-- Help Menu Modal (appears when clicking ?) -->
         <div id="help-menu-modal" class="modal hidden">
@@ -300,9 +364,6 @@
                     <h4>🔥 Combo Multiplier</h4>
                     <p>Chain <strong>4 or more correct answers in a row</strong> to activate a <strong>×1.5 combo multiplier</strong> on every subsequent correct guess — until you break the streak.</p>
 
-                    <h4>▲ vs PB</h4>
-                    <p>Your score is compared in real time against your <strong>personal best run</strong>. A green <strong>▲</strong> means you're ahead; a red <strong>▼</strong> means you're behind.</p>
-
                     <h3>Tips</h3>
                     <ul>
                         <li>Many countries produce distinctive equipment with unique design philosophies</li>
@@ -325,7 +386,7 @@
                 <button id="terms-close-btn" class="close-btn">✕</button>
                 <h2>TERMS & <span class="highlight">CONDITIONS</span></h2>
                 <div class="terms-content">
-                    <p class="terms-updated"><strong>Last Updated:</strong> 15th December 2024</p>
+                    <p class="terms-updated"><strong>Last Updated:</strong> 26th May 2026</p>
 
                     <h3>1. Introduction</h3>
                     <p>Welcome to Defence Guesser. By accessing or playing our game, you agree to be bound by these
@@ -351,6 +412,8 @@
                         <li><strong>Leaflet</strong> - Interactive map library</li>
                         <li><strong>CartoDB</strong> - Map tile provider</li>
                         <li><strong>Google Fonts</strong> - Typography (Outfit font family)</li>
+                        <li><strong>Google Firebase (Cloud Firestore)</strong> - Cloud database used to host the global
+                            Daily Challenge leaderboard. See section 3.4 for details on what data is stored.</li>
                     </ul>
                     <p>These services are used in accordance with their respective licenses and terms of service.</p>
 
@@ -367,11 +430,12 @@
 
                     <h3>3. Privacy Policy & Data Collection</h3>
 
-                    <h4>3.1 No Server-Side Data Collection</h4>
-                    <p>Defence Guesser is a client-side application that operates entirely in your web browser.
-                        <strong>We do not collect, store, or transmit any personally identifiable information (PII) to
-                            external servers.</strong>
-                    </p>
+                    <h4>3.1 Data Collection Overview</h4>
+                    <p>Defence Guesser is primarily a client-side application that operates in your web browser. The
+                        only data we transmit off your device is your <strong>self-chosen callsign and Daily Challenge
+                            score</strong>, and only when you choose to submit them to the global leaderboard (see
+                        section 3.4). <strong>We do not collect your name, email address, IP address, location, device
+                            identifiers, or any other personally identifiable information (PII).</strong></p>
 
                     <h4>3.2 Local Storage Usage</h4>
                     <p>The game uses your browser's <strong>Local Storage</strong> to enhance your experience by saving:
@@ -382,20 +446,53 @@
                         <li>User preferences and settings</li>
                         <li>Your chosen callsign for the Daily Challenge leaderboard</li>
                     </ul>
-                    <p><strong>This data remains exclusively on your device and is not shared with us or any third
-                            parties.</strong></p>
+                    <p><strong>This data remains exclusively on your device unless you explicitly submit a score to the
+                            global leaderboard (see section 3.4).</strong></p>
 
                     <h4>3.3 Legal Basis for Local Storage</h4>
                     <p>By using Defence Guesser, you consent to the storage of this data on your device for the purposes
                         described above. This data is essential for providing core game functionality such as saving
                         progress and maintaining leaderboard scores.</p>
 
-                    <h4>3.4 No Tracking Cookies</h4>
-                    <p>We do not use tracking cookies, analytics services, or any third-party data collection tools.</p>
+                    <h4>3.4 Cloud Leaderboard Data (Firebase)</h4>
+                    <p>To power the global Daily Challenge leaderboard, Defence Guesser uses <strong>Google Cloud
+                            Firestore</strong> (a Firebase service). Submitting a score is <strong>optional</strong> —
+                        you may play the Daily Challenge without ever posting a score, in which case nothing leaves your
+                        device.</p>
+                    <p>When you click <em>POST SCORE</em> on the Daily Challenge results screen, the following data is
+                        transmitted to and stored by Firebase:</p>
+                    <ul>
+                        <li>Your chosen <strong>callsign</strong> (free-text, up to 16 characters — letters, numbers,
+                            hyphens and underscores only)</li>
+                        <li>Your <strong>score</strong> for that day's challenge</li>
+                        <li>A <strong>random installation ID</strong> generated locally by your browser and stored in
+                            Local Storage. This is a random UUID — not a hardware identifier, not linked to your name,
+                            email or Google account — used only to distinguish leaderboard entries when two players
+                            choose the same callsign, and to allow you to update your own score without overwriting
+                            someone else's. Clearing site data resets it.</li>
+                        <li>Date / week / month identifiers used for ranking</li>
+                        <li>A server-side <strong>timestamp</strong> generated by Firebase at submission</li>
+                    </ul>
+                    <p><strong>No other personal information is sent.</strong> We do not transmit your name, email, IP
+                        address, hardware identifiers, location or any tracking signals. The callsign is freely chosen
+                        by you and need not identify you personally — you may use any pseudonym.</p>
+                    <p>Firebase is operated by Google LLC. As Firebase's infrastructure provider, Google may log
+                        connection metadata (such as IP addresses) at the network level when your browser communicates
+                        with Firestore, in accordance with the
+                        <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase
+                            Privacy and Security Policy</a> and the
+                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy
+                            Policy</a>.
+                    </p>
 
-                    <h4>3.5 Your Data Rights (GDPR Compliance)</h4>
-                    <p>Under GDPR and similar privacy regulations, you have the following rights regarding data stored
-                        locally:</p>
+                    <h4>3.5 No Tracking Cookies or Analytics</h4>
+                    <p>We do not use tracking cookies, analytics services, or advertising trackers. Although Firebase is
+                        capable of providing analytics, Defence Guesser does <strong>not</strong> enable Firebase
+                        Analytics — only Cloud Firestore (the leaderboard database) is used.</p>
+
+                    <h4>3.6 Your Data Rights (GDPR Compliance)</h4>
+                    <p>Under GDPR and similar privacy regulations, you have the following rights:</p>
+                    <p><strong>Local data on your device:</strong></p>
                     <ul>
                         <li><strong>Right to Access:</strong> You can view your locally stored data through your
                             browser's developer tools</li>
@@ -405,7 +502,17 @@
                         <li><strong>Right to Withdraw Consent:</strong> You can stop using the game at any time, and
                             clear all stored data through your browser settings</li>
                     </ul>
-                    <p><strong>To completely remove all game data:</strong></p>
+                    <p><strong>Cloud leaderboard data (Firebase):</strong></p>
+                    <ul>
+                        <li><strong>Right to Access / Erasure:</strong> To request a copy of, or the deletion of, any
+                            leaderboard entries you have submitted, email
+                            <a href="mailto:defenceguesser@gmail.com">defenceguesser@gmail.com</a> with the callsign(s)
+                            and approximate date(s) of submission. We will action verified requests within 30 days.
+                        </li>
+                        <li><strong>Right to Withdraw Consent:</strong> You can simply stop submitting scores. Past
+                            submissions can be removed on request as above.</li>
+                    </ul>
+                    <p><strong>To completely remove all local game data:</strong></p>
                     <ol>
                         <li>Open your browser settings</li>
                         <li>Navigate to Privacy/Storage settings</li>
@@ -413,15 +520,17 @@
                         <li>Alternatively, clear all browser local storage</li>
                     </ol>
 
-                    <h4>3.6 Data Security</h4>
-                    <p>As all data is stored locally on your device, its security depends on your device's security
-                        measures. We recommend keeping your device secure with appropriate passwords and security
-                        software.</p>
+                    <h4>3.7 Data Security</h4>
+                    <p>Locally stored data depends on your device's security; we recommend keeping it protected with
+                        appropriate passwords and security software. Leaderboard data submitted to Firebase is
+                        transmitted over HTTPS and stored on Google's infrastructure, which is governed by Google's
+                        security practices.</p>
 
-                    <h4>3.7 Third-Party Data Processing</h4>
-                    <p>While we do not collect data ourselves, the third-party services listed in section 2.3 (Leaflet,
-                        CartoDB, Google Fonts) may process data according to their own privacy policies when you use
-                        Defence Guesser. We recommend reviewing their respective privacy policies.</p>
+                    <h4>3.8 Third-Party Data Processing</h4>
+                    <p>The third-party services listed in section 2.3 (Leaflet, CartoDB, Google Fonts, Google Firebase)
+                        may process data according to their own privacy policies when you use Defence Guesser. We
+                        recommend reviewing their respective privacy policies, particularly Google's where applicable.
+                    </p>
 
                     <h3>4. User Conduct</h3>
                     <p>You agree to use Defence Guesser in accordance with all applicable laws and regulations.
@@ -638,11 +747,6 @@
             <div class="top-bar">
                 <div class="score-container">
                     <div class="score-main">SCORE: <span id="score">0</span></div>
-                    <!-- Ghost Score (Daily Speedrun) -->
-                    <div id="ghost-score-display" class="ghost-score-display hidden">
-                        <span id="ghost-delta" class="ghost-delta-value"></span>
-                        <span class="ghost-label">vs PB</span>
-                    </div>
                 </div>
                 <!-- 60-Second Speedrun Global Timer -->
                 <div id="speedrun-timer" class="speedrun-timer hidden">
@@ -676,7 +780,6 @@
                 <div id="sf-points" class="sf-points"></div>
                 <div id="sf-penalty" class="sf-penalty hidden"></div>
                 <div id="sf-combo" class="sf-combo hidden"></div>
-                <div id="sf-ghost" class="sf-ghost hidden"></div>
             </div>
 
             <!-- Minimized Equipment Thumbnail (Bottom Right) - Game Screen Only -->
@@ -955,6 +1058,22 @@
                         </div>
                     </div>
 
+                    <!-- Inline Leaderboard Callsign Panel -->
+                    <div id="inline-callsign-panel" class="inline-callsign-panel hidden">
+                        <div class="inline-callsign-header">
+                            <span class="inline-callsign-icon">📡</span>
+                            <div class="inline-callsign-text">
+                                <h3>SECURE DAILY RANK</h3>
+                                <p>Post your score to the global leaderboards</p>
+                            </div>
+                        </div>
+                        <div class="inline-callsign-body">
+                            <input type="text" id="inline-callsign-input" placeholder="ENTER CALLSIGN..." maxlength="16" autocomplete="off" spellcheck="false">
+                            <button id="inline-callsign-submit-btn" class="btn primary compact">POST SCORE 🏆</button>
+                        </div>
+                        <p class="inline-callsign-hint">Up to 16 characters — letters, numbers, hyphens and underscores only</p>
+                    </div>
+
                 </div><!-- end debrief-content -->
 
                 <!-- Share Score Bar -->
@@ -978,6 +1097,7 @@
                     <button id="restart-btn" class="btn primary">RE-DEPLOY</button>
                     <button id="view-daily-stats-btn" class="btn secondary hidden">YOUR STATS</button>
                     <button id="menu-btn" class="btn secondary">MAIN MENU</button>
+                    <button id="view-daily-leaderboard-btn" class="btn secondary hidden">LEADERBOARD</button>
                 </div>
             </div>
         </div>
@@ -1014,6 +1134,12 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Firebase SDK (compat — works with vanilla JS, no build step needed) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
     <script src="assets/geo-data.js"></script>
     <script src="data.js"></script>
     <script src="app.js"></script>

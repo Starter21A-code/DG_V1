@@ -501,6 +501,40 @@ body {
     margin-top: 0;
 }
 
+#callsign-submit-modal .modal-buttons {
+    gap: 0.6rem;
+}
+
+#callsign-submit-modal .modal-buttons .btn {
+    flex: 0 1 auto;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.85rem;
+    min-width: 120px;
+}
+
+/* Review prompt modal */
+.review-prompt-content {
+    text-align: center;
+}
+
+.review-prompt-icon {
+    font-size: 3rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 12px rgba(0, 255, 136, 0.4));
+}
+
+#review-prompt-modal .modal-buttons {
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+#review-prompt-modal .modal-buttons .btn {
+    flex: none;
+    width: 100%;
+}
+
 .daily-info {
     font-size: 0.75rem;
     color: #ffcc00;
@@ -665,6 +699,12 @@ body {
 /* Leaderboard Modal */
 .leaderboard-modal-content {
     max-width: 400px;
+}
+
+.leaderboard-modal-content > h2 {
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+    text-align: center;
 }
 
 .leaderboard-list {
@@ -3104,7 +3144,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 200;
+    z-index: 600;
     animation: fadeIn 0.3s ease;
 }
 
@@ -4619,47 +4659,6 @@ body {
     font-size: 0.9rem;
 }
 
-/* Ghost Score Display */
-/* Ghost / vs PB display — sits directly below the SCORE line */
-.ghost-score-display {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin-top: 2px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(255,255,255,0.12);
-    backdrop-filter: blur(6px);
-    white-space: nowrap;
-    max-width: fit-content;
-}
-
-.ghost-delta-value {
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0;
-}
-
-.ghost-score-display.ahead { border-color: rgba(0, 255, 136, 0.4); }
-.ghost-score-display.behind { border-color: rgba(255, 68, 68, 0.4); }
-.ghost-score-display.tied { border-color: rgba(255, 170, 0, 0.4); }
-
-.ghost-score-display.ahead .ghost-delta-value { color: #00ff88; }
-.ghost-score-display.behind .ghost-delta-value { color: #ff4444; }
-.ghost-score-display.tied .ghost-delta-value { color: #ffaa00; }
-
-.ghost-label {
-    font-size: 0.6rem;
-    font-weight: 400;
-    opacity: 0.75;
-    text-transform: uppercase;
-}
-
 /* Speedrun Feedback Overlay (appears on game screen after each guess) */
 .speedrun-feedback {
     position: absolute;
@@ -4715,15 +4714,6 @@ body {
     letter-spacing: 1px;
 }
 
-.sf-ghost {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin-top: 0.35rem;
-}
-
-.sf-ghost.ahead { color: #00ff88; }
-.sf-ghost.behind { color: #ff4444; }
-
 @keyframes feedbackPop {
     0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
     15%  { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
@@ -4767,7 +4757,13 @@ body {
     overflow: hidden;
     aspect-ratio: 4/3;
     border: 2px solid transparent;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.reel-item:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.5);
 }
 
 .reel-item.reel-correct { border-color: #00ff88; }
@@ -4960,5 +4956,462 @@ body {
     .archetype-card-wrapper { width: 120px; height: 168px; flex-shrink: 0; }
 }
 
+/* ============================================================
+   GLOBAL LEADERBOARD — tab chrome & list
+   ============================================================ */
 
+/* Main tab switcher: MY STATS | 🌍 LEADERBOARD */
+.lb-main-tabs {
+    display: flex;
+    margin-bottom: 0.85rem;
+    border-bottom: 2px solid rgba(0,255,136,0.15);
+}
 
+.lb-main-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #8b9bb4;
+    font-family: var(--font-main);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 0.55rem 0.25rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    text-transform: uppercase;
+    margin-bottom: -2px;
+}
+.lb-main-tab:hover { color: #fff; }
+.lb-main-tab.active { color: #00ff88; border-bottom-color: #00ff88; }
+
+/* Tab panels */
+.lb-tab-panel { animation: lbFadeIn 0.22s ease; }
+.lb-tab-panel.hidden { display: none; }
+
+@keyframes lbFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Period sub-tabs: DAILY | WEEKLY | MONTHLY */
+.lb-period-tabs {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+    justify-content: center;
+}
+
+.lb-period-tab {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    color: #8b9bb4;
+    font-family: var(--font-main);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.35rem 0.85rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-transform: uppercase;
+}
+.lb-period-tab:hover {
+    background: rgba(0,255,136,0.1);
+    border-color: rgba(0,255,136,0.3);
+    color: #fff;
+}
+.lb-period-tab.active {
+    background: rgba(0,255,136,0.15);
+    border-color: #00ff88;
+    color: #00ff88;
+}
+
+/* Scrollable leaderboard list */
+.lb-list-container {
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,255,136,0.25) transparent;
+}
+.lb-list-container::-webkit-scrollbar { width: 4px; }
+.lb-list-container::-webkit-scrollbar-track { background: transparent; }
+.lb-list-container::-webkit-scrollbar-thumb {
+    background: rgba(0,255,136,0.25);
+    border-radius: 2px;
+}
+
+.lb-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+/* Individual row */
+.lb-entry {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: background 0.15s;
+}
+.lb-entry:hover { background: rgba(255,255,255,0.07); }
+
+/* Highlighted user row */
+.lb-entry.lb-user-entry {
+    background: rgba(0,255,136,0.07);
+    border-color: rgba(0,255,136,0.3);
+}
+
+/* Rank badge */
+.lb-rank {
+    min-width: 2rem;
+    text-align: center;
+    font-family: var(--font-main);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #8b9bb4;
+    flex-shrink: 0;
+}
+.lb-rank.rank-1 { color: #FFD700; font-size: 1.05rem; }
+.lb-rank.rank-2 { color: #C0C0C0; font-size: 0.96rem; }
+.lb-rank.rank-3 { color: #CD7F32; font-size: 0.96rem; }
+
+/* Callsign */
+.lb-callsign {
+    flex: 1;
+    font-family: var(--font-main);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.lb-user-entry .lb-callsign { color: #00ff88; }
+
+/* YOU badge */
+.you-tag {
+    font-size: 0.6rem;
+    background: rgba(0,255,136,0.2);
+    color: #00ff88;
+    border-radius: 3px;
+    padding: 1px 4px;
+    margin-left: 0.35rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    vertical-align: middle;
+}
+
+/* Score */
+.lb-score {
+    font-family: var(--font-main);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #00ff88;
+    flex-shrink: 0;
+}
+.lb-user-entry .lb-score { color: #fff; }
+
+/* "· · ·" separator between top 10 and user's out-of-top-10 row */
+.lb-separator {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0;
+    color: rgba(255,255,255,0.2);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+}
+.lb-separator::before,
+.lb-separator::after {
+    content: '';
+    flex: 1;
+    border-top: 1px dashed rgba(255,255,255,0.1);
+}
+
+/* Empty state */
+.lb-empty {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #8b9bb4;
+    font-size: 0.82rem;
+    line-height: 1.7;
+}
+.lb-empty-icon { font-size: 2rem; display: block; margin-bottom: 0.4rem; }
+
+/* Error state */
+.lb-error {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    color: #ff6b7a;
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+/* Skeleton loading */
+.lb-loading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.15rem 0;
+}
+.lb-skeleton {
+    height: 38px;
+    border-radius: 8px;
+    background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0.04) 25%,
+        rgba(255,255,255,0.09) 50%,
+        rgba(255,255,255,0.04) 75%
+    );
+    background-size: 200% 100%;
+    animation: lbShimmer 1.4s infinite;
+}
+@keyframes lbShimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ============================================================
+   POST-GAME CALLSIGN MODAL
+   ============================================================ */
+
+.callsign-modal-content {
+    text-align: center;
+    padding: 1.75rem 1.5rem 1.5rem;
+    max-width: 360px;
+}
+
+.callsign-icon {
+    font-size: 2.6rem;
+    margin-bottom: 0.25rem;
+    display: block;
+    animation: lbFadeIn 0.4s ease;
+}
+
+.callsign-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    margin: 0.4rem 0 0.8rem;
+    line-height: 1.45;
+}
+
+.callsign-score-preview {
+    display: inline-block;
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    border-radius: 8px;
+    padding: 0.35rem 1.2rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #00ff88;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+}
+
+.callsign-input {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    color: #fff;
+    font-family: var(--font-main);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 0.65rem 1rem;
+    text-transform: uppercase;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    box-sizing: border-box;
+    margin-bottom: 0.35rem;
+}
+.callsign-input:focus {
+    border-color: #00ff88;
+    background: rgba(0,255,136,0.05);
+}
+.callsign-input::placeholder {
+    color: rgba(255,255,255,0.28);
+    text-transform: none;
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+.callsign-hint {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.28);
+    margin: 0 0 1rem;
+    line-height: 1.3;
+}
+
+.callsign-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.callsign-buttons .btn { margin-top: 0; width: 100%; }
+
+/* Debrief leaderboard CTA button (shown after daily completion) */
+#view-leaderboard-btn {
+    background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,255,136,0.05));
+    border: 1px solid rgba(0,255,136,0.4);
+    color: #00ff88;
+}
+#view-leaderboard-btn:hover {
+    background: rgba(0,255,136,0.2);
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.2);
+}
+
+/* ============================================================
+   INLINE LEADERBOARD CALLSIGN PANEL (Option 1)
+   ============================================================ */
+
+.inline-callsign-panel {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-top: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    animation: lbFadeIn 0.3s ease;
+    text-align: left;
+}
+
+.inline-callsign-panel.submitted {
+    background: rgba(0, 255, 136, 0.04);
+    border-color: rgba(0, 255, 136, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.05);
+}
+
+.inline-callsign-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.inline-callsign-icon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 6px rgba(0, 255, 136, 0.4));
+    animation: lbPulseIcon 2s infinite ease-in-out;
+}
+
+@keyframes lbPulseIcon {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(0, 255, 136, 0.3)); }
+    50% { transform: scale(1.08); filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.6)); }
+}
+
+.inline-callsign-text h3 {
+    margin: 0;
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.inline-callsign-text p {
+    margin: 0.15rem 0 0;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.3;
+}
+
+.inline-callsign-body {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#inline-callsign-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #fff;
+    font-family: var(--font-main);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.55rem 0.85rem;
+    text-transform: uppercase;
+    outline: none;
+    transition: all 0.2s;
+    box-sizing: border-box;
+}
+
+#inline-callsign-input:focus {
+    border-color: #00ff88;
+    background: rgba(0, 255, 136, 0.03);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
+}
+
+#inline-callsign-input::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+    text-transform: none;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+#inline-callsign-submit-btn.btn.primary.compact {
+    margin-top: 0;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    border-radius: 8px;
+    min-width: 130px;
+}
+
+.inline-callsign-hint {
+    margin: 0;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.28);
+    line-height: 1.3;
+}
+
+/* Pulsing highlight for the leaderboard CTA button after submission */
+.btn-pulse-cta {
+    position: relative;
+    box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.5);
+    animation: lbCtaPulse 2s infinite;
+    border-color: #00ff88 !important;
+    color: #00ff88 !important;
+}
+
+@keyframes lbCtaPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.5);
+    }
+    70% {
+        transform: scale(1.02);
+        box-shadow: 0 0 0 10px rgba(0, 255, 136, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
+    }
+}
+
+/* Responsive adjust for mobile */
+@media (max-width: 480px) {
+    .inline-callsign-body {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    #inline-callsign-submit-btn.btn.primary.compact {
+        width: 100%;
+    }
+}

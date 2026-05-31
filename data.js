@@ -224,8 +224,8 @@ window.equipmentData = [
             "assets/Chonma_2_Bravo.png"
         ],
         imageCredits: [
-            "Photo: Арт123ПК / Wikimedia Commons / CC BY-SA 4.0",
-            "Photo: Арт123ПК / Wikimedia Commons / CC BY-SA 4.0"
+            "Photo: Арт123ПК / Wikimedia Commons / CC BY-SA 4.0 — image modified (background removed)",
+            "Photo: Арт123ПК / Wikimedia Commons / CC BY-SA 4.0 — image modified (background removed)"
         ],
         specs: { speed: "65 km/h", armament: "125mm smoothbore", operationalRange: "500 km" },
         inService: 2020,

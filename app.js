@@ -2385,17 +2385,48 @@ function generateTriviaQuestion(equipment) {
                 return !/\d/.test(name) && !/\+/.test(name) && !/countries|nations|worldwide/i.test(name);
             }
 
-            // Wrong answers = actual named users of this equipment (pick up to 3, no aggregates)
-            const namedUsers = equipment.users.filter(isRealCountry);
+            // Canonicalise country-name variants so the SAME country spelled two ways
+            // (e.g. "UK"/"United Kingdom", "UAE"/"United Arab Emirates") is never treated
+            // as two different countries. Without this the "does NOT operate" answer could
+            // be a variant of a country that actually DOES operate the equipment.
+            const COUNTRY_ALIASES = {
+                'uk': 'United Kingdom',
+                'u.k.': 'United Kingdom',
+                'great britain': 'United Kingdom',
+                'uae': 'United Arab Emirates',
+                'u.a.e.': 'United Arab Emirates',
+                'usa': 'United States',
+                'u.s.': 'United States',
+                'us': 'United States',
+                'united states navy': 'United States',
+                'republic of korea': 'South Korea',
+                'rok': 'South Korea'
+            };
+            function canonCountry(name) {
+                return COUNTRY_ALIASES[name.toLowerCase().trim()] || name;
+            }
+
+            // Wrong answers = actual named users of this equipment (pick up to 3, no aggregates).
+            // Deduplicate by canonical name so two spellings of one country can't both appear.
+            const seenWrong = new Set();
+            const namedUsers = equipment.users.filter(u => {
+                if (!isRealCountry(u)) return false;
+                const c = canonCountry(u);
+                if (seenWrong.has(c)) return false;
+                seenWrong.add(c);
+                return true;
+            });
             if (namedUsers.length < 1) return null;
             const wrongAnswers = [...namedUsers]
                 .sort(() => 0.5 - Math.random())
                 .slice(0, 3);
 
-            // Correct answer = a genuine non-user country (not an aggregate string)
-            const allUsers = new Set(equipment.users);
+            // Correct answer = a genuine non-user country (compared on canonical names so a
+            // variant of an actual operator is never offered as the "doesn't operate" answer).
+            const allUsers = new Set(equipment.users.map(canonCountry));
             const nonUsers = equipmentData
                 .flatMap(eq => eq.users || [])
+                .map(canonCountry)
                 .filter(u => !allUsers.has(u) && isRealCountry(u));
             if (nonUsers.length === 0) return null;
             const correctAnswer = nonUsers[Math.floor(Math.random() * nonUsers.length)];
@@ -2458,10 +2489,26 @@ function generateTriviaQuestion(equipment) {
             const correctKmh = isVehicleKmh ? extractKmh(correctAnswer) : null;
             const SPEED_BRACKET_THRESHOLD = 200; // km/h — below this = slow, above = fast
 
+            // Collapse speed strings that DISPLAY the same value differently so two
+            // visually-near-identical options can never both appear, e.g.
+            //   "Mach 2" / "Mach 2.0" / "Mach 2+"        -> mach:2
+            //   "30 knots" / "30+ knots" / "30 knots (submerged)" -> knots:30
+            // Genuinely different values (Mach 2 vs 2.25, 59 vs 60 km/h) stay distinct.
+            function speedKey(speedStr) {
+                const s = speedStr.toLowerCase().replace(/,/g, '').replace(/\s+/g, ' ').trim();
+                let m;
+                if ((m = s.match(/mach\s*([\d.]+)/)))                 return 'mach:' + parseFloat(m[1]);
+                if ((m = s.match(/([\d.]+)\s*\+?\s*knots?/)))         return 'knots:' + parseFloat(m[1]);
+                if ((m = s.match(/([\d.]+)\s*(?:rounds|rpm|rds)/)))   return 'rof:' + parseFloat(m[1]);
+                // Linear speed with an explicit unit: keep the unit so 200 m/s ≠ 200 km/h
+                if ((m = s.match(/([\d.]+)\s*(km\/h|mph|m\/s)/)))     return 'spd:' + parseFloat(m[1]) + ':' + m[2];
+                return s; // fallback: normalised string (original exact-ish behaviour)
+            }
+
             // Draw wrong answers from equipment with a usable speed in the same category
             // AND (for km/h speeds) within the same speed bracket as the correct answer.
-            // Greedily collect unique speed values to prevent duplicate answer buttons.
-            const seenSpeeds = new Set([correctAnswer]);
+            // Greedily collect unique speed *keys* to prevent duplicate/near-duplicate buttons.
+            const seenSpeeds = new Set([speedKey(correctAnswer)]);
             const others = [];
             const speedCandidates = equipmentData
                 .filter(eq => {
@@ -2482,8 +2529,9 @@ function generateTriviaQuestion(equipment) {
                 .sort(() => 0.5 - Math.random());
             for (const eq of speedCandidates) {
                 if (others.length >= 3) break;
-                if (!seenSpeeds.has(eq.specs.speed)) {
-                    seenSpeeds.add(eq.specs.speed);
+                const sKey = speedKey(eq.specs.speed);
+                if (!seenSpeeds.has(sKey)) {
+                    seenSpeeds.add(sKey);
                     others.push(eq.specs.speed);
                 }
             }
@@ -2512,10 +2560,38 @@ function generateTriviaQuestion(equipment) {
                     .trim();
             }
 
-            // Extract the "key token" – the first comma/slash-separated chunk,
-            // which is usually the calibre or primary weapon designation.
+            // Extract a "key token" that captures the *essential identity* of an
+            // armament so visually-similar options (e.g. "5.56x45mm NATO" vs
+            // "5.56x45mm" vs "5.56×45mm NATO") collapse to the SAME key and can
+            // never both appear as answer choices.
             function keyToken(str) {
-                return normaliseArmament(str).split(/[,/]/)[0].trim();
+                const norm = normaliseArmament(str); // already lowercases and unifies ×→x
+
+                // 1. Imperial named cartridges: ".50 BMG", ".338 Lapua", ".300 Win".
+                //    (Checked first so ".50 BMG (12.7x99mm)" keys the same as ".50 BMG".)
+                //    Requires a word boundary after 2–3 digits, so metric like
+                //    "5.56x45mm" (".56x…") is NOT caught here.
+                let m = norm.match(/\.(\d{2,3})\b/);
+                if (m) return 'cal:.' + m[1];
+
+                // 2. Metric cartridge "boreXcaseMM" with NO spaces, e.g. 5.56x45mm,
+                //    7.62x51mm, 9x19mm. The no-space + trailing "mm" guard prevents
+                //    quantity prefixes like "2x 30mm" (which have a space) matching.
+                m = norm.match(/(\d+(?:\.\d+)?)x(\d+)mm/);
+                if (m) return 'cal:' + m[1] + 'x' + m[2];
+
+                // 3. Shotgun gauge, e.g. "12 gauge".
+                m = norm.match(/(\d+)\s*gauge/);
+                if (m) return 'gauge:' + m[1];
+
+                // 4. Leading large-calibre gun bore (tanks/artillery/autocannon):
+                //    "120mm…", "30mm…", "155mm…". Collapses "120mm M256" and
+                //    "120mm L/55" to one key so two 120mm options can't co-appear.
+                m = norm.match(/^(\d+(?:\.\d+)?)\s*mm\b/);
+                if (m) return 'mm:' + m[1];
+
+                // 5. Fallback: first comma/slash-separated chunk (original behaviour).
+                return norm.split(/[,/]/)[0].trim();
             }
 
             const correctKey = keyToken(correctAnswer);
@@ -2764,6 +2840,14 @@ function populateResultRecognitionFeatures(equipment) {
             // REFT Format (Helicopters)
             labels = ["R - ROTORS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
             values = [features.rotors, features.engine, features.fuselage, features.tail];
+        } else if (features.seeker || features.propulsion) {
+            // Missile Format — MUST precede WEFT because missiles also carry a 'wings' key
+            labels = ["B - BODY/AIRFRAME:", "W - WINGS/FINS:", "S - SEEKER:", "P - PROPULSION:"];
+            values = [features.body, features.wings, features.seeker, features.propulsion];
+        } else if (features.configuration || features.handguard) {
+            // Small Arms Format (rifles, SMGs, etc.)
+            labels = ["C - CONFIGURATION:", "H - HANDGUARD:", "O - OPTICS:", "M - MAGAZINE:"];
+            values = [features.configuration, features.handguard, features.optics, features.magazine];
         } else if (features.wings) {
             // WEFT Format (Fixed-Wing Aircraft)
             labels = ["W - WINGS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
@@ -3475,6 +3559,7 @@ function renderEquipmentGrid() {
                     eq.type === 'Reconnaissance Drone' ||
                     eq.type === 'Cruise Missile' ||
                     eq.type === 'Anti-Tank Missile' ||
+                    eq.type === 'Anti-Ship Missile' ||
                     eq.type === 'Air-to-Ground Missile' ||
                     eq.type === 'Intercontinental Ballistic Missile' ||
                     eq.type === 'Tactical Ballistic Missile' ||
@@ -3511,7 +3596,8 @@ function renderEquipmentGrid() {
                     eq.type === 'Small Arms' ||
                     eq.type === 'Machine Gun' ||
                     eq.type === 'Sharpshooter Rifle' ||
-                    eq.type === 'Anti-Tank Weapon';
+                    eq.type === 'Anti-Tank Weapon' ||
+                    eq.type === 'Grenade Launcher';
             }
             return eq.type === practiceState.currentCategory;
         });
@@ -3694,8 +3780,10 @@ function setupModalPageNavigation() {
         nextBtn.addEventListener('click', () => navigateModalPage(1));
     }
 
-    // Dot click navigation
-    const dots = document.querySelectorAll('.page-dot');
+    // Dot click navigation — scope to THIS modal's nav only, otherwise the
+    // results-screen .page-dot elements also get wired to goToModalPage() and
+    // their global indices (2/3) corrupt currentModalPage.
+    const dots = document.querySelectorAll('#modal-page-nav .page-dot');
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => goToModalPage(index));
     });
@@ -3747,6 +3835,7 @@ function handleModalPageScroll() {
     const pagesContainer = document.getElementById('modal-pages-container');
     if (pagesContainer) {
         const pageWidth = pagesContainer.offsetWidth;
+        if (!pageWidth) return; // modal hidden/not laid out → avoid NaN page index
         const scrollPosition = pagesContainer.scrollLeft;
         const newPage = Math.round(scrollPosition / pageWidth);
         if (newPage !== currentModalPage) {
@@ -3758,7 +3847,9 @@ function handleModalPageScroll() {
 }
 
 function updatePageIndicators() {
-    const dots = document.querySelectorAll('.page-dot');
+    // Scope to the modal's own nav so the results-screen dots aren't toggled,
+    // and so the active dot always matches currentModalPage (0/1) by local index.
+    const dots = document.querySelectorAll('#modal-page-nav .page-dot');
     const prevBtn = document.getElementById('page-nav-prev');
     const nextBtn = document.getElementById('page-nav-next');
 
@@ -3784,6 +3875,14 @@ function populateRecognitionFeatures(equipment) {
             // REFT Format (Helicopters)
             labels = ["R - ROTORS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
             values = [features.rotors, features.engine, features.fuselage, features.tail];
+        } else if (features.seeker || features.propulsion) {
+            // Missile Format — MUST precede WEFT because missiles also carry a 'wings' key
+            labels = ["B - BODY/AIRFRAME:", "W - WINGS/FINS:", "S - SEEKER:", "P - PROPULSION:"];
+            values = [features.body, features.wings, features.seeker, features.propulsion];
+        } else if (features.configuration || features.handguard) {
+            // Small Arms Format (rifles, SMGs, etc.)
+            labels = ["C - CONFIGURATION:", "H - HANDGUARD:", "O - OPTICS:", "M - MAGAZINE:"];
+            values = [features.configuration, features.handguard, features.optics, features.magazine];
         } else if (features.wings) {
             // WEFT Format (Fixed-Wing Aircraft)
             labels = ["W - WINGS:", "E - ENGINE:", "F - FUSELAGE:", "T - TAIL:"];
@@ -4593,18 +4692,31 @@ function getShareLink() {
 }
 
 function generateShareText() {
-    const modeLabel = state.isDailyMode ? '\uD83D\uDCC5 Daily Challenge' : '\uD83C\uDFAE Standard Game';
-    const hardLabel = state.isHardMode  ? '  \uD83D\uDD12 Hard Mode'     : '';
-    const header = `\uD83C\uDF96\uFE0F Defence Guesser \u2014 ${state.score.toLocaleString()} pts\n${modeLabel}${hardLabel}\n`;
+    // Mode line: Daily Challenge includes today's date; Standard Game does not.
+    let modeLine;
+    if (state.isDailyMode) {
+        const today = new Date();
+        const dateStr = today.toLocaleDateString('en-GB', {
+            day: 'numeric', month: 'long', year: 'numeric'
+        });
+        modeLine = `\uD83D\uDDD3\uFE0F Daily Challenge \u2014 ${dateStr}`;
+    } else {
+        modeLine = '\uD83C\uDFAE Standard Game';
+    }
+    const hardLine = state.isHardMode ? '\n\uD83D\uDD12 Hard Mode' : '';
+
+    const divider = '\u2501'.repeat(15);
+    const header  = `\uD83C\uDF96\uFE0F DEFENCE GUESSER\n${modeLine}${hardLine}\n${divider}\nScore: ${state.score.toLocaleString()} pts`;
+
     const rounds = state.roundResults.map((r, i) => {
-        const locEmoji  = r.locationCorrect ? '\uD83C\uDFAF' : '\uD83D\uddFA\uFE0F';
-        const idEmoji   = r.bonusCorrect    ? '\u2705' : '\u274C';
-        const locPts    = (r.locationPoints  || 0).toLocaleString();
-        const bonusPts  = (r.bonusPoints     || 0).toLocaleString();
-        return `Round ${i + 1}: ${locEmoji}${idEmoji}  (${locPts} + ${bonusPts})`;
+        const locEmoji = r.locationCorrect ? '\uD83C\uDFAF' : '\uD83D\uddFA\uFE0F';
+        const idEmoji  = r.bonusCorrect    ? '\u2705'       : '\u274C';
+        const total    = ((r.locationPoints || 0) + (r.bonusPoints || 0)).toLocaleString();
+        return `R${i + 1}: ${locEmoji}${idEmoji}  ${total}`;
     }).join('\n');
+
     const link = getShareLink();
-    return `${header}\n${rounds}\n\n\uD83D\uDD17 ${link}`;
+    return `${header}\n\n${rounds}\n\nCan you beat me? \uD83C\uDFAF\n\uD83D\uDD17 ${link}`;
 }
 
 function shareToX() {

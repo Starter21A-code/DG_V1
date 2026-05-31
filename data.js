@@ -1990,7 +1990,7 @@ window.equipmentData = [
         inService: 2019,
         users: ["Iran"],
         status: "Active",
-        imageCredit: "Photo: M. Hasan Zarifmanesh / Fars Media Corporation / CC BY 4.0"
+        imageCredit: "Photo: M. Hasan Zarifmanesh / Fars Media Corporation / CC BY 4.0 — image modified (background removed)"
     },
     {
         id: 50,
@@ -4709,6 +4709,198 @@ window.equipmentData = [
         },
         fact: "The GQL-111 is a Chinese truck-mounted scissors-type heavy mechanized bridge system designed to quickly span rivers and anti-tank ditches. A single vehicle can deploy a 15-meter bridge segment in under 10 minutes, and multiple segments can be connected for wider crossings.",
         imageCredit: "Photo: Bryan L. Castro / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 203,
+        name: "Pilatus PC-21",
+        type: "Trainer Aircraft",
+        origin: "Switzerland",
+        coords: [46.8182, 8.2275],
+        image: "assets/PC_21.jpg",
+        specs: { speed: "685 km/h (370 kn)", armament: "Optional: up to 1,150 kg on 5 hardpoints (gun pods, rockets, light bombs)", range: "1,330 km" },
+        inService: 2008,
+        users: ["Switzerland", "Singapore", "United Arab Emirates", "Qatar", "Saudi Arabia", "Australia", "Spain", "France", "Jordan", "India"],
+        status: "Active",
+        recognitionFeatures: {
+            wings: "Low-mounted, gently swept monoplane wings with distinctive downturned winglets at the tips. Clean, fighter-like planform.",
+            engine: "Single Pratt & Whitney Canada PT6A-68B turboprop driving an unmistakable 5-blade scimitar-shaped graphite propeller behind a large pointed spinner.",
+            fuselage: "Tandem stepped cockpit — the rear instructor seat is raised noticeably above the front student seat — under a large one-piece bubble canopy. Sharply pointed nose.",
+            tail: "Single swept vertical stabiliser with a small ventral fin beneath the rear fuselage; low-set tailplane."
+        },
+        fact: "Despite being a propeller aircraft, the PC-21 is so advanced it lets air forces shift a large slice of fast-jet training off expensive fighters and onto the turboprop. Its glass cockpit can simulate radar, weapons, and even mid-air refuelling on the displays, and an automatic power-management system gives it near-jet handling — it can sustain +8/-4 g and out-accelerate some early jet trainers. Switzerland, France, and the RAAF all run their entire advanced pilot pipelines on it.",
+        imageCredit: "Photo: Daniel Baumgartner / Wikimedia Commons / CC BY-SA 2.5"
+    },
+    {
+        id: 204,
+        name: "SAR 21 MMS",
+        type: "Assault Rifle",
+        origin: "Singapore",
+        coords: [1.3521, 103.8198],
+        image: "assets/SAR_21_MMS.jpg",
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "460 m" },
+        inService: 1999,
+        users: ["Singapore", "Bahrain", "Brunei"],
+        status: "Active",
+        recognitionFeatures: {
+            configuration: "Compact bullpup layout — magazine and action sit well behind the trigger/pistol grip, packing a full-length barrel into a short overall length.",
+            handguard: "Distinctive smooth, rounded one-piece polymer shell, usually black, with an integral vertical fore-grip moulded beneath the handguard.",
+            optics: "The MMS (Multi-Mission System) variant carries a full-length Picatinny top rail for modular optics, replacing the standard SAR 21's fixed integrated 1.5x scope.",
+            magazine: "Standard translucent STANAG-pattern 30-round magazine inserted at the rear, behind the pistol grip."
+        },
+        fact: "Because a bullpup puts the chamber right beside the firer's cheek, ST Kinetics built an internal Kevlar cheek-plate into the SAR 21's receiver — a safety feature designed to shield the shooter's face if a cartridge ruptures. It was Singapore's first indigenously designed service rifle, replacing the licence-built M16S1 in 1999, and the standard model was unusual for shipping with an integrated optical scope as standard rather than iron sights.",
+        imageCredit: "Photo: Mztourist / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 205,
+        name: "Naval Strike Missile (NSM)",
+        type: "Anti-Ship Missile",
+        origin: "Norway",
+        coords: [59.9139, 10.7522],
+        images: [
+            "assets/NSM.jpg",
+            "assets/NSM_Bravo.jpg"
+        ],
+        specs: { speed: "High subsonic (Mach 0.9)", armament: "125 kg HE blast-fragmentation", maximumRange: "185+ km" },
+        inService: 2012,
+        users: ["Norway", "Poland", "United States", "Malaysia", "Germany", "Romania", "Canada", "Australia"],
+        status: "Active",
+        recognitionFeatures: {
+            body: "Slender, faceted composite airframe with a chined, trapezoidal cross-section designed to minimise radar signature — a clearly stealthy shape rather than a simple tube.",
+            wings: "Pop-out mid-body wings and rear tail fins that deploy after launch; these fold flush inside the storage/launch canister.",
+            seeker: "Blunt, faceted nose housing a passive imaging infrared (IIR) seeker — it carries no emitting radar, making it hard to detect or jam.",
+            propulsion: "Turbojet sustainer for the cruise phase with a jettisonable solid-rocket booster at the tail for launch."
+        },
+        fact: "Unlike most anti-ship missiles, the NSM uses a passive imaging-infrared seeker with onboard target recognition instead of an active radar — so it emits nothing to warn or jam, and can autonomously pick a specific aim point on a chosen ship. Fully sea-skimming, it can also fly terrain-following profiles over land and weave through littoral/island clutter, throwing random evasive manoeuvres in the terminal dive. Its air-launched derivative, the Joint Strike Missile (JSM), is the only anti-ship missile designed to fit inside the F-35's internal weapons bay.",
+        imageCredits: [
+            "Photo: Peterdx / Wikimedia Commons / Public Domain",
+            "Photo: Peterdx / Wikimedia Commons / Public Domain"
+        ]
+    },
+    {
+        id: 206,
+        name: "NORA B-52 M15",
+        type: "Artillery",
+        origin: "Serbia",
+        coords: [44.7866, 20.4489],
+        images: [
+            "assets/NORA_B52.jpg",
+            "assets/NORA_B52_Bravo.jpg"
+        ],
+        specs: { speed: "90 km/h", armament: "155mm L/52 gun-howitzer", maximumRange: "41 km (54+ km rocket-assisted)" },
+        inService: 2015,
+        users: ["Serbia", "Bangladesh", "Myanmar", "Cyprus", "Kenya"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Mounted on a high-mobility 8×8 wheeled truck chassis with large off-road tyres — a wheeled gun-truck, not a tracked vehicle. Hydraulic stabiliser spades drop at the rear to brace the platform before firing.",
+            hull: "Forward boxy armoured crew cab sitting over the engine, with a long flat load bed behind carrying the fully-enclosed gun module and ammunition stowage.",
+            armament: "Very long 155mm/52-calibre ordnance with a large multi-baffle muzzle brake; in travel order the barrel is clamped high and pointing rearward over the back axles.",
+            turret: "Distinctive of the M15: a large, fully-armoured and climate-controlled automated gun module at the rear with an onboard autoloader, so the crew operates the howitzer without ever leaving cover."
+        },
+        fact: "Built by Yugoimport SDPR, the NORA B-52 series is described by Serbia as one of the most successful products of its defence industry. The M15 is its top-end fully-automated variant: an onboard autoloader and armoured rear gun module let a small crew fight entirely from under cover, and it can unlimber, fire and 'shoot-and-scoot' away in about 60 seconds to escape counter-battery fire. The 52-calibre barrel reaches roughly 41 km with extended-range rounds and over 54 km with rocket-assisted projectiles, and can fire a multiple-rounds-simultaneous-impact (MRSI) burst so several shells from one vehicle strike the target at the same moment.",
+        imageCredits: [
+            "Photo: Serbian Ministry of Defence / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Srđan Popović / Wikimedia Commons / CC BY-SA 4.0"
+        ]
+    },
+    {
+        id: 207,
+        name: "Zastava M21 C",
+        type: "Assault Rifle",
+        origin: "Serbia",
+        coords: [44.0165, 20.9114],
+        image: "assets/Zastava_M21_C.jpg",
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "500 m" },
+        inService: 2004,
+        users: ["Serbia"],
+        status: "Active",
+        recognitionFeatures: {
+            configuration: "Modernised Kalashnikov-pattern layout — long-stroke gas piston above the barrel, pistol grip, magazine ahead of the trigger. The 'C' is the compact carbine: a shortened barrel and a side-folding skeleton stock for a much smaller package than the standard M21.",
+            handguard: "Ribbed polymer fore-end over a short barrel, with a sloped AK-style gas block and front sight base, and the gas tube running above the barrel.",
+            optics: "Flat-top receiver with an integral Picatinny rail for optics (plus folding back-up iron sights) — a Western-style mounting that replaces the AK's traditional rear-sight notch.",
+            magazine: "Curved 30-round 5.56mm magazine in Zastava's own proprietary waffle-ribbed pattern; it is NOT interchangeable with STANAG/M16 magazines."
+        },
+        fact: "The Zastava M21 was Serbia's first standard-issue rifle chambered in 5.56×45mm NATO, replacing the 7.62×39mm M70 (a Yugoslav AK derivative) as part of Serbia's shift toward NATO-standard ammunition. It keeps the rugged Kalashnikov long-stroke gas-piston action but adds a flat-top optics rail and modern furniture. The 'C' carbine variant pairs a shortened barrel with a side-folding skeleton stock, making it the compact version intended for vehicle crews, paratroopers and special units.",
+        imageCredit: "Photo: Slatibarfast / Wikimedia Commons / CC BY-SA 3.0 Unported"
+    },
+    {
+        id: 208,
+        name: "Zuzana 2",
+        type: "Artillery",
+        origin: "Slovakia",
+        coords: [48.1486, 17.1077],
+        image: "assets/Zuzana_2.jpg",
+        specs: { speed: "90 km/h", armament: "155mm L/52 gun-howitzer", maximumRange: "41 km" },
+        inService: 2021,
+        users: ["Slovakia", "Ukraine"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Carried on a high-mobility Tatra 8×8 wheeled chassis with large off-road tyres and a central rear stabiliser — a wheeled gun system rather than a tracked one.",
+            hull: "Forward boxy armoured crew cab over the engine, with the large rotating turret assembly mounted on the rear of the chassis.",
+            armament: "Long 155mm/52-calibre ordnance with a muzzle brake, carried in an open external cradle that sits in the gap between the two halves of the turret rather than inside an enclosed mantlet.",
+            turret: "Unmistakable split twin-box turret — two separate armoured compartments with the gun cradle and autoloader exposed in the gap between them. This distinctive layout is the signature of the Slovak Zuzana/DANA family."
+        },
+        fact: "The Zuzana 2 is a Slovak 155mm/52-calibre NATO-standard self-propelled howitzer built by Konštrukta Defence, developed from the earlier 45-calibre Zuzana and the Soviet-era DANA. Its hallmark is the unusual split turret with the gun and autoloader mounted externally in the gap between two crew/equipment boxes. Fully automated loading lets it fire around 5–6 rounds a minute and 'shoot-and-scoot' before counter-battery fire arrives, reaching roughly 41 km with extended-range ammunition. Slovakia supplied Zuzana 2 systems to Ukraine, where they have been used in combat.",
+        imageCredit: "Photo: Pfc. Jacob Bradford / U.S. Army / Public Domain"
+    },
+    {
+        id: 209,
+        name: "VHS",
+        type: "Assault Rifle",
+        origin: "Croatia",
+        coords: [45.8150, 15.9819],
+        image: "assets/VHS_2.jpg",
+        specs: { speed: "N/A", armament: "5.56x45mm NATO", effectiveRange: "500 m" },
+        inService: 2009,
+        users: ["Croatia"],
+        status: "Active",
+        recognitionFeatures: {
+            configuration: "Compact bullpup layout — the magazine and action sit behind the trigger/pistol grip, packing a full-length barrel into a short overall length. Smooth, rounded one-piece polymer shell with clean lines, often likened to the French FAMAS.",
+            handguard: "Integral polymer fore-end moulded into the one-piece shell with a forward finger-stop, giving a clean, slab-sided profile with few external attachments.",
+            optics: "The long 'D' variant carries a raised carry-handle with an integrated optical sight built into it; the short 'K' carbine omits it for a low-profile receiver.",
+            magazine: "Standard translucent STANAG-pattern 30-round magazine — interchangeable with NATO/M16 magazines, unlike several other national service rifles."
+        },
+        fact: "The VHS is a Croatian bullpup assault rifle made by HS Produkt — the same company behind the HS2000 pistol, sold worldwide as the Springfield Armory XD. Croatia's indigenous standard service rifle, it comes in a long 'D' version with an integrated carry-handle optic and a short 'K' carbine. Its smooth, rounded polymer shell gives it a strong family resemblance to the French FAMAS, and unlike many national designs it feeds from common STANAG magazines. The improved second-generation VHS-2 later refined the design with ambidextrous controls and added rails.",
+        imageCredit: "Photo: U.S. Army Europe Images / Flickr / CC BY 2.0"
+    },
+    {
+        id: 210,
+        name: "NIMR Ajban",
+        type: "Patrol Vehicle",
+        origin: "United Arab Emirates",
+        coords: [24.4539, 54.3773],
+        image: "assets/Nimr_ajban.jpg",
+        specs: { speed: "110 km/h", armament: "7.62mm / 12.7mm machine gun (roof mount)", operationalRange: "700 km" },
+        inService: 2013,
+        users: ["United Arab Emirates", "Jordan", "Lebanon", "Algeria"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "4×4 layout on four large off-road run-flat tyres with deep tread and pronounced ground clearance; squared, angular wheel arches cut into the bodywork.",
+            hull: "Highly faceted, slab-sided monocoque protected hull — a sharply sloped, angular bonnet with a row of horizontal louvre vents, a near-vertical faceted radiator grille and flat windscreen, sitting on a blast-protected V-hull on the armoured variants.",
+            armament: "Light-vehicle armament only — a roof ring mount or remote weapon station for a pintle-mounted 7.62mm or 12.7mm machine gun; the patrol/internal-security variant is frequently fielded unarmed.",
+            turret: "No turret — a circular open roof hatch/weapon ring (or low-profile RWS) above the crew compartment rather than an enclosed gun turret."
+        },
+        fact: "The NIMR Ajban is a 4×4 light protected patrol and tactical vehicle built by NIMR Automotive, the Abu Dhabi-based vehicle arm of the UAE's EDGE Group — making it one of the few armoured vehicles in service designed and produced in the Gulf rather than the usual US/European/Russian suppliers. The Ajban 440A is the protected internal-security member of a modular family that shares a common chassis across patrol, command, ambulance and weapons-carrier roles. Built around a V-shaped hull for mine and IED protection, run-flat tyres and a roughly 7.5-tonne class GVW, it forms the backbone of UAE land forces and has been exported across the Middle East and North Africa.",
+        imageCredit: "Photo: AboJasam909 / Wikimedia Commons / CC0 1.0 Public Domain"
+    },
+    {
+        id: 211,
+        name: "Milkor MGL",
+        type: "Grenade Launcher",
+        origin: "South Africa",
+        coords: [-25.7479, 28.2293],
+        image: "assets/MGL.jpg",
+        specs: { speed: "N/A", armament: "40×46mm grenade (6-round cylinder)", effectiveRange: "375 m" },
+        inService: 1983,
+        users: ["South Africa", "United States", "United Kingdom", "India", "60+ countries"],
+        status: "Active",
+        recognitionFeatures: {
+            configuration: "Unmistakable oversized-revolver layout — a fat rotating six-shot cylinder sits between the pistol grip and a short barrel, with a folding or collapsible skeleton shoulder stock. It looks like a giant revolver rather than a rifle.",
+            handguard: "A forward pistol/fore-grip ahead of the cylinder for the support hand; there is very little conventional handguard, as the large spring-wound cylinder dominates the centre of the weapon.",
+            optics: "Almost always wears a non-magnifying reflex/red-dot sight on a top rail or arm (early models used an Armson OEG collimator), mounted high to clear the cylinder, with a ladder-type quadrant backup for indirect fire.",
+            magazine: "Feeds from a spring-driven six-round revolving cylinder rather than a box magazine — the cylinder is wound under spring tension to index each 40mm round, and is reloaded by swinging the barrel/frame open like a break-action revolver."
+        },
+        fact: "The Milkor MGL (Multiple Grenade Launcher) is a South African 40mm six-shot revolver-type grenade launcher developed by Milkor in the early 1980s and adopted by the South African Defence Force in 1983. Its spring-driven cylinder lets a single soldier put six 40mm grenades downrange in under three seconds — a huge jump in firepower over single-shot launchers like the underbarrel M203. It became one of South Africa's most successful arms exports, now used by 50+ countries; the US Marine Corps adopted a licensed, lighter version as the M32. The example pictured is a unit trialled in Sweden.",
+        imageCredit: "Photo: Armémuseum / Wikimedia Commons / CC BY 4.0"
     }
 ];
 

@@ -38,7 +38,7 @@ window.equipmentData = [
         ],
         imageCredits: [
             "Photo: Fric.matej / Wikimedia Commons / CC BY-SA 4.0",
-            "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
+            "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0 — image modified (symbols removed)"
         ],
         specs: { speed: "72 km/h", armament: "120mm L/55", operationalRange: "500 km" },
         inService: 2014,
@@ -198,7 +198,7 @@ window.equipmentData = [
         ],
         imageCredits: [
             "Photo: Staff Sgt. Matthew Foster / U.S. National Guard / Public Domain",
-            "Photo: Simta / Wikimedia Commons / CC BY-SA 3.0"
+            "Photo: Simta / Wikimedia Commons / CC BY-SA 3.0 — image modified (symbols removed)"
         ],
         specs: { speed: "70 km/h", armament: "120mm L/55", operationalRange: "450 km" },
         inService: 2014,
@@ -310,8 +310,8 @@ window.equipmentData = [
             "assets/Zulfiqar_3_bravo.jpg"
         ],
         imageCredits: [
-            "Photo: M-ATF / military.ir / CC BY-SA 3.0",
-            "Photo: M-ATF / military.ir / CC BY-SA 3.0"
+            "Photo: M-ATF / military.ir / CC BY-SA 3.0 Unported — image modified (symbols removed)",
+            "Photo: M-ATF / military.ir / CC BY-SA 3.0 Unported — image modified (symbols removed)"
         ],
         specs: { speed: "70 km/h", armament: "125mm smoothbore", operationalRange: "450 km" },
         inService: 2016,
@@ -496,7 +496,7 @@ window.equipmentData = [
             "assets/T72_Bravo.jpg"
         ],
         imageCredits: [
-            "Photo: Turkmen / Wikimedia Commons / CC BY 4.0",
+            "Photo: Turkmen / Wikimedia Commons / CC BY 4.0 — image modified (symbols removed)",
             "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0"
         ],
         specs: { speed: "60 km/h", armament: "125mm 2A46M", operationalRange: "460 km" },
@@ -736,7 +736,7 @@ window.equipmentData = [
         ],
         imageCredits: [
             "Photo: Airwolfhound / Wikimedia Commons / CC BY-SA 2.0",
-            "Photo: Master Sgt. Andy Dunaway / U.S. Air Force / Public Domain"
+            "Photo: Master Sgt. Andy Dunaway / U.S. Air Force / Public Domain — image modified (symbol removed)"
         ],
         specs: { speed: "Mach 2.25", armament: "AIM-120, AIM-9, GBU-32", combatRadius: "2,960 km" },
         inService: 2005,
@@ -895,7 +895,7 @@ window.equipmentData = [
             tail: "Large single vertical stabilizer with a dorsal spine extending to the mid-fuselage."
         },
         imageCredits: [
-            "Photo: Shimin Gu / Wikimedia Commons / GFDL 1.2",
+            "Photo: Shimin Gu / Wikimedia Commons / GFDL 1.2 — image modified (flag removed)",
             "Photo: Ibex73 / Wikimedia Commons / CC BY-SA 4.0"
         ]
     },
@@ -956,7 +956,7 @@ window.equipmentData = [
         ],
         imageCredits: [
             "Photo: LCPL John Mcgarity / U.S. Marine Corps / Public Domain",
-            "Photo: Photographer's Mate 3rd Class Jonathan Chandler / U.S. Navy / Public Domain"
+            "Photo: Photographer's Mate 3rd Class Jonathan Chandler / U.S. Navy / Public Domain — image modified (symbol removed)"
         ],
         specs: { speed: "Mach 1.8", armament: "AIM-9, AIM-120, AGM-84", combatRadius: "740 km" },
         inService: 1983,
@@ -1292,7 +1292,7 @@ window.equipmentData = [
             "assets/C130_Bravo.jpg"
         ],
         imageCredits: [
-            "Photo: Tech. Sgt. Howard Blair / U.S. Air Force / Public Domain",
+            "Photo: Tech. Sgt. Howard Blair / U.S. Air Force / Public Domain — image modified (symbols removed)",
             "Photo: MarcelX42 / Wikimedia Commons / CC BY-SA 4.0"
         ],
         specs: { speed: "592 km/h", armament: "Cargo/Troops", ferryRange: "3,800 km" },
@@ -1664,7 +1664,7 @@ window.equipmentData = [
             "assets/Tomahawk_Bravo.jpeg"
         ],
         imageCredits: [
-            "Photo: Cliff / Flickr / CC BY 2.0",
+            "Photo: Cliff / Flickr / CC BY 2.0 — image modified (symbol removed)",
             "Photo: PH1 Morris / U.S. Navy / Public Domain"
         ],
         specs: { speed: "Mach 0.75", armament: "450 kg HE", maximumRange: "1,600 km" },
@@ -1924,7 +1924,7 @@ window.equipmentData = [
             armor: "Light splinter and small arms protection for the crew cabin. The system avoids attack through high mobility rather than heavy armor.",
             trackWheels: "Eight large wheels (8x8 configuration), ensuring it can rapidly redeploy over varied terrain."
         },
-        imageCredit: "Photo: Kevin.B / Wikimedia Commons / CC BY-SA 4.0"
+        imageCredit: "Photo: Kevin.B / Wikimedia Commons / CC BY-SA 4.0 — image modified (cropped)"
     },
     {
         id: 307,
@@ -2377,7 +2377,7 @@ window.equipmentData = [
         users: ["Iran"],
         status: "Active",
         fact: "The Raad-2 is an Iranian domestically-produced 155mm self-propelled howitzer based on a heavily modified chassis. It features the HM44 howitzer with a 30km firing range and represents Iran's efforts to develop indigenous artillery systems despite international sanctions.",
-        imageCredit: "Photo: Sonia Sevilla / Wikimedia Commons / CC0 1.0"
+        imageCredit: "Photo: Sonia Sevilla / Wikimedia Commons / CC0 1.0 — image modified (symbols removed)"
     },
     {
         id: 119,
@@ -2432,7 +2432,7 @@ window.equipmentData = [
         users: ["United States"],
         status: "Active",
         fact: "The MQ-1C Gray Eagle can stay airborne for up to 25 hours and is powered by a heavy-fuel engine that can burn diesel or jet fuel.",
-        imageCredit: "Photo Courtesy of U.S. Army / Public Domain"
+        imageCredit: "Photo Courtesy of U.S. Army / Public Domain — image modified (symbols removed)"
     },
     {
         id: 66,
@@ -2635,7 +2635,7 @@ window.equipmentData = [
         inService: 2004,
         users: ["Iran"],
         status: "Active",
-        imageCredit: "Photo: Hossein Falemi / Fars Media Corporation / CC BY 4.0"
+        imageCredit: "Photo: Hossein Falemi / Fars Media Corporation / CC BY 4.0 — image modified (symbols removed)"
     },
     {
         id: 79,
@@ -2943,7 +2943,7 @@ window.equipmentData = [
         users: ["Germany", "Netherlands", "Lithuania", "Australia", "United Kingdom", "Qatar", "Slovenia"],
         status: "Active",
         fact: "The Boxer features a modular design with interchangeable mission modules, allowing it to serve in roles from infantry transport to battlefield ambulance, reconnaissance, or command vehicle.",
-        imageCredit: "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
+        imageCredit: "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0 — image modified (symbols removed)"
     },
     {
         id: 154,
@@ -3039,7 +3039,7 @@ window.equipmentData = [
             turret: "Usually a protected gunner station or RCWS."
         },
         imageCredits: [
-            "Photo: U.S. Army Reserve Spc. Jason Palacios / Public Domain",
+            "Photo: U.S. Army Reserve Spc. Jason Palacios / Public Domain — image modified (flag removed)",
             "Photo: ROK Ministry of National Defense / Wikimedia Commons / KOGL Type 1"
         ]
     },
@@ -3075,7 +3075,7 @@ window.equipmentData = [
         users: ["Germany"],
         status: "Active",
         fact: "The Puma is one of the world's best-protected IFVs, featuring modular armor that can be up-armored for combat or removed for air transport.",
-        imageCredit: "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
+        imageCredit: "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0 — image modified (symbols removed)"
     },
     {
         id: 143,
@@ -3233,7 +3233,7 @@ window.equipmentData = [
             turret: "Mizrak-30 unmanned remote-controlled turret, heavily integrated with optics and often flanked by L-UMTAS ATGM launchers."
         },
         fact: "Named after the mythical winged horse 'Tulpar' from Central Asian and Turkic mythology, this IFV was developed parallel to the Turkish Altay main battle tank. It is heavily focused on modularity, allowing the same chassis to be adapted into a light tank, APC, or air defense vehicle.",
-        imageCredit: "Photo: Swadim / Wikimedia Commons / CC BY-SA 4.0"
+        imageCredit: "Photo: Swadim / Wikimedia Commons / CC BY-SA 4.0 — image modified (flag removed)"
     },
 
     // Iranian APCs
@@ -3581,7 +3581,7 @@ window.equipmentData = [
         ],
         imageCredits: [
             "Photo: Alexxx1979 / Wikimedia Commons / CC BY-SA 3.0",
-            "Photo: Michael Sender / jetphotos.net / CC BY-SA 3.0"
+            "Photo: Michael Sender / jetphotos.net / CC BY-SA 3.0 — image modified (symbols removed)"
         ],
         specs: { speed: "800 km/h", armament: "None (AWACS)", ferryRange: "5000 km" },
         inService: 1984,
@@ -4426,8 +4426,8 @@ window.equipmentData = [
         },
         fact: "The Flakpanzer Gepard is an all-weather, self-propelled anti-aircraft gun based on the Leopard 1 tank chassis. Designed during the Cold War to protect armored columns from attack helicopters and low-flying jets, it gained massive modern prominence in Ukraine where it proved highly effective at shooting down loitering munitions and cruise missiles using minimal and inexpensive 35mm ammunition.",
         imageCredits: [
-            "Photo: Hans-Hermann Bühling / CC BY-SA 3.0",
-            "Photo: Hans-Hermann Bühling / CC BY-SA 2.0"
+            "Photo: Hans-Hermann Bühling / CC BY-SA 3.0 Unported — image modified (symbol removed)",
+            "Photo: Hans-Hermann Bühling / CC BY-SA 2.0 Germany — image modified (symbol removed)"
         ]
     },
     {
@@ -4590,7 +4590,7 @@ window.equipmentData = [
         },
         fact: "Nicknamed the 'Chinese Aegis', the Type 052D is a modern, mass-produced multi-role surface combatant. It's the first Chinese destroyer to adopt a universal, canister-based Vertical Launch System (VLS) instead of dedicated launch systems for different missile types.",
         imageCredits: [
-            { author: "Bestalex", source: "Wikimedia Commons", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Type-052D_destroyer_Jiaozuo_%E7%84%A6%E4%BD%9C_(163)_during_a_visit_to_Saint_Petersburg,_Russia_(July_26,_2024).jpg" },
+            { author: "Bestalex", source: "Wikimedia Commons", license: "CC BY-SA 4.0", modified: "image modified (flags removed)", url: "https://commons.wikimedia.org/wiki/File:Type-052D_destroyer_Jiaozuo_%E7%84%A6%E4%BD%9C_(163)_during_a_visit_to_Saint_Petersburg,_Russia_(July_26,_2024).jpg" },
             { author: "日本防衛省・統合幕僚監部", source: "Wikimedia Commons", license: "CC BY 4.0", url: "https://www.mod.go.jp/js/Press/press2019/press_pdf/p20190726_03.pdf" }
         ]
     },
@@ -4688,7 +4688,7 @@ window.equipmentData = [
             turret: "Sloped, angular turret with thermal sights, laser warning receivers, and smoke grenade dischargers."
         },
         fact: "The LAV VI (LAV 6) is a heavily upgraded version of the LAV III, developed in response to Canadian military experiences in Afghanistan. Its Double-V Hull (DVH) provides significantly improved protection against improvised explosive devices (IEDs) and landmines.",
-        imageCredit: "Photo: Amqui / Wikimedia Commons / CC BY-SA 4.0"
+        imageCredit: "Photo: Amqui / Wikimedia Commons / CC BY-SA 4.0 — image modified (number plate blurred)"
     },
     {
         id: 202,
@@ -4728,7 +4728,7 @@ window.equipmentData = [
             tail: "Single swept vertical stabiliser with a small ventral fin beneath the rear fuselage; low-set tailplane."
         },
         fact: "Despite being a propeller aircraft, the PC-21 is so advanced it lets air forces shift a large slice of fast-jet training off expensive fighters and onto the turboprop. Its glass cockpit can simulate radar, weapons, and even mid-air refuelling on the displays, and an automatic power-management system gives it near-jet handling — it can sustain +8/-4 g and out-accelerate some early jet trainers. Switzerland, France, and the RAAF all run their entire advanced pilot pipelines on it.",
-        imageCredit: "Photo: Daniel Baumgartner / Wikimedia Commons / CC BY-SA 2.5"
+        imageCredit: "Photo: Daniel Baumgartner / Wikimedia Commons / CC BY-SA 2.5 — image modified (background removed)"
     },
     {
         id: 204,
@@ -4900,7 +4900,7 @@ window.equipmentData = [
             magazine: "Feeds from a spring-driven six-round revolving cylinder rather than a box magazine — the cylinder is wound under spring tension to index each 40mm round, and is reloaded by swinging the barrel/frame open like a break-action revolver."
         },
         fact: "The Milkor MGL (Multiple Grenade Launcher) is a South African 40mm six-shot revolver-type grenade launcher developed by Milkor in the early 1980s and adopted by the South African Defence Force in 1983. Its spring-driven cylinder lets a single soldier put six 40mm grenades downrange in under three seconds — a huge jump in firepower over single-shot launchers like the underbarrel M203. It became one of South Africa's most successful arms exports, now used by 50+ countries; the US Marine Corps adopted a licensed, lighter version as the M32. The example pictured is a unit trialled in Sweden.",
-        imageCredit: "Photo: Armémuseum / Wikimedia Commons / CC BY 4.0"
+        imageCredit: "Photo: Armémuseum / Wikimedia Commons / CC BY 4.0 — image modified (cropped)"
     }
 ];
 

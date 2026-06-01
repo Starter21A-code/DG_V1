@@ -2799,7 +2799,7 @@ function showEquipmentSummary() {
             creditElement.textContent = creditData;
         } else {
             // Handle object format: { author, source, license, url }
-            const creditText = `Photo: ${creditData.author} / ${creditData.source} / ${creditData.license}`;
+            const creditText = `Photo: ${creditData.author} / ${creditData.source} / ${creditData.license}${creditData.modified ? ' — ' + creditData.modified : ''}`;
             if (creditData.url) {
                 creditElement.innerHTML = `<a href="${creditData.url}" target="_blank" rel="noopener">${creditText}</a>`;
             } else {
@@ -2861,6 +2861,16 @@ function populateResultRecognitionFeatures(equipment) {
             labels = ["W - WHEELS:", "H - HULL:", "A - ARMAMENT:", "T - TURRET:"];
             values = [features.wheels, features.hull, features.armament, features.turret];
         }
+
+        // Set the recognition-panel heading to match the equipment class
+        let recogTitle = 'VEHICLE RECOGNITION FEATURES';
+        if (features.configuration || features.handguard) {
+            recogTitle = 'WEAPON RECOGNITION FEATURES';
+        } else if (features.seeker || features.propulsion) {
+            recogTitle = 'MISSILE RECOGNITION FEATURES';
+        }
+        const resultTitleEl = document.getElementById('result-recognition-title');
+        if (resultTitleEl) resultTitleEl.textContent = recogTitle;
 
         // Populate fields dynamically (SMASH has 5, all others have 4)
         const item5 = document.getElementById('result-recognition-item-5');
@@ -3897,6 +3907,16 @@ function populateRecognitionFeatures(equipment) {
             values = [features.wheels, features.hull, features.armament, features.turret];
         }
 
+        // Set the recognition-panel heading to match the equipment class
+        let recogTitle = 'VEHICLE RECOGNITION FEATURES';
+        if (features.configuration || features.handguard) {
+            recogTitle = 'WEAPON RECOGNITION FEATURES';
+        } else if (features.seeker || features.propulsion) {
+            recogTitle = 'MISSILE RECOGNITION FEATURES';
+        }
+        const modalTitleEl = document.getElementById('modal-recognition-title');
+        if (modalTitleEl) modalTitleEl.textContent = recogTitle;
+
         // Populate fields dynamically (SMASH has 5, all others have 4)
         const item5 = document.getElementById('recognition-item-5');
         for (let i = 0; i < labels.length; i++) {
@@ -3943,7 +3963,7 @@ function updateImageCredit(equipment, imageIndex) {
         } else {
             // Handle object format: { author, source, license, url }
             const credit = creditText;
-            const text = `Photo: ${credit.author} / ${credit.source} / ${credit.license}`;
+            const text = `Photo: ${credit.author} / ${credit.source} / ${credit.license}${credit.modified ? ' — ' + credit.modified : ''}`;
             if (credit.url) {
                 modalCredit.innerHTML = `<a href="${credit.url}" target="_blank" rel="noopener">${text}</a>`;
             } else {

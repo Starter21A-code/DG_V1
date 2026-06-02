@@ -3775,7 +3775,7 @@ window.equipmentData = [
         ],
         imageCredits: [
             "Photo: Philippine Air Force / Public Domain",
-            "Photo: Johnson Barros / Flickr / CC BY 2.0"
+            "Photo: Johnson Barros / Flickr / CC BY 2.0 — image modified (cropped, symbols removed)"
         ],
         specs: { speed: "593 km/h", armament: "2x 12.7mm MGs, 1,550kg ordnance", combatRadius: "1330 km" },
         inService: 2003,
@@ -4901,6 +4901,194 @@ window.equipmentData = [
         },
         fact: "The Milkor MGL (Multiple Grenade Launcher) is a South African 40mm six-shot revolver-type grenade launcher developed by Milkor in the early 1980s and adopted by the South African Defence Force in 1983. Its spring-driven cylinder lets a single soldier put six 40mm grenades downrange in under three seconds — a huge jump in firepower over single-shot launchers like the underbarrel M203. It became one of South Africa's most successful arms exports, now used by 50+ countries; the US Marine Corps adopted a licensed, lighter version as the M32. The example pictured is a unit trialled in Sweden.",
         imageCredit: "Photo: Armémuseum / Wikimedia Commons / CC BY 4.0 — image modified (cropped)"
+    },
+    {
+        id: 212,
+        name: "Piorun",
+        type: "Air Defense System",
+        origin: "Poland",
+        coords: [52.2297, 21.0122],
+        image: "assets/Piorun.jpg",
+        specs: { speed: "~660 m/s (Mach 1.9)", armament: "Single IR/UV-guided missile (~1.8 kg warhead)", engagementRange: "6.5 km" },
+        inService: 2019,
+        users: ["Poland", "Ukraine", "Norway", "Estonia"],
+        status: "Active",
+        recognitionFeatures: {
+            design: "Shoulder-fired MANPADS in the classic Soviet-derived layout it grew out of — a slim launch tube carried on the shoulder with a separate gripstock/trigger unit clipped underneath. Often seen fitted to a lightweight pintle or the twin-rail 'Poprad'/tripod mounts.",
+            tube: "Plain cylindrical launch/transport tube, noticeably more slender than the Stinger's, with a forward end cap. Houses a single missile using a dual-band infrared/ultraviolet seeker and a proximity fuze, which lets it kill small targets like drones and cruise missiles.",
+            sight: "Simple optical day sight on the side of the tube, plus a clip-on thermal/night-sight module and an IFF unit on the gripstock for 24-hour engagement."
+        },
+        fact: "The Piorun ('Thunderbolt') is a Polish man-portable air-defence system built by Mesko, part of the state PGZ group. It is an extensively upgraded descendant of the Grom — itself derived from the Soviet 9K38 Igla — but with a far more sensitive dual-band IR/UV seeker, a proximity fuze and better resistance to flares and jamming, letting it engage low, fast and small targets including UAVs and cruise missiles out to about 6.5 km. It earned a fearsome reputation in Ukraine, where Polish-supplied Piorun teams downed large numbers of aircraft, helicopters, drones and missiles, making it one of the most sought-after MANPADS of the war.",
+        imageCredit: "Photo: Forsvarsmateriell / Norwegian Defence Materiel Agency / Public Domain — image modified (background removed)"
+    },
+    {
+        id: 213,
+        name: "Rooikat",
+        type: "Tank Destroyer",
+        origin: "South Africa",
+        coords: [-25.7461, 28.1881],
+        images: [
+            "assets/Rooikat.jpg",
+            "assets/Rooikat_Bravo.jpg"
+        ],
+        specs: { speed: "120 km/h", armament: "76mm GT-4 high-velocity gun", operationalRange: "1,000 km" },
+        inService: 1990,
+        users: ["South Africa"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "8×8 — four axles of large road wheels giving an unusually long wheelbase for an armoured car. All-wheel drive on big run-flat tyres, no tracks. The lengthy 8-wheel layout is a key recognition point versus 6×6 gun-cars like the AMX-10 RC or Centauro.",
+            hull: "Long, low, sharply sloped welded-steel hull with a pointed glacis and the engine mounted at the rear. Tall ride height and generous ground clearance for the African bush; driver sits front-centre.",
+            armament: "Long 76mm GT-4 high-velocity gun (derived from the OTO Melara 76mm naval gun) with a slim barrel and fume extractor — noticeably thinner and longer than a 105mm tube. Coaxial 7.62mm machine gun, with a second 7.62mm on the roof.",
+            turret: "Large, flat, angular three-man turret set well back over the rear axles, carrying stowage baskets and banks of smoke-grenade launchers on the cheeks."
+        },
+        fact: "The Rooikat ('red cat', Afrikaans for the caracal lynx) is a South African 8×8 armoured reconnaissance and fire-support vehicle built by Reumech OMC (later Denel Land Systems) and in service since 1990. Born from the South African Army's long-range bush-war experience, it pairs exceptional strategic mobility — around 1,000 km of range and 120 km/h on roads — with a hard-hitting 76mm high-velocity gun adapted from a naval mount, able to knock out light armour and even main battle tanks at long range. Despite its size it is fast and agile, and it remains one of the heaviest-armed wheeled reconnaissance vehicles ever fielded.",
+        imageCredits: [
+            "Photo: Bob Adams / Flickr / CC BY-SA 2.0",
+            "Photo: Bob Adams / Flickr / CC BY-SA 2.0 — image modified (cropped)"
+        ]
+    },
+    {
+        id: 214,
+        name: "Pizarro",
+        type: "IFV",
+        origin: "Spain / Austria",
+        coords: [40.4168, -3.7038],
+        images: [
+            "assets/Pizarro.jpg",
+            "assets/Pizarro_Bravo.jpg"
+        ],
+        specs: { speed: "70 km/h", armament: "30mm Mauser MK 30-2 autocannon", operationalRange: "500 km" },
+        inService: 1998,
+        users: ["Spain", "Austria"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Fully tracked — seven road wheels per side with the drive sprocket at the front, idler at the rear and return rollers along the top. No road wheels: a key recognition point versus wheeled IFVs like the VBCI or Boxer.",
+            hull: "Compact, angular welded hull with a sharply sloped glacis. Driver sits front-left alongside the front-mounted powerpack, with a power-operated rear ramp for the eight-man dismount squad.",
+            armament: "Two-man turret mounting a 30mm Mauser MK 30-2 autocannon with a slim exposed barrel, plus a coaxial 7.62mm machine gun. Lighter-calibre than a tank gun — a clear IFV cue.",
+            turret: "Low, faceted two-man turret set centrally on the hull with banks of smoke-grenade launchers on the sides; the Spanish Pizarro and Austrian Ulan share this same turret on the ASCOD chassis."
+        },
+        fact: "The Pizarro is the Spanish Army's tracked infantry fighting vehicle, the national variant of the ASCOD platform — an acronym for 'Austrian-Spanish Cooperation Development', the joint programme between Steyr-Daimler-Puch and Santa Bárbara Sistemas. Spain calls it the Pizarro (after the conquistador Francisco Pizarro) while Austria fields the near-identical version as the 'Ulan'. The ASCOD design proved so sound that it was later chosen as the basis for the British Army's Ajax reconnaissance vehicle, giving this Austro-Spanish hull a third major national user.",
+        imageCredits: [
+            "Photo: Outisnn / Wikimedia Commons / Free use with attribution — image modified (cropped)",
+            "Photo: Oscar in the middle / Flickr / CC BY-SA 2.0 — image modified (symbols removed)"
+        ]
+    },
+    {
+        id: 215,
+        name: "ASTROS II",
+        type: "Artillery",
+        origin: "Brazil",
+        coords: [-23.1896, -45.8841],
+        images: [
+            "assets/ASTROS2.jpg",
+            "assets/ASTROS2_Bravo.jpg"
+        ],
+        specs: { speed: "90 km/h", armament: "Modular 127–300mm rockets / AV-TM 300 missile", maximumRange: "Up to 300 km" },
+        inService: 1983,
+        users: ["Brazil", "Saudi Arabia", "Malaysia", "Indonesia", "Qatar", "Angola"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Carried on a high-mobility 6×6 all-terrain truck chassis (the Avibras/Tectran AV-VBT) with large off-road tyres — a wheeled rocket system, not a tracked one.",
+            hull: "Forward armoured truck cab over the engine with the rotating launcher module on the rear bed. Each launcher is paired with an identical-looking 6×6 ammunition-resupply vehicle that reloads it.",
+            armament: "Modular boxed launcher that swaps complete rocket pods by calibre — e.g. 32 × 127mm (SS-30), 16 × 180mm (SS-40) or 4 × 300mm (SS-80) rockets, up to the AV-TM 300 cruise missile. The interchangeable pod is the signature feature.",
+            turret: "No turret — the boxed launcher pod itself traverses and elevates to fire, after which the empty container is lifted off and exchanged for a fresh one."
+        },
+        fact: "ASTROS II (the name stands for 'Artillery SAturation ROcket System') is a Brazilian wheeled multiple-rocket-launcher family built by Avibras and in service since the 1980s. Its defining trick is modularity: the same 6×6 launcher fires completely different munitions just by swapping the boxed rocket pod — from 32 small 127mm rockets up to four heavy 300mm rockets, or even the AV-TM 300 cruise missile, which turns it into a long-range precision strike system reaching about 300 km. It became one of Brazil's biggest defence exports, with Saudi Arabia a major customer that fielded it during the 1991 Gulf War.",
+        imageCredits: [
+            "Photo: André Gustavo Stumpf / Flickr / CC BY 2.0 — image modified (cropped)",
+            "Photo: TECH. SGT. H. H. Deffner / U.S. DoD / Public Domain — image modified (cropped)"
+        ]
+    },
+    {
+        id: 216,
+        name: "M249 SAW",
+        type: "Small Arms",
+        origin: "United States",
+        coords: [39.8283, -98.5795],
+        images: [
+            "assets/M249_Para_ACOG.jpg",
+            "assets/M249_Para_ACOG_Bravo.jpg"
+        ],
+        specs: { speed: "N/A", armament: "5.56×45mm NATO", effectiveRange: "800 m" },
+        inService: 1984,
+        users: ["United States", "Australia", "Canada", "United Kingdom", "75+ countries"],
+        status: "Active",
+        recognitionFeatures: {
+            configuration: "Belt-fed light machine gun / squad automatic weapon with a long fluted quick-change barrel, a carry handle on top, a folding bipod under the muzzle and an open-bolt gas-piston action. This Para variant has a shortened barrel and a sliding tubular collapsible stock.",
+            handguard: "Short, stubby handguard; directly beneath the receiver hangs the boxy ammunition feed (a hard plastic box or soft pouch holding the linked belt), with the folding bipod legs clamped to the gas tube ahead of it.",
+            optics: "Flat-top feed-tray cover with a Picatinny rail — here mounting an ACOG (Advanced Combat Optical Gunsight) 4× scope, with back-up iron sights including a folding rear aperture.",
+            magazine: "Normally fed from a 200-round disintegrating M27-linked belt carried in a box or soft pouch under the receiver; uniquely it can also accept STANAG rifle magazines through a secondary magazine well as an emergency backup."
+        },
+        fact: "The M249 SAW (Squad Automatic Weapon) is the US-built version of the Belgian FN Minimi, manufactured by FN's American plant and adopted in 1984 to give every infantry fire-team its own belt-fed automatic. Its party trick is dual feed — it normally runs a 200-round linked belt but can also load standard STANAG rifle magazines if the belt runs dry. As the Minimi it has become the Western world's standard light machine gun, serving with 75+ countries. The variant shown is the compact M249 Para with a short barrel, collapsible stock and an ACOG optic.",
+        imageCredits: [
+            "Photo Courtesy of PEO Soldier / U.S. Army / Public Domain",
+            "Photo Courtesy of PEO Soldier / U.S. Army / Public Domain"
+        ]
+    },
+    {
+        id: 217,
+        name: "Carl-Gustaf M4",
+        type: "Anti-Tank Weapon",
+        origin: "Sweden",
+        coords: [59.3268, 14.5241],
+        image: "assets/CarlGustaf_M4.jpg",
+        specs: { speed: "N/A", armament: "84mm recoilless (HEAT, HE, smoke, illum)", effectiveRange: "500 m (1,000+ m guided)" },
+        inService: 2014,
+        users: ["Sweden", "United States", "United Kingdom", "India", "Estonia", "40+ countries"],
+        status: "Active",
+        recognitionFeatures: {
+            design: "Reloadable shoulder-fired 84mm recoilless rifle — a long tube fired off the shoulder, with a hinged breech at the rear that swings open to load a fresh round, so the launcher is reused (unlike single-shot rockets such as the AT4 or NLAW). This M4 is the lightweight carbon-fibre-jacketed version with a folding forward grip and an adjustable shoulder rest.",
+            tube: "Rifled 84mm barrel ending in a flared venturi/blast cone at the rear that vents propellant gas backwards to cancel recoil — producing the weapon's characteristic dangerous rearward backblast. A carry handle and forward pistol grip sit along the tube.",
+            sight: "Folding iron sights as backup, but normally fitted with an optical or programmable red-dot/intelligent fire-control sight; the M4 adds an electronic round counter and compatibility with smart, time-fuzed airburst ammunition."
+        },
+        fact: "The Carl-Gustaf is a Swedish 84mm man-portable recoilless rifle made by Saab Bofors Dynamics and named after the Carl Gustaf state arms factory where it was first built. In service since 1948, it is one of the longest-serving weapons in the world, kept relevant by a huge family of interchangeable rounds — anti-tank HEAT, high-explosive, anti-structure, smoke, illumination and guided/airburst projectiles. Unlike single-shot disposable launchers, it is reloadable, which is why armies keep buying it; over 40 countries field it, and the US Army adopted it as the M3 MAAWS. The M4 shown here is the 2014 lightweight update, dropping to around 7 kg with a carbon-fibre barrel jacket and digital sight compatibility.",
+        imageCredit: "Photo: Kaitsevägi (Estonian Defence Forces) / Wikimedia Commons / CC0 1.0 Public Domain"
+    },
+    {
+        id: 218,
+        name: "Galil ACE",
+        type: "Assault Rifle",
+        origin: "Israel",
+        coords: [32.0853, 34.7818],
+        image: "assets/Galil_Ace_N.jpg",
+        specs: { speed: "N/A", armament: "5.56×45mm NATO", effectiveRange: "500 m" },
+        inService: 2008,
+        users: ["Israel", "Colombia", "Chile", "Vietnam", "25+ countries"],
+        status: "Active",
+        recognitionFeatures: {
+            configuration: "Modernised Kalashnikov-pattern rifle — long-stroke gas piston and rotating bolt inherited from the original IMI Galil (itself an AK derivative), but rebuilt with polymer furniture, ambidextrous controls and a side-folding skeleton stock. Cleaner, more angular lines than a classic AK.",
+            handguard: "Polymer handguard wrapping a low-profile gas block, fitted with Picatinny (and, on the newer 'N' models, M-LOK) accessory rails along the sides and bottom.",
+            optics: "Full-length flat-top Picatinny rail running along the top of the receiver and over the gas tube for optics, with fold-down back-up iron sights — a Western-style mounting that replaces the AK's rear notch.",
+            magazine: "Curved 30-round box magazine; the 5.56mm ACE feeds from STANAG/M16-compatible magazines, while the 7.62×39mm versions keep AK-pattern mags."
+        },
+        fact: "The Galil ACE is Israel Weapon Industries' modernised version of the IMI Galil — the rifle Israel developed after the 1973 Yom Kippur War when it wanted a weapon with Kalashnikov reliability in the desert. The ACE keeps that rugged long-stroke AK action but adds polymer furniture, full-length rails and far better ergonomics, in 5.56mm, 7.62×39mm and 7.62×51mm models. It became a major export success: Colombia (which license-produces it through Indumil), Chile and Vietnam all adopted the ACE as their standard service rifle, spreading an Israeli design across South America and South-East Asia.",
+        imageCredit: "Photo: IWI – Israel Weapon Industries / Wikimedia Commons / CC BY 4.0"
+    },
+    {
+        id: 219,
+        name: "M10 Booker",
+        type: "Light Tank",
+        origin: "United States",
+        coords: [39.8283, -98.5795],
+        images: [
+            "assets/M10.jpg",
+            "assets/M10_Bravo.jpg"
+        ],
+        specs: { speed: "64 km/h", armament: "105mm M35 rifled gun", operationalRange: "560 km" },
+        inService: 2024,
+        users: ["United States"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Fully tracked on six road wheels per side, on a chassis derived from General Dynamics' Griffin/ASCOD lineage with the drive sprocket at the front. Tracked, not wheeled — unlike fire-support gun-trucks such as the Centauro or AMX-10 RC.",
+            hull: "Compact, angular welded hull, noticeably lower and lighter than an Abrams at around 40 tonnes, with the driver front-left. Looks like a scaled-down main battle tank rather than a full MBT.",
+            armament: "105mm M35 rifled gun (a low-recoil development of the classic M68) with a fume extractor, plus a coaxial 7.62mm and a roof-mounted .50-cal M2. Smaller-calibre than the 120mm guns of modern MBTs.",
+            turret: "Conventional manned three-man turret with a rear bustle rack, sized for direct infantry fire support rather than tank-versus-tank duelling."
+        },
+        fact: "The M10 Booker is the US Army's new tracked armoured fire-support vehicle, built by General Dynamics under the 'Mobile Protected Firepower' programme and entering service in 2024. Although widely called a light tank, the Army insists it is an 'assault gun' meant to give infantry brigade combat teams their own protected direct-fire punch rather than to fight other tanks. It rides on a hull from GDLS's Griffin II demonstrator — part of the same ASCOD family as the Spanish Pizarro and British Ajax — and is named after two soldiers: Private Robert D. Booker, a Medal of Honor recipient killed in WWII, and Staff Sergeant Stevon A. Booker, killed during the 2003 advance on Baghdad.",
+        imageCredits: [
+            "Photo: U.S. Army / Public Domain",
+            "Photo: Bernardo Fuller / U.S. Army (DVIDS) / Public Domain — image modified (cropped, symbols removed)"
+        ]
     }
 ];
 

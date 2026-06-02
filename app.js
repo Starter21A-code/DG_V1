@@ -2856,6 +2856,10 @@ function populateResultRecognitionFeatures(equipment) {
             // SMASH Format (Naval Vessels)
             labels = ["S - SIZE/SHAPE:", "M - MASTS:", "A - ARMAMENT:", "S - SUPERSTRUCTURE:", "H - HULL:"];
             values = [features.size, features.masts, features.armament, features.superstructure, features.hull];
+        } else if (features.design || features.tube) {
+            // MANPADS Format (shoulder-fired air-defence missiles)
+            labels = ["D - DESIGN:", "T - TUBE:", "S - SIGHT:"];
+            values = [features.design, features.tube, features.sight];
         } else {
             // WHAT Format (Tanks/Vehicles) - Default
             labels = ["W - WHEELS:", "H - HULL:", "A - ARMAMENT:", "T - TURRET:"];
@@ -2868,11 +2872,14 @@ function populateResultRecognitionFeatures(equipment) {
             recogTitle = 'WEAPON RECOGNITION FEATURES';
         } else if (features.seeker || features.propulsion) {
             recogTitle = 'MISSILE RECOGNITION FEATURES';
+        } else if (features.design || features.tube) {
+            recogTitle = 'WEAPON RECOGNITION FEATURES';
         }
         const resultTitleEl = document.getElementById('result-recognition-title');
         if (resultTitleEl) resultTitleEl.textContent = recogTitle;
 
-        // Populate fields dynamically (SMASH has 5, all others have 4)
+        // Populate fields dynamically (SMASH has 5, MANPADS has 3, others have 4)
+        const item4 = document.getElementById('result-recognition-item-4');
         const item5 = document.getElementById('result-recognition-item-5');
         for (let i = 0; i < labels.length; i++) {
             const labelElement = document.getElementById(`result-recognition-label-${i + 1}`);
@@ -2882,7 +2889,8 @@ function populateResultRecognitionFeatures(equipment) {
                 valueElement.textContent = values[i] || '-';
             }
         }
-        // Show/hide the 5th slot based on format
+        // Show/hide the 4th and 5th slots based on how many fields this format has
+        if (item4) item4.style.display = labels.length >= 4 ? 'flex' : 'none';
         if (item5) item5.style.display = labels.length >= 5 ? 'flex' : 'none';
 
         // Show navigation and recognition page
@@ -3553,6 +3561,10 @@ function renderEquipmentGrid() {
     // Filter by category
     if (practiceState.currentCategory !== 'all') {
         filteredEquipment = filteredEquipment.filter(eq => {
+            // Tanks category — main battle tanks plus light tanks
+            if (practiceState.currentCategory === 'Main Battle Tank') {
+                return eq.type === 'Main Battle Tank' || eq.type === 'Light Tank';
+            }
             // APC/IFV category — all armoured personnel carriers and infantry fighting vehicles
             if (practiceState.currentCategory === 'APC/IFV') {
                 return eq.type === 'APC' || eq.type === 'IFV';
@@ -3568,7 +3580,6 @@ function renderEquipmentGrid() {
                 return eq.type === 'Combat Drone' ||
                     eq.type === 'Reconnaissance Drone' ||
                     eq.type === 'Cruise Missile' ||
-                    eq.type === 'Anti-Tank Missile' ||
                     eq.type === 'Anti-Ship Missile' ||
                     eq.type === 'Air-to-Ground Missile' ||
                     eq.type === 'Intercontinental Ballistic Missile' ||
@@ -3607,6 +3618,7 @@ function renderEquipmentGrid() {
                     eq.type === 'Machine Gun' ||
                     eq.type === 'Sharpshooter Rifle' ||
                     eq.type === 'Anti-Tank Weapon' ||
+                    eq.type === 'Anti-Tank Missile' ||
                     eq.type === 'Grenade Launcher';
             }
             return eq.type === practiceState.currentCategory;
@@ -3901,6 +3913,10 @@ function populateRecognitionFeatures(equipment) {
             // SMASH Format (Naval Vessels)
             labels = ["S - SIZE/SHAPE:", "M - MASTS:", "A - ARMAMENT:", "S - SUPERSTRUCTURE:", "H - HULL:"];
             values = [features.size, features.masts, features.armament, features.superstructure, features.hull];
+        } else if (features.design || features.tube) {
+            // MANPADS Format (shoulder-fired air-defence missiles)
+            labels = ["D - DESIGN:", "T - TUBE:", "S - SIGHT:"];
+            values = [features.design, features.tube, features.sight];
         } else {
             // WHAT Format (Tanks/Vehicles) - Default
             labels = ["W - WHEELS:", "H - HULL:", "A - ARMAMENT:", "T - TURRET:"];
@@ -3913,17 +3929,21 @@ function populateRecognitionFeatures(equipment) {
             recogTitle = 'WEAPON RECOGNITION FEATURES';
         } else if (features.seeker || features.propulsion) {
             recogTitle = 'MISSILE RECOGNITION FEATURES';
+        } else if (features.design || features.tube) {
+            recogTitle = 'WEAPON RECOGNITION FEATURES';
         }
         const modalTitleEl = document.getElementById('modal-recognition-title');
         if (modalTitleEl) modalTitleEl.textContent = recogTitle;
 
-        // Populate fields dynamically (SMASH has 5, all others have 4)
+        // Populate fields dynamically (SMASH has 5, MANPADS has 3, others have 4)
+        const item4 = document.getElementById('recognition-item-4');
         const item5 = document.getElementById('recognition-item-5');
         for (let i = 0; i < labels.length; i++) {
             document.getElementById(`recognition-label-${i + 1}`).textContent = labels[i];
             document.getElementById(`recognition-value-${i + 1}`).textContent = values[i] || '-';
         }
-        // Show/hide the 5th slot based on format
+        // Show/hide the 4th and 5th slots based on how many fields this format has
+        if (item4) item4.style.display = labels.length >= 4 ? 'flex' : 'none';
         if (item5) item5.style.display = labels.length >= 5 ? 'flex' : 'none';
 
         // Show navigation and recognition page

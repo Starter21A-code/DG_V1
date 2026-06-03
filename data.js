@@ -1912,7 +1912,10 @@ window.equipmentData = [
         type: "Air Defense System",
         origin: "France/Italy",
         coords: [48.8566, 2.3522],
-        image: "assets/SampT.jpg",
+        images: [
+            "assets/SampT.jpg",
+            "assets/SAMPT_Bravo.jpg"
+        ],
         specs: { speed: "Mach 4.5 (Interceptor)", armament: "8x Aster 30 missiles", engagementRange: "120 km" },
         inService: 2011,
         users: ["France", "Italy", "Singapore", "Ukraine"],
@@ -1924,7 +1927,10 @@ window.equipmentData = [
             armor: "Light splinter and small arms protection for the crew cabin. The system avoids attack through high mobility rather than heavy armor.",
             trackWheels: "Eight large wheels (8x8 configuration), ensuring it can rapidly redeploy over varied terrain."
         },
-        imageCredit: "Photo: Kevin.B / Wikimedia Commons / CC BY-SA 4.0 — image modified (cropped)"
+        imageCredits: [
+            "Photo: Kevin.B / Wikimedia Commons / CC BY-SA 4.0 — image modified (cropped)",
+            "Photo: Kevin.B / Wikimedia Commons / CC BY-SA 4.0 — image modified (cropped)"
+        ]
     },
     {
         id: 307,
@@ -5077,18 +5083,181 @@ window.equipmentData = [
         specs: { speed: "64 km/h", armament: "105mm M35 rifled gun", operationalRange: "560 km" },
         inService: 2024,
         users: ["United States"],
-        status: "Active",
+        status: "Cancelled",
         recognitionFeatures: {
             wheels: "Fully tracked on six road wheels per side, on a chassis derived from General Dynamics' Griffin/ASCOD lineage with the drive sprocket at the front. Tracked, not wheeled — unlike fire-support gun-trucks such as the Centauro or AMX-10 RC.",
             hull: "Compact, angular welded hull, noticeably lower and lighter than an Abrams at around 40 tonnes, with the driver front-left. Looks like a scaled-down main battle tank rather than a full MBT.",
             armament: "105mm M35 rifled gun (a low-recoil development of the classic M68) with a fume extractor, plus a coaxial 7.62mm and a roof-mounted .50-cal M2. Smaller-calibre than the 120mm guns of modern MBTs.",
             turret: "Conventional manned three-man turret with a rear bustle rack, sized for direct infantry fire support rather than tank-versus-tank duelling."
         },
-        fact: "The M10 Booker is the US Army's new tracked armoured fire-support vehicle, built by General Dynamics under the 'Mobile Protected Firepower' programme and entering service in 2024. Although widely called a light tank, the Army insists it is an 'assault gun' meant to give infantry brigade combat teams their own protected direct-fire punch rather than to fight other tanks. It rides on a hull from GDLS's Griffin II demonstrator — part of the same ASCOD family as the Spanish Pizarro and British Ajax — and is named after two soldiers: Private Robert D. Booker, a Medal of Honor recipient killed in WWII, and Staff Sergeant Stevon A. Booker, killed during the 2003 advance on Baghdad.",
+        fact: "The M10 Booker is the US Army's new tracked armoured fire-support vehicle, built by General Dynamics under the 'Mobile Protected Firepower' programme and entering service in 2024. Although widely called a light tank, the Army insists it is an 'assault gun' meant to give infantry brigade combat teams their own protected direct-fire punch rather than to fight other tanks. It rides on a hull from GDLS's Griffin II demonstrator — part of the same ASCOD family as the Spanish Pizarro and British Ajax — and is named after two soldiers: Private Robert D. Booker, a Medal of Honor recipient killed in WWII, and Staff Sergeant Stevon A. Booker, killed during the 2003 advance on Baghdad. In a striking reversal, the US Army cancelled the programme in 2025 — issuing a 'termination for convenience' after only about two dozen vehicles had been built. The supposedly light tank had ballooned to roughly 40 tonnes, too heavy to airdrop or move easily by air as originally intended, leaving it without a clear role barely a year after entering service.",
         imageCredits: [
             "Photo: U.S. Army / Public Domain",
             "Photo: Bernardo Fuller / U.S. Army (DVIDS) / Public Domain — image modified (cropped, symbols removed)"
         ]
+    },
+    {
+        id: 220,
+        name: "T-80B",
+        type: "Main Battle Tank",
+        origin: "Russia",
+        coords: [59.9343, 30.3351],
+        images: [
+            "assets/T80B.jpg",
+            "assets/T80B_Bravo.jpg"
+        ],
+        specs: { speed: "70 km/h", armament: "125mm 2A46 smoothbore", operationalRange: "335 km" },
+        inService: 1978,
+        users: ["Russia", "Ukraine", "Belarus", "Cyprus"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Six road wheels per side on torsion-bar suspension with the drive sprocket at the rear. The flat, dished road wheels and the rubber side-skirts hiding the upper track run are the quickest way to tell a T-80 apart from the externally similar T-72 and T-64.",
+            hull: "Low, flat hull from the T-64 lineage with a sharply sloped glacis, often clad in brick-type Kontakt-1 explosive reactive armour on the B variant. Driver sits front-centre.",
+            armament: "125mm 2A46 smoothbore gun fed by a carousel autoloader, so the crew is just three with no loader. The B variant added the ability to fire the 9K112 Kobra (AT-8 Songster) guided missile through the barrel; an infrared searchlight sits to the right of the gun.",
+            turret: "Rounded cast turret almost identical to the T-64/T-72 family — the real giveaway is the large gas-turbine exhaust grille at the rear of the hull rather than a diesel's. Stowage and a snorkel are usually strapped to the turret rear."
+        },
+        fact: "The T-80 was the first tank in the world to enter service powered solely by a gas-turbine engine, giving it sports-car acceleration and earning it the nickname the 'flying tank'. The T-80B of 1978 was a major upgrade with thicker composite armour, a new fire-control system and the ability to launch the Kobra guided missile from its main gun. That turbine made it blisteringly fast but extremely thirsty — a thirst that, together with heavy losses during the disastrous 1995 assault on Grozny, gave it a mixed reputation. Designed at the Kirov plant in Leningrad (now St Petersburg), it remains in service with Russia, Ukraine and Belarus, and has been used by both sides in the war in Ukraine.",
+        imageCredits: [
+            "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0 — image modified (cropped, symbols removed)",
+            "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0 — image modified (cropped)"
+        ]
+    },
+    {
+        id: 221,
+        name: "FN P90",
+        type: "Submachine Gun",
+        origin: "Belgium",
+        coords: [50.6641, 5.6366],
+        images: [
+            "assets/FN_P90.jpg",
+            "assets/FN_P90_Bravo.jpg"
+        ],
+        specs: { speed: "N/A", armament: "5.7×28mm", effectiveRange: "200 m" },
+        inService: 1991,
+        users: ["Belgium", "United States", "France", "Saudi Arabia", "40+ countries"],
+        status: "Active",
+        recognitionFeatures: {
+            configuration: "Compact bullpup personal-defence weapon with a smooth, futuristic one-piece polymer shell and a fully ambidextrous layout. The trigger sits well forward with the action behind it, and spent cases eject straight down through the grip — giving it an unmistakable sci-fi silhouette.",
+            handguard: "No separate handguard — a front finger-guard and thumbhole grip are moulded directly into the continuous polymer body, with a lower hand-stop to keep the support hand clear of the muzzle.",
+            optics: "Integral low-magnification reflex sight built into the top housing, with moulded back-up iron sights alongside (later 'TR' versions swap in a Picatinny top rail for other optics).",
+            magazine: "Unmistakable horizontal 50-round magazine lying flat along the top of the weapon — the cartridges sit sideways and are rotated 90° by a feed ramp as they chamber. The translucent polymer body lets you see the rounds, making it one of the most instantly recognisable magazines in firearms."
+        },
+        fact: "The FN P90 is a Belgian personal-defence weapon introduced by FN Herstal around 1990 and built around an all-new cartridge, the small high-velocity 5.7×28mm, designed to defeat body armour at close range. Its hallmarks are a fully ambidextrous bullpup layout and a unique 50-round magazine that lies flat on top and twists each round 90° as it feeds. Adopted by special-forces, police and protection units in some 40 countries — including the US Secret Service — its futuristic looks also made it a screen icon (famously the weapon of 'Stargate SG-1'). The 5.7mm round it pioneered later spawned the matching FN Five-seveN pistol.",
+        imageCredits: [
+            "Photo: FN Herstal / Flickr / CC BY-SA 2.0 — image modified (cropped)",
+            "Photo: FN Herstal / Flickr / CC BY-SA 2.0 — image modified (cropped)"
+        ]
+    },
+    {
+        id: 222,
+        name: "Lynx KF41",
+        type: "IFV",
+        origin: "Germany / Hungary",
+        coords: [51.1657, 10.4515],
+        images: [
+            "assets/KF41_LYNX.jpg",
+            "assets/KF41_LYNX_Bravo.jpg"
+        ],
+        specs: { speed: "70 km/h", armament: "35mm Wotan autocannon / Spike LR2", operationalRange: "500 km" },
+        inService: 2022,
+        users: ["Hungary"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Fully tracked — six road wheels per side with the drive sprocket at the front. A large, modern tracked IFV (up to ~50 tonnes), not a wheeled vehicle.",
+            hull: "Tall, boxy, sharply angular welded hull with flat slab sides and a big rear power-operated ramp for the dismount squad. Built around a modular 'KF41' drive module so the rear pod can be reconfigured between IFV, command, recovery and other roles.",
+            armament: "Rheinmetall Lance 2.0 turret mounting a 35mm Wotan autocannon and a coaxial 7.62mm, with twin Spike LR2 anti-tank missile launchers on the turret side; add-on armour and the StrikeShield active protection system are often fitted.",
+            turret: "Distinctive faceted two-man Lance turret set well back on the hull, with prominent boxy ATGM launchers and sensor clusters and an angular, stealthy shape."
+        },
+        fact: "The Lynx KF41 is a tracked infantry fighting vehicle designed by the German firm Rheinmetall and first shown in 2018. Its defining idea is modularity: a common tracked 'drive module' carries a swappable rear mission pod, so the same base vehicle can be built as an IFV, command post, recovery or repair vehicle. Hungary became its launch customer with an order for 218, and — crucially for its nationality — set up local production at a new Rheinmetall plant in Zalaegerszeg, making the Lynx a joint German-designed, Hungarian-built vehicle. Armed with a 35mm autocannon and Spike missiles, it was also a finalist in the US Army's competition to replace the Bradley.",
+        imageCredits: [
+            "Photo: Rheinmetall Defence / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Lukas1325 / Wikimedia Commons / CC BY-SA 4.0"
+        ]
+    },
+    {
+        id: 223,
+        name: "F-15E Strike Eagle",
+        type: "Fighter Aircraft",
+        origin: "United States",
+        coords: [38.8814, -77.0365],
+        images: [
+            "assets/F15E.jpg",
+            "assets/F15E_Bravo.jpg"
+        ],
+        specs: { speed: "Mach 2.5", armament: "20mm M61, AIM-120, JDAM/Paveway", combatRadius: "1,270 km" },
+        inService: 1989,
+        users: ["United States", "Israel", "Saudi Arabia", "South Korea", "Singapore", "Qatar"],
+        status: "Active",
+        recognitionFeatures: {
+            wings: "Large, high-mounted cropped-delta wings shared across the whole F-15 family — almost identical in planform to the F-15J. The giveaway is below the wing roots: the F-15E carries bulky Conformal Fuel Tanks (CFTs) moulded onto the fuselage sides, which the air-superiority F-15J does NOT have.",
+            engine: "Two afterburning turbofans (F100, or F110 on some export jets) with twin square intakes and twin nozzles — the same twin-engine layout as the F-15J, so the engines are not the way to tell them apart.",
+            fuselage: "The clearest difference from the single-seat F-15J: a longer tandem TWO-seat cockpit, adding a back-seat Weapon Systems Officer who runs the air-to-ground sensors and weapons. As a dual-role strike jet it usually wears dark 'Strike Eagle' grey and carries targeting pods and bombs that the pure-interceptor F-15J never does.",
+            tail: "Twin canted vertical stabilizers and twin ventral fins, identical in shape to the F-15J — so the tail is NOT a useful discriminator. To separate them, look for the F-15E's second seat and conformal tanks."
+        },
+        fact: "The F-15E Strike Eagle is the dual-role derivative of the F-15 air-superiority fighter, turning the world's premier dogfighter into a jet that can also haul a heavy bomb load deep into defended airspace and still win an air battle on the way home. Where Japan's F-15J is a licence-built single-seat pure interceptor based on the F-15C, the E adds a second crew member (a Weapon Systems Officer), a strengthened airframe and conformal fuel tanks for the strike mission. In US service since 1989, the Strike Eagle has been widely exported in specialised forms — Israel's F-15I Ra'am, Saudi Arabia's F-15SA, South Korea's F-15K Slam Eagle, Singapore's F-15SG and Qatar's F-15QA — making it one of the most capable and enduring strike fighters in the world.",
+        imageCredits: [
+            "Photo: SSgt Thomas Trower / U.S. Air Force / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Gerry Metzler / Flickr / CC BY-SA 2.0"
+        ]
+    },
+    {
+        id: 224,
+        name: "PSRL-1",
+        type: "Anti-Tank Weapon",
+        origin: "United States",
+        coords: [38.8814, -77.0365],
+        image: "assets/PSRL1.jpg",
+        specs: { speed: "N/A", armament: "40mm RPG-7 rockets (HEAT/HE/thermobaric)", effectiveRange: "330 m" },
+        inService: 2017,
+        users: ["Ukraine", "United States"],
+        status: "Active",
+        recognitionFeatures: {
+            design: "Shoulder-fired, reusable rocket launcher that is a near-direct copy of the Soviet RPG-7 — same long tube with a central pistol grip and trigger, a conical blast venturi at the rear and an over-calibre warhead protruding from the front. The American PSRL-1 is told apart from a genuine RPG-7 by its modern furniture: polymer grips, a Picatinny-railed handguard and rail-mounted optics in place of the RPG-7's bare wooden/steel heat shield and leaf sight.",
+            tube: "Standard 40mm-bore launch tube with the characteristic mid-tube flare and rear venturi. It fires the full family of RPG-7 rounds (HEAT, tandem-HEAT, thermobaric, fragmentation), so its ammunition is interchangeable with the millions of RPG-7 rockets already in circulation worldwide.",
+            sight: "Usually carries a modern optic on a Picatinny rail — a red-dot or magnified sight — plus back-up irons, rather than the RPG-7's classic flip-up leaf sight or PGO-7 optical sight."
+        },
+        fact: "The PSRL-1 (Precision Shoulder-fired Rocket Launcher, also designated GS-777) is an American-made modernised clone of the Soviet RPG-7, built by AirTronic USA. It deliberately keeps full compatibility with cheap, ubiquitous RPG-7 ammunition while upgrading the launcher itself with stronger steel, Picatinny rails and modern optics for better accuracy and service life. It is best known for being supplied to Ukraine, where National Guard and army units field it — a curious case of the United States manufacturing and exporting its own improved version of one of the most iconic Russian weapons ever made.",
+        imageCredit: "Photo: National Guard of Ukraine / ngu.gov.ua / CC BY 4.0 — image modified (background weapon removed)"
+    },
+    {
+        id: 225,
+        name: "9K720 Iskander (SS-26 Stone)",
+        type: "Tactical Ballistic Missile",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/9K720_Iskander_SS26_Stone.jpg",
+            "assets/9K720_Iskander_SS26_Stone_Bravo.jpg"
+        ],
+        specs: { speed: "Mach 6-7", armament: "Conventional or nuclear warhead (~700 kg)", maximumRange: "500 km" },
+        inService: 2006,
+        users: ["Russia", "Armenia", "Algeria", "Belarus"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Carried on a large 8×8 MZKT/BAZ heavy off-road wheeled chassis (the 9P78-1 transporter-erector-launcher) with eight big tyres — a wheeled mobile launcher, not a tracked one.",
+            hull: "Forward armoured crew cab over the engine and a long flat rear deck carrying two missiles under a hinged cover. The matching reload vehicle looks almost identical but mounts a crane instead of launch rails.",
+            armament: "Two 9M723 quasi-ballistic missiles side by side. They manoeuvre throughout flight and throw evasive moves in the terminal dive, making them far harder to intercept than a classic ballistic missile.",
+            turret: "No turret — the signature feature is the hydraulic erector arm that raises the two missiles to near-vertical at the rear of the vehicle just before launch; in travel they lie flat under the deck cover."
+        },
+        fact: "The 9K720 Iskander (NATO: SS-26 Stone) is a Russian road-mobile short-range ballistic missile system that replaced the older Tochka and Oka. Each 8×8 launcher carries two 9M723 missiles that fly a depressed, manoeuvring trajectory rather than a simple arc and pull evasive moves on the way down, making them notoriously hard to shoot down. Range is around 500 km (capped by the now-defunct INF treaty) with conventional or nuclear warheads, while the Iskander-K variant swaps the ballistic missiles for cruise missiles. It has been used extensively for deep strikes in the war in Ukraine, and in 2023 Russia stationed nuclear-capable Iskanders in Belarus.",
+        imageCredits: [
+            "Photo: Dmitriy Fomin / Flickr / CC BY 2.0",
+            "Photo: Russian Ministry of Defence / Mil.ru / CC BY 4.0 — image modified (cropped)"
+        ]
+    },
+    {
+        id: 226,
+        name: "Walther PDP Compact",
+        type: "Pistol",
+        origin: "Germany",
+        coords: [48.4011, 9.9876],
+        image: "assets/Walther_PDP.jpg",
+        specs: { speed: "N/A", armament: "9x19mm Parabellum", effectiveRange: "50 m" },
+        inService: 2021,
+        users: ["Germany", "United States"],
+        status: "Active",
+        fact: "The Walther PDP (Performance Duty Pistol) is a German striker-fired 9mm pistol launched by Carl Walther in 2021 as the successor to the popular PPQ. Its headline feature is that it is optics-ready straight from the factory — the slide is milled for a direct-mount micro red-dot under a cover plate — at a time when red-dot duty pistols were becoming the new standard. It also brought Walther's aggressive 'SuperTerrain' slide serrations, a refined Performance Duty Trigger and a deeply sculpted grip. Sold in Full-Size, Compact and subcompact forms, the Compact 4-inch shown here mates a shorter grip with a 4-inch barrel, and the line has become a strong seller on the US commercial and law-enforcement market.",
+        imageCredit: "Photo: Fdik / Wikimedia Commons / CC0 1.0 Public Domain — image modified (background removed)"
     }
 ];
 

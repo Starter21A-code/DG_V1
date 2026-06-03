@@ -618,21 +618,24 @@ body {
 
 /* Game Options Modal */
 .game-options-content {
-    max-width: 340px;
+    max-width: 420px;
+    padding: 1.5rem;
+    max-height: 92vh;
+    overflow-y: auto;
 }
 
 .game-options-info {
     color: var(--text-secondary);
     font-size: 0.9rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.85rem;
     margin-top: 0.25rem;
 }
 
 .game-options-filters {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
+    gap: 0.6rem;
+    margin-bottom: 0;
 }
 
 .filter-group.compact {
@@ -692,8 +695,126 @@ body {
 
 .game-options-buttons .btn.primary {
     width: 100%;
-    padding: 0.9rem 2rem;
-    font-size: 1.1rem;
+    padding: 0.7rem 2rem;
+    font-size: 1rem;
+}
+
+.game-options-buttons .btn.primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(0.6);
+}
+
+/* Equipment-type accordion header */
+.game-type-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.game-type-header:hover {
+    border-color: var(--accent-color);
+}
+
+.game-type-summary {
+    flex: 1;
+    text-align: left;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.game-type-chevron {
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.game-type-header.open .game-type-chevron {
+    transform: rotate(180deg);
+}
+
+/* Collapsible body */
+.game-type-body {
+    overflow: hidden;
+    max-height: 600px;
+    transition: max-height 0.25s ease, opacity 0.2s ease, margin 0.25s ease;
+    margin-top: 0.5rem;
+    opacity: 1;
+}
+
+.game-type-body.collapsed {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+}
+
+.game-type-actions {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.type-chip-action {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    font-family: var(--font-main);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.type-chip-action:hover {
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+}
+
+.game-type-chips {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem;
+}
+
+.type-chip {
+    width: 100%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    font-family: var(--font-main);
+    font-size: 0.78rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.type-chip:hover {
+    border-color: var(--accent-color);
+}
+
+.type-chip.active {
+    background: rgba(0, 255, 136, 0.15);
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+}
+
+.type-chip:not(.active) {
+    opacity: 0.5;
+    text-decoration: line-through;
 }
 
 /* Leaderboard Modal */
@@ -1689,14 +1810,15 @@ body {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
-    padding: 0.75rem 1.5rem;
-    padding-top: calc(0.75rem + env(safe-area-inset-top, 0px));
-    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    padding: 0.5rem 1.5rem;
+    padding-top: calc(0.5rem + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
     height: 100%;
-    justify-content: center;
+    justify-content: safe center;
+    overflow-y: auto;
 }
 
 .debrief-header {
@@ -1720,7 +1842,7 @@ body {
 .debrief-content {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 /* Score Summary */
@@ -1729,13 +1851,13 @@ body {
     backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
-    padding: 1.25rem 1.5rem;
+    padding: 0.85rem 1.5rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .final-score-display {
@@ -1914,8 +2036,8 @@ body {
     font-size: 0.85rem;
     font-style: italic;
     color: var(--text-secondary);
-    line-height: 1.4;
-    margin-bottom: 0.25rem;
+    line-height: 1.35;
+    margin-bottom: 0.15rem;
 }
 
 .rating-quote .quote-author {
@@ -1939,7 +2061,7 @@ body {
     width: 80%;
     height: 1px;
     background: var(--glass-border);
-    margin: 0.25rem 0;
+    margin: 0.1rem 0;
 }
 
 .stat-item {
@@ -4081,8 +4203,8 @@ body {
 
 /* Hard Mode Toggle in Game Options */
 .hard-mode-toggle {
-    margin: 1.5rem 0;
-    padding: 1rem;
+    margin: 0.85rem 0;
+    padding: 0.6rem 1rem;
     background: rgba(255, 107, 107, 0.1);
     border: 1px solid rgba(255, 107, 107, 0.3);
     border-radius: 12px;
@@ -4145,7 +4267,7 @@ body {
 }
 
 .hard-mode-info {
-    margin: 0.5rem 0 0 0;
+    margin: 0.3rem 0 0 0;
     font-size: 0.75rem;
     color: var(--text-secondary);
     letter-spacing: 0.5px;

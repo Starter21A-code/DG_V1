@@ -117,13 +117,18 @@
                         </select>
                     </div>
                     <div class="filter-group compact">
-                        <label for="game-type-filter">Equipment Type:</label>
-                        <select id="game-type-filter" class="game-filter-select">
-                            <option value="all">All Types</option>
-                            <option value="air">Air</option>
-                            <option value="land">Land</option>
-                            <option value="sea">Sea</option>
-                        </select>
+                        <label for="game-type-toggle">Equipment:</label>
+                        <button type="button" id="game-type-toggle" class="game-type-header" aria-expanded="false">
+                            <span id="game-type-summary" class="game-type-summary">All</span>
+                            <svg class="game-type-chevron" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path fill="#00ff88" d="M6 8L1 3h10z"/></svg>
+                        </button>
+                        <div id="game-type-body" class="game-type-body collapsed">
+                            <div class="game-type-actions">
+                                <button type="button" id="game-types-all" class="type-chip-action">All</button>
+                                <button type="button" id="game-types-none" class="type-chip-action">None</button>
+                            </div>
+                            <div id="game-type-chips" class="game-type-chips"></div>
+                        </div>
                     </div>
                 </div>
 

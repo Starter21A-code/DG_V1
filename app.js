@@ -1747,19 +1747,141 @@ const EUROPEAN_COUNTRIES = [
 ];
 
 // Game options modal state
+// Equipment-type categories shared by the practice hub and the game-options filter.
+// Each game-mode category key maps to one or more raw equipment `type` values.
+const GAME_CATEGORIES = [
+    { key: 'Main Battle Tank', label: 'Tanks' },
+    { key: 'APC/IFV', label: 'APC/IFV' },
+    { key: 'Light Vehicles', label: 'Light Vehicles' },
+    { key: 'Fighter Aircraft', label: 'Aircraft' },
+    { key: 'Naval Vessel', label: 'Naval' },
+    { key: 'Air Defense System', label: 'Air Defense' },
+    { key: 'Artillery', label: 'Artillery' },
+    { key: 'Drones & Missiles', label: 'Drones & Missiles' },
+    { key: 'Small Arms', label: 'Small Arms' },
+    { key: 'Support Vehicles', label: 'Support' }
+];
+
+// Single source of truth for "does this equipment belong to this category?".
+// Used by both the practice-hub category buttons and the game-options chips.
+function equipmentMatchesCategory(eq, category) {
+    if (!eq || !eq.type) return false;
+    switch (category) {
+        case 'Main Battle Tank':
+            return eq.type === 'Main Battle Tank' || eq.type === 'Light Tank';
+        case 'APC/IFV':
+            return eq.type === 'APC' || eq.type === 'IFV';
+        case 'Light Vehicles':
+            return eq.type === 'Light Utility Vehicle' ||
+                eq.type === 'MRAP Vehicle' ||
+                eq.type === 'Patrol Vehicle';
+        case 'Drones & Missiles':
+            return eq.type === 'Combat Drone' ||
+                eq.type === 'Reconnaissance Drone' ||
+                eq.type === 'Cruise Missile' ||
+                eq.type === 'Anti-Ship Missile' ||
+                eq.type === 'Air-to-Ground Missile' ||
+                eq.type === 'Intercontinental Ballistic Missile' ||
+                eq.type === 'Tactical Ballistic Missile' ||
+                eq.type === 'Loitering Munition';
+        case 'Support Vehicles':
+            return eq.type === 'Electronic Warfare System' ||
+                eq.type === 'Command and Communication Vehicle' ||
+                eq.type === 'Armoured Vehicle Launched Bridge' ||
+                eq.type === 'Wheeled Vehicle-Launched Bridge' ||
+                eq.type === 'Mine-Clearing Vehicle' ||
+                eq.type === 'Minelayer' ||
+                eq.type === 'Multi-Purpose Tracked Vehicle' ||
+                eq.type === 'Combat Engineer Vehicle' ||
+                eq.type === 'Tank Support Vehicle' ||
+                eq.type === 'Tank Destroyer';
+        case 'Fighter Aircraft':
+            return eq.type.includes('Aircraft') ||
+                eq.type.includes('Helicopter') ||
+                eq.type === 'Transport Tiltrotor' ||
+                eq.type === 'Gunship' ||
+                eq.type === 'Strategic Bomber';
+        case 'Small Arms':
+            return eq.type === 'Assault Rifle' ||
+                eq.type === 'Sniper Rifle' ||
+                eq.type === 'Pistol' ||
+                eq.type === 'Combat Shotgun' ||
+                eq.type === 'Submachine Gun' ||
+                eq.type === 'Small Arms' ||
+                eq.type === 'Machine Gun' ||
+                eq.type === 'Sharpshooter Rifle' ||
+                eq.type === 'Anti-Tank Weapon' ||
+                eq.type === 'Anti-Tank Missile' ||
+                eq.type === 'Grenade Launcher';
+        default:
+            // Naval Vessel, Air Defense System, Artillery — exact-match categories
+            return eq.type === category;
+    }
+}
+
 let gameFilters = {
     origin: 'all',
-    type: 'all'
+    categories: GAME_CATEGORIES.map(c => c.key)
 };
 
 function showGameOptionsModal() {
     const modal = document.getElementById('game-options-modal');
-    // Reset filters to default
+    // Reset filters to default (all countries, all equipment-type categories on)
     document.getElementById('game-origin-filter').value = 'all';
-    document.getElementById('game-type-filter').value = 'all';
     gameFilters.origin = 'all';
-    gameFilters.type = 'all';
+    gameFilters.categories = GAME_CATEGORIES.map(c => c.key);
+    renderGameTypeChips();
+    updateGameTypeState();
+
+    // Reset the equipment accordion to collapsed
+    const body = document.getElementById('game-type-body');
+    if (body) body.classList.add('collapsed');
+    const toggle = document.getElementById('game-type-toggle');
+    if (toggle) {
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+    }
+
     modal.classList.remove('hidden');
+}
+
+// Render the equipment-type chips (all enabled by default)
+function renderGameTypeChips() {
+    const container = document.getElementById('game-type-chips');
+    if (!container) return;
+    container.innerHTML = GAME_CATEGORIES.map(c =>
+        `<button type="button" class="type-chip active" data-category="${c.key}">${c.label}</button>`
+    ).join('');
+}
+
+// Read which category chips are currently enabled
+function getSelectedGameCategories() {
+    return [...document.querySelectorAll('#game-type-chips .type-chip.active')]
+        .map(chip => chip.dataset.category);
+}
+
+// Recompute selection -> live match count -> summary line -> BEGIN enabled/disabled
+function updateGameTypeState() {
+    const selected = getSelectedGameCategories();
+    gameFilters.categories = selected;
+
+    const origin = document.getElementById('game-origin-filter').value;
+    const count = getFilteredEquipment({ origin, categories: selected }).length;
+    const total = GAME_CATEGORIES.length;
+
+    // Collapsed-header summary, e.g. "All (256 matches)" / "207 matches" / "None"
+    const summaryEl = document.getElementById('game-type-summary');
+    if (summaryEl) {
+        if (selected.length === 0) {
+            summaryEl.textContent = 'None';
+        } else {
+            const matchText = `${count} match${count === 1 ? '' : 'es'}`;
+            summaryEl.textContent = selected.length === total ? `All (${matchText})` : matchText;
+        }
+    }
+
+    const beginBtn = document.getElementById('game-begin-btn');
+    if (beginBtn) beginBtn.disabled = count === 0;
 }
 
 function hideGameOptionsModal() {
@@ -1770,16 +1892,53 @@ function setupGameOptionsModal() {
     // Begin button - start game with filters
     document.getElementById('game-begin-btn').addEventListener('click', () => {
         gameFilters.origin = document.getElementById('game-origin-filter').value;
-        gameFilters.type = document.getElementById('game-type-filter').value;
+        gameFilters.categories = getSelectedGameCategories();
+
+        // Guard against an empty pool (BEGIN should be disabled, but double-check)
+        if (gameFilters.categories.length === 0) return;
 
         // Check Hard Mode toggle
         const hardModeToggle = document.getElementById('hard-mode-toggle');
         state.isHardMode = hardModeToggle ? hardModeToggle.checked : false;
-        console.log('DEBUG: Hard Mode toggle checked:', hardModeToggle?.checked, 'state.isHardMode:', state.isHardMode);
 
         hideGameOptionsModal();
         startGame(false, gameFilters);
     });
+
+    // Equipment-type accordion expand/collapse
+    const typeToggle = document.getElementById('game-type-toggle');
+    if (typeToggle) {
+        typeToggle.addEventListener('click', () => {
+            const body = document.getElementById('game-type-body');
+            const collapsed = body.classList.toggle('collapsed');
+            typeToggle.classList.toggle('open', !collapsed);
+            typeToggle.setAttribute('aria-expanded', String(!collapsed));
+        });
+    }
+
+    // Equipment-type chips (event delegation so re-rendering keeps the handler)
+    const chipContainer = document.getElementById('game-type-chips');
+    if (chipContainer) {
+        chipContainer.addEventListener('click', (e) => {
+            const chip = e.target.closest('.type-chip');
+            if (!chip) return;
+            chip.classList.toggle('active');
+            updateGameTypeState();
+        });
+    }
+
+    // All / None quick toggles
+    document.getElementById('game-types-all').addEventListener('click', () => {
+        document.querySelectorAll('#game-type-chips .type-chip').forEach(c => c.classList.add('active'));
+        updateGameTypeState();
+    });
+    document.getElementById('game-types-none').addEventListener('click', () => {
+        document.querySelectorAll('#game-type-chips .type-chip').forEach(c => c.classList.remove('active'));
+        updateGameTypeState();
+    });
+
+    // Recompute the live match count when the country filter changes
+    document.getElementById('game-origin-filter').addEventListener('change', updateGameTypeState);
 
     // Cancel button - go back
     document.getElementById('game-options-cancel-btn').addEventListener('click', hideGameOptionsModal);
@@ -1832,34 +1991,13 @@ function getFilteredEquipment(filters) {
         }
     }
 
-    // Filter by type
-    if (filters.type !== 'all') {
-        if (filters.type === 'air') {
-            filtered = filtered.filter(eq =>
-                eq && eq.type && (
-                    eq.type.includes('Aircraft') ||
-                    eq.type.includes('Helicopter') ||
-                    eq.type.includes('Bomber') ||
-                    eq.type.includes('Gunship') ||
-                    eq.type.includes('Tiltrotor')
-                )
-            );
-        } else if (filters.type === 'sea') {
-            filtered = filtered.filter(eq =>
-                eq && eq.type === 'Naval Vessel'
-            );
-        } else if (filters.type === 'land') {
-            filtered = filtered.filter(eq =>
-                eq && eq.type && (
-                    !eq.type.includes('Aircraft') &&
-                    !eq.type.includes('Helicopter') &&
-                    !eq.type.includes('Bomber') &&
-                    !eq.type.includes('Gunship') &&
-                    !eq.type.includes('Tiltrotor') &&
-                    eq.type !== 'Naval Vessel'
-                )
-            );
-        }
+    // Filter by selected equipment-type categories.
+    // An item is kept if it matches ANY selected category. Because the 10
+    // categories fully partition every equipment type, "all selected" == everything.
+    // (If categories is omitted entirely, skip this filter for backward compatibility.)
+    if (Array.isArray(filters.categories)) {
+        const cats = filters.categories;
+        filtered = filtered.filter(eq => cats.some(cat => equipmentMatchesCategory(eq, cat)));
     }
 
     return filtered;
@@ -3558,71 +3696,11 @@ function setActiveCategory(activeBtn, category) {
 function renderEquipmentGrid() {
     let filteredEquipment = equipmentData;
 
-    // Filter by category
+    // Filter by category (shared logic with the game-options chips)
     if (practiceState.currentCategory !== 'all') {
-        filteredEquipment = filteredEquipment.filter(eq => {
-            // Tanks category — main battle tanks plus light tanks
-            if (practiceState.currentCategory === 'Main Battle Tank') {
-                return eq.type === 'Main Battle Tank' || eq.type === 'Light Tank';
-            }
-            // APC/IFV category — all armoured personnel carriers and infantry fighting vehicles
-            if (practiceState.currentCategory === 'APC/IFV') {
-                return eq.type === 'APC' || eq.type === 'IFV';
-            }
-            // Light Vehicles category
-            if (practiceState.currentCategory === 'Light Vehicles') {
-                return eq.type === 'Light Utility Vehicle' ||
-                    eq.type === 'MRAP Vehicle' ||
-                    eq.type === 'Patrol Vehicle';
-            }
-            // Drones & Missiles category
-            if (practiceState.currentCategory === 'Drones & Missiles') {
-                return eq.type === 'Combat Drone' ||
-                    eq.type === 'Reconnaissance Drone' ||
-                    eq.type === 'Cruise Missile' ||
-                    eq.type === 'Anti-Ship Missile' ||
-                    eq.type === 'Air-to-Ground Missile' ||
-                    eq.type === 'Intercontinental Ballistic Missile' ||
-                    eq.type === 'Tactical Ballistic Missile' ||
-                    eq.type === 'Loitering Munition';
-            }
-            // Support Vehicles category
-            if (practiceState.currentCategory === 'Support Vehicles') {
-                return eq.type === 'Electronic Warfare System' ||
-                    eq.type === 'Command and Communication Vehicle' ||
-                    eq.type === 'Armoured Vehicle Launched Bridge' ||
-                    eq.type === 'Wheeled Vehicle-Launched Bridge' ||
-                    eq.type === 'Mine-Clearing Vehicle' ||
-                    eq.type === 'Minelayer' ||
-                    eq.type === 'Multi-Purpose Tracked Vehicle' ||
-                    eq.type === 'Combat Engineer Vehicle' ||
-                    eq.type === 'Tank Support Vehicle' ||
-                    eq.type === 'Tank Destroyer';
-            }
-            // Aircraft category — all aircraft and helicopter types
-            if (practiceState.currentCategory === 'Fighter Aircraft') {
-                return eq.type.includes('Aircraft') ||
-                    eq.type.includes('Helicopter') ||
-                    eq.type === 'Transport Tiltrotor' ||
-                    eq.type === 'Gunship' ||
-                    eq.type === 'Strategic Bomber';
-            }
-            // Small Arms category
-            if (practiceState.currentCategory === 'Small Arms') {
-                return eq.type === 'Assault Rifle' ||
-                    eq.type === 'Sniper Rifle' ||
-                    eq.type === 'Pistol' ||
-                    eq.type === 'Combat Shotgun' ||
-                    eq.type === 'Submachine Gun' ||
-                    eq.type === 'Small Arms' ||
-                    eq.type === 'Machine Gun' ||
-                    eq.type === 'Sharpshooter Rifle' ||
-                    eq.type === 'Anti-Tank Weapon' ||
-                    eq.type === 'Anti-Tank Missile' ||
-                    eq.type === 'Grenade Launcher';
-            }
-            return eq.type === practiceState.currentCategory;
-        });
+        filteredEquipment = filteredEquipment.filter(eq =>
+            equipmentMatchesCategory(eq, practiceState.currentCategory)
+        );
     }
 
     // Filter by origin country (handle dual-origin equipment)

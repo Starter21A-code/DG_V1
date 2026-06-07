@@ -13,12 +13,9 @@ const COUNTRY_ALIASES = {
     "Sweden": ["Sweden", "Kingdom of Sweden"],
     "China": ["China", "People's Republic of China"],
     "India": ["India", "Republic of India"],
-    "United Kingdom / France": ["United Kingdom", "Great Britain", "UK", "Britain", "France", "French Republic"],
-    "United Kingdom / Sweden": ["United Kingdom", "Great Britain", "UK", "Britain", "Sweden", "Kingdom of Sweden"],
-    "China / Pakistan": ["China", "People's Republic of China", "Pakistan", "Islamic Republic of Pakistan"],
-    "United States / United Kingdom": ["United States of America", "USA", "United States", "US", "United Kingdom", "Great Britain", "UK", "Britain"],
-    "Germany / United Kingdom / Italy / Spain": ["Germany", "Federal Republic of Germany", "United Kingdom", "Great Britain", "UK", "Britain", "Italy", "Italian Republic", "Spain", "Kingdom of Spain"],
-    "Germany/Italy": ["Germany", "Federal Republic of Germany", "Italy", "Italian Republic"]
+    "Italy": ["Italy", "Italian Republic"],
+    "Spain": ["Spain", "Kingdom of Spain"],
+    "Pakistan": ["Pakistan", "Islamic Republic of Pakistan"]
 };
 
 // ── Country flag emoji helper ────────────────────────────────────────────────
@@ -1794,6 +1791,7 @@ function equipmentMatchesCategory(eq, category) {
                 eq.type === 'Multi-Purpose Tracked Vehicle' ||
                 eq.type === 'Combat Engineer Vehicle' ||
                 eq.type === 'Tank Support Vehicle' ||
+                eq.type === 'NBC Reconnaissance Vehicle' ||
                 eq.type === 'Tank Destroyer';
         case 'Fighter Aircraft':
             return eq.type.includes('Aircraft') ||
@@ -2168,8 +2166,12 @@ function submitGuess() {
     let isCorrectCountry = false;
 
     if (state.selectedCountry) {
-        const aliases = COUNTRY_ALIASES[equipment.origin] || [equipment.origin];
-        isCorrectCountry = aliases.some(alias =>
+        // Handle multi-origin entries (e.g. "Russia / India"): clicking ANY of the
+        // listed origin countries counts as correct. Each sub-country is expanded to
+        // its known name aliases (e.g. "Russia" -> "Russian Federation").
+        const originCountries = equipment.origin.split(/\s*\/\s*/).map(c => c.trim());
+        const acceptableNames = originCountries.flatMap(c => COUNTRY_ALIASES[c] || [c]);
+        isCorrectCountry = acceptableNames.some(alias =>
             state.selectedCountry.toLowerCase() === alias.toLowerCase()
         );
     }

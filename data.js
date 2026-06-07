@@ -2587,7 +2587,7 @@ window.equipmentData = [
         users: ["Russia", "India"],
         status: "Active",
         fact: "The AK-203 is the latest Kalashnikov variant chambered in 7.62x39mm. India is producing over 600,000 rifles at its Korwa facility through a joint venture with Russia, replacing the INSAS rifle as the Indian armed forces' standard weapon.",
-        imageCredit: "Photo: Japan Ground Self-Defense Force / Wikimedia Commons / CC BY 4.0"
+        imageCredit: "Photo: Japan Ground Self-Defense Force / Wikimedia Commons / CC BY 4.0 — image modified (flag removed)"
     },
     {
         id: 75,
@@ -3807,7 +3807,7 @@ window.equipmentData = [
         users: ["United States", "Italy", "France", "Brazil", "Egypt", "Iraq", "South Korea", "Turkey"],
         status: "Active",
         fact: "The Beretta 92 served as the U.S. military's standard sidearm for 32 years (1985-2017), designated as the M9. It replaced the iconic M1911 and was itself replaced by the SIG Sauer P320. Over 600,000 M9 pistols were delivered to the U.S. military. The 92FS variant is still widely used by police and military forces in 30+ countries worldwide.",
-        imageCredit: "Photo: U.S. Bureau of Alcohol, Tobacco, Firearms and Explosives / Public Domain"
+        imageCredit: "Photo: U.S. Bureau of Alcohol, Tobacco, Firearms and Explosives / Public Domain — image modified (markings removed)"
     },
     {
         id: 132,
@@ -5258,6 +5258,72 @@ window.equipmentData = [
         status: "Active",
         fact: "The Walther PDP (Performance Duty Pistol) is a German striker-fired 9mm pistol launched by Carl Walther in 2021 as the successor to the popular PPQ. Its headline feature is that it is optics-ready straight from the factory — the slide is milled for a direct-mount micro red-dot under a cover plate — at a time when red-dot duty pistols were becoming the new standard. It also brought Walther's aggressive 'SuperTerrain' slide serrations, a refined Performance Duty Trigger and a deeply sculpted grip. Sold in Full-Size, Compact and subcompact forms, the Compact 4-inch shown here mates a shorter grip with a 4-inch barrel, and the line has become a strong seller on the US commercial and law-enforcement market.",
         imageCredit: "Photo: Fdik / Wikimedia Commons / CC0 1.0 Public Domain — image modified (background removed)"
+    },
+    {
+        id: 227,
+        name: "TPz Fuchs 2 NBC",
+        type: "NBC Reconnaissance Vehicle",
+        origin: "Germany",
+        coords: [51.1657, 10.4515],
+        image: "assets/FUCHS2_NBC.jpg",
+        specs: { speed: "105 km/h", armament: "7.62mm MG (self-defence)", operationalRange: "800 km" },
+        inService: 2004,
+        users: ["Germany", "United States", "United Arab Emirates", "Saudi Arabia", "United Kingdom", "Kuwait"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "6×6 wheeled chassis on large off-road run-flat tyres. Fully amphibious, swimming via two propellers at the rear — a wheeled vehicle, not tracked.",
+            hull: "Boxy, slab-sided, sharply sloped armoured hull (the classic 'Fox' shape) with the engine front-right and a large rear crew/equipment compartment. The NBC version carries distinctive retractable sampling-probe arms on the rear sides that take soil and air samples on the move, plus dispensers that drop marking flags behind contaminated ground.",
+            armament: "Lightly armed for self-defence only — typically a single roof-mounted 7.62mm machine gun and smoke-grenade launchers. Its mission is detection and reconnaissance, not fighting.",
+            turret: "No turret — a low, hatch-covered roof carries sensor masts and antennas, with the CBRN suite (mass spectrometer, chemical agent detectors and radiation sensors) housed inside the hull instead of a gun turret."
+        },
+        fact: "The TPz Fuchs ('Fox') is a German 6×6 amphibious armoured transport vehicle built by Rheinmetall, and the NBC reconnaissance variant is effectively a mobile chemical laboratory on wheels. It drives straight through contaminated ground while its onboard mass spectrometer, chemical detectors and sampling probes identify nuclear, biological and chemical hazards and automatically drop marker flags so following troops can route around the danger. The US Army bought it as the M93 Fox and used it famously during the 1991 Gulf War to hunt for Iraqi chemical weapons. The Fuchs 2 is the modernised version with improved protection and payload, and CBRN-recon Fuchs serve with armies across Europe and the Gulf — including the UAE vehicle pictured here.",
+        imageCredit: "Photo: UndateableOne / Wikimedia Commons / CC BY-SA 4.0 — image modified (cropped)"
+    },
+    {
+        id: 228,
+        name: "Mowag Piranha IIIC",
+        type: "IFV",
+        origin: "Switzerland",
+        coords: [47.6499, 9.1745],
+        images: [
+            "assets/Mowag_Piranha_IIIC.jpg",
+            "assets/MOWAG_Piranha_IIIC_Bravo.jpg"
+        ],
+        specs: { speed: "100 km/h", armament: "30mm ORCWS-30 cannon", operationalRange: "750 km" },
+        inService: 2008,
+        users: ["Belgium", "Spain", "Ireland", "Denmark", "Switzerland", "Romania"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "8×8 all-wheel drive on eight large run-flat tyres with generous ground clearance — a wheeled IFV, not tracked, and amphibious in many variants.",
+            hull: "Boxy, sloped welded-steel hull with a pointed glacis, driver front-left and engine front-right, and a rear power door/ramp for the dismount squad. This is the hull shape that spawned a huge wheeled-vehicle family, including the US Army Stryker and the Canadian LAV.",
+            armament: "On this DF30 variant, an Elbit ORCWS-30 unmanned remote weapon station carrying a 30mm autocannon and a coaxial 7.62mm — the gun is mounted externally with no crew inside the turret.",
+            turret: "A low-profile unmanned remote turret (ORCWS-30) rather than a manned one, sitting low on the roof with the gun and sight pods exposed and smoke-grenade launchers on the hull."
+        },
+        fact: "The Mowag Piranha is a Swiss 8×8 wheeled armoured vehicle family and one of the most successful — and most copied — AFV designs ever built: its hull is the direct ancestor of the US Army's Stryker and Canada's LAV series. The Piranha IIIC is a third-generation member, and Belgium's DF30 version mounts an Israeli Elbit ORCWS-30 unmanned turret with a 30mm cannon. Modular, amphibious and fielded by around twenty countries, the line is still designed and built by General Dynamics' Mowag plant in Kreuzlingen, Switzerland.",
+        imageCredits: [
+            "Photo: Fabien Tremoulinas / Wikimedia Commons / CC0 1.0 Public Domain",
+            "Photo: Outisnn / Wikimedia Commons / CC BY-SA 3.0 Unported — image modified (cropped, symbols removed)"
+        ]
+    },
+    {
+        id: 229,
+        name: "Pinaka MLRS",
+        type: "Artillery",
+        origin: "India",
+        coords: [28.6139, 77.2090],
+        image: "assets/Pinaka_MLRS.jpg",
+        specs: { speed: "80 km/h", armament: "214mm rockets (12-tube)", maximumRange: "75 km" },
+        inService: 2000,
+        users: ["India", "Armenia"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Mounted on a high-mobility 8×8 Tatra all-terrain truck chassis with large off-road tyres — a wheeled rocket system, not a tracked one.",
+            hull: "Forward armoured truck cab over the engine, with the rotating launcher assembly carrying two pods of rockets on the rear bed; a matching reload vehicle accompanies each launcher.",
+            armament: "Two pods of six 214mm rockets each (12 total), ripple-fired in about 44 seconds. Warheads range from high-explosive to anti-armour and anti-personnel submunitions, and the enhanced and guided versions reach 60–90 km.",
+            turret: "No turret — the boxed twin launcher traverses and elevates to fire, then is reloaded with fresh rocket pods."
+        },
+        fact: "Pinaka is an Indian multiple rocket launcher developed by the DRDO and named after the bow of the Hindu god Shiva. It first proved itself during the 1999 Kargil War, and each Tatra-mounted launcher fires twelve 214mm rockets in roughly 44 seconds — a battery of six can blanket a one-kilometre square. Successive versions have stretched its reach from about 38 km on the original Mark I to 75 km and beyond with the Enhanced and guided variants. In 2022 it became a notable export success when Armenia placed the first foreign order for the system.",
+        imageCredit: "Photo: Government of India / Press Information Bureau / GODL-India"
     }
 ];
 

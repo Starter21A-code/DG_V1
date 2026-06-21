@@ -817,6 +817,460 @@ body {
     text-decoration: line-through;
 }
 
+/* ===== Awards / Service Record ===== */
+.awards-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0.75rem auto 0 auto;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.awards-btn:hover {
+    transform: translateY(-2px);
+    filter: drop-shadow(0 0 12px rgba(0, 255, 136, 0.45));
+}
+
+.awards-btn-img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    display: block;
+}
+
+.awards-btn-label {
+    font-family: var(--font-main);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.awards-btn:hover .awards-btn-label {
+    color: var(--accent-color);
+}
+
+.awards-container {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    padding-top: calc(1.5rem + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    height: 100%;
+    overflow-y: auto;
+    /* Green scrollbar to match the practice hub (Firefox) */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) rgba(255, 255, 255, 0.05);
+}
+
+/* Green scrollbar to match the practice hub (WebKit / Chrome / Android) */
+.awards-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.awards-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.awards-container::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 3px;
+}
+
+.awards-header {
+    text-align: center;
+    position: relative;
+    margin-bottom: 1.25rem;
+}
+
+.awards-header h2 {
+    font-size: 1.75rem;
+    margin: 0.25rem 0;
+}
+
+.awards-header p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.awards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+/* Phones: 3 per row so the medals stay large enough to read */
+@media (max-width: 600px) {
+    .awards-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.award-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 0.85rem 0.6rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+    cursor: pointer;
+}
+
+.award-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 255, 136, 0.4);
+}
+
+/* The medal now fills most of the tile so its detail is visible */
+.award-medal {
+    position: relative;
+    width: 78%;
+    max-width: 130px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    margin-top: 0.25rem;
+}
+
+.award-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.award-ring-bg {
+    fill: rgba(0, 0, 0, 0.35);
+    stroke: var(--glass-border);
+    stroke-width: 2.5;
+}
+
+.award-ring-fg {
+    fill: none;
+    stroke: var(--accent-color);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.4s ease;
+}
+
+.award-icon {
+    width: 76%;
+    height: 76%;
+    object-fit: contain;
+    z-index: 1;
+}
+
+.award-icon-fallback,
+.award-lock {
+    z-index: 1;
+}
+
+.award-card.locked {
+    opacity: 0.85;
+}
+
+.award-card.locked .award-ring-fg {
+    stroke: var(--text-secondary);
+}
+
+/* Locked medals show their art greyed-out, as a goal to work toward */
+.award-card.locked .award-icon {
+    filter: grayscale(1) brightness(0.7);
+}
+
+.award-card.unlocked {
+    border-color: rgba(0, 255, 136, 0.35);
+}
+
+.award-tier {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-color);
+}
+
+.award-progress-text {
+    font-size: 0.66rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+/* Tier accent colours on the progress ring */
+.award-card.tier-bronze   .award-ring-fg { stroke: #cd7f32; }
+.award-card.tier-bronze   .award-tier    { color: #cd7f32; }
+.award-card.tier-silver   .award-ring-fg { stroke: #c0c8d0; }
+.award-card.tier-silver   .award-tier    { color: #c0c8d0; }
+.award-card.tier-gold     .award-ring-fg { stroke: #ffcc33; }
+.award-card.tier-gold     .award-tier    { color: #ffcc33; }
+.award-card.tier-platinum .award-ring-fg { stroke: #6ff0ff; }
+.award-card.tier-platinum .award-tier    { color: #6ff0ff; }
+
+/* Medal unlock toast */
+#medal-toast-container {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    pointer-events: none;
+    padding: 0 1rem;
+    width: 100%;
+    max-width: 360px;
+}
+
+.medal-toast {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    background: rgba(0, 20, 12, 0.96);
+    border: 1px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 0.6rem 0.9rem;
+    box-shadow: 0 8px 28px rgba(0, 255, 136, 0.25);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.medal-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.medal-toast-icon {
+    font-size: 1.6rem;
+}
+
+.medal-toast-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.medal-toast-title {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+.medal-toast-name {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.award-name {
+    font-family: var(--font-main);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+.award-desc {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.awards-footnote {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    margin-top: 1.25rem;
+    letter-spacing: 0.5px;
+}
+
+/* ===== Medal detail bottom-sheet ===== */
+.award-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 600;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.award-sheet.hidden {
+    display: none;
+}
+
+.award-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.award-sheet.open .award-sheet-backdrop {
+    opacity: 1;
+}
+
+.award-sheet-panel {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    background: #11161f;
+    border: 1px solid var(--glass-border);
+    border-bottom: none;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    padding: 1.25rem 1.5rem calc(1.75rem + env(safe-area-inset-bottom, 0px));
+    text-align: center;
+    max-height: 88vh;
+    overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.award-sheet.open .award-sheet-panel {
+    transform: translateY(0);
+}
+
+.award-sheet-handle {
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.25);
+    margin: 0 auto 0.75rem auto;
+}
+
+.award-sheet-close {
+    position: absolute;
+    top: 0.85rem;
+    right: 1rem;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.award-sheet-close:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-color);
+}
+
+/* Larger medal inside the sheet */
+.award-sheet-medal {
+    display: flex;
+    justify-content: center;
+    margin: 0.1rem auto 0.55rem auto;
+}
+
+.award-sheet-medal .award-medal {
+    width: 176px;
+    max-width: none;
+}
+
+/* Locked medals stay greyed in the detail sheet too (matches the grid) */
+.award-sheet-medal.locked {
+    opacity: 0.85;
+}
+
+.award-sheet-medal.locked .award-icon {
+    filter: grayscale(1) brightness(0.7);
+}
+
+.award-sheet-medal.locked .award-ring-fg {
+    stroke: var(--text-secondary);
+}
+
+.award-sheet-name {
+    font-size: 1.3rem;
+    margin: 0 0 0.3rem 0;
+    color: var(--text-primary);
+}
+
+.award-sheet-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.35;
+    margin: 0 0 0.5rem 0;
+}
+
+.award-sheet-progress {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 0.7rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.award-sheet-tiers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.award-sheet-tier-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--glass-border);
+}
+
+.award-sheet-tier-row.earned {
+    background: rgba(0, 255, 136, 0.08);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+.award-sheet-tier-tick {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.award-sheet-tier-row.earned .award-sheet-tier-tick {
+    color: var(--accent-color);
+}
+
+.award-sheet-tier-label {
+    flex: 1;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+}
+
+.award-sheet-tier-req {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
 /* Leaderboard Modal */
 .leaderboard-modal-content {
     max-width: 400px;
@@ -5151,6 +5605,35 @@ body {
 }
 
 /* Scrollable leaderboard list */
+/* Leaderboard reset countdown */
+.lb-countdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.4rem 0.75rem;
+    background: rgba(0, 255, 136, 0.07);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 8px;
+}
+
+.lb-countdown-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.lb-countdown-timer {
+    font-family: var(--font-main);
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    color: var(--accent-color);
+    font-variant-numeric: tabular-nums;
+}
+
 .lb-list-container {
     max-height: 300px;
     overflow-y: auto;

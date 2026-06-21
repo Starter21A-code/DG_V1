@@ -15,7 +15,15 @@ const COUNTRY_ALIASES = {
     "India": ["India", "Republic of India"],
     "Italy": ["Italy", "Italian Republic"],
     "Spain": ["Spain", "Kingdom of Spain"],
-    "Pakistan": ["Pakistan", "Islamic Republic of Pakistan"]
+    "Pakistan": ["Pakistan", "Islamic Republic of Pakistan"],
+    "Serbia": ["Serbia", "Republic of Serbia"]
+};
+
+// Micro-states that have no clickable polygon in the map GeoJSON. For these, a
+// click within `radiusKm` of the country's location is treated as a correct
+// country selection (since the player can't click a polygon that doesn't exist).
+const POINT_COUNTRIES = {
+    "Singapore": { lat: 1.3521, lng: 103.8198, radiusKm: 150 }
 };
 
 // ── Country flag emoji helper ────────────────────────────────────────────────
@@ -469,6 +477,7 @@ function updateSoundIcon() {
 const screens = {
     start: document.getElementById('start-screen'),
     practice: document.getElementById('practice-screen'),
+    awards: document.getElementById('awards-screen'),
     game: document.getElementById('game-screen'),
     result: document.getElementById('result-screen'),
     gameOver: document.getElementById('game-over-screen')
@@ -519,6 +528,9 @@ function init() {
     setupSoundToggle();
     initImageZoom();
     registerServiceWorker();
+    // Award "Top of the Board" for any period that closed since last open.
+    // Delayed so Firebase has time to initialise; the function self-guards if not.
+    setTimeout(() => { checkPeriodWinners(); }, 3000);
     console.log("Defence Guesser Initialized");
 }
 
@@ -2025,6 +2037,7 @@ function startGame(isDailyMode = false, filters = null) {
         state.isHardMode = false;
         state.maxRounds = 50;
         state.gameData = getDailyEquipment();
+        markDailyAttempt(); // lock today's daily immediately (anti-replay)
     } else if (filters) {
         let filteredData = getFilteredEquipment(filters);
         if (filteredData.length === 0) { alert('No equipment matches your filters. Try different options.'); return; }
@@ -2176,6 +2189,19 @@ function submitGuess() {
         );
     }
 
+    // Fallback for micro-states with no clickable polygon (e.g. Singapore):
+    // accept a click within the country's radius as a correct selection.
+    if (!isCorrectCountry && state.userGuess) {
+        const originCountries = equipment.origin.split(/\s*\/\s*/).map(c => c.trim());
+        for (const c of originCountries) {
+            const pt = POINT_COUNTRIES[c];
+            if (pt) {
+                const d = calculateDistance(state.userGuess.lat, state.userGuess.lng, pt.lat, pt.lng);
+                if (d <= pt.radiusKm) { isCorrectCountry = true; break; }
+            }
+        }
+    }
+
     let points = 0;
     const distanceKm = calculateDistance(
         state.userGuess.lat, state.userGuess.lng,
@@ -2265,6 +2291,9 @@ function submitGuess() {
         equipment: state.currentEquipment.name,
         origin: state.currentEquipment.origin,
         type: state.currentEquipment.type,
+        inService: state.currentEquipment.inService,
+        hardMode: state.isHardMode,
+        revealPercent: state.isHardMode ? state.frostRevealPercentage : null,
         locationCorrect: isCorrectCountry,
         locationPoints: points,
         bonusCorrect: false,
@@ -3282,6 +3311,15 @@ function getRandomQuote(rating) {
 
 function endGame() {
     playGameOverSound();
+
+    // Record results at the end of every run.
+    if (!state.isDailyMode) {
+        try { recordStandardGameStats(); } catch (e) { console.error('Achievements:', e); }
+    } else {
+        // Lock today's daily score locally (works without a leaderboard callsign)
+        try { recordDailyResultLocal(); } catch (e) { console.error('Daily record:', e); }
+    }
+
     document.getElementById('final-score').textContent = state.score.toLocaleString();
 
     // Use absolute score thresholds for speedrun daily mode, percentage for standard
@@ -3565,6 +3603,42 @@ function setupPracticeHub() {
 
     // Back button click
     practiceDom.backBtn.addEventListener('click', closePracticeHub);
+
+    // Awards (Service Record) screen navigation
+    const awardsBtn = document.getElementById('awards-btn');
+    if (awardsBtn) awardsBtn.addEventListener('click', () => {
+        const sheet = document.getElementById('award-detail-sheet');
+        if (sheet) { sheet.classList.add('hidden'); sheet.classList.remove('open'); } // start closed
+        renderAwards();
+        switchScreen('awards');
+    });
+    const awardsBackBtn = document.getElementById('awards-back-btn');
+    if (awardsBackBtn) awardsBackBtn.addEventListener('click', () => { closeAwardDetail(); switchScreen('start'); });
+
+    // Tap a medal tile → open its detail bottom-sheet (delegated; survives re-render)
+    const awardsGrid = document.getElementById('awards-grid');
+    if (awardsGrid) {
+        awardsGrid.addEventListener('click', (e) => {
+            const card = e.target.closest('.award-card');
+            if (card && card.dataset.medalId) openAwardDetail(card.dataset.medalId);
+        });
+        awardsGrid.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            const card = e.target.closest('.award-card');
+            if (card && card.dataset.medalId) { e.preventDefault(); openAwardDetail(card.dataset.medalId); }
+        });
+    }
+
+    // Detail sheet: close on backdrop / close-button / Escape
+    const awardSheet = document.getElementById('award-detail-sheet');
+    if (awardSheet) {
+        awardSheet.addEventListener('click', (e) => {
+            if (e.target.classList.contains('award-sheet-backdrop') || e.target.closest('.award-sheet-close')) {
+                closeAwardDetail();
+            }
+        });
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAwardDetail(); });
 
     // Get category buttons
     practiceDom.categoryBtns = document.querySelectorAll('.category-btn');
@@ -4220,12 +4294,12 @@ function setupDailyChallenge() {
 
     // Options modal - Play button
     playBtn.addEventListener('click', () => {
-        optionsModal.classList.add('hidden');
-        // Check if player already played today
+        // Already played today — block replay with a message (keeps the daily fair)
         if (hasPlayedToday()) {
-            alert('You have already completed today\'s Daily Challenge! Come back tomorrow for a new challenge.');
+            alert("You have already played today's game. Return tomorrow for another challenge!");
             return;
         }
+        optionsModal.classList.add('hidden');
         // Start daily game directly (no callsign needed)
         state.playerName = 'Player';
         startGame(true); // Start in daily mode
@@ -4480,9 +4554,37 @@ function seededRandom(seed) {
     return x - Math.floor(x);
 }
 
+// Daily/weekly/monthly periods roll over at a single GLOBAL instant: 07:00 UTC.
+// That lands overnight across North America and early-morning in the UK, avoiding
+// everyone's prime-time evening, and gives one worldwide winner per period.
+const RESET_HOUR_UTC = 7;
+
+// The "game day": shift real time back by the reset hour so the UTC calendar date
+// of the shifted instant identifies the current game day / week / month for ALL
+// players simultaneously, regardless of their local timezone.
+function getGameDayDate() {
+    return new Date(Date.now() - RESET_HOUR_UTC * 3600 * 1000);
+}
+
+// Period-key builders for an arbitrary game-day Date (UTC). The current-period
+// getters delegate here, and the winner-detection uses them for past periods —
+// so the keys always match exactly what was written to the leaderboard.
+function seedFromDate(d) {
+    return d.getUTCFullYear() * 10000 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
+}
+function weekKeyFromDate(d) {
+    const year = d.getUTCFullYear();
+    const jan1 = new Date(Date.UTC(year, 0, 1));
+    const dayOffset = (jan1.getUTCDay() + 6) % 7; // Monday = 0
+    const weekNum = Math.ceil(((d - jan1) / 86400000 + dayOffset + 1) / 7);
+    return `${year}-W${String(weekNum).padStart(2, '0')}`;
+}
+function monthKeyFromDate(d) {
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+}
+
 function getTodaysSeed() {
-    const today = new Date();
-    return today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    return seedFromDate(getGameDayDate());
 }
 
 function getDailyEquipment() {
@@ -4509,11 +4611,42 @@ function getDailyEquipment() {
 function hasPlayedToday() {
     const data = getDailyData();
     const todayKey = getTodaysSeed().toString();
-    return data.history && data.history[todayKey] !== undefined;
+    // "Played" = either an attempt was started OR a completed score was recorded.
+    // This is what blocks replaying the daily for a better score.
+    return (data.attempts && data.attempts[todayKey]) ||
+           (data.history && data.history[todayKey] !== undefined);
 }
 
-function markAsPlayedToday() {
-    // This is now handled in submitDailyScore
+// Lock today's daily the moment the game starts, so quitting mid-run (or skipping
+// the leaderboard callsign) can't be used to replay knowing the answers.
+function markDailyAttempt() {
+    const data = getDailyData();
+    if (!data.attempts) data.attempts = {};
+    data.attempts[getTodaysSeed().toString()] = true;
+    saveDailyData(data);
+}
+
+// Record the daily result locally as soon as the run ends, independent of the
+// leaderboard callsign — so streak/stats work even if the player never submits.
+// The first attempt's score is locked (we never overwrite an existing entry here).
+function recordDailyResultLocal() {
+    const data = getDailyData();
+    const todayKey = getTodaysSeed().toString();
+    if (!data.history) data.history = {};
+    if (data.history[todayKey] !== undefined) return; // already recorded — first attempt stands
+
+    data.history[todayKey] = {
+        name: localStorage.getItem('dg_callsign') || 'You',
+        score: state.score,
+        timestamp: Date.now(),
+        targetsCleared: state.targetsCleared,
+        scoreProgression: state.speedrunScoreProgression
+    };
+    cleanupOldHistory(data);
+    data.stats = calculateDailyStats(data.history);
+    saveDailyData(data);
+
+    try { recordDailyStats(); } catch (e) { console.error('Achievements:', e); }
 }
 
 function getDailyData() {
@@ -4612,6 +4745,9 @@ function submitDailyScore(name, score) {
     data.stats = calculateDailyStats(data.history);
 
     saveDailyData(data);
+
+    // Record achievement progress for the daily run
+    try { recordDailyStats(); } catch (e) { console.error('Achievements:', e); }
 }
 
 function cleanupOldHistory(data) {
@@ -4621,6 +4757,15 @@ function cleanupOldHistory(data) {
     for (const key of Object.keys(data.history)) {
         if (parseInt(key) < cutoff) {
             delete data.history[key];
+        }
+    }
+
+    // Prune old attempt locks too so the store doesn't grow unbounded
+    if (data.attempts) {
+        for (const key of Object.keys(data.attempts)) {
+            if (parseInt(key) < cutoff) {
+                delete data.attempts[key];
+            }
         }
     }
 }
@@ -4880,19 +5025,14 @@ async function copyShareText() {
 
 // ── Helpers ─────────────────────────────────────────────────
 
-/** ISO week key e.g. "2026-W21" (Monday-based) */
+/** ISO week key e.g. "2026-W21" (Monday-based, UTC game-week) */
 function getWeekKey() {
-    const now = new Date();
-    const jan1 = new Date(now.getFullYear(), 0, 1);
-    const dayOffset = (jan1.getDay() + 6) % 7; // shift so Monday = 0
-    const weekNum = Math.ceil(((now - jan1) / 86400000 + dayOffset + 1) / 7);
-    return `${now.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+    return weekKeyFromDate(getGameDayDate());
 }
 
-/** Month key e.g. "2026-05" */
+/** Month key e.g. "2026-05" (UTC game-month) */
 function getMonthKey() {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    return monthKeyFromDate(getGameDayDate());
 }
 
 /** Strip anything that is not a letter, digit, hyphen or underscore */
@@ -5034,6 +5174,75 @@ async function fetchUserRank(period, userScore) {
     }
 }
 
+/**
+ * Determine the single winner of a finished period from its leaderboard docs.
+ * Ranking matches the displayed board: each device's BEST score (dedupe by
+ * deviceId, keep highest), then the highest of those. Ties are broken by the
+ * earliest submission (server timestamp) so there is exactly one winner.
+ * Returns { deviceId, score, name } or null.
+ */
+function determinePeriodWinner(docs) {
+    const bestByDevice = new Map();
+    docs.forEach(doc => {
+        const d = doc.data();
+        if (!d || typeof d.score !== 'number') return;
+        const id = d.deviceId || `legacy:${d.playerName}`;
+        const ts = (d.timestamp && typeof d.timestamp.toMillis === 'function')
+            ? d.timestamp.toMillis() : Number.MAX_SAFE_INTEGER; // unresolved ts loses ties
+        const cur = bestByDevice.get(id);
+        if (!cur || d.score > cur.score || (d.score === cur.score && ts < cur.ts)) {
+            bestByDevice.set(id, { deviceId: d.deviceId || null, score: d.score, ts, name: d.playerName });
+        }
+    });
+    let winner = null;
+    bestByDevice.forEach(e => {
+        if (!winner || e.score > winner.score || (e.score === winner.score && e.ts < winner.ts)) {
+            winner = e;
+        }
+    });
+    return winner;
+}
+
+/**
+ * Award the "Top of the Board" tiers by checking whether THIS device finished
+ * #1 on the leaderboard for each just-COMPLETED period (yesterday / last week /
+ * last month). Past-period data is immutable, so the winner is final. Each
+ * period is evaluated once (tracked in the profile) and only the single top
+ * best-score wins — exactly one daily/weekly/monthly champion.
+ */
+async function checkPeriodWinners() {
+    if (typeof db === 'undefined') return;
+
+    const gd = getGameDayDate();
+    const prevDay   = new Date(gd.getTime() - 86400000);
+    const prevWeek  = new Date(gd.getTime() - 7 * 86400000);
+    const prevMonth = new Date(Date.UTC(gd.getUTCFullYear(), gd.getUTCMonth(), 0)); // last day of prev month
+
+    const myDeviceId = getOrCreateDeviceId();
+    const periods = [
+        { field: 'dateKey',  key: seedFromDate(prevDay).toString(), flag: 'firstPlaceDaily',   processed: 'processedDailyKey' },
+        { field: 'weekKey',  key: weekKeyFromDate(prevWeek),        flag: 'firstPlaceWeekly',  processed: 'processedWeekKey' },
+        { field: 'monthKey', key: monthKeyFromDate(prevMonth),      flag: 'firstPlaceMonthly', processed: 'processedMonthKey' }
+    ];
+
+    for (const per of periods) {
+        if (getProfile()[per.processed] === per.key) continue; // already evaluated
+        try {
+            const snap = await db.collection('leaderboards').where(per.field, '==', per.key).limit(1000).get();
+            const winner = snap.empty ? null : determinePeriodWinner(snap.docs);
+            withUnlockDetection(() => {
+                const p = getProfile();
+                if (winner && winner.deviceId && winner.deviceId === myDeviceId) p[per.flag] = true;
+                p[per.processed] = per.key; // mark done so we never re-query or re-award
+                saveProfile(p);
+            });
+        } catch (err) {
+            // Leave unprocessed on failure (e.g. offline) so it retries next time.
+            console.warn('[Winners] check failed for', per.field, err);
+        }
+    }
+}
+
 // ── Rendering ────────────────────────────────────────────────
 
 function renderLeaderboard(entries, userScore, userRank, userCallsign, userDeviceId) {
@@ -5110,7 +5319,72 @@ function renderLeaderboard(entries, userScore, userRank, userCallsign, userDevic
 
 // ── Orchestrator ─────────────────────────────────────────────
 
+// ── Leaderboard reset countdown ──────────────────────────────
+// Period boundaries match the local-time keys used by getTodaysSeed / getWeekKey
+// / getMonthKey, so the countdown lands exactly when the leaderboard rolls over.
+function getNextPeriodReset(period) {
+    const now = new Date();
+    const DAY_MS = 86400000;
+    if (period === 'weekly') {
+        // Next Monday at 07:00 UTC, strictly in the future
+        let r = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), RESET_HOUR_UTC, 0, 0, 0));
+        while (r.getUTCDay() !== 1 || r.getTime() <= now.getTime()) {
+            r = new Date(r.getTime() + DAY_MS);
+        }
+        return r;
+    }
+    if (period === 'monthly') {
+        // 1st of the (game) month at 07:00 UTC, strictly in the future
+        let r = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1, RESET_HOUR_UTC, 0, 0, 0));
+        if (r.getTime() <= now.getTime()) {
+            r = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1, RESET_HOUR_UTC, 0, 0, 0));
+        }
+        return r;
+    }
+    // daily — next 07:00 UTC
+    let r = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), RESET_HOUR_UTC, 0, 0, 0));
+    if (r.getTime() <= now.getTime()) r = new Date(r.getTime() + DAY_MS);
+    return r;
+}
+
+function formatCountdown(ms) {
+    if (ms < 0) ms = 0;
+    const totalSec = Math.floor(ms / 1000);
+    const days = Math.floor(totalSec / 86400);
+    const hrs  = Math.floor((totalSec % 86400) / 3600);
+    const mins = Math.floor((totalSec % 3600) / 60);
+    const secs = totalSec % 60;
+    const pad = n => String(n).padStart(2, '0');
+    return days > 0
+        ? `${days}d ${pad(hrs)}:${pad(mins)}:${pad(secs)}`
+        : `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+}
+
+let lbCountdownInterval = null;
+
+function updateLbCountdown() {
+    const timerEl = document.getElementById('lb-countdown-timer');
+    const modal = document.getElementById('daily-leaderboard-modal');
+    const globalPanel = document.getElementById('lb-panel-global');
+    // Only tick while the global leaderboard view is actually on screen
+    if (!timerEl || !modal || modal.classList.contains('hidden') ||
+        !globalPanel || globalPanel.classList.contains('hidden')) {
+        return;
+    }
+    const period = document.querySelector('.lb-period-tab.active')?.dataset.period || 'daily';
+    const remaining = getNextPeriodReset(period).getTime() - Date.now();
+    timerEl.textContent = remaining <= 0 ? 'Resetting…' : formatCountdown(remaining);
+}
+
+function startLbCountdown() {
+    updateLbCountdown();                       // immediate paint
+    if (lbCountdownInterval) return;           // singleton ticker
+    lbCountdownInterval = setInterval(updateLbCountdown, 1000);
+}
+
 async function loadGlobalLeaderboard(period) {
+    startLbCountdown();
+    checkPeriodWinners(); // award Top of the Board for any just-closed period (fire-and-forget)
     const list = document.getElementById('lb-list');
     if (!list) return;
 
@@ -5474,6 +5748,359 @@ function setupReviewPromptModal() {
             totalDaysAtDismiss: totalDays
         });
         modal.classList.add('hidden');
+    });
+}
+
+/* ===================================================================== */
+/* ====================  AWARDS / SERVICE RECORD  ====================== */
+/* ===================================================================== */
+
+const PROFILE_STORAGE_KEY = 'dg_profile';
+const SHARP_EYE_THRESHOLD = 5; // a correct ID at <5% image reveal counts as a "Sharp Eye"
+
+// Cumulative player profile. Updated at the end of every game. Powers all medals.
+function getDefaultProfile() {
+    return {
+        v: 1,
+        standardGames: 0,        // standard missions completed
+        correctIds: 0,           // lifetime correct equipment IDs (bonus question)
+        correctLocations: 0,     // lifetime correct country placements (standard + daily)
+        perfectGames: 0,         // standard games with every location AND every ID correct
+        bestStandardScore: 0,
+        // hard mode
+        hardModeGames: 0,
+        bestHardScore: 0,
+        sharpEyeIds: 0,          // correct IDs made at very low image reveal
+        // arsenal knowledge (standard-mode IDs only)
+        idCountries: {},         // { "Russia": true, ... } distinct countries correctly IDed
+        idCategoryCounts: {},    // { "Main Battle Tank": 7, ... } per game-category
+        idEraCounts: {},         // { "Cold War": n, "Modern": n }
+        // daily-derived (synced from the daily store / run)
+        bestDailyScore: 0,
+        longestStreak: 0,
+        bestDailyTargets: 0,
+        flawlessDailies: 0,
+        firstPlaceDaily: false,   // finished #1 on a completed daily leaderboard
+        firstPlaceWeekly: false,  // finished #1 on a completed weekly leaderboard
+        firstPlaceMonthly: false, // finished #1 on a completed monthly leaderboard
+        processedDailyKey: null,  // last completed daily/weekly/monthly period already
+        processedWeekKey: null,   // evaluated for a winner (so we never re-query or
+        processedMonthKey: null,  // re-award the same period)
+        lastDailyKey: null,      // guards once-per-day daily increments
+        firstPlayed: Date.now(),
+        lastUpdated: Date.now()
+    };
+}
+
+function getProfile() {
+    try {
+        const stored = localStorage.getItem(PROFILE_STORAGE_KEY);
+        if (!stored) return getDefaultProfile();
+        return Object.assign(getDefaultProfile(), JSON.parse(stored));
+    } catch (e) {
+        return getDefaultProfile();
+    }
+}
+
+function saveProfile(p) {
+    try {
+        p.lastUpdated = Date.now();
+        localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(p));
+    } catch (e) {
+        console.error('Failed to save profile:', e);
+    }
+}
+
+// Map an equipment in-service year to an era bucket
+function getEra(year) {
+    if (typeof year !== 'number') return null;
+    return year <= 1991 ? 'Cold War' : 'Modern';
+}
+
+// Map a raw equipment type to its game-category key (reuses the shared helper)
+function categoryOfType(type) {
+    const fake = { type };
+    const match = GAME_CATEGORIES.find(c => equipmentMatchesCategory(fake, c.key));
+    return match ? match.key : null;
+}
+
+// Wrap a profile mutation so we can detect medals newly unlocked by it and toast them
+function withUnlockDetection(mutateFn) {
+    const before = getUnlockedTierKeys(getProfile());
+    mutateFn();
+    const after = getUnlockedTierKeys(getProfile());
+    const fresh = [...after].filter(k => !before.has(k));
+    if (fresh.length) showMedalToast(fresh);
+}
+
+// Record a completed STANDARD game (called from endGame)
+function recordStandardGameStats() {
+    withUnlockDetection(() => {
+        const p = getProfile();
+        const rounds = state.roundResults || [];
+        const isHard = state.isHardMode;
+
+        p.standardGames++;
+        if (isHard) p.hardModeGames++;
+
+        let allLoc = rounds.length > 0;
+        let allId = rounds.length > 0;
+
+        rounds.forEach(r => {
+            if (r.locationCorrect) p.correctLocations++; else allLoc = false;
+
+            if (r.bonusCorrect) {
+                p.correctIds++;
+                // distinct countries (split dual-origin)
+                String(r.origin || '').split(/\s*\/\s*/).forEach(c => {
+                    c = c.trim();
+                    if (c) p.idCountries[c] = true;
+                });
+                // per game-category
+                const cat = categoryOfType(r.type);
+                if (cat) p.idCategoryCounts[cat] = (p.idCategoryCounts[cat] || 0) + 1;
+                // per era
+                const era = getEra(r.inService);
+                if (era) p.idEraCounts[era] = (p.idEraCounts[era] || 0) + 1;
+                // sharp eye (hard mode, low reveal)
+                if (isHard && typeof r.revealPercent === 'number' && r.revealPercent < SHARP_EYE_THRESHOLD) {
+                    p.sharpEyeIds++;
+                }
+            } else {
+                allId = false;
+            }
+        });
+
+        if (state.score > p.bestStandardScore) p.bestStandardScore = state.score;
+        if (isHard && state.score > p.bestHardScore) p.bestHardScore = state.score;
+        if (allLoc && allId) p.perfectGames++;
+
+        saveProfile(p);
+    });
+}
+
+// Record a completed DAILY run (called from submitDailyScore, after stats recalculated)
+function recordDailyStats() {
+    withUnlockDetection(() => {
+        const p = getProfile();
+        const stats = getDailyData().stats || {};
+        const todayKey = getTodaysSeed().toString();
+
+        // Maxes are idempotent — safe to update on any (re)submit
+        if ((stats.bestScore || 0) > p.bestDailyScore) p.bestDailyScore = stats.bestScore;
+        if ((stats.longestStreak || 0) > p.longestStreak) p.longestStreak = stats.longestStreak;
+
+        // Per-run increments — only once per calendar day
+        if (p.lastDailyKey !== todayKey) {
+            const results = state.speedrunResults || [];
+            const targets = results.filter(r => r.correct).length;
+            if (targets > p.bestDailyTargets) p.bestDailyTargets = targets;
+
+            results.forEach(r => { if (r.correct) p.correctLocations++; });
+
+            if (results.length > 0 && results.every(r => r.correct)) p.flawlessDailies++;
+
+            p.lastDailyKey = todayKey;
+        }
+
+        saveProfile(p);
+    });
+}
+
+// ── Medal definitions ────────────────────────────────────────────────
+// Each medal has tier thresholds; the highest threshold the metric meets is the
+// earned tier. `icon` points at an image the user will add under Awards/.
+const MEDAL_TIER_LABELS = ['Bronze', 'Silver', 'Gold'];
+
+// Medal art is per-tier: the card shows `Awards/<iconBase>_<TierLabel>.png`
+// (e.g. Campaign_Bronze.png, Campaign_Silver.png, Campaign_Gold.png). A locked
+// medal previews its Bronze art greyed-out; missing files fall back to a glyph.
+const MEDALS = [
+    // 1. Campaign (cumulative)
+    { id: 'campaign_missions', name: 'Campaign Service', iconBase: 'Campaign',     bucket: 'Campaign', desc: 'Standard missions completed', tiers: [25, 100, 250], metric: p => p.standardGames },
+    { id: 'campaign_ids',      name: 'Identifier',       iconBase: 'Identifier',   bucket: 'Campaign', desc: 'Equipment correctly identified', tiers: [100, 500, 1500], metric: p => p.correctIds },
+
+    // 2. Daily challenge
+    { id: 'daily_score',   name: 'Top of the Board', iconBase: 'First', bucket: 'Daily',
+      desc: 'Finish #1 on the Daily Challenge leaderboard when a period ends — Bronze for a day, Silver for a week, Gold for a month.',
+      tiers: [1, 2, 3],
+      tierReqs: ['Win a day', 'Win a week', 'Win a month'],
+      metric: p => (p.firstPlaceMonthly ? 3 : p.firstPlaceWeekly ? 2 : p.firstPlaceDaily ? 1 : 0) },
+    { id: 'daily_streak',  name: 'On the Wire',       iconBase: 'Streak',         bucket: 'Daily', desc: 'Longest daily streak (days)', tiers: [7, 14, 30], metric: p => p.longestStreak },
+    { id: 'daily_flawless',name: 'Flawless',          iconBase: 'Flawless',       bucket: 'Daily', desc: 'Daily Challenge runs with no mistakes', tiers: [1, 8, 25], metric: p => p.flawlessDailies },
+    { id: 'daily_targets', name: 'Speed Runner',      iconBase: 'Runner',         bucket: 'Daily', desc: st => `Clear ${st.nextThreshold} correct targets on a daily challenge`, tiers: [8, 12, 15], metric: p => p.bestDailyTargets },
+
+    // 3. Marksmanship
+    { id: 'marks_perfect', name: 'Perfect Op', iconBase: 'Perfect', bucket: 'Marksmanship', desc: 'Perfect games (all locations + all IDs)', tiers: [1, 10, 30], metric: p => p.perfectGames },
+
+    // 4. Hard mode
+    { id: 'hard_games',    name: 'Into the Fog', iconBase: 'Hardmode', bucket: 'Hard Mode', desc: 'Hard-mode missions completed', tiers: [1, 25, 75], metric: p => p.hardModeGames },
+    { id: 'hard_score',    name: 'Frostbite',    iconBase: 'Cold',  bucket: 'Hard Mode', desc: 'Best hard-mode score', tiers: [25000, 40000, 50000], metric: p => p.bestHardScore },
+    { id: 'hard_sharpeye', name: 'Sharp Eye',    iconBase: 'Speed',      bucket: 'Hard Mode', desc: 'IDs made with the image 5% revealed', tiers: [1, 10, 30], metric: p => p.sharpEyeIds },
+
+    // 5. Arsenal knowledge
+    { id: 'arsenal_countries', name: 'Globetrotter', iconBase: 'Global',        bucket: 'Arsenal', desc: 'Distinct countries identified', tiers: [15, 25, 35], metric: p => Object.keys(p.idCountries || {}).length },
+    { id: 'arsenal_tanks',     name: 'Armour',       iconBase: 'Tank',          bucket: 'Arsenal', desc: 'Tanks correctly identified', tiers: [8, 16, 24], metric: p => (p.idCategoryCounts || {})['Main Battle Tank'] || 0 },
+    { id: 'arsenal_aircraft',  name: 'Aviator',      iconBase: 'Aircraft',      bucket: 'Arsenal', desc: 'Aircraft correctly identified', tiers: [16, 33, 50], metric: p => (p.idCategoryCounts || {})['Fighter Aircraft'] || 0 },
+    { id: 'arsenal_naval',     name: 'Mariner',      iconBase: 'Naval',         bucket: 'Arsenal', desc: 'Naval vessels correctly identified', tiers: [5, 11, 16], metric: p => (p.idCategoryCounts || {})['Naval Vessel'] || 0 },
+    { id: 'arsenal_coldwar',   name: 'Cold Warrior', iconBase: 'Coldwar',       bucket: 'Arsenal', desc: 'Cold War-era equipment identified', tiers: [20, 50, 100], metric: p => (p.idEraCounts || {})['Cold War'] || 0 },
+    { id: 'arsenal_modern',    name: 'Modern Arsenal',iconBase: 'Modern',       bucket: 'Arsenal', desc: 'Modern-era equipment identified', tiers: [20, 50, 100], metric: p => (p.idEraCounts || {})['Modern'] || 0 }
+];
+
+// Compute progress state for a medal given a profile
+function getMedalProgress(medal, profile) {
+    const value = medal.metric(profile) || 0;
+    const tiers = medal.tiers;
+    let tierIndex = -1;
+    for (let i = 0; i < tiers.length; i++) {
+        if (value >= tiers[i]) tierIndex = i;
+    }
+    const unlocked = tierIndex >= 0;
+    const maxed = tierIndex === tiers.length - 1;
+    const nextThreshold = maxed ? tiers[tiers.length - 1] : tiers[tierIndex + 1];
+    const prevThreshold = tierIndex >= 0 ? tiers[tierIndex] : 0;
+    // progress fraction toward the NEXT tier (full bar if maxed)
+    const span = nextThreshold - prevThreshold;
+    const fraction = maxed ? 1 : Math.max(0, Math.min(1, span > 0 ? (value - prevThreshold) / span : 1));
+    const tierLabel = unlocked ? MEDAL_TIER_LABELS[Math.min(tierIndex, MEDAL_TIER_LABELS.length - 1)] : 'Locked';
+    return { value, tierIndex, unlocked, maxed, nextThreshold, fraction, tierLabel };
+}
+
+// Set of "medalId:tierIndex" keys currently unlocked (for unlock detection)
+function getUnlockedTierKeys(profile) {
+    const keys = new Set();
+    MEDALS.forEach(m => {
+        const value = m.metric(profile) || 0;
+        m.tiers.forEach((t, i) => { if (value >= t) keys.add(`${m.id}:${i}`); });
+    });
+    return keys;
+}
+
+// Render the awards grid from the medal config + current profile
+// Build the medal artwork + progress ring for a medal (reused by tiles + detail sheet)
+function awardMedalHTML(m, st) {
+    const ringCirc = 2 * Math.PI * 30; // r = 30
+    const dash = (st.fraction * ringCirc).toFixed(1);
+    // Show the current tier's medal when unlocked; preview Bronze (greyed) when locked
+    const tierForIcon = st.unlocked ? st.tierLabel : 'Bronze';
+    const iconFile = `${m.iconBase}_${tierForIcon}.png`;
+    return `
+        <div class="award-medal">
+            <svg class="award-ring" viewBox="0 0 68 68" aria-hidden="true">
+                <circle class="award-ring-bg" cx="34" cy="34" r="30"></circle>
+                <circle class="award-ring-fg" cx="34" cy="34" r="30"
+                        stroke-dasharray="${dash} ${ringCirc.toFixed(1)}"></circle>
+            </svg>
+            <img src="Awards/${iconFile}" alt="${escapeHtml(m.name)}" class="award-icon"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <span class="award-icon-fallback" style="display:none">${st.unlocked ? '🎖️' : '🔒'}</span>
+        </div>`;
+}
+
+function renderAwards() {
+    const grid = document.getElementById('awards-grid');
+    if (!grid) return;
+    const p = getProfile();
+
+    grid.innerHTML = MEDALS.map(m => {
+        const st = getMedalProgress(m, p);
+        const tierClass = st.unlocked ? `unlocked tier-${st.tierLabel.toLowerCase()}` : 'locked';
+        return `
+            <div class="award-card ${tierClass}" data-medal-id="${m.id}" role="button" tabindex="0">
+                ${awardMedalHTML(m, st)}
+                <span class="award-name">${escapeHtml(m.name)}</span>
+                <span class="award-tier">${st.tierLabel}</span>
+            </div>`;
+    }).join('');
+}
+
+// Open the detail bottom-sheet for a medal
+function openAwardDetail(medalId) {
+    const m = MEDALS.find(x => x.id === medalId);
+    const sheet = document.getElementById('award-detail-sheet');
+    const content = document.getElementById('award-sheet-content');
+    if (!m || !sheet || !content) return;
+
+    const st = getMedalProgress(m, getProfile());
+    const tierClass = st.unlocked ? `tier-${st.tierLabel.toLowerCase()}` : 'locked';
+    const descText = typeof m.desc === 'function' ? m.desc(st) : m.desc;
+
+    // Medals can supply tierReqs (text goals like "Win a day") instead of numeric
+    // thresholds — used where the metric is a rank rather than a count.
+    const reqLabels = Array.isArray(m.tierReqs);
+    const nextLabel = MEDAL_TIER_LABELS[st.tierIndex + 1] || 'next tier';
+    const progressLine = st.maxed
+        ? 'All tiers earned 🎉'
+        : reqLabels
+            ? `Next: ${m.tierReqs[st.tierIndex + 1]} → ${nextLabel}`
+            : `Progress to ${nextLabel}: ${st.value.toLocaleString()} / ${st.nextThreshold.toLocaleString()}`;
+
+    const tiersHTML = m.tiers.map((t, i) => {
+        const earned = st.value >= t;
+        const label = MEDAL_TIER_LABELS[i] || `Tier ${i + 1}`;
+        const req = reqLabels ? m.tierReqs[i] : t.toLocaleString();
+        return `
+            <div class="award-sheet-tier-row ${earned ? 'earned' : ''}">
+                <span class="award-sheet-tier-tick">${earned ? '✅' : '○'}</span>
+                <span class="award-sheet-tier-label">${label}</span>
+                <span class="award-sheet-tier-req">${escapeHtml(req)}</span>
+            </div>`;
+    }).join('');
+
+    content.innerHTML = `
+        <div class="award-sheet-medal ${tierClass}">${awardMedalHTML(m, st)}</div>
+        <h3 class="award-sheet-name">${escapeHtml(m.name)}</h3>
+        <p class="award-sheet-desc">${escapeHtml(descText)}</p>
+        <div class="award-sheet-progress">${escapeHtml(progressLine)}</div>
+        <div class="award-sheet-tiers">${tiersHTML}</div>`;
+
+    sheet.classList.remove('hidden');
+    requestAnimationFrame(() => sheet.classList.add('open'));
+}
+
+function closeAwardDetail() {
+    const sheet = document.getElementById('award-detail-sheet');
+    if (!sheet || sheet.classList.contains('hidden')) return;
+    sheet.classList.remove('open');
+    setTimeout(() => sheet.classList.add('hidden'), 300);
+}
+
+// Celebratory toast when one or more medal tiers are newly earned
+function showMedalToast(tierKeys) {
+    // Resolve to readable lines, de-duplicated to the highest new tier per medal
+    const byMedal = {};
+    tierKeys.forEach(k => {
+        const [id, idxStr] = k.split(':');
+        const idx = parseInt(idxStr, 10);
+        if (byMedal[id] === undefined || idx > byMedal[id]) byMedal[id] = idx;
+    });
+
+    let container = document.getElementById('medal-toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'medal-toast-container';
+        document.body.appendChild(container);
+    }
+
+    Object.entries(byMedal).forEach(([id, idx]) => {
+        const medal = MEDALS.find(m => m.id === id);
+        if (!medal) return;
+        const tierLabel = MEDAL_TIER_LABELS[Math.min(idx, MEDAL_TIER_LABELS.length - 1)];
+        const toast = document.createElement('div');
+        toast.className = 'medal-toast';
+        toast.innerHTML = `
+            <span class="medal-toast-icon">🎖️</span>
+            <div class="medal-toast-text">
+                <span class="medal-toast-title">Medal Earned</span>
+                <span class="medal-toast-name">${escapeHtml(medal.name)} · ${tierLabel}</span>
+            </div>`;
+        container.appendChild(toast);
+        // Animate in, then out
+        requestAnimationFrame(() => toast.classList.add('show'));
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 400);
+        }, 4200);
     });
 }
 

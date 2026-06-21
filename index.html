@@ -73,8 +73,49 @@
                 </div>
 
                 <button id="practice-btn" class="btn secondary">PRACTICE HUB</button>
+
+                <button id="awards-btn" class="awards-btn" title="Awards">
+                    <img src="Awards/Awards_Icon.png" alt="Awards" class="awards-btn-img">
+                    <span class="awards-btn-label">AWARDS</span>
+                </button>
             </div>
             <div class="version-display">V2.1</div>
+        </div>
+
+        <!-- Awards / Service Record Screen -->
+        <div id="awards-screen" class="screen hidden">
+            <div class="awards-container">
+                <div class="awards-header">
+                    <button id="awards-back-btn" class="back-btn">← BACK</button>
+                    <h2>SERVICE <span class="highlight">RECORD</span></h2>
+                    <p>Earn medals for your achievements</p>
+                </div>
+
+                <div class="awards-grid" id="awards-grid">
+                    <!-- Placeholder medal slots. Real awards + icons will be added later. -->
+                    <div class="award-card locked"><div class="award-medal"><span class="award-lock">🔒</span></div><span class="award-name">Locked</span><span class="award-desc">Coming soon</span></div>
+                    <div class="award-card locked"><div class="award-medal"><span class="award-lock">🔒</span></div><span class="award-name">Locked</span><span class="award-desc">Coming soon</span></div>
+                    <div class="award-card locked"><div class="award-medal"><span class="award-lock">🔒</span></div><span class="award-name">Locked</span><span class="award-desc">Coming soon</span></div>
+                    <div class="award-card locked"><div class="award-medal"><span class="award-lock">🔒</span></div><span class="award-name">Locked</span><span class="award-desc">Coming soon</span></div>
+                    <div class="award-card locked"><div class="award-medal"><span class="award-lock">🔒</span></div><span class="award-name">Locked</span><span class="award-desc">Coming soon</span></div>
+                    <div class="award-card locked"><div class="award-medal"><span class="award-lock">🔒</span></div><span class="award-name">Locked</span><span class="award-desc">Coming soon</span></div>
+                    <div class="award-card locked"><div class="award-medal"><span class="award-lock">🔒</span></div><span class="award-name">Locked</span><span class="award-desc">Coming soon</span></div>
+                    <div class="award-card locked"><div class="award-medal"><span class="award-lock">🔒</span></div><span class="award-name">Locked</span><span class="award-desc">Coming soon</span></div>
+                    <div class="award-card locked"><div class="award-medal"><span class="award-lock">🔒</span></div><span class="award-name">Locked</span><span class="award-desc">Coming soon</span></div>
+                </div>
+
+                <p class="awards-footnote">Tap a medal for details. Keep playing to unlock them all.</p>
+            </div>
+
+            <!-- Medal detail bottom-sheet -->
+            <div id="award-detail-sheet" class="award-sheet hidden">
+                <div class="award-sheet-backdrop"></div>
+                <div class="award-sheet-panel">
+                    <div class="award-sheet-handle"></div>
+                    <button class="award-sheet-close" aria-label="Close">✕</button>
+                    <div id="award-sheet-content"></div>
+                </div>
+            </div>
         </div>
 
         <!-- Daily Challenge Options Modal -->
@@ -256,6 +297,12 @@
                         <button class="lb-period-tab active" data-period="daily">DAILY</button>
                         <button class="lb-period-tab" data-period="weekly">WEEKLY</button>
                         <button class="lb-period-tab" data-period="monthly">MONTHLY</button>
+                    </div>
+
+                    <!-- Reset countdown for the active period -->
+                    <div id="lb-countdown" class="lb-countdown">
+                        <span class="lb-countdown-label">⏳ Resets in</span>
+                        <span id="lb-countdown-timer" class="lb-countdown-timer">--:--:--</span>
                     </div>
 
                     <!-- Leaderboard list -->

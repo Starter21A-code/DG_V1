@@ -2941,7 +2941,7 @@ function showEquipmentSummary() {
     const summaryYear = document.getElementById('summary-year');
     const summaryStatus = document.getElementById('summary-status');
     const summaryUsers = document.getElementById('summary-users');
-    if (summaryYear) summaryYear.textContent = equipment.inService;
+    if (summaryYear) summaryYear.textContent = equipment.inService + (equipment.inServiceEstimated ? ' (estimated)' : '');
     if (summaryStatus) summaryStatus.textContent = equipment.status;
     if (summaryUsers) summaryUsers.textContent = equipment.users.join(', ');
 
@@ -3362,20 +3362,20 @@ function endGame() {
         if (trophyImg) trophyImg.classList.add('hidden');
 
         const RATING_META = {
-            'God of War':               { colour: 'rating-gold',  img: 'GodofWar2.png' },
-            'Lieutenant Colonel':        { colour: 'rating-green', img: 'Lieutenant_Colonel.png' },
-            'Major':                    { colour: 'rating-green', img: 'Major.png' },
-            'Captain':                  { colour: 'rating-amber', img: 'Captain.png' },
-            'Warrant Officer (Class 1)':{ colour: 'rating-amber', img: 'Warrant_Officer_Class_1.png' },
-            'Warrant Officer (Class 2)':{ colour: 'rating-amber', img: 'Warrant_Officer_Class_2.png' },
-            'Staff Sergeant':           { colour: 'rating-amber', img: 'Staff_Sergeant.png' },
-            'Sergeant':                 { colour: 'rating-red',   img: 'Sergeant.png' },
-            'Corporal':                 { colour: 'rating-red',   img: 'Corporal.png' },
-            'Lance Corporal':           { colour: 'rating-red',   img: 'Lance_Corporal.png' },
-            'Private':                  { colour: 'rating-red',   img: 'Private.png' },
-            'LIZZARD':                  { colour: 'rating-red',   img: 'Lizzard.png' }
+            'God of War':               { colour: 'rating-gold',  img: 'GodofWar2.jpg' },
+            'Lieutenant Colonel':        { colour: 'rating-green', img: 'Lieutenant_Colonel.jpg' },
+            'Major':                    { colour: 'rating-green', img: 'Major.jpg' },
+            'Captain':                  { colour: 'rating-amber', img: 'Captain.jpg' },
+            'Warrant Officer (Class 1)':{ colour: 'rating-amber', img: 'Warrant_Officer_Class_1.jpg' },
+            'Warrant Officer (Class 2)':{ colour: 'rating-amber', img: 'Warrant_Officer_Class_2.jpg' },
+            'Staff Sergeant':           { colour: 'rating-amber', img: 'Staff_Sergeant.jpg' },
+            'Sergeant':                 { colour: 'rating-red',   img: 'Sergeant.jpg' },
+            'Corporal':                 { colour: 'rating-red',   img: 'Corporal.jpg' },
+            'Lance Corporal':           { colour: 'rating-red',   img: 'Lance_Corporal.jpg' },
+            'Private':                  { colour: 'rating-red',   img: 'Private.jpg' },
+            'LIZZARD':                  { colour: 'rating-red',   img: 'Lizzard.jpg' }
         };
-        const meta = RATING_META[rating] || { colour: 'rating-red', img: 'Lizzard.png' };
+        const meta = RATING_META[rating] || { colour: 'rating-red', img: 'Lizzard.jpg' };
         scoreRatingEl.classList.add(meta.colour);
         if (trophyImg) {
             trophyImg.src = `PerformanceSymbols/${meta.img}`;
@@ -3903,7 +3903,7 @@ function openPracticeModal(equipment) {
     const rangeInfo = getRangeInfo(equipment.specs);
     practiceDom.modalRange.textContent = rangeInfo.value;
     document.getElementById('practice-modal-range-label').textContent = rangeInfo.label + ':';
-    practiceDom.modalService.textContent = equipment.inService;
+    practiceDom.modalService.textContent = equipment.inService + (equipment.inServiceEstimated ? ' (estimated)' : '');
     practiceDom.modalStatus.textContent = equipment.status;
     practiceDom.modalUsers.textContent = equipment.users.join(', ');
 

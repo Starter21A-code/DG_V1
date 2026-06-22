@@ -5324,6 +5324,105 @@ window.equipmentData = [
         },
         fact: "Pinaka is an Indian multiple rocket launcher developed by the DRDO and named after the bow of the Hindu god Shiva. It first proved itself during the 1999 Kargil War, and each Tatra-mounted launcher fires twelve 214mm rockets in roughly 44 seconds — a battery of six can blanket a one-kilometre square. Successive versions have stretched its reach from about 38 km on the original Mark I to 75 km and beyond with the Enhanced and guided variants. In 2022 it became a notable export success when Armenia placed the first foreign order for the system.",
         imageCredit: "Photo: Government of India / Press Information Bureau / GODL-India"
+    },
+    {
+        id: 230,
+        name: "Black Hornet",
+        type: "Reconnaissance Drone",
+        origin: "Norway",
+        coords: [59.9139, 10.7522],
+        images: [
+            "assets/Black_Hornet.jpg",
+            "assets/Black_Hornet_Bravo.jpg"
+        ],
+        specs: { speed: "21 km/h", armament: "Unarmed (EO/IR cameras)", operationalRange: "2 km" },
+        inService: 2012,
+        users: ["United Kingdom", "United States", "Norway", "France", "Australia", "40+ countries"],
+        status: "Active",
+        fact: "The Black Hornet is a nano-helicopter reconnaissance drone — barely 10cm long and weighing about 33 grams, small enough to sit in the palm of a hand or a soldier's pocket. Developed by Prox Dynamics in Norway (now part of Teledyne FLIR), it gives an individual soldier their own personal spy in the sky: it flies near-silently for around 25 minutes out to about 2km, streaming live day or thermal video so troops can peek over a ridge or into a building without exposing themselves. First fielded by the British Army around 2013, the Personal Reconnaissance System is now used by more than 40 armed forces around the world.",
+        imageCredits: [
+            "Photo: Corporal Daniel Wiepen / MOD / OGL v1.0 — image modified (cropped)",
+            "Photo: Henrysz / Wikimedia Commons / CC BY 4.0"
+        ]
+    },
+    {
+        id: 231,
+        name: "M1150 ABV",
+        type: "Combat Engineer Vehicle",
+        origin: "United States",
+        coords: [39.8283, -98.5795],
+        images: [
+            "assets/ABV.jpg",
+            "assets/ABV_Bravo.jpg"
+        ],
+        specs: { speed: "70 km/h", armament: "2x MICLIC line charges, mine plough, 12.7mm RWS", operationalRange: "400 km" },
+        inService: 2009,
+        users: ["United States"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Fully tracked — built on the M1 Abrams main battle tank chassis with seven road wheels per side, so it has an Abrams' size, speed and heavy armour but no big tank gun.",
+            hull: "Abrams hull fronted by a large hydraulic full-width mine plough (or roller) that digs up and shoulders buried mines aside, plus a lane-marking system that drops markers to show the cleared path behind it.",
+            armament: "Not a gun tank — it carries two rear-mounted MICLIC (Mine-Clearing Line Charge) launchers: rockets that drag a long explosive-filled hose across a minefield and detonate it to blast a clear lane. Self-defence is a remote-operated .50-cal machine gun.",
+            turret: "No main-gun turret — a low remote weapon station and the boxy MICLIC launch racks sit where an Abrams turret would be, giving it an unmistakable gunless silhouette on an Abrams body."
+        },
+        fact: "The M1150 Assault Breacher Vehicle, nicknamed the 'Shredder', is a US combat-engineer vehicle built on the M1 Abrams tank chassis and operated by both the Army and Marine Corps. Its job is to punch a safe lane through minefields and obstacles under fire: a full-width mine plough rips up buried mines while two rear-mounted line charges fire rockets that drag explosive-filled hoses across the ground and detonate them to clear a path in seconds. Riding on the Abrams hull gives it the protection and pace to lead an armoured assault and breach defences that would stop other engineer vehicles cold.",
+        imageCredits: [
+            "Photo: Cpl. Alisha Grezlik / U.S. Army / Public Domain",
+            "Photo: Spc. Tyler Kingsbury / U.S. Army / Public Domain — image modified (cropped)"
+        ]
+    },
+    {
+        id: 232,
+        name: "IMR-3M",
+        type: "Combat Engineer Vehicle",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/IMR3M.jpg",
+            "assets/IMR3M_Bravo.jpg"
+        ],
+        specs: { speed: "60 km/h", armament: "7.62mm MG (self-defence)", operationalRange: "500 km" },
+        inService: 2000,
+        users: ["Russia"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Fully tracked — built on the T-90 main battle tank chassis (the earlier IMR-2 used the T-72), with six road wheels per side. It has a tank's protection and mobility but no tank gun.",
+            hull: "Tank hull fitted with a large hydraulic dozer/excavator blade across the front for shifting earth, rubble and obstacles, and full NBC protection so it can keep working in chemically or radioactively contaminated ground.",
+            armament: "Not a fighting vehicle — its 'weapons' are engineering tools: a rotating telescopic manipulator arm tipped with a gripper and scarifier for tearing apart and clearing debris, plus mounts for KMT mine ploughs or rollers. Self-defence is a single roof machine gun.",
+            turret: "No gun turret — a rotating telescopic working arm/crane and the operator's cabin sit on the hull. Folded arm plus the front dozer blade give it an unmistakable non-combat silhouette."
+        },
+        fact: "The IMR-3M (Russian: Инженерная Машина Разграждения, 'engineering obstacle-clearing vehicle') is a Russian armoured combat-engineer vehicle built on the T-90 tank chassis, designed to clear rubble and obstacles and cut passages for advancing forces. It pairs a heavy front dozer blade with a rotating telescopic manipulator arm tipped with a gripper and scarifier, and — crucially — carries full nuclear, biological and chemical protection so it can keep working in contaminated battlefields where ordinary engineering plant could not. The tank base lets it do all of this under armour while keeping pace with the units it supports.",
+        imageCredits: [
+            "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0",
+            "Photo: Vitaly V. Kuzmin / vitalykuzmin.net / CC BY-SA 4.0 — image modified (cropped, symbol removed)"
+        ]
+    },
+    {
+        id: 233,
+        name: "GCZ-112",
+        type: "Combat Engineer Vehicle",
+        origin: "China",
+        coords: [39.9042, 116.4074],
+        images: [
+            "assets/GCZ112.jpg",
+            "assets/GCZ112_Bravo.jpg"
+        ],
+        specs: { speed: "45 km/h (estimated)", armament: "Unarmed (dozer blade / ripper)", operationalRange: "400 km (estimated)" },
+        inService: 2010,
+        inServiceEstimated: true,
+        users: ["China"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Fully tracked armoured bulldozer running on a wide tractor-style track unit for soft ground — a low, heavy earthmoving machine rather than a tank with road wheels.",
+            hull: "Compact armoured operator's cab perched over the engine, with a very large hydraulic dozer blade filling the entire front and (typical of engineering dozers) a rear ripper tine for breaking up hard ground.",
+            armament: "Unarmed — it is a combat engineering bulldozer. Its 'tools' are the front dozer blade for cutting routes, filling craters and clearing obstacles, plus the rear ripper; light armour shields the operator from splinters and small-arms fire.",
+            turret: "No turret of any kind — just the boxy armoured cab and the dominant front blade, an unmistakable military-bulldozer silhouette."
+        },
+        fact: "The GCZ-112 is a Chinese armoured combat-engineering bulldozer used by the People's Liberation Army to cut routes, fill craters, clear obstacles and prepare positions under fire. Its protected cab lets the operator keep working close to the front line where an ordinary unarmoured bulldozer could not. It is a regular competitor in the 'Safe Route' engineering event of the International Army Games, where Chinese crews drive it through obstacle- and route-clearing tasks alongside teams from countries such as Kazakhstan and Belarus.",
+        imageCredits: [
+            "Photo: Russian Ministry of Defence / Mil.ru / CC BY 4.0 — image modified (symbols removed)",
+            "Photo: Russian Ministry of Defence / Mil.ru / CC BY 4.0 — image modified (symbols removed)"
+        ]
     }
 ];
 

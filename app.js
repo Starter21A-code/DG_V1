@@ -3444,7 +3444,7 @@ function endGame() {
 
         const todayKey = getTodaysSeed().toString();
         const data = getDailyData();
-        const alreadySubmitted = data.history && data.history[todayKey];
+        const alreadySubmitted = hasSubmittedDailyScoreToday();
 
         // Callsign submission is now triggered from the LEADERBOARD button, not shown inline
         if (inlineCallsignPanel) inlineCallsignPanel.classList.add('hidden');
@@ -4738,6 +4738,13 @@ function submitDailyScore(name, score) {
         scoreProgression: state.speedrunScoreProgression  // cumulative score after each target
     };
 
+    // Mark that the score was actually POSTED to the leaderboard (with a callsign).
+    // This is distinct from the local-only record written by recordDailyResultLocal()
+    // at the end of every run — otherwise finishing a run would suppress the callsign
+    // prompt because a history entry already exists.
+    if (!data.submitted) data.submitted = {};
+    data.submitted[todayKey] = true;
+
     // Clean up old entries (keep last 30 days)
     cleanupOldHistory(data);
 
@@ -4765,6 +4772,15 @@ function cleanupOldHistory(data) {
         for (const key of Object.keys(data.attempts)) {
             if (parseInt(key) < cutoff) {
                 delete data.attempts[key];
+            }
+        }
+    }
+
+    // Prune old leaderboard-submission flags as well
+    if (data.submitted) {
+        for (const key of Object.keys(data.submitted)) {
+            if (parseInt(key) < cutoff) {
+                delete data.submitted[key];
             }
         }
     }
@@ -5361,6 +5377,9 @@ function formatCountdown(ms) {
 }
 
 let lbCountdownInterval = null;
+// The reset instant we're currently counting down to, so we can detect the exact
+// tick the period rolls over and refresh the (now reset) leaderboard.
+let lbCountdownTarget = null; // { period, time }
 
 function updateLbCountdown() {
     const timerEl = document.getElementById('lb-countdown-timer');
@@ -5371,8 +5390,23 @@ function updateLbCountdown() {
         !globalPanel || globalPanel.classList.contains('hidden')) {
         return;
     }
-    const period = document.querySelector('.lb-period-tab.active')?.dataset.period || 'daily';
-    const remaining = getNextPeriodReset(period).getTime() - Date.now();
+    const period   = document.querySelector('.lb-period-tab.active')?.dataset.period || 'daily';
+    const targetMs  = getNextPeriodReset(period).getTime();
+    const remaining = targetMs - Date.now();
+
+    // Period rollover: getNextPeriodReset() jumps to a later instant the moment the
+    // boundary passes. When that happens for the period we're viewing, the leaderboard
+    // keys (dateKey/weekKey/monthKey) have rolled over too — re-fetch so the just-ended
+    // period's entries clear out instead of lingering on screen. Guard on `period` so a
+    // simple tab switch (daily→weekly) doesn't count as a rollover.
+    if (lbCountdownTarget && lbCountdownTarget.period === period && targetMs > lbCountdownTarget.time) {
+        lbCountdownTarget = { period, time: targetMs };
+        timerEl.textContent = formatCountdown(Math.max(0, remaining));
+        loadGlobalLeaderboard(period); // refresh list + re-evaluate period winners
+        return;
+    }
+    lbCountdownTarget = { period, time: targetMs };
+
     timerEl.textContent = remaining <= 0 ? 'Resetting…' : formatCountdown(remaining);
 }
 
@@ -5556,7 +5590,9 @@ function setupCallsignModal() {
 function hasSubmittedDailyScoreToday() {
     const data = getDailyData();
     const todayKey = getTodaysSeed().toString();
-    return !!(data.history && data.history[todayKey]);
+    // Gate on the leaderboard-submission flag, NOT the local history record —
+    // the latter is written for every completed run even before any callsign is posted.
+    return !!(data.submitted && data.submitted[todayKey]);
 }
 
 function openDailyLeaderboardOnGlobal() {

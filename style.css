@@ -903,14 +903,33 @@ body {
 
 .awards-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* minmax(0, 1fr) — NOT 1fr — so columns stay equal and can shrink below the
+       medal art's intrinsic width. Plain 1fr (= minmax(auto,1fr)) lets each PNG's
+       native pixel width drive its column, producing unequal columns and horizontal
+       overflow on narrow screens. */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.75rem;
 }
 
 /* Phones: 3 per row so the medals stay large enough to read */
 @media (max-width: 600px) {
     .awards-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    /* Back button sits ABOVE the centred title instead of being absolutely
+       positioned on top of it (which overlapped "SERVICE RECORD" on phones). */
+    .awards-header {
+        display: flex;
+        flex-direction: column;
+        /* default align-items: stretch keeps the h2/p full width & centred */
+    }
+
+    .awards-header .back-btn {
+        position: static;
+        transform: none;
+        align-self: flex-start;
+        margin-bottom: 0.6rem;
     }
 }
 
@@ -919,6 +938,7 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    min-width: 0;
     gap: 0.5rem;
     padding: 0.85rem 0.6rem;
     background: var(--glass-bg);

@@ -5398,6 +5398,58 @@ window.equipmentData = [
         ]
     },
     {
+        id: 310,
+        name: "Terrier",
+        type: "Combat Engineer Vehicle",
+        origin: "United Kingdom",
+        coords: [55.3781, -3.4360],
+        images: [
+            "assets/Terrier.jpg",
+            "assets/Terrier_Bravo.jpg"
+        ],
+        specs: { speed: "70 km/h", armament: "7.62mm GPMG, 360° smoke grenade launchers", operationalRange: "600 km" },
+        inService: 2013,
+        users: ["United Kingdom"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Fully tracked with hydropneumatic suspension — a purpose-built ~31.5-tonne engineer chassis (not a converted tank hull), compact and light enough to be air-transported by A400M or C-17.",
+            hull: "Dominated by engineering plant rather than a fighting hull: a large clamshell front bucket/dozer for earth-moving and obstacle clearance, plus a side-mounted telescopic excavator arm that folds back along the hull for travel. Fitted with modular mine-protection armour.",
+            armament: "Not a combat vehicle — armed only for self-defence with a single 7.62mm general-purpose machine gun, backed by electric smoke grenade launchers giving 360° concealment. Its real 'weapons' are the front bucket and digger arm.",
+            turret: "No gun turret — just the operator's armoured cab, a small weapon mount and the folded excavator arm on top of the hull. It can even be driven and operated by remote control from up to 1,000 m away."
+        },
+        fact: "The Terrier is the British Army's armoured digger — a roughly 31.5-tonne combat engineer vehicle built by BAE Systems to replace the Cold War-era FV180 Combat Engineer Tractor. Operated by the Royal Engineers, it digs trenches and fighting positions, clears rubble and obstacles, and prepares routes for advancing forces using a clamshell front bucket and a side-mounted telescopic excavator arm. Fully digitised with 360° day-and-night cameras, it can be run by its two-person crew or driven by remote control from up to a kilometre away — letting it work through minefields and other hazards without exposing the operators. Around 60 were delivered to the British Army from 2013, and it is both fast (up to 70 km/h) and light enough to be flown into theatre by A400M or C-17.",
+        imageCredits: [
+            "Photo: Andrew Linnett / MOD / OGL v1.0",
+            "Photo: Sergeant Ben Beale / MOD / OGL v3.0 — image modified (cropped)"
+        ]
+    },
+    {
+        id: 311,
+        name: "Fahd",
+        type: "APC",
+        origin: "Egypt",
+        coords: [26.8206, 30.8025],
+        images: [
+            "assets/Fahd.jpg",
+            "assets/Fahd_Bravo.jpg"
+        ],
+        specs: { speed: "100 km/h", armament: "Up to 3x 7.62mm machine guns", operationalRange: "700 km" },
+        inService: 1986,
+        users: ["Egypt", "Algeria", "Kuwait", "Oman", "Sudan", "Mali", "Burundi", "Burkina Faso"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "Wheeled 4x4 — built on a militarised Mercedes-Benz LAP 1117/32 truck chassis, so it rides high on four large road wheels with a distinctly commercial-truck stance rather than tracks.",
+            hull: "Tall, slab-sided all-welded steel box body with a sharply sloped nose, strongly resembling the German Fuchs. Four firing ports with vision blocks run down each side of the troop compartment, and the engine sits up front behind a louvred grille.",
+            armament: "No autocannon in the base APC — just up to three pintle-mounted 7.62mm machine guns (one over the commander, two by the roof hatches). Turreted variants (Fahd-240/280) add a 23mm or 30mm cannon.",
+            turret: "Base model has no rotating turret — only open or shielded machine-gun mounts on the roof, giving it a clean, boxy, turretless outline."
+        },
+        fact: "The Fahd is Egypt's home-built 4x4 wheeled armoured personnel carrier, produced by the Kader Factory for Developed Industries and in service since 1986. To keep it affordable and easy to maintain, it is built on a militarised Mercedes-Benz LAP 1117/32 truck chassis clothed in an all-welded steel box body — a layout that gives it a strong family resemblance to the German Fuchs. A two-man crew carries up to ten infantry, who can fire from four ports along each side, while up to three 7.62mm machine guns provide covering fire. Egypt fields roughly 1,400 of them as the backbone of its mechanised infantry, and the type has been widely exported across Africa and the Middle East, with turreted and autocannon-armed variants developed over the years.",
+        imageCredits: [
+            "Photo: ctsnow / Flickr / CC BY 2.0 — image modified (cropped, flag removed)",
+            "Photo: Gigi Ibrahim / Flickr / CC BY 2.0 — image modified (cropped)"
+        ]
+    },
+    {
         id: 233,
         name: "GCZ-112",
         type: "Combat Engineer Vehicle",
@@ -5422,6 +5474,100 @@ window.equipmentData = [
         imageCredits: [
             "Photo: Russian Ministry of Defence / Mil.ru / CC BY 4.0 — image modified (symbols removed)",
             "Photo: Russian Ministry of Defence / Mil.ru / CC BY 4.0 — image modified (symbols removed)"
+        ]
+    },
+    {
+        id: 234,
+        name: "Matador",
+        type: "APC",
+        origin: "South Africa / Azerbaijan",
+        coords: [40.4093, 49.8671],
+        image: "assets/Matador.jpg",
+        specs: { speed: "100 km/h", armament: "12.7mm RWS / 7.62mm MG", operationalRange: "700 km" },
+        inService: 2007,
+        inServiceEstimated: true,
+        users: ["Azerbaijan", "Jordan", "Kazakhstan"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "4×4 on four very large run-flat tyres with high ground clearance — a tall, mine-protected wheeled APC, not a tracked vehicle.",
+            hull: "Tall, angular monocoque hull with a sharply V-shaped underbelly to deflect mine and IED blasts, a steeply sloped armoured nose and small armoured windows. Bigger and longer than its 4×4 sibling, the Marauder, so it can carry a full dismount section.",
+            armament: "Built around protection and troop capacity rather than firepower — typically just a roof ring-mount or remote weapon station for a 7.62mm or 12.7mm machine gun.",
+            turret: "Usually no large turret — an open commander's cupola or a low remote weapon station sits on the roof above the troop compartment."
+        },
+        fact: "The Matador is a 4×4 mine-protected armoured personnel carrier designed by South Africa's Paramount Group — the larger sibling of the Marauder — built around a V-shaped hull to shield a full infantry section from mines and IEDs. It is strongly tied to Azerbaijan, which produces it under licence through AZAD Systems Co., a joint venture with Paramount, so the very same vehicle rolls off lines in both South Africa and Azerbaijan. Light enough to be air-transportable yet heavily protected, it has been exported to several Middle Eastern and Central Asian armies.",
+        imageCredit: "Photo: Gulustan / Wikimedia Commons / CC BY-SA 3.0 Unported"
+    },
+    {
+        id: 235,
+        name: "Marder 1A5",
+        type: "IFV",
+        origin: "Germany",
+        coords: [51.1657, 10.4515],
+        image: "assets/Marder_1A5.jpg",
+        specs: { speed: "75 km/h", armament: "20mm Rh202 autocannon / MILAN ATGM", operationalRange: "520 km" },
+        inService: 1971,
+        users: ["Germany", "Chile", "Indonesia", "Jordan", "Ukraine"],
+        status: "Active",
+        recognitionFeatures: {
+            hull: "Long, boxy tracked hull with a distinctive low, flat rear deck housing two rear-firing 7.62mm machine guns in remote mounts either side of the ramp — a feature unique among modern IFVs.",
+            turret: "Compact, low-profile two-man turret set well forward on the hull, giving the vehicle a nose-heavy silhouette.",
+            armament: "20mm Rheinmetall Rh202 autocannon as primary armament, with a MILAN anti-tank guided missile launcher often fitted on the turret roof.",
+            tracks: "Six road wheels per side with a tracked running gear; the hull sits noticeably high off the ground for an IFV of its era."
+        },
+        fact: "The Marder entered West German service in 1971 as one of the first true purpose-built infantry fighting vehicles, designed to keep pace with the Leopard tanks it escorts while carrying its squad into the fight under armour. The 1A5 upgrade added spall liners and improved mine protection learned from peacekeeping deployments. Despite being over five decades old, it remains front-line equipment — Germany has donated dozens to Ukraine, where it continues to see active combat use today.",
+        imageCredit: "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
+    },
+    {
+        id: 236,
+        name: "KF-21 Boramae",
+        type: "Fighter Aircraft",
+        origin: "South Korea",
+        coords: [36.3504, 127.3845],
+        images: [
+            "assets/KF21_Boramae.jpg",
+            "assets/KF21_Boramae_Bravo.jpg"
+        ],
+        specs: { speed: "Mach 1.8", armament: "20mm M61 Vulcan / AIM-2000 / Meteor BVRAAM", operationalRange: "2,900 km" },
+        inService: 2026,
+        inServiceEstimated: true,
+        users: ["South Korea", "Indonesia"],
+        status: "Active",
+        recognitionFeatures: {
+            shape: "Twin-engine fighter with a sharply chined nose and twin canted vertical tails, broadly resembling a smaller F-22 or F-35 but with two engines instead of one.",
+            intakes: "Two separate side-mounted intakes set well back from the nose, distinct from the F-35's single ventral intake.",
+            wings: "Trapezoidal wings with clipped tips, blended smoothly into the fuselage for reduced radar signature, though it carries weapons on external pylons unlike a true stealth design.",
+            cockpit: "Large single-piece bubble canopy giving excellent all-round visibility, mounted high on a fuselage that tapers cleanly to the nose."
+        },
+        fact: "The KF-21 Boramae (\"Young Hawk\") is South Korea's first domestically developed fighter jet, built by Korea Aerospace Industries with Indonesia as a development partner. Designed as a 4.5-generation fighter with some stealth shaping but external weapons carriage, it bridges the gap between older fighters and full fifth-generation jets like the F-35. It entered low-rate production and began joining South Korean Air Force squadrons in the mid-2020s, marking Korea's entry into the small club of nations producing their own advanced combat aircraft.",
+        imageCredits: [
+            "Photo: ROK Ministry of National Defense / Korea Open Government License Type 1 — image modified (cropped, symbols removed)",
+            "Photo: Peppsi Wings / Wikimedia Commons / CC BY 3.0 Unported — image modified (symbols removed)"
+        ]
+    },
+    {
+        id: 237,
+        name: "HAL Tejas",
+        type: "Fighter Aircraft",
+        origin: "India",
+        coords: [28.6139, 77.2090],
+        images: [
+            "assets/HAL_Teja.jpg",
+            "assets/HAL_Teja_Bravo.jpg"
+        ],
+        specs: { speed: "Mach 1.6", armament: "23mm GSh-23 cannon / Astra BVRAAM / R-73", operationalRange: "3,000 km" },
+        inService: 2016,
+        users: ["India"],
+        status: "Active",
+        recognitionFeatures: {
+            shape: "Small, compact single-engine fighter with a tailless-delta wing planform and no separate horizontal tailplane — the delta wing itself provides pitch control.",
+            intake: "Single ventral intake below the cockpit, distinct from the twin side-mounted intakes of larger fighters like the KF-21 or Su-30.",
+            wings: "Sharply swept delta wing blending directly into the fuselage with no clear break, giving a compact, close-coupled silhouette overall smaller than most contemporary fighters.",
+            tail: "Single vertical tail fin only, with no horizontal stabilisers at the rear — a hallmark of the tailless-delta layout shared with aircraft like the Mirage 2000 and Eurofighter Typhoon."
+        },
+        fact: "The HAL Tejas is India's indigenously developed lightweight multirole fighter, designed by the state-owned Hindustan Aeronautics Limited to replace its ageing MiG-21 fleet. Development stretched over three decades from program launch to squadron service, reflecting the difficulty of building a first indigenous fighter from scratch. Small, agile and built around a tailless-delta configuration, it now anchors India's push toward self-reliant defence production, with a more powerful Mk.1A variant and a twin-engine Tejas Mk.2 in development.",
+        imageCredits: [
+            "Photo: Indian Ministry of Defence / Government Open Data License – India (GODL) — image modified (symbols removed)",
+            "Photo: Rahuldevnath / Wikimedia Commons / CC BY 3.0 Unported — image modified (symbols removed)"
         ]
     }
 ];

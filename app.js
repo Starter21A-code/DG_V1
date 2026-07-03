@@ -4587,6 +4587,19 @@ function getTodaysSeed() {
     return seedFromDate(getGameDayDate());
 }
 
+// Seeds are YYYYMMDD integers, so plain arithmetic on them breaks at month
+// boundaries (20260701 - 20260630 = 71, not 1). Always step through a real
+// Date to get the previous day's key.
+function dateFromSeed(seed) {
+    const k = parseInt(seed);
+    return new Date(Date.UTC(Math.floor(k / 10000), Math.floor(k / 100) % 100 - 1, k % 100));
+}
+function prevDayKey(seed) {
+    const d = dateFromSeed(seed);
+    d.setUTCDate(d.getUTCDate() - 1);
+    return seedFromDate(d);
+}
+
 function getDailyEquipment() {
     const seed = getTodaysSeed();
     const subSeed = seed * 31 + 37; // Different seed for ordering — varies the sequence each day
@@ -4758,8 +4771,12 @@ function submitDailyScore(name, score) {
 }
 
 function cleanupOldHistory(data) {
-    const today = getTodaysSeed();
-    const cutoff = today - 30; // Keep last 30 days
+    // Keep last 30 days. The cutoff must be computed via a real Date —
+    // subtracting 30 from a YYYYMMDD seed lands below every key of the
+    // previous month and wipes it entirely on the 1st.
+    const cutoffDate = getGameDayDate();
+    cutoffDate.setUTCDate(cutoffDate.getUTCDate() - 30);
+    const cutoff = seedFromDate(cutoffDate);
 
     for (const key of Object.keys(data.history)) {
         if (parseInt(key) < cutoff) {
@@ -4863,7 +4880,7 @@ function calculateStreaks(sortedEntries) {
                 tempStreak++;
                 currentStreak = tempStreak;
             }
-            expectedDate--;
+            expectedDate = prevDayKey(expectedDate);
         } else {
             break;
         }
@@ -4877,7 +4894,7 @@ function calculateStreaks(sortedEntries) {
         const curr = parseInt(sortedEntries[i][0]);
         const next = parseInt(sortedEntries[i + 1][0]);
 
-        if (curr - next === 1) {
+        if (prevDayKey(curr) === next) {
             tempStreak++;
             longestStreak = Math.max(longestStreak, tempStreak);
         } else {

@@ -5481,7 +5481,7 @@ window.equipmentData = [
         name: "Matador",
         type: "APC",
         origin: "South Africa / Azerbaijan",
-        coords: [40.4093, 49.8671],
+        coords: [-25.7479, 28.2293],
         image: "assets/Matador.jpg",
         specs: { speed: "100 km/h", armament: "12.7mm RWS / 7.62mm MG", operationalRange: "700 km" },
         inService: 2007,
@@ -5489,12 +5489,12 @@ window.equipmentData = [
         users: ["Azerbaijan", "Jordan", "Kazakhstan"],
         status: "Active",
         recognitionFeatures: {
-            wheels: "4×4 on four very large run-flat tyres with high ground clearance — a tall, mine-protected wheeled APC, not a tracked vehicle.",
+            wheels: "6×6 on six very large run-flat tyres with high ground clearance — a tall, mine-protected wheeled APC, not a tracked vehicle.",
             hull: "Tall, angular monocoque hull with a sharply V-shaped underbelly to deflect mine and IED blasts, a steeply sloped armoured nose and small armoured windows. Bigger and longer than its 4×4 sibling, the Marauder, so it can carry a full dismount section.",
             armament: "Built around protection and troop capacity rather than firepower — typically just a roof ring-mount or remote weapon station for a 7.62mm or 12.7mm machine gun.",
             turret: "Usually no large turret — an open commander's cupola or a low remote weapon station sits on the roof above the troop compartment."
         },
-        fact: "The Matador is a 4×4 mine-protected armoured personnel carrier designed by South Africa's Paramount Group — the larger sibling of the Marauder — built around a V-shaped hull to shield a full infantry section from mines and IEDs. It is strongly tied to Azerbaijan, which produces it under licence through AZAD Systems Co., a joint venture with Paramount, so the very same vehicle rolls off lines in both South Africa and Azerbaijan. Light enough to be air-transportable yet heavily protected, it has been exported to several Middle Eastern and Central Asian armies.",
+        fact: "The Matador is a 6×6 mine-protected armoured personnel carrier designed by South Africa's Paramount Group — the larger sibling of the 4×4 Marauder — built around a V-shaped hull to shield a full infantry section from mines and IEDs. It is strongly tied to Azerbaijan, which produces it under licence through AZAD Systems Co., a joint venture with Paramount, so the very same vehicle rolls off lines in both South Africa and Azerbaijan. Light enough to be air-transportable yet heavily protected, it has been exported to several Middle Eastern and Central Asian armies.",
         imageCredit: "Photo: Gulustan / Wikimedia Commons / CC BY-SA 3.0 Unported"
     },
     {
@@ -5512,7 +5512,7 @@ window.equipmentData = [
             hull: "Long, boxy tracked hull with a distinctive low, flat rear deck housing two rear-firing 7.62mm machine guns in remote mounts either side of the ramp — a feature unique among modern IFVs.",
             turret: "Compact, low-profile two-man turret set well forward on the hull, giving the vehicle a nose-heavy silhouette.",
             armament: "20mm Rheinmetall Rh202 autocannon as primary armament, with a MILAN anti-tank guided missile launcher often fitted on the turret roof.",
-            tracks: "Six road wheels per side with a tracked running gear; the hull sits noticeably high off the ground for an IFV of its era."
+            wheels: "Six road wheels per side with a tracked running gear; the hull sits noticeably high off the ground for an IFV of its era."
         },
         fact: "The Marder entered West German service in 1971 as one of the first true purpose-built infantry fighting vehicles, designed to keep pace with the Leopard tanks it escorts while carrying its squad into the fight under armour. The 1A5 upgrade added spall liners and improved mine protection learned from peacekeeping deployments. Despite being over five decades old, it remains front-line equipment — Germany has donated dozens to Ukraine, where it continues to see active combat use today.",
         imageCredit: "Photo: Boevaya mashina / Wikimedia Commons / CC BY-SA 4.0"
@@ -5527,16 +5527,16 @@ window.equipmentData = [
             "assets/KF21_Boramae.jpg",
             "assets/KF21_Boramae_Bravo.jpg"
         ],
-        specs: { speed: "Mach 1.8", armament: "20mm M61 Vulcan / AIM-2000 / Meteor BVRAAM", operationalRange: "2,900 km" },
+        specs: { speed: "Mach 1.8", armament: "20mm M61 Vulcan / IRIS-T / Meteor BVRAAM", combatRadius: "800 km" },
         inService: 2026,
         inServiceEstimated: true,
         users: ["South Korea", "Indonesia"],
         status: "Active",
         recognitionFeatures: {
-            shape: "Twin-engine fighter with a sharply chined nose and twin canted vertical tails, broadly resembling a smaller F-22 or F-35 but with two engines instead of one.",
-            intakes: "Two separate side-mounted intakes set well back from the nose, distinct from the F-35's single ventral intake.",
             wings: "Trapezoidal wings with clipped tips, blended smoothly into the fuselage for reduced radar signature, though it carries weapons on external pylons unlike a true stealth design.",
-            cockpit: "Large single-piece bubble canopy giving excellent all-round visibility, mounted high on a fuselage that tapers cleanly to the nose."
+            engine: "Twin engines fed by two separate side-mounted intakes set well back from a sharply chined nose, distinct from the F-35's single ventral intake.",
+            fuselage: "Broad, flat-sided fuselage with a chined, faceted nose section and twin canted vertical tails, broadly resembling a smaller F-22 or F-35 but with two engines instead of one.",
+            tail: "Twin outward-canted (angled) vertical tail fins mounted well apart, a shaping cue shared with stealthier designs like the F-22 and F-35."
         },
         fact: "The KF-21 Boramae (\"Young Hawk\") is South Korea's first domestically developed fighter jet, built by Korea Aerospace Industries with Indonesia as a development partner. Designed as a 4.5-generation fighter with some stealth shaping but external weapons carriage, it bridges the gap between older fighters and full fifth-generation jets like the F-35. It entered low-rate production and began joining South Korean Air Force squadrons in the mid-2020s, marking Korea's entry into the small club of nations producing their own advanced combat aircraft.",
         imageCredits: [
@@ -5554,14 +5554,14 @@ window.equipmentData = [
             "assets/HAL_Teja.jpg",
             "assets/HAL_Teja_Bravo.jpg"
         ],
-        specs: { speed: "Mach 1.6", armament: "23mm GSh-23 cannon / Astra BVRAAM / R-73", operationalRange: "3,000 km" },
+        specs: { speed: "Mach 1.6", armament: "23mm GSh-23 cannon / Astra BVRAAM / R-73", combatRadius: "500 km" },
         inService: 2016,
         users: ["India"],
         status: "Active",
         recognitionFeatures: {
-            shape: "Small, compact single-engine fighter with a tailless-delta wing planform and no separate horizontal tailplane — the delta wing itself provides pitch control.",
-            intake: "Single ventral intake below the cockpit, distinct from the twin side-mounted intakes of larger fighters like the KF-21 or Su-30.",
-            wings: "Sharply swept delta wing blending directly into the fuselage with no clear break, giving a compact, close-coupled silhouette overall smaller than most contemporary fighters.",
+            wings: "Sharply swept tailless-delta wing blending directly into the fuselage with no clear break, giving a compact, close-coupled silhouette overall smaller than most contemporary fighters.",
+            engine: "Single afterburning turbofan fed by two fixed-geometry intakes mounted low on the fuselage sides beneath the wing root, smaller than the intakes on twin-engine fighters like the KF-21 or Su-30 but not a single ventral duct.",
+            fuselage: "Small, compact single-engine airframe with a short nose and a bubble canopy set well forward, giving it a stubby profile next to larger twin-engine fighters.",
             tail: "Single vertical tail fin only, with no horizontal stabilisers at the rear — a hallmark of the tailless-delta layout shared with aircraft like the Mirage 2000 and Eurofighter Typhoon."
         },
         fact: "The HAL Tejas is India's indigenously developed lightweight multirole fighter, designed by the state-owned Hindustan Aeronautics Limited to replace its ageing MiG-21 fleet. Development stretched over three decades from program launch to squadron service, reflecting the difficulty of building a first indigenous fighter from scratch. Small, agile and built around a tailless-delta configuration, it now anchors India's push toward self-reliant defence production, with a more powerful Mk.1A variant and a twin-engine Tejas Mk.2 in development.",

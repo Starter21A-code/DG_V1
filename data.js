@@ -3176,6 +3176,32 @@ window.equipmentData = [
         fact: "The AJAX features advanced digital architecture with 360-degree situational awareness systems, replacing the British Army's aging Combat Vehicle Reconnaissance (Tracked) fleet."
     },
     {
+        id: 314,
+        name: "FV510 Warrior",
+        type: "IFV",
+        origin: "United Kingdom",
+        coords: [55.3781, -3.4360],
+        images: [
+            "assets/FV510_Warrior.jpg",
+            "assets/FV510_Warrior_Bravo.jpg"
+        ],
+        specs: { speed: "75 km/h", armament: "30mm L21A1 RARDEN cannon", operationalRange: "660 km" },
+        inService: 1988,
+        users: ["United Kingdom", "Kuwait"],
+        status: "Active - Being Withdrawn",
+        fact: "The FV510 Warrior has been the backbone of British mechanized infantry since 1988, carrying a section of troops into battle alongside the Challenger 2 tanks it escorts. A planned mid-life upgrade (WCSP) was cancelled in 2021 after major cost overruns, and the Army is now retiring Warrior in favour of the wheeled Boxer for the mechanized infantry role. It saw extensive combat in the Gulf War, Kosovo, Iraq and Afghanistan.",
+        recognitionFeatures: {
+            hull: "Long, low, boxy tracked hull typical of late-Cold-War IFV design, with sloped glacis plate and a rear-mounted troop compartment with two roof hatches for dismounts.",
+            turret: "Compact, low-set two-man turret positioned centrally on the hull — noticeably plainer and more angular than the AJAX's modern faceted turret.",
+            armament: "Distinctively long, slender 30mm RARDEN cannon barrel with a thin profile, unlike the thicker autocannons on most contemporary IFVs.",
+            wheels: "Six road wheels per side with a tracked chassis; drive sprocket at front, idler at rear."
+        },
+        imageCredits: [
+            "Photo: davric / Wikimedia Commons / Public Domain",
+            "Photo: Cpl Si Longworth RLC (Phot) / UK MOD / OGL v1.0"
+        ]
+    },
+    {
         id: 99,
         name: "Namer",
         type: "APC",

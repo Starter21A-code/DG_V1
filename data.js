@@ -796,6 +796,32 @@ window.equipmentData = [
         ]
     },
     {
+        id: 312,
+        name: "Su-34 Fullback",
+        type: "Strike Aircraft",
+        origin: "Russia",
+        coords: [55.0084, 82.9357],
+        images: [
+            "assets/SU34.jpg",
+            "assets/SU34_Bravo.jpg"
+        ],
+        specs: { speed: "Mach 1.8", armament: "30mm GSh-30-1 cannon, KAB-500/1500, Kh-29/59", combatRadius: "1,100 km" },
+        inService: 2014,
+        users: ["Russia"],
+        status: "Active",
+        fact: "The Su-34 'Fullback' is a heavily armored tactical bomber developed from the Su-27 Flanker airframe, built around a titanium 'bathtub' cockpit that shields the crew from small-arms fire and shrapnel. Unlike every other Flanker derivative, its two crew sit side-by-side rather than in tandem, giving it the flattened, wide nose that is its single most obvious recognition feature. It has served as Russia's primary strike aircraft over Ukraine since 2022, delivering glide bombs from stand-off range.",
+        recognitionFeatures: {
+            wings: "Mid-mounted swept wings shared with the Flanker family, but fitted with small triangular canards at the wing-root/intake juncture — a feature the single-seat Su-35 lacks entirely.",
+            engine: "Twin AL-31FM1 turbofans with plain, fixed round exhaust nozzles — unlike the Su-35's angular thrust-vectoring nozzles, which droop at different angles when parked.",
+            fuselage: "Distinctive flattened, wide 'platypus' nose housing a side-by-side two-seat cockpit for pilot and navigator — instantly distinguishes it from the sleek, needle-nosed, single-seat Su-35.",
+            tail: "Twin outward-canted vertical stabilizers with a stinger tail boom similar to other Flankers, though shorter and less pronounced than the Su-35's."
+        },
+        imageCredits: [
+            "Photo: Oleg V. Belyakov - AirTeamImages / Wikimedia Commons / CC BY-SA 3.0",
+            "Photo: Alex Beltyukov / Wikimedia Commons / CC BY-SA 3.0"
+        ]
+    },
+    {
         id: 23,
         name: "IRIAF F-14 Tomcat",
         type: "Fighter Aircraft",

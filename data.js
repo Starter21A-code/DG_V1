@@ -900,6 +900,32 @@ window.equipmentData = [
         }
     },
     {
+        id: 313,
+        name: "Chengdu J-10",
+        type: "Fighter Aircraft",
+        origin: "China",
+        coords: [30.5728, 104.0668],
+        images: [
+            "assets/Chengdu_J10.jpg",
+            "assets/Chengdu_J10_Bravo.jpg"
+        ],
+        specs: { speed: "Mach 1.8", armament: "23mm twin-barrel cannon, PL-10, PL-15", combatRadius: "1,240 km" },
+        inService: 2005,
+        users: ["China", "Pakistan"],
+        status: "Active",
+        fact: "The Chengdu J-10 'Vigorous Dragon' is China's first indigenously designed 4th-generation multirole fighter, pairing a canard-delta layout similar to the Eurofighter Typhoon and Rafale with fly-by-wire controls for high agility. Over 500 have been built across several variants, with the radar- and engine-upgraded J-10C now the PLAAF's primary single-engine fighter. Pakistan became its first export customer in 2022, and PAF J-10Cs saw combat during the May 2025 India-Pakistan clashes.",
+        recognitionFeatures: {
+            wings: "Cropped-delta wings with large all-moving canards mounted high on the intake sides — a canard-delta layout shared with the Eurofighter Typhoon and Rafale, but on a single-engine airframe.",
+            engine: "Single engine fed by a distinctive rectangular ventral intake under the fuselage — unlike the twin side-by-side intakes of the stealthy J-20.",
+            fuselage: "Slender, area-ruled fuselage with a sharply pointed nose and a bubble canopy set high for visibility.",
+            tail: "Single vertical stabilizer with a small ventral fin. No stealth shaping, unlike the faceted, twin-tailed J-20."
+        },
+        imageCredits: [
+            "Photo: Russian Ministry of Defence / Wikimedia Commons / CC BY-SA 4.0 — image modified (cropped, symbol removed)",
+            "Photo: Republic of China Ministry of National Defense / Wikimedia Commons / Government Website Open Information Announcement"
+        ]
+    },
+    {
         id: 150,
         name: "JF-17 Thunder",
         type: "Fighter Aircraft",

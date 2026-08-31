@@ -436,15 +436,13 @@
                 </div>
                 <button id="how-to-play-ok-btn" class="btn primary">GOT IT</button>
             </div>
-        </div>
-
-        <!-- Terms & Conditions Modal -->
+                <!-- Terms & Conditions Modal -->
         <div id="terms-modal" class="modal hidden">
             <div class="modal-content terms-modal-content">
                 <button id="terms-close-btn" class="close-btn">✕</button>
                 <h2>TERMS & <span class="highlight">CONDITIONS</span></h2>
                 <div class="terms-content">
-                    <p class="terms-updated"><strong>Last Updated:</strong> 26th May 2026</p>
+                    <p class="terms-updated"><strong>Last Updated:</strong> 31st August 2026</p>
 
                     <h3>1. Introduction</h3>
                     <p>Welcome to Defence Guesser. By accessing or playing our game, you agree to be bound by these
@@ -471,7 +469,9 @@
                         <li><strong>CartoDB</strong> - Map tile provider</li>
                         <li><strong>Google Fonts</strong> - Typography (Outfit font family)</li>
                         <li><strong>Google Firebase (Cloud Firestore)</strong> - Cloud database used to host the global
-                            Daily Challenge leaderboard. See section 3.4 for details on what data is stored.</li>
+                            Daily Challenge leaderboard and sync signed-in player profiles. See section 3.4 for details on what data is stored.</li>
+                        <li><strong>Google Firebase Authentication</strong> - Optional Google Sign-In. Used to link your
+                            game progress to your Google account so it syncs across devices. See section 3.5 for details.</li>
                     </ul>
                     <p>These services are used in accordance with their respective licenses and terms of service.</p>
 
@@ -489,11 +489,16 @@
                     <h3>3. Privacy Policy & Data Collection</h3>
 
                     <h4>3.1 Data Collection Overview</h4>
-                    <p>Defence Guesser is primarily a client-side application that operates in your web browser. The
-                        only data we transmit off your device is your <strong>self-chosen callsign and Daily Challenge
-                            score</strong>, and only when you choose to submit them to the global leaderboard (see
-                        section 3.4). <strong>We do not collect your name, email address, IP address, location, device
-                            identifiers, or any other personally identifiable information (PII).</strong></p>
+                    <p>Defence Guesser is primarily a client-side application that operates in your web browser. By
+                        default (playing as a guest), the only data we transmit off your device is your
+                        <strong>self-chosen callsign and Daily Challenge score</strong>, and only when you choose to
+                        submit them to the global leaderboard (see section 3.4).</p>
+                    <p>If you choose to <strong>sign in with Google</strong> (entirely optional), your Google account
+                        name, email address, and profile photo URL are received from Google and used solely to identify
+                        your account and display your name in the app. This data is stored in your Firebase account
+                        profile and synced with your game progress. See section 3.5 for full details.</p>
+                    <p>We do not collect your IP address, precise location, device hardware identifiers, or any
+                        advertising or tracking signals.</p>
 
                     <h4>3.2 Local Storage Usage</h4>
                     <p>The game uses your browser's <strong>Local Storage</strong> to enhance your experience by saving:
@@ -505,7 +510,7 @@
                         <li>Your chosen callsign for the Daily Challenge leaderboard</li>
                     </ul>
                     <p><strong>This data remains exclusively on your device unless you explicitly submit a score to the
-                            global leaderboard (see section 3.4).</strong></p>
+                            global leaderboard (see section 3.4) or sign in with Google (see section 3.5).</strong></p>
 
                     <h4>3.3 Legal Basis for Local Storage</h4>
                     <p>By using Defence Guesser, you consent to the storage of this data on your device for the purposes
@@ -543,12 +548,36 @@
                             Policy</a>.
                     </p>
 
-                    <h4>3.5 No Tracking Cookies or Analytics</h4>
+                    <h4>3.5 Google Sign-In & Account Data (Optional)</h4>
+                    <p>Defence Guesser offers an <strong>optional</strong> Google Sign-In feature powered by
+                        <strong>Firebase Authentication</strong>. Signing in is entirely voluntary — you can play the
+                        full game as a guest without signing in.</p>
+                    <p>If you choose to sign in with Google, the following occurs:</p>
+                    <ul>
+                        <li>Google provides us with your <strong>name</strong>, <strong>email address</strong>, and
+                            <strong>profile photo URL</strong> associated with your Google account.</li>
+                        <li>A <strong>Firebase user account</strong> is created and linked to your Google identity. Your
+                            unique Firebase User ID (UID) is used to associate your game progress with your account.</li>
+                        <li>Your <strong>game progress</strong> (scores, awards, Daily Challenge history, callsign) is
+                            sync to Firebase Firestore under your account so it is available across devices.</li>
+                        <li>Your name is displayed briefly in the app's sign-in button. Your email is used solely for
+                            account identification and is <strong>never displayed publicly</strong> or shared with other
+                            players.</li>
+                    </ul>
+                    <p><strong>We do not use your Google account data for marketing, advertising, or any purpose other
+                            than identifying your account and syncing your game progress.</strong></p>
+                    <p>You can sign out at any time using the sign-in button at the top of the home screen. Upon signing
+                        out you may optionally remove your local game data from the device. To request deletion of your
+                        Firebase account and associated game data, contact us at
+                        <a href="mailto:defenceguesser@gmail.com">defenceguesser@gmail.com</a>.</p>
+
+                    <h4>3.6 No Tracking Cookies or Analytics</h4>
                     <p>We do not use tracking cookies, analytics services, or advertising trackers. Although Firebase is
                         capable of providing analytics, Defence Guesser does <strong>not</strong> enable Firebase
-                        Analytics — only Cloud Firestore (the leaderboard database) is used.</p>
+                        Analytics — only Cloud Firestore (the leaderboard database) and Firebase Authentication are
+                        used.</p>
 
-                    <h4>3.6 Your Data Rights (GDPR Compliance)</h4>
+                    <h4>3.7 Your Data Rights (GDPR Compliance)</h4>
                     <p>Under GDPR and similar privacy regulations, you have the following rights:</p>
                     <p><strong>Local data on your device:</strong></p>
                     <ul>

@@ -13,8 +13,9 @@ const firebaseConfig = {
     measurementId: "G-V3KGQKGKH0"
 };
 
-// Initialise Firebase app and expose Firestore globally
+// Initialise Firebase app and expose Firestore + Auth globally
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const auth = firebase.auth();
 
-console.log('[Firebase] Initialised — Firestore ready.');
+console.log('[Firebase] Initialised — Firestore + Auth ready.');

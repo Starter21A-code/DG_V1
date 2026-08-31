@@ -4573,11 +4573,14 @@ function seedFromDate(d) {
     return d.getUTCFullYear() * 10000 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
 }
 function weekKeyFromDate(d) {
-    const year = d.getUTCFullYear();
-    const jan1 = new Date(Date.UTC(year, 0, 1));
-    const dayOffset = (jan1.getUTCDay() + 6) % 7; // Monday = 0
-    const weekNum = Math.ceil(((d - jan1) / 86400000 + dayOffset + 1) / 7);
-    return `${year}-W${String(weekNum).padStart(2, '0')}`;
+    // Key the week by the UTC date of its Monday (e.g. "W20260706"). Time-of-day
+    // is truncated before the weekday math so the key flips exactly when the
+    // game-day enters Monday (Monday 07:00 UTC real time) — the same instant
+    // getNextPeriodReset('weekly') counts down to — and a year boundary falling
+    // mid-week doesn't split the week into two keys.
+    const monday = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+    monday.setUTCDate(monday.getUTCDate() - (monday.getUTCDay() + 6) % 7); // back to Monday
+    return `W${seedFromDate(monday)}`;
 }
 function monthKeyFromDate(d) {
     return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
@@ -4685,6 +4688,7 @@ function getDailyData() {
 function saveDailyData(data) {
     try {
         localStorage.setItem(DAILY_STORAGE_KEY, JSON.stringify(data));
+        scheduleProfileSync(); // mirror to cloud when signed in with Google
     } catch (e) {
         console.error('Failed to save daily data:', e);
     }
@@ -5058,7 +5062,7 @@ async function copyShareText() {
 
 // ── Helpers ─────────────────────────────────────────────────
 
-/** ISO week key e.g. "2026-W21" (Monday-based, UTC game-week) */
+/** Week key = the game-week's Monday, e.g. "W20260706" (Monday-based, UTC game-week) */
 function getWeekKey() {
     return weekKeyFromDate(getGameDayDate());
 }
@@ -5108,6 +5112,294 @@ function getOrCreateDeviceId() {
     return id;
 }
 
+// ── Authentication (Google sign-in via anonymous-account linking) ──
+// Every player gets an anonymous Firebase user on load, so submissions carry a
+// stable UID from day one. "Sign in with Google" LINKS the Google account onto
+// that anonymous user — same UID, so nothing keyed to it is lost. If the Google
+// account already owns a different UID (signed in on another device first),
+// linking fails with credential-already-in-use and we switch to that account.
+
+function initAuth() {
+    if (typeof auth === 'undefined') return; // Firebase scripts not loaded
+
+    auth.onAuthStateChanged(user => {
+        if (!user) {
+            // First visit, or just signed out → start a fresh anonymous session
+            auth.signInAnonymously().catch(e => console.warn('[Auth] Anonymous sign-in failed:', e));
+            return;
+        }
+        console.log('[Auth]', user.isAnonymous ? 'Anonymous session' : `Signed in: ${user.displayName}`, user.uid);
+        updateAuthUI(user);
+        // Signed-in load (incl. returning from redirect sign-in, or switching to an
+        // existing Google account): reconcile cloud and local progress.
+        if (!user.isAnonymous) syncFromCloud();
+    });
+
+    // Completes the mobile signInWithRedirect flow after the page reloads;
+    // resolves (with no user) immediately in the normal popup case.
+    auth.getRedirectResult().catch(e => {
+        if (e.code === 'auth/credential-already-in-use') return auth.signInWithCredential(e.credential);
+        throw e;
+    }).catch(e => console.warn('[Auth] Redirect sign-in failed:', e));
+
+    const chip = document.getElementById('account-chip');
+    if (chip) chip.addEventListener('click', () => {
+        const user = auth.currentUser;
+        if (user && !user.isAnonymous) {
+            signOutWithGoogle();
+        } else {
+            signInWithGoogle();
+        }
+    });
+}
+
+async function signOutWithGoogle() {
+    if (!confirm('Sign out of Google?')) return;
+    // Land any pending progress in the cloud before the session goes away
+    await pushProfileToCloud();
+    // Left in localStorage, the merged progress would be visible to the next
+    // person on this machine — and merged into THEIR account if they sign in.
+    const wipe = confirm(
+        'Also remove your progress from this device?\n\n' +
+        'OK — recommended on a shared computer. Everything stays saved in your Google account.\n' +
+        'Cancel — keep playing here as a guest with your current progress.'
+    );
+    if (wipe) {
+        [DAILY_STORAGE_KEY, PROFILE_STORAGE_KEY, 'dg_callsign', 'dg_device_id']
+            .forEach(k => localStorage.removeItem(k));
+    }
+    try { await auth.signOut(); } catch (e) { console.warn('[Auth] Sign-out failed:', e); }
+    // Reload after a wipe so every screen rebuilds from the blank slate
+    if (wipe) location.reload();
+}
+
+async function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const startedAt = Date.now();
+    try {
+        const user = auth.currentUser;
+        if (user && user.isAnonymous) {
+            await user.linkWithPopup(provider); // upgrade in place — UID preserved
+        } else {
+            await auth.signInWithPopup(provider);
+        }
+        updateAuthUI(auth.currentUser);
+        // Linking doesn't re-fire onAuthStateChanged (same UID), so sync explicitly
+        syncFromCloud();
+    } catch (e) {
+        // A popup that "closed itself" within ~3s was killed by the browser
+        // (tracking prevention / embedded webview), not dismissed by the user —
+        // Firebase reports both as popup-closed-by-user, so use timing to tell
+        // them apart and retry via full-page redirect.
+        const popupDied = e.code === 'auth/popup-blocked' ||
+            (e.code === 'auth/popup-closed-by-user' && Date.now() - startedAt < 3000);
+
+        if (e.code === 'auth/credential-already-in-use') {
+            // This Google account already has its own UID from another device —
+            // switch to it (the current anonymous session is abandoned).
+            try {
+                await auth.signInWithCredential(e.credential);
+            } catch (e2) {
+                console.error('[Auth] Account switch failed:', e2);
+                showAuthToast('Sign-in failed — please try again.');
+            }
+        } else if (popupDied) {
+            try {
+                const u = auth.currentUser;
+                if (u && u.isAnonymous) await u.linkWithRedirect(provider);
+                else await auth.signInWithRedirect(provider);
+            } catch (e2) {
+                console.error('[Auth] Redirect fallback failed:', e2);
+                showAuthToast('Sign-in failed — your browser may be blocking pop-ups.');
+            }
+        } else if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') {
+            console.error('[Auth] Google sign-in failed:', e);
+            showAuthToast('Sign-in failed: ' + (e.code || 'unknown error'));
+        }
+    }
+}
+
+function updateAuthUI(user) {
+    const chip = document.getElementById('account-chip');
+    if (!chip) return;
+    const label  = document.getElementById('account-chip-label');
+    const icon   = document.getElementById('account-chip-icon');
+    const avatar = document.getElementById('account-chip-avatar');
+
+    const signedIn = !!user && !user.isAnonymous;
+    chip.classList.toggle('signed-in', signedIn);
+    if (signedIn) {
+        const fullName = user.displayName || user.email || 'Signed in';
+        if (label) label.textContent = fullName.split(' ')[0];
+        chip.title = `Signed in as ${fullName} — click to sign out`;
+        if (avatar) {
+            avatar.classList.toggle('hidden', !user.photoURL);
+            if (user.photoURL) avatar.src = user.photoURL;
+        }
+        if (icon) icon.classList.toggle('hidden', !!user.photoURL);
+    } else {
+        if (label) label.textContent = 'GUEST · SIGN IN';
+        chip.title = 'Playing as guest — sign in with Google';
+        if (avatar) avatar.classList.add('hidden');
+        if (icon) icon.classList.remove('hidden');
+    }
+}
+
+// Small transient message near the bottom of the screen (auth feedback only)
+function showAuthToast(msg) {
+    let el = document.getElementById('auth-toast');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = 'auth-toast';
+        document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(showAuthToast._timer);
+    showAuthToast._timer = setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+// ── Cloud profile sync (Google-signed-in players only) ──────
+// Everything that lives in localStorage (daily history/streaks, medals profile,
+// callsign) is mirrored to profiles/{uid} in Firestore. Guests stay local-only;
+// signing in with Google pulls the cloud copy, merges it with local progress,
+// and pushes the merged result back. Merges never inflate: cumulative counters
+// take the larger side, sets union, and streak stats are recomputed from the
+// merged history rather than trusted from either device.
+
+let profileSyncTimer = null;
+let profileSyncInFlight = false;
+
+function isCloudSyncEligible() {
+    return typeof auth !== 'undefined' && typeof db !== 'undefined' &&
+           auth.currentUser && !auth.currentUser.isAnonymous;
+}
+
+// Debounced push — called from saveProfile()/saveDailyData() so every local
+// progress change lands in the cloud shortly after, without write-spamming.
+function scheduleProfileSync() {
+    if (!isCloudSyncEligible()) return;
+    clearTimeout(profileSyncTimer);
+    profileSyncTimer = setTimeout(pushProfileToCloud, 2000);
+}
+
+async function pushProfileToCloud() {
+    if (!isCloudSyncEligible()) return;
+    clearTimeout(profileSyncTimer);
+    try {
+        // Read-merge-write in a transaction: a push can only ever ADD to the
+        // cloud copy, so a stale device (game open on two machines) can't
+        // clobber progress the other one already uploaded.
+        const ref = db.collection('profiles').doc(auth.currentUser.uid);
+        await db.runTransaction(async t => {
+            const snap  = await t.get(ref);
+            const cloud = snap.exists ? (snap.data() || {}) : {};
+            t.set(ref, {
+                schema   : 1,
+                daily    : mergeDailyData(getDailyData(), cloud.daily),
+                profile  : mergeProfiles(getProfile(), cloud.profile),
+                callsign : localStorage.getItem('dg_callsign') || cloud.callsign || null,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        });
+        console.log('[Sync] Profile pushed to cloud (merged).');
+    } catch (e) {
+        console.warn('[Sync] Push failed (will retry on next save):', e);
+    }
+}
+
+// Pull the cloud profile, merge with local, save locally, push merged back.
+// Runs on every page load while signed in (picks up other-device progress)
+// and immediately after linking/signing in with Google.
+async function syncFromCloud() {
+    if (!isCloudSyncEligible() || profileSyncInFlight) return;
+    profileSyncInFlight = true;
+    try {
+        const snap = await db.collection('profiles').doc(auth.currentUser.uid).get();
+        if (snap.exists) {
+            const cloud = snap.data() || {};
+            saveDailyData(mergeDailyData(getDailyData(), cloud.daily));
+            // withUnlockDetection: medals earned on another device toast here too
+            withUnlockDetection(() => saveProfile(mergeProfiles(getProfile(), cloud.profile)));
+            if (!localStorage.getItem('dg_callsign') && cloud.callsign) {
+                localStorage.setItem('dg_callsign', cloud.callsign);
+            }
+            console.log('[Sync] Cloud profile merged into local.');
+        }
+        await pushProfileToCloud(); // first sign-in: seeds the doc; otherwise: writes merged state
+    } catch (e) {
+        console.warn('[Sync] Pull failed:', e);
+    } finally {
+        profileSyncInFlight = false;
+    }
+}
+
+function mergeDailyData(local, cloud) {
+    const l = local || {}, c = cloud || {};
+    // Unknown scalar fields survive, local side preferred
+    const merged = Object.assign({}, c, l);
+
+    // History: union by day — on conflict the better score stands
+    merged.history = {};
+    for (const src of [c.history, l.history]) {
+        if (!src) continue;
+        for (const [day, entry] of Object.entries(src)) {
+            if (!merged.history[day] || (entry.score || 0) > (merged.history[day].score || 0)) {
+                merged.history[day] = entry;
+            }
+        }
+    }
+
+    // Attempt locks & submission flags: union — a daily played on ANY device
+    // stays locked on every device (also closes a replay loophole)
+    for (const field of ['attempts', 'submitted']) {
+        merged[field] = Object.assign({}, c[field], l[field]);
+    }
+
+    cleanupOldHistory(merged);
+    merged.stats = calculateDailyStats(merged.history);
+    return merged;
+}
+
+function mergeProfiles(local, cloud) {
+    const l = Object.assign(getDefaultProfile(), local);
+    const c = Object.assign(getDefaultProfile(), cloud);
+    const m = getDefaultProfile();
+
+    // Cumulative counters and bests: larger side wins. This can undercount when
+    // both devices progressed independently, but it can never inflate a medal.
+    ['standardGames', 'correctIds', 'correctLocations', 'perfectGames', 'bestStandardScore',
+     'hardModeGames', 'bestHardScore', 'sharpEyeIds', 'bestDailyScore', 'longestStreak',
+     'bestDailyTargets', 'flawlessDailies'
+    ].forEach(k => { m[k] = Math.max(l[k] || 0, c[k] || 0); });
+
+    // Podium flags: earned anywhere = earned
+    ['firstPlaceDaily', 'firstPlaceWeekly', 'firstPlaceMonthly']
+        .forEach(k => { m[k] = !!(l[k] || c[k]); });
+
+    // Distinct-country set: union
+    m.idCountries = Object.assign({}, c.idCountries, l.idCountries);
+
+    // Per-key counters: max per key
+    for (const field of ['idCategoryCounts', 'idEraCounts']) {
+        m[field] = {};
+        const keys = new Set([...Object.keys(l[field] || {}), ...Object.keys(c[field] || {})]);
+        keys.forEach(k => { m[field][k] = Math.max(l[field][k] || 0, c[field][k] || 0); });
+    }
+
+    // Once-per-period guards: keep the later key so nothing double-awards
+    ['processedDailyKey', 'processedWeekKey', 'processedMonthKey', 'lastDailyKey'].forEach(k => {
+        const a = l[k], b = c[k];
+        m[k] = (a && b) ? (String(a) > String(b) ? a : b) : (a || b || null);
+    });
+
+    m.firstPlayed = Math.min(l.firstPlayed || Date.now(), c.firstPlayed || Date.now());
+    m.lastUpdated = Date.now();
+    return m;
+}
+
+initAuth();
+
 /**
  * Write one leaderboard document.
  * Doc ID = dateKey_DEVICEID so each device owns its own slot for the day.
@@ -5123,7 +5415,7 @@ async function submitScoreToFirebase(callsign, score) {
     try {
         const dateKey  = getTodaysSeed().toString();
         const deviceId = getOrCreateDeviceId();
-        await db.collection('leaderboards').doc(`${dateKey}_${deviceId}`).set({
+        const entry = {
             playerName : callsign,
             deviceId   : deviceId,
             score      : score,
@@ -5131,7 +5423,12 @@ async function submitScoreToFirebase(callsign, score) {
             weekKey    : getWeekKey(),
             monthKey   : getMonthKey(),
             timestamp  : firebase.firestore.FieldValue.serverTimestamp()
-        });
+        };
+        // Auth UID (anonymous or Google-linked) — groundwork for moving
+        // rank/winner identity off the spoofable device id. Omitted (not null)
+        // when unavailable: the security rules type-check it only if present.
+        if (typeof auth !== 'undefined' && auth.currentUser) entry.uid = auth.currentUser.uid;
+        await db.collection('leaderboards').doc(`${dateKey}_${deviceId}`).set(entry);
         console.log('[Leaderboard] Submitted:', callsign, score);
     } catch (err) {
         console.warn('[Leaderboard] Submit failed:', err);
@@ -5141,12 +5438,18 @@ async function submitScoreToFirebase(callsign, score) {
 // ── Firestore fetching ───────────────────────────────────────
 
 /**
- * Fetch up to 100 docs for the period, deduplicate by deviceId
- * (keeping each device's best score), sort and return the top 10.
- * Legacy docs without a deviceId fall back to keying by playerName.
+ * Fetch up to 100 docs for the period, deduplicate per player (keeping each
+ * player's best score), sort and return the top 10.
+ * Player identity = auth uid when the doc has one (stable across devices for
+ * Google-signed-in players, so one person never holds two board slots), else
+ * deviceId, else playerName for the oldest legacy docs.
  * Sorted client-side to avoid needing composite Firestore indexes.
  * Returns null on error so the renderer can show an error state.
  */
+function leaderboardIdentityKey(d) {
+    return d.uid || d.deviceId || `legacy:${d.playerName}`;
+}
+
 async function fetchLeaderboard(period) {
     if (typeof db === 'undefined') return null;
     try {
@@ -5161,13 +5464,14 @@ async function fetchLeaderboard(period) {
         const best = new Map();
         snap.forEach(doc => {
             const d = doc.data();
-            const key = d.deviceId || `legacy:${d.playerName}`;
+            const key = leaderboardIdentityKey(d);
             const existing = best.get(key);
             if (!existing || d.score > existing.score) {
                 best.set(key, {
                     name: d.playerName,
                     score: d.score,
-                    deviceId: d.deviceId || null
+                    deviceId: d.deviceId || null,
+                    uid: d.uid || null
                 });
             }
         });
@@ -5209,26 +5513,26 @@ async function fetchUserRank(period, userScore) {
 
 /**
  * Determine the single winner of a finished period from its leaderboard docs.
- * Ranking matches the displayed board: each device's BEST score (dedupe by
- * deviceId, keep highest), then the highest of those. Ties are broken by the
- * earliest submission (server timestamp) so there is exactly one winner.
- * Returns { deviceId, score, name } or null.
+ * Ranking matches the displayed board: each player's BEST score (dedupe by
+ * the same uid-first identity key), then the highest of those. Ties are broken
+ * by the earliest submission (server timestamp) so there is exactly one winner.
+ * Returns { uid, deviceId, score, name } or null.
  */
 function determinePeriodWinner(docs) {
-    const bestByDevice = new Map();
+    const bestByPlayer = new Map();
     docs.forEach(doc => {
         const d = doc.data();
         if (!d || typeof d.score !== 'number') return;
-        const id = d.deviceId || `legacy:${d.playerName}`;
+        const id = leaderboardIdentityKey(d);
         const ts = (d.timestamp && typeof d.timestamp.toMillis === 'function')
             ? d.timestamp.toMillis() : Number.MAX_SAFE_INTEGER; // unresolved ts loses ties
-        const cur = bestByDevice.get(id);
+        const cur = bestByPlayer.get(id);
         if (!cur || d.score > cur.score || (d.score === cur.score && ts < cur.ts)) {
-            bestByDevice.set(id, { deviceId: d.deviceId || null, score: d.score, ts, name: d.playerName });
+            bestByPlayer.set(id, { uid: d.uid || null, deviceId: d.deviceId || null, score: d.score, ts, name: d.playerName });
         }
     });
     let winner = null;
-    bestByDevice.forEach(e => {
+    bestByPlayer.forEach(e => {
         if (!winner || e.score > winner.score || (e.score === winner.score && e.ts < winner.ts)) {
             winner = e;
         }
@@ -5265,7 +5569,12 @@ async function checkPeriodWinners() {
             const winner = snap.empty ? null : determinePeriodWinner(snap.docs);
             withUnlockDetection(() => {
                 const p = getProfile();
-                if (winner && winner.deviceId && winner.deviceId === myDeviceId) p[per.flag] = true;
+                // uid match first (recognises wins earned on ANY of this account's
+                // devices); deviceId covers guest and legacy entries.
+                const myUid = (typeof auth !== 'undefined' && auth.currentUser) ? auth.currentUser.uid : null;
+                const isMe = (winner && winner.uid && myUid && winner.uid === myUid)
+                    || (winner && winner.deviceId && winner.deviceId === myDeviceId);
+                if (isMe) p[per.flag] = true;
                 p[per.processed] = per.key; // mark done so we never re-query or re-award
                 saveProfile(p);
             });
@@ -5278,7 +5587,7 @@ async function checkPeriodWinners() {
 
 // ── Rendering ────────────────────────────────────────────────
 
-function renderLeaderboard(entries, userScore, userRank, userCallsign, userDeviceId) {
+function renderLeaderboard(entries, userScore, userRank, userCallsign, userDeviceId, userUid) {
     const list = document.getElementById('lb-list');
     if (!list) return;
 
@@ -5312,11 +5621,13 @@ function renderLeaderboard(entries, userScore, userRank, userCallsign, userDevic
     let html = '';
     let userInTopTen = false;
 
-    entries.forEach(({ name, score, deviceId }, index) => {
+    entries.forEach(({ name, score, deviceId, uid }, index) => {
         const rank   = index + 1;
-        // Match on deviceId when available (precise); fall back to callsign for legacy rows
-        const isUser = (userDeviceId && deviceId && deviceId === userDeviceId)
-            || (!deviceId && userCallsign && name && name.toUpperCase() === userCallsign.toUpperCase());
+        // Match on uid first (stable across this account's devices), then deviceId;
+        // fall back to callsign for legacy rows that carry neither
+        const isUser = (userUid && uid && uid === userUid)
+            || (userDeviceId && deviceId && deviceId === userDeviceId)
+            || (!deviceId && !uid && userCallsign && name && name.toUpperCase() === userCallsign.toUpperCase());
         if (isUser) userInTopTen = true;
 
         const rankClass = rank <= 3 ? `rank-${rank}` : '';
@@ -5353,8 +5664,9 @@ function renderLeaderboard(entries, userScore, userRank, userCallsign, userDevic
 // ── Orchestrator ─────────────────────────────────────────────
 
 // ── Leaderboard reset countdown ──────────────────────────────
-// Period boundaries match the local-time keys used by getTodaysSeed / getWeekKey
-// / getMonthKey, so the countdown lands exactly when the leaderboard rolls over.
+// Period boundaries match the game-day (07:00 UTC) keys used by getTodaysSeed /
+// getWeekKey / getMonthKey, so the countdown lands exactly when the leaderboard
+// rolls over.
 function getNextPeriodReset(period) {
     const now = new Date();
     const DAY_MS = 86400000;
@@ -5449,6 +5761,7 @@ async function loadGlobalLeaderboard(period) {
 
     const userCallsign = localStorage.getItem('dg_callsign') || '';
     const userDeviceId = localStorage.getItem('dg_device_id') || '';
+    const userUid      = (typeof auth !== 'undefined' && auth.currentUser) ? auth.currentUser.uid : '';
     const userScore    = (state && state.isDailyMode) ? (state.score || 0) : 0;
 
     const [entries, userRank] = await Promise.all([
@@ -5458,7 +5771,7 @@ async function loadGlobalLeaderboard(period) {
             : Promise.resolve(null)
     ]);
 
-    renderLeaderboard(entries, userScore, userRank, userCallsign, userDeviceId);
+    renderLeaderboard(entries, userScore, userRank, userCallsign, userDeviceId, userUid);
 }
 
 // ── Tab helpers ──────────────────────────────────────────────
@@ -5859,6 +6172,7 @@ function saveProfile(p) {
     try {
         p.lastUpdated = Date.now();
         localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(p));
+        scheduleProfileSync(); // mirror to cloud when signed in with Google
     } catch (e) {
         console.error('Failed to save profile:', e);
     }

@@ -56,6 +56,12 @@
                 <button id="terms-icon" class="terms-icon" title="Terms & Conditions">?</button>
                 <!-- Sound Toggle -->
                 <button id="sound-toggle" class="sound-toggle" title="Sound: ON">🔊</button>
+                <!-- Account chip: guest indicator / Google sign-in (top-left) -->
+                <button id="account-chip" class="account-chip" title="Playing as guest — sign in with Google">
+                    <img id="account-chip-avatar" class="account-chip-avatar hidden" alt="" referrerpolicy="no-referrer">
+                    <span id="account-chip-icon" class="account-chip-icon">👤</span>
+                    <span id="account-chip-label" class="account-chip-label">GUEST · SIGN IN</span>
+                </button>
 
                 <div class="app-icon-container">
                     <div class="icon-glow"></div>
@@ -1190,6 +1196,7 @@
     <!-- Firebase SDK (compat — works with vanilla JS, no build step needed) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="firebase-config.js"></script>
 
     <script src="assets/geo-data.js"></script>

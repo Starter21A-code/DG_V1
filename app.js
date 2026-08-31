@@ -5230,7 +5230,8 @@ function updateAuthUI(user) {
     chip.classList.toggle('signed-in', signedIn);
     if (signedIn) {
         const fullName = user.displayName || user.email || 'Signed in';
-        if (label) label.textContent = fullName.split(' ')[0];
+        const shortName = fullName.slice(0, 3).toUpperCase() + '…';
+        if (label) label.textContent = shortName;
         chip.title = `Signed in as ${fullName} — click to sign out`;
         if (avatar) {
             avatar.classList.toggle('hidden', !user.photoURL);
@@ -5238,7 +5239,7 @@ function updateAuthUI(user) {
         }
         if (icon) icon.classList.toggle('hidden', !!user.photoURL);
     } else {
-        if (label) label.textContent = 'GUEST · SIGN IN';
+        if (label) label.textContent = 'SIGN IN';
         chip.title = 'Playing as guest — sign in with Google';
         if (avatar) avatar.classList.add('hidden');
         if (icon) icon.classList.remove('hidden');

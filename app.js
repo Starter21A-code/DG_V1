@@ -1647,9 +1647,8 @@ function initMap() {
         maxBounds: [[-90, -180], [90, 180]]
     });
 
-    state.bgLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    state.bgLayer = L.tileLayer('https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png?key=cb1_2vn7_1_bb32a5dc91ba1b88535e2f5d', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
         maxZoom: 20
     }).addTo(state.map);
 

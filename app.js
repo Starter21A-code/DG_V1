@@ -5576,10 +5576,13 @@ initAuth();
 
 /**
  * Write one leaderboard document.
- * Doc ID = dateKey_DEVICEID so each device owns its own slot for the day.
- * Two different real players sharing a callsign no longer overwrite each
- * other; the same player resubmitting (e.g. after a score correction)
- * still overwrites only their own entry.
+ * Doc ID = dateKey_UID (the Firebase auth uid, anonymous or Google). The
+ * security rules only let a signed-in user write the slot carrying their own
+ * uid, so nobody can overwrite another player's score. The old
+ * dateKey_DEVICEID slot was spoofable: device ids are readable in every
+ * public leaderboard entry.
+ * The legacy slot is still tried when the uid slot is refused, so the app
+ * keeps submitting if this code goes live before the updated rules do.
  */
 async function submitScoreToFirebase(callsign, score) {
     if (typeof db === 'undefined') {
@@ -5598,12 +5601,26 @@ async function submitScoreToFirebase(callsign, score) {
             monthKey   : getMonthKey(),
             timestamp  : firebase.firestore.FieldValue.serverTimestamp()
         };
-        // Auth UID (anonymous or Google-linked) — groundwork for moving
-        // rank/winner identity off the spoofable device id. Omitted (not null)
-        // when unavailable: the security rules type-check it only if present.
-        if (typeof auth !== 'undefined' && auth.currentUser) entry.uid = auth.currentUser.uid;
-        await db.collection('leaderboards').doc(`${dateKey}_${deviceId}`).set(entry);
-        console.log('[Leaderboard] Submitted:', callsign, score);
+        // Every player has an auth user (anonymous by default). If the session
+        // isn't up yet (very fast finish, or the first sign-in failed), try once.
+        if (typeof auth !== 'undefined' && !auth.currentUser) {
+            try { await auth.signInAnonymously(); } catch (e) { console.warn('[Auth] Anonymous sign-in failed:', e); }
+        }
+        const uid = (typeof auth !== 'undefined' && auth.currentUser) ? auth.currentUser.uid : null;
+        const col = db.collection('leaderboards');
+        if (uid) {
+            entry.uid = uid;
+            try {
+                await col.doc(`${dateKey}_${uid}`).set(entry);
+                console.log('[Leaderboard] Submitted:', callsign, score);
+                return;
+            } catch (err) {
+                if (err.code !== 'permission-denied') throw err;
+                // Rules not updated yet → fall through to the legacy slot
+            }
+        }
+        await col.doc(`${dateKey}_${deviceId}`).set(entry);
+        console.log('[Leaderboard] Submitted (legacy slot):', callsign, score);
     } catch (err) {
         console.warn('[Leaderboard] Submit failed:', err);
     }
@@ -5612,28 +5629,50 @@ async function submitScoreToFirebase(callsign, score) {
 // ── Firestore fetching ───────────────────────────────────────
 
 /**
- * Fetch up to 100 docs for the period, deduplicate per player (keeping each
- * player's best score), sort and return the top 10.
+ * Fetch the period's highest-scoring docs, deduplicate per player (keeping
+ * each player's best score), sort and return the top 10.
  * Player identity = auth uid when the doc has one (stable across devices for
  * Google-signed-in players, so one person never holds two board slots), else
  * deviceId, else playerName for the oldest legacy docs.
- * Sorted client-side to avoid needing composite Firestore indexes.
  * Returns null on error so the renderer can show an error state.
  */
 function leaderboardIdentityKey(d) {
     return d.uid || d.deviceId || `legacy:${d.playerName}`;
 }
 
+/**
+ * The top `limit` docs of a period, highest score first. Ordering in the query
+ * matters: an unordered .limit() returns an ARBITRARY subset, so once a period
+ * holds more docs than the limit the real top scores can simply be missing.
+ * The ordered query needs a composite index (<field> ASC, score DESC). Until
+ * that index exists Firestore rejects it with failed-precondition, and we fall
+ * back to the old unordered fetch so the board keeps working.
+ */
+const missingLeaderboardIndexes = new Set();
+async function fetchTopScoreDocs(field, key, limit, fallbackLimit) {
+    const base = db.collection('leaderboards').where(field, '==', key);
+    if (!missingLeaderboardIndexes.has(field)) {
+        try {
+            return await base.orderBy('score', 'desc').limit(limit).get();
+        } catch (err) {
+            if (err.code !== 'failed-precondition') throw err;
+            missingLeaderboardIndexes.add(field); // don't re-try (and re-fail) every load this session
+            console.warn(`[Leaderboard] Missing index for ${field} + score — using unordered fallback.`, err.message);
+        }
+    }
+    return base.limit(fallbackLimit).get();
+}
+
 async function fetchLeaderboard(period) {
     if (typeof db === 'undefined') return null;
     try {
-        const dateKey = getTodaysSeed().toString();
-        let query = db.collection('leaderboards');
-        if (period === 'daily')        query = query.where('dateKey',  '==', dateKey);
-        else if (period === 'weekly')  query = query.where('weekKey',  '==', getWeekKey());
-        else if (period === 'monthly') query = query.where('monthKey', '==', getMonthKey());
+        // A player has at most one doc per day, so daily needs little headroom;
+        // weekly/monthly fetch extra because one player can hold several top docs.
+        const spec = period === 'weekly'  ? { field: 'weekKey',  key: getWeekKey(),  limit: 100 }
+                   : period === 'monthly' ? { field: 'monthKey', key: getMonthKey(), limit: 200 }
+                   :                        { field: 'dateKey',  key: getTodaysSeed().toString(), limit: 50 };
 
-        const snap = await query.limit(100).get();
+        const snap = await fetchTopScoreDocs(spec.field, spec.key, spec.limit, 100);
 
         const best = new Map();
         snap.forEach(doc => {
@@ -5739,7 +5778,8 @@ async function checkPeriodWinners() {
     for (const per of periods) {
         if (getProfile()[per.processed] === per.key) continue; // already evaluated
         try {
-            const snap = await db.collection('leaderboards').where(per.field, '==', per.key).limit(1000).get();
+            // Top 50 by score is plenty to find the winner and break ties
+            const snap = await fetchTopScoreDocs(per.field, per.key, 50, 1000);
             const winner = snap.empty ? null : determinePeriodWinner(snap.docs);
             withUnlockDetection(() => {
                 const p = getProfile();

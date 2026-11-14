@@ -4404,19 +4404,21 @@ function updateProgressChart(history) {
     const chartHeight = height - padding.top - padding.bottom;
 
     // Get last 7 days with data points (fill missing days with 0)
-    const today = getTodaysSeed();
+    // Step back through real dates — subtracting from a YYYYMMDD seed produces
+    // nonexistent keys (e.g. 20261100) in the first week of every month.
     const last7Days = [];
+    let dayKey = getTodaysSeed();
 
-    for (let i = 6; i >= 0; i--) {
-        const dayOffset = today - i;
-        const dateKey = dayOffset.toString();
+    for (let i = 0; i < 7; i++) {
+        const dateKey = dayKey.toString();
         const entry = history[dateKey];
 
-        last7Days.push({
+        last7Days.unshift({
             dateKey: dateKey,
             score: entry ? entry.score : 0,
             hasData: !!entry
         });
+        dayKey = prevDayKey(dayKey);
     }
 
     // Draw grid lines
@@ -4761,7 +4763,7 @@ function submitDailyScore(name, score) {
     if (!data.submitted) data.submitted = {};
     data.submitted[todayKey] = true;
 
-    // Clean up old entries (keep last 30 days)
+    // Slim down old entries and prune stale attempt/submission flags
     cleanupOldHistory(data);
 
     // Recalculate stats
@@ -4774,16 +4776,21 @@ function submitDailyScore(name, score) {
 }
 
 function cleanupOldHistory(data) {
-    // Keep last 30 days. The cutoff must be computed via a real Date —
-    // subtracting 30 from a YYYYMMDD seed lands below every key of the
-    // previous month and wipes it entirely on the 1st.
+    // History is kept FOREVER — streak, total days, total points, best and
+    // average are all derived from it, so deleting old days silently capped
+    // every one of them at ~1 month. Entries older than 30 days are only
+    // slimmed down (the per-target score progression is dropped) so the store
+    // grows by a few dozen bytes per day rather than hundreds.
+    // The cutoff must be computed via a real Date — subtracting 30 from a
+    // YYYYMMDD seed lands below every key of the previous month.
     const cutoffDate = getGameDayDate();
     cutoffDate.setUTCDate(cutoffDate.getUTCDate() - 30);
     const cutoff = seedFromDate(cutoffDate);
 
-    for (const key of Object.keys(data.history)) {
-        if (parseInt(key) < cutoff) {
-            delete data.history[key];
+    for (const key of Object.keys(data.history || {})) {
+        const entry = data.history[key];
+        if (parseInt(key) < cutoff && entry && entry.scoreProgression !== undefined) {
+            delete entry.scoreProgression;
         }
     }
 

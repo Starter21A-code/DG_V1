@@ -4881,19 +4881,15 @@ function calculateStreaks(sortedEntries) {
     let tempStreak = 0;
     let expectedDate = today;
 
-    // Check current streak (must include today or yesterday)
+    // Current streak must end today or yesterday: a streak is still alive on a
+    // day you haven't played YET, and only lapses once a full game day is missed.
+    if (parseInt(sortedEntries[0][0]) === prevDayKey(today)) {
+        expectedDate = prevDayKey(today);
+    }
     for (let i = 0; i < sortedEntries.length; i++) {
-        const dateKey = parseInt(sortedEntries[i][0]);
-
-        if (dateKey === expectedDate) {
-            if (i === 0 || tempStreak > 0) {
-                tempStreak++;
-                currentStreak = tempStreak;
-            }
-            expectedDate = prevDayKey(expectedDate);
-        } else {
-            break;
-        }
+        if (parseInt(sortedEntries[i][0]) !== expectedDate) break;
+        currentStreak++;
+        expectedDate = prevDayKey(expectedDate);
     }
 
     // Calculate longest streak
@@ -5297,22 +5293,193 @@ async function pushProfileToCloud() {
         // Read-merge-write in a transaction: a push can only ever ADD to the
         // cloud copy, so a stale device (game open on two machines) can't
         // clobber progress the other one already uploaded.
-        const ref = db.collection('profiles').doc(auth.currentUser.uid);
+        const uid = auth.currentUser.uid;
+        const ref = db.collection('profiles').doc(uid);
+        let merged = null;
         await db.runTransaction(async t => {
             const snap  = await t.get(ref);
             const cloud = snap.exists ? (snap.data() || {}) : {};
-            t.set(ref, {
-                schema   : 1,
+            merged = {
                 daily    : mergeDailyData(getDailyData(), cloud.daily),
                 profile  : mergeProfiles(getProfile(), cloud.profile),
-                callsign : localStorage.getItem('dg_callsign') || cloud.callsign || null,
+                callsign : localStorage.getItem('dg_callsign') || cloud.callsign || null
+            };
+            t.set(ref, Object.assign({
+                schema   : 1,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            }, merged));
         });
         console.log('[Sync] Profile pushed to cloud (merged).');
+        if (merged) publishPublicProfile(uid, merged);
     } catch (e) {
         console.warn('[Sync] Push failed (will retry on next save):', e);
     }
+}
+
+// ── Public profile card (what OTHER players see from the leaderboard) ──
+// profiles/{uid} is private: it holds the full daily history and attempt locks.
+// publicProfiles/{uid} is a small world-readable summary derived from it —
+// callsign, headline daily stats and earned medal tiers, nothing else. It is a
+// separate write (not part of the sync transaction) so a missing security rule
+// for this collection can never break the private profile sync.
+
+function buildPublicProfile(daily, profile, callsign) {
+    const stats = (daily && daily.stats) || {};
+    const history = (daily && daily.history) || {};
+    const dayKeys = Object.keys(history);
+    const p = Object.assign(getDefaultProfile(), profile);
+
+    const medals = {};
+    MEDALS.forEach(m => {
+        const st = getMedalProgress(m, p);
+        if (st.unlocked) medals[m.id] = st.tierIndex;
+    });
+
+    return {
+        schema        : 1,
+        callsign      : String(callsign || 'PLAYER').slice(0, 32),
+        bestDailyScore: Math.max(stats.bestScore || 0, p.bestDailyScore || 0),
+        averageScore  : stats.averageScore || 0,
+        totalDays     : stats.totalDays || 0,
+        totalPoints   : dayKeys.reduce((sum, k) => sum + (history[k].score || 0), 0),
+        // currentStreak is only true as of lastPlayedKey — the viewer treats it
+        // as lapsed once that day is older than yesterday
+        currentStreak : stats.currentStreak || 0,
+        lastPlayedKey : dayKeys.length ? String(Math.max(...dayKeys.map(k => parseInt(k)))) : null,
+        longestStreak : Math.max(stats.longestStreak || 0, p.longestStreak || 0),
+        medals        : medals
+    };
+}
+
+async function publishPublicProfile(uid, merged) {
+    try {
+        const pub = buildPublicProfile(merged.daily, merged.profile, merged.callsign);
+        pub.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+        await db.collection('publicProfiles').doc(uid).set(pub);
+    } catch (e) {
+        console.warn('[Sync] Public profile publish failed:', e);
+    }
+}
+
+// Whether a streak that was `streak` days long on `lastPlayedKey` is still alive
+function liveStreak(streak, lastPlayedKey) {
+    if (!streak || !lastPlayedKey) return 0;
+    return parseInt(lastPlayedKey) >= prevDayKey(getTodaysSeed()) ? streak : 0;
+}
+
+// Fallback card for guests (no public profile): rebuild what we can from the
+// scores they have posted to the leaderboard, which are already public.
+async function fetchLeaderboardDerivedProfile(uid, deviceId) {
+    const col = db.collection('leaderboards');
+    const query = uid ? col.where('uid', '==', uid) : col.where('deviceId', '==', deviceId);
+    const snap = await query.limit(400).get();
+
+    const history = {};
+    snap.forEach(doc => {
+        const d = doc.data();
+        if (!d.dateKey || typeof d.score !== 'number') return;
+        if (!history[d.dateKey] || d.score > history[d.dateKey].score) history[d.dateKey] = { score: d.score };
+    });
+    const dayKeys = Object.keys(history);
+    if (dayKeys.length === 0) return null;
+
+    const stats = calculateDailyStats(history);
+    return {
+        bestDailyScore: stats.bestScore,
+        averageScore  : stats.averageScore,
+        totalDays     : stats.totalDays,
+        totalPoints   : dayKeys.reduce((sum, k) => sum + history[k].score, 0),
+        currentStreak : stats.currentStreak,
+        lastPlayedKey : String(Math.max(...dayKeys.map(k => parseInt(k)))),
+        longestStreak : stats.longestStreak,
+        medals        : null   // medals live on the device for guests
+    };
+}
+
+let playerProfileRequest = 0;
+
+async function openPlayerProfile({ uid, deviceId, name }) {
+    const modal = document.getElementById('player-profile-modal');
+    const body  = document.getElementById('player-profile-body');
+    const title = document.getElementById('player-profile-name');
+    if (!modal || !body || !title || typeof db === 'undefined') return;
+
+    const request = ++playerProfileRequest; // ignore a slow response for a card since closed/replaced
+    title.textContent = name || 'PLAYER';
+    body.innerHTML = '<div class="pp-note">Loading service record…</div>';
+    modal.classList.remove('hidden');
+
+    let data = null, verified = false, failed = false;
+    try {
+        if (uid) {
+            const snap = await db.collection('publicProfiles').doc(uid).get();
+            if (snap.exists) { data = snap.data(); verified = true; }
+        }
+    } catch (e) {
+        console.warn('[Profile] Public profile read failed:', e);
+    }
+    if (!data) {
+        try {
+            data = await fetchLeaderboardDerivedProfile(uid, deviceId);
+        } catch (e) {
+            console.warn('[Profile] Leaderboard lookup failed:', e);
+            failed = true;
+        }
+    }
+    if (request !== playerProfileRequest) return;
+
+    if (!data) {
+        body.innerHTML = `<div class="pp-note">${failed
+            ? "⚠️ Couldn't load this player's record.<br>Check your connection and try again."
+            : 'No record found for this player.'}</div>`;
+        return;
+    }
+    body.innerHTML = playerProfileHTML(data, verified);
+}
+
+function playerProfileHTML(d, verified) {
+    const num = v => Number(v || 0).toLocaleString();
+    const stat = (icon, value, label) => `
+        <div class="stat-card">
+            <div class="stat-icon">${icon}</div>
+            <div class="stat-value">${value}</div>
+            <div class="stat-label">${label}</div>
+        </div>`;
+
+    let html = `<div class="stats-dashboard pp-stats">
+        ${stat('🏆', num(d.bestDailyScore), 'Best Score')}
+        ${stat('📊', num(d.averageScore), 'Average')}
+        ${stat('🔥', num(liveStreak(d.currentStreak, d.lastPlayedKey)), 'Day Streak')}
+        ${stat('⚡', num(d.longestStreak), 'Longest Streak')}
+        ${stat('⭐', num(d.totalDays), 'Total Days')}
+        ${stat('🎯', num(d.totalPoints), 'Total Points')}
+    </div>`;
+
+    if (verified) {
+        const earned = MEDALS
+            .filter(m => d.medals && Number.isInteger(d.medals[m.id]) && d.medals[m.id] >= 0)
+            .map(m => {
+                const tierLabel = MEDAL_TIER_LABELS[Math.min(d.medals[m.id], MEDAL_TIER_LABELS.length - 1)];
+                const st = { fraction: 1, unlocked: true, tierLabel };
+                return `<div class="award-card unlocked tier-${tierLabel.toLowerCase()} pp-medal">
+                    ${awardMedalHTML(m, st)}
+                    <span class="award-name">${escapeHtml(m.name)}</span>
+                    <span class="award-tier">${tierLabel}</span>
+                </div>`;
+            });
+        html += `<h3 class="pp-heading">MEDALS</h3>` + (earned.length
+            ? `<div class="pp-medals">${earned.join('')}</div>`
+            : `<div class="pp-note">No medals earned yet.</div>`);
+    } else {
+        html += `<div class="pp-note">Guest player — stats are from scores posted to the leaderboard.
+            Medals appear for players signed in with Google.</div>`;
+    }
+    return html;
+}
+
+function closePlayerProfile() {
+    playerProfileRequest++;
+    document.getElementById('player-profile-modal')?.classList.add('hidden');
 }
 
 // Pull the cloud profile, merge with local, save locally, push merged back.
@@ -5648,7 +5815,12 @@ function renderLeaderboard(entries, userScore, userRank, userCallsign, userDevic
         nameSeen[nameKey] = (nameSeen[nameKey] || 0) + 1;
         const displayName = isDuplicate ? `${name} (${nameSeen[nameKey]})` : name;
 
-        html += `<div class="${rowClass}">
+        // Rows with a stable identity open that player's profile card
+        const profileAttrs = (uid || deviceId)
+            ? ` role="button" tabindex="0" data-profile="1" data-uid="${escapeHtml(uid || '')}" data-device="${escapeHtml(deviceId || '')}" data-name="${escapeHtml(displayName || '')}"`
+            : '';
+
+        html += `<div class="${rowClass}"${profileAttrs}>
             <span class="lb-rank ${rankClass}">${rankLabel}</span>
             <span class="lb-callsign">${escapeHtml(displayName)}${youBadge}</span>
             <span class="lb-score">${Number(score).toLocaleString()}</span>
@@ -5658,7 +5830,7 @@ function renderLeaderboard(entries, userScore, userRank, userCallsign, userDevic
     // Append user row below the separator when they are outside the top 10
     if (!userInTopTen && userCallsign && userScore > 0 && userRank !== null) {
         html += `<div class="lb-separator">· · ·</div>
-        <div class="lb-entry lb-user-entry">
+        <div class="lb-entry lb-user-entry" role="button" tabindex="0" data-profile="1" data-uid="${escapeHtml(userUid || '')}" data-device="${escapeHtml(userDeviceId || '')}" data-name="${escapeHtml(userCallsign)}">
             <span class="lb-rank">${ordinalSuffix(userRank)}</span>
             <span class="lb-callsign">${escapeHtml(userCallsign)}<span class="you-tag">YOU</span></span>
             <span class="lb-score">${Number(userScore).toLocaleString()}</span>
@@ -5824,6 +5996,31 @@ function setupLeaderboardModal() {
             loadGlobalLeaderboard(tab.dataset.period);
         });
     });
+
+    // Leaderboard rows → player profile card (delegated: rows are re-rendered)
+    const list = document.getElementById('lb-list');
+    if (list) {
+        const openFromRow = target => {
+            const row = target.closest('[data-profile]');
+            if (!row) return false;
+            openPlayerProfile({ uid: row.dataset.uid, deviceId: row.dataset.device, name: row.dataset.name });
+            return true;
+        };
+        list.addEventListener('click', e => { openFromRow(e.target); });
+        list.addEventListener('keydown', e => {
+            if ((e.key === 'Enter' || e.key === ' ') && openFromRow(e.target)) e.preventDefault();
+        });
+    }
+
+    // Player profile card: close button, backdrop click, Escape
+    const profileModal = document.getElementById('player-profile-modal');
+    if (profileModal) {
+        document.getElementById('player-profile-close-btn')?.addEventListener('click', closePlayerProfile);
+        profileModal.addEventListener('click', e => { if (e.target === profileModal) closePlayerProfile(); });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && !profileModal.classList.contains('hidden')) closePlayerProfile();
+        });
+    }
 }
 
 // ── Post-game inline callsign panel (Option 1) ───────────────

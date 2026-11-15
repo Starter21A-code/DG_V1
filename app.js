@@ -6897,6 +6897,9 @@ const XP_CONFIG = {
     // Bonuses
     firstMissionBonus: 1.0,       // first mission of the game day: +100% of its XP...
     firstMissionCap: 100,         // ...up to this many XP
+    perfectStandard: 50,          // every location AND ID correct in a standard mission
+    perfectHard: 100,             // ...in a hard-mode mission
+    perfectDaily: 75,             // every daily-challenge target hit
     medalTiers: [25, 50, 100],    // Bronze / Silver / Gold
     // Back-dating XP for players who predate the XP system
     backfillRounds: 5,
@@ -6991,6 +6994,8 @@ function awardMissionXp(profileBefore) {
             add(`Performance (${Math.round(perf * 100)}%)`, perfXp);
             add(`Daily streak (${streak} days)`, Math.round((XP_CONFIG.dailyCompletion + perfXp) * getStreakBonus(streak)));
             add(`Best combo (${state.bestCombo}x)`, Math.min(XP_CONFIG.comboCap, state.bestCombo * XP_CONFIG.comboPerStep));
+            const results = state.speedrunResults || [];
+            if (results.length > 0 && results.every(r => r.correct)) add('Perfect run (100% correct)', XP_CONFIG.perfectDaily);
             p.xpDailyKey = todayKey;
         }
     } else {
@@ -7001,6 +7006,10 @@ function awardMissionXp(profileBefore) {
             const trivia = state.roundResults.filter(r => r.triviaCorrect).length;
             add('Hard mode bonus', Math.round(base * (XP_CONFIG.hardMultiplier - 1)));
             add(`Trivia (${trivia} correct)`, trivia * XP_CONFIG.triviaCorrect);
+        }
+        const rounds = state.roundResults || [];
+        if (rounds.length > 0 && rounds.every(r => r.locationCorrect && r.bonusCorrect)) {
+            add('Perfect mission (100% correct)', state.isHardMode ? XP_CONFIG.perfectHard : XP_CONFIG.perfectStandard);
         }
     }
 

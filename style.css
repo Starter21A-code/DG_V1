@@ -1311,6 +1311,14 @@ body {
     text-align: center;
 }
 
+/* Phones: shrink the title so "LEADERBOARD" fits between the paddings
+   instead of overflowing to the right (which pushed it off-centre). */
+@media (max-width: 480px) {
+    .leaderboard-modal-content > h2 {
+        font-size: clamp(1.15rem, 5.5vw, 1.75rem);
+    }
+}
+
 .leaderboard-list {
     background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
@@ -1471,6 +1479,13 @@ body {
     z-index: 10;
     opacity: 0.6;
     letter-spacing: 1px;
+}
+
+/* Phones: sit lower so it clears the Service Record button */
+@media (max-width: 600px) {
+    .version-display {
+        bottom: 0.35rem;
+    }
 }
 
 .terms-content h3 {

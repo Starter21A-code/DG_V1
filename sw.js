@@ -1,5 +1,5 @@
 // Defence Guesser Service Worker
-const CACHE_NAME = 'defence-guesser-v245';
+const CACHE_NAME = 'defence-guesser-v246';
 
 // App shell only. Equipment / medal / symbol images are NOT pre-cached — they are
 // cached on demand by the fetch handler the first time they're shown (the practice

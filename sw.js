@@ -1,5 +1,5 @@
 // Defence Guesser Service Worker
-const CACHE_NAME = 'defence-guesser-v238';
+const CACHE_NAME = 'defence-guesser-v244';
 
 // App shell only. Equipment / medal / symbol images are NOT pre-cached — they are
 // cached on demand by the fetch handler the first time they're shown (the practice
@@ -13,6 +13,7 @@ const urlsToCache = [
     './data.js',
     './manifest.json',
     './firebase-config.js',
+    './consent.js',
     './assets/geo-data.js',
     './assets/countries.geo.json',
     './assets/DG_Logo.png'

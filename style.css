@@ -17,6 +17,24 @@
     user-select: none;
 }
 
+/* Text fields must stay selectable: user-select:none on an input stops browser
+   autofill (and on iOS Safari, typing) from filling it in */
+input,
+textarea {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+/* Keep autofilled fields readable on the dark theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-primary);
+    -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.85) inset;
+    caret-color: var(--text-primary);
+    transition: background-color 9999s ease-out 0s;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-primary);
@@ -6173,5 +6191,156 @@ body {
     }
     #inline-callsign-submit-btn.btn.primary.compact {
         width: 100%;
+    }
+}
+
+/* ── Sign-in modal (Google / email link) ── */
+.signin-content {
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.signin-option {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+}
+.signin-option:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+.signin-option-icon {
+    font-weight: 800;
+    font-size: 1.05rem;
+    line-height: 1;
+}
+.signin-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.25rem 0 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.signin-divider::before,
+.signin-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--glass-border);
+}
+.signin-email-form.hidden,
+.signin-sent.hidden {
+    display: none;
+}
+.signin-label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+}
+.signin-email-form input {
+    margin-bottom: 0;
+}
+.signin-sent p {
+    color: var(--text-secondary);
+    margin: 0.4rem 0;
+    overflow-wrap: anywhere;
+}
+.signin-sent strong {
+    color: var(--text-primary);
+}
+.signin-sent-icon {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+}
+.signin-small {
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+.signin-terms {
+    color: var(--text-secondary);
+    margin-top: 1.25rem;
+}
+.signin-terms a {
+    color: var(--accent-color);
+}
+
+/* ── Analytics cookie consent banner ── */
+.cookie-banner {
+    position: fixed;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    width: calc(100% - 2rem);
+    max-width: 640px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(10, 14, 22, 0.96);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--accent-color);
+    border-radius: 14px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    z-index: 2500;
+}
+.cookie-banner.hidden {
+    display: none;
+}
+.cookie-banner-body {
+    flex: 1;
+    min-width: 0;
+}
+.cookie-banner-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+}
+.cookie-banner-text,
+.cookie-banner-current {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+.cookie-banner-current {
+    margin-top: 0.35rem;
+    color: var(--accent-color);
+}
+.cookie-banner-current.hidden {
+    display: none;
+}
+.cookie-banner-text a {
+    color: var(--accent-color);
+}
+.cookie-banner-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+.cookie-banner-actions .btn {
+    margin-top: 0;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.85rem;
+}
+@media (max-width: 600px) {
+    .cookie-banner {
+        flex-direction: column;
+        align-items: stretch;
+        bottom: 0.75rem;
+        width: calc(100% - 1.5rem);
+        padding: 0.9rem 1rem;
+    }
+    .cookie-banner-actions .btn {
+        flex: 1;
     }
 }

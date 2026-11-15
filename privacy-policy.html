@@ -33,7 +33,7 @@
 
 <body>
     <h1>Privacy Policy & Data Deletion for Defence Guesser</h1>
-    <p><strong>Effective Date:</strong> 31 August 2026</p>
+    <p><strong>Effective Date:</strong> 15 November 2026</p>
 
     <h2>Overview</h2>
     <p>Defence Guesser ("we", "our", or "us") operates the Defence Guesser application (the "App"). This page informs
@@ -42,30 +42,64 @@
 
     <h2>Information Collection and Use</h2>
     <p>By default, when playing as a guest, we do not collect personally identifiable information such as your name,
-        email address, IP address, location or device identifiers. The only data transmitted off your device as a guest is
-        the self-chosen callsign and Daily Challenge score that you optionally submit to the global leaderboard.</p>
-    <p>If you choose to <strong>sign in with Google</strong> (optional), Google provides us with your name, email address,
-        and profile picture URL to create your account profile and sync your game progress across devices.</p>
+        email address, precise location or hardware identifiers. If you accept analytics cookies, anonymous usage
+        statistics are collected through Google Analytics (see "Analytics & Cookies" below). When the App loads, Firebase Authentication assigns
+        you a random <strong>anonymous account ID</strong>, with no name or email attached, so that only you can write
+        or update your own leaderboard scores.</p>
+    <p>If you optionally submit a Daily Challenge score to the global leaderboard, the following is stored in Cloud
+        Firestore: your self-chosen callsign, your score, your anonymous account ID, a random installation ID generated
+        by your browser, date/week/month identifiers used for ranking, and a server timestamp.</p>
+    <p>If you choose to <strong>sign in</strong> (optional), you can use Google or a passwordless email link. With
+        Google, Google provides us with your name, email address, and profile picture URL. With an email link, you
+        provide your email address and Firebase sends a one-time sign-in link to it; no password is created. Either
+        way, this is used to create your account profile and sync your game progress across devices.</p>
 
-    <h2>Google Sign-In & Firebase Authentication</h2>
-    <p>Signing in with Google is optional. If you choose to sign in:</p>
+    <h2>Leaderboard & Player Profile Cards (Shared With Other Players)</h2>
+    <p>Leaderboard entries are <strong>public</strong>. Anyone using the App can read them, including the account ID
+        and installation ID stored with them. Neither ID reveals your name, email or Google account.</p>
+    <p>Any player can tap a leaderboard entry to open that player's <strong>profile card</strong>:</p>
     <ul>
-        <li>We store your name, email address, and unique Firebase User ID (UID) in Google Firebase Authentication and Cloud Firestore.</li>
+        <li><strong>Guests:</strong> the card is calculated from scores you have already posted to the leaderboard and
+            shows your callsign, best score, average score, current and longest daily streak, total days played and
+            total points. Nothing extra is uploaded to create it.</li>
+        <li><strong>Signed-in players:</strong> a separate public profile summary is stored under your account ID
+            each time your progress syncs. It contains only your callsign, best daily score, average score, total days
+            played, total points, current streak, the date you last played, longest streak, and the medal tiers you have
+            earned.</li>
+    </ul>
+    <p>Your name, email address, profile photo and full game history are <strong>never</strong> shown on a profile
+        card. If you do not want a profile card, do not post scores to the leaderboard.</p>
+
+    <h2>Signing In (Google or Email Link) & Firebase Authentication</h2>
+    <p>Signing in is optional. If you choose to sign in:</p>
+    <ul>
+        <li>We store your email address, unique Firebase User ID (UID) and, for Google sign-in, your name in Google Firebase Authentication and Cloud Firestore.</li>
+        <li>For email-link sign-in, the address you enter is kept in your browser's Local Storage only until you finish signing in. The sign-in email is sent by Firebase (Google) on our behalf and is used for nothing else.</li>
         <li>Your email is used solely to identify your account and is <strong>never displayed publicly</strong> or shared with third parties.</li>
-        <li>Your game progress (scores, awards, history) is synced to your account.</li>
+        <li>Your game progress (scores, awards, history) is synced to a private profile that only you can read.</li>
+        <li>A public profile summary of your Daily Challenge statistics and medals is published for other players
+            (see above). Signing out does not remove it.</li>
     </ul>
 
     <div class="highlight-box" id="delete-account">
         <h2>Account & Data Deletion Request</h2>
-        <p>If you signed in with Google or submitted leaderboard scores and wish to delete your account or any associated data:</p>
+        <p>If you signed in or submitted leaderboard scores and wish to delete your account or any associated data:</p>
         <ol>
             <li>Send an email to: <a href="mailto:defenceguesser@gmail.com">defenceguesser@gmail.com</a></li>
             <li>Use the subject line: <strong>Account / Data Deletion Request</strong></li>
-            <li>Include your Google account email address or your leaderboard callsign.</li>
+            <li>Include the email address on your account and/or your leaderboard callsign(s) and approximate date(s) of submission.</li>
         </ol>
-        <p>We will permanently delete your Firebase account, profile data, and any synced game progress within 30 days of receiving your request.</p>
+        <p>We will permanently delete your Firebase account, profile data (including your public profile summary), posted leaderboard scores, and any synced game progress within 30 days of receiving your request. Once your posted scores are removed, a guest profile card can no longer be built from them.</p>
+        <p>You can also ask us to delete only your leaderboard scores and public profile summary while keeping your account.</p>
+        <p><strong>What's kept:</strong> nothing linked to you. Anonymous Google Analytics statistics (only collected if you accepted analytics cookies) cannot be linked to your account, so they are not deleted on request; Google keeps them for no more than 14 months.</p>
         <p>You may also revoke Defence Guesser's access to your Google account at any time via your <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">Google Account Permissions</a> page.</p>
     </div>
+
+    <h2>How Long We Keep Data</h2>
+    <p>Your account, game progress, leaderboard scores and public profile summary are kept for as long as you have an
+        account, so your all-time scores, streaks and medals are never lost. They are only deleted if you ask us to (see
+        above). Google Analytics data is kept for no more than 14 months. Data stored on your device stays there until you
+        clear it.</p>
 
     <h2>Game Data and Scores (Local Storage)</h2>
     <p>Game progress, high scores, Daily Challenge history, preferences, and your chosen callsign are stored locally on
@@ -77,8 +111,28 @@
         <li><strong>Leaflet</strong> – Interactive map library</li>
         <li><strong>CartoDB</strong> – Map tile provider</li>
         <li><strong>Google Fonts</strong> – Typography</li>
-        <li><strong>Google Firebase (Cloud Firestore & Authentication)</strong> – Cloud database and account authentication</li>
+        <li><strong>Google Firebase (Cloud Firestore & Authentication)</strong> – Cloud database (leaderboard, player profiles) and account authentication (anonymous, Google and email link). We do not enable Firebase Analytics.</li>
+        <li><strong>Google Analytics</strong> – Anonymous usage statistics (see "Analytics & Cookies" below)</li>
     </ul>
+
+    <h2>Analytics & Cookies (Google Analytics)</h2>
+    <p>We use Google Analytics (operated by Google LLC) to understand how the App is used so we can fix problems and
+        improve it. <strong>Analytics only runs with your consent:</strong> when you first open the App, a banner
+        asks whether you accept analytics cookies. Until you accept, Google Analytics is not loaded, no analytics
+        cookies are set and no analytics data is sent. Your choice is saved on your device and can be changed at any
+        time from Help (?) → Cookie Settings in the App. If you accept, Google Analytics may collect the pages and screens you view, basic
+        interactions (such as scrolls and outbound link clicks), your device type, operating system, browser, screen
+        size and language, how you arrived at the App, and your approximate location (country/region/city), which
+        Google derives from your IP address. Google Analytics does not store or share your IP address with us.</p>
+    <p>Google Analytics sets first-party cookies (<code>_ga</code> and <code>_ga_*</code>) containing a random identifier
+        so it can recognise repeat visits from the same browser. This data is <strong>not</strong> linked to your
+        callsign, scores, account ID, email or Google account, and we do not use it for advertising or sell it. We see
+        only aggregated reports.</p>
+    <p>To withdraw consent, choose Decline in Help (?) → Cookie Settings; analytics stops and its cookies are deleted.
+        You can also block cookies for this site in your browser, use a tracker or content blocker, or install the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics
+        Opt-out Browser Add-on</a>. Declining does not affect gameplay. See also
+        <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses
+        information from sites that use its services</a>.</p>
 
     <h2>Children's Privacy</h2>
     <p>Our App is suitable for general audiences. We do not knowingly collect personal identifiable information from

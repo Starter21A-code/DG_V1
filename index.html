@@ -2,14 +2,27 @@
 <html lang="en">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZ02522QV5"></script>
+    <!-- Google tag (gtag.js) — only loaded once the player has accepted analytics
+         cookies (choice stored by consent.js). Nothing is sent to Google before that. -->
     <script>
+        window.GA_MEASUREMENT_ID = 'G-ZZ02522QV5';
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-ZZ02522QV5');
+        window.loadAnalytics = function () {
+            window['ga-disable-' + GA_MEASUREMENT_ID] = false;
+            if (!window.__gaLoaded) {
+                window.__gaLoaded = true;
+                var s = document.createElement('script');
+                s.async = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+                document.head.appendChild(s);
+                gtag('js', new Date());
+            }
+            gtag('config', GA_MEASUREMENT_ID);
+        };
+        try {
+            if (localStorage.getItem('dg_analytics_consent') === 'granted') window.loadAnalytics();
+        } catch (e) { /* storage blocked → treat as no consent */ }
     </script>
 
     <meta charset="UTF-8">
@@ -56,8 +69,8 @@
                 <button id="terms-icon" class="terms-icon" title="Terms & Conditions">?</button>
                 <!-- Sound Toggle -->
                 <button id="sound-toggle" class="sound-toggle" title="Sound: ON">🔊</button>
-                <!-- Account chip: guest indicator / Google sign-in (top-left) -->
-                <button id="account-chip" class="account-chip" title="Playing as guest — sign in with Google">
+                <!-- Account chip: guest indicator / sign-in (top-left) -->
+                <button id="account-chip" class="account-chip" title="Playing as guest — sign in">
                     <img id="account-chip-avatar" class="account-chip-avatar hidden" alt="" referrerpolicy="no-referrer">
                     <span id="account-chip-icon" class="account-chip-icon">👤</span>
                     <span id="account-chip-label" class="account-chip-label">SIGN IN</span>
@@ -85,7 +98,7 @@
                     <span class="awards-btn-label">AWARDS</span>
                 </button>
             </div>
-            <div class="version-display">V2.5</div>
+            <div class="version-display">V2.6</div>
         </div>
 
         <!-- Awards / Service Record Screen -->
@@ -338,6 +351,34 @@
             </div>
         </div>
 
+        <!-- Sign-in Modal (opened from the account chip while playing as a guest) -->
+        <div id="signin-modal" class="modal hidden">
+            <div class="modal-content signin-content">
+                <button id="signin-close-btn" class="close-btn" aria-label="Close">✕</button>
+                <h2>SIGN <span class="highlight">IN</span></h2>
+                <p>Save your progress and sync it across devices.</p>
+                <button id="signin-google-btn" class="btn secondary signin-option">
+                    <span class="signin-option-icon" aria-hidden="true">G</span> CONTINUE WITH GOOGLE
+                </button>
+                <div class="signin-divider"><span>or</span></div>
+                <form id="signin-email-form" class="signin-email-form" novalidate>
+                    <label for="signin-email-input" class="signin-label">Get a sign-in link by email — no password needed</label>
+                    <input id="signin-email-input" name="email" type="email" autocomplete="email" inputmode="email"
+                        placeholder="you@example.com" required>
+                    <button id="signin-email-btn" type="submit" class="btn primary signin-option">EMAIL ME A LINK</button>
+                </form>
+                <div id="signin-email-sent" class="signin-sent hidden">
+                    <div class="signin-sent-icon" aria-hidden="true">📧</div>
+                    <p>We've sent a sign-in link to <strong id="signin-sent-address"></strong>.</p>
+                    <p class="signin-small">Open it on this device to finish signing in. It may take a minute to
+                        arrive — check your spam folder if you can't see it.</p>
+                    <button id="signin-email-retry" type="button" class="btn secondary">USE A DIFFERENT EMAIL</button>
+                </div>
+                <p class="signin-small signin-terms">By signing in you agree to the
+                    <a href="#" id="signin-terms-link">Terms &amp; Conditions</a>.</p>
+            </div>
+        </div>
+
         <!-- Help Menu Modal (appears when clicking ?) -->
         <div id="help-menu-modal" class="modal hidden">
             <div class="modal-content help-menu-content">
@@ -352,6 +393,10 @@
                     <button id="help-terms-btn" class="btn help-option secondary">
                         <span class="option-icon">📄</span>
                         <span class="option-text">TERMS & CONDITIONS</span>
+                    </button>
+                    <button id="help-cookies-btn" class="btn help-option secondary">
+                        <span class="option-icon">🍪</span>
+                        <span class="option-text">COOKIE SETTINGS</span>
                     </button>
 
                     <div style="margin-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem;">
@@ -451,7 +496,7 @@
                 <button id="terms-close-btn" class="close-btn">✕</button>
                 <h2>TERMS & <span class="highlight">CONDITIONS</span></h2>
                 <div class="terms-content">
-                    <p class="terms-updated"><strong>Last Updated:</strong> 31st August 2026</p>
+                    <p class="terms-updated"><strong>Last Updated:</strong> 15th November 2026</p>
 
                     <h3>1. Introduction</h3>
                     <p>Welcome to Defence Guesser. By accessing or playing our game, you agree to be bound by these
@@ -478,9 +523,15 @@
                         <li><strong>CartoDB</strong> - Map tile provider</li>
                         <li><strong>Google Fonts</strong> - Typography (Outfit font family)</li>
                         <li><strong>Google Firebase (Cloud Firestore)</strong> - Cloud database used to host the global
-                            Daily Challenge leaderboard and sync signed-in player profiles. See section 3.4 for details on what data is stored.</li>
-                        <li><strong>Google Firebase Authentication</strong> - Optional Google Sign-In. Used to link your
-                            game progress to your Google account so it syncs across devices. See section 3.5 for details.</li>
+                            Daily Challenge leaderboard, public player profile cards, and sync signed-in player
+                            profiles. See sections 3.4 and 3.5 for details on what data is stored and shared.</li>
+                        <li><strong>Google Firebase Authentication</strong> - Creates an anonymous account ID for every
+                            player (used to secure leaderboard entries) and provides optional sign-in with Google or by an
+                            emailed sign-in link, which links your game progress to your account so it syncs across
+                            devices. See sections 3.4 and 3.6 for details.</li>
+                        <li><strong>Google Analytics</strong> - Anonymous usage statistics (such as page views, device
+                            and browser type, and approximate country) used to understand how the game is played and
+                            improve it. Only used if you accept analytics cookies. See section 3.7 for details.</li>
                     </ul>
                     <p>These services are used in accordance with their respective licenses and terms of service.</p>
 
@@ -499,15 +550,22 @@
 
                     <h4>3.1 Data Collection Overview</h4>
                     <p>Defence Guesser is primarily a client-side application that operates in your web browser. By
-                        default (playing as a guest), the only data we transmit off your device is your
-                        <strong>self-chosen callsign and Daily Challenge score</strong>, and only when you choose to
-                        submit them to the global leaderboard (see section 3.4).</p>
-                    <p>If you choose to <strong>sign in with Google</strong> (entirely optional), your Google account
-                        name, email address, and profile photo URL are received from Google and used solely to identify
-                        your account and display your name in the app. This data is stored in your Firebase account
-                        profile and synced with your game progress. See section 3.5 for full details.</p>
-                    <p>We do not collect your IP address, precise location, device hardware identifiers, or any
-                        advertising or tracking signals.</p>
+                        default (playing as a guest), the app creates an <strong>anonymous account ID</strong> for you
+                        when it loads (see section 3.4). Beyond that, the only data we transmit off your device is
+                        your <strong>self-chosen callsign and Daily Challenge score</strong> (with the identifiers
+                        described in section 3.4), and only when you choose to submit them to the global
+                        leaderboard.</p>
+                    <p><strong>Leaderboard entries are public.</strong> Other players can see your callsign and score
+                        on the leaderboard, and can tap your entry to view a profile card showing a summary of your
+                        Daily Challenge statistics (see section 3.5).</p>
+                    <p>If you choose to <strong>sign in</strong> (entirely optional) — with Google or with an emailed
+                        sign-in link — we receive your email address (and, for Google, your name and profile photo URL).
+                        This is used solely to identify your account and display it in the app, and is stored in your
+                        Firebase account profile and synced with your game progress. Your name, email and photo are
+                        never shown to other players. See section 3.6 for full details.</p>
+                    <p>If you accept analytics cookies, we use <strong>Google Analytics</strong> to collect anonymous
+                        usage statistics (see section 3.7). If you decline, no analytics data is collected. We do not collect your precise location or device hardware
+                        identifiers, and we do not use advertising trackers.</p>
 
                     <h4>3.2 Local Storage Usage</h4>
                     <p>The game uses your browser's <strong>Local Storage</strong> to enhance your experience by saving:
@@ -517,9 +575,12 @@
                         <li>Daily Challenge history and completion status</li>
                         <li>User preferences and settings</li>
                         <li>Your chosen callsign for the Daily Challenge leaderboard</li>
+                        <li>Your analytics cookie choice (accepted or declined), so you are not asked again</li>
+                        <li>If you request an email sign-in link, the email address you entered, kept only until you
+                            finish signing in so the link can be completed on this device</li>
                     </ul>
                     <p><strong>This data remains exclusively on your device unless you explicitly submit a score to the
-                            global leaderboard (see section 3.4) or sign in with Google (see section 3.5).</strong></p>
+                            global leaderboard (see sections 3.4 and 3.5) or sign in (see section 3.6).</strong></p>
 
                     <h4>3.3 Legal Basis for Local Storage</h4>
                     <p>By using Defence Guesser, you consent to the storage of this data on your device for the purposes
@@ -529,25 +590,34 @@
                     <h4>3.4 Cloud Leaderboard Data (Firebase)</h4>
                     <p>To power the global Daily Challenge leaderboard, Defence Guesser uses <strong>Google Cloud
                             Firestore</strong> (a Firebase service). Submitting a score is <strong>optional</strong> —
-                        you may play the Daily Challenge without ever posting a score, in which case nothing leaves your
-                        device.</p>
+                        you may play the Daily Challenge without ever posting a score, in which case no game data
+                        leaves your device.</p>
+                    <p><strong>Anonymous account ID:</strong> When the app loads, Firebase Authentication signs you in
+                        anonymously and assigns a random <strong>account ID</strong> (a Firebase User ID). No name,
+                        email or other personal information is attached to it. It is used so that the leaderboard's
+                        security rules only let you write, and update, your own score — nobody else can overwrite or
+                        post a score in your slot. If you later sign in, this account ID is linked to your account
+                        (see section 3.6).</p>
                     <p>When you click <em>POST SCORE</em> on the Daily Challenge results screen, the following data is
                         transmitted to and stored by Firebase:</p>
                     <ul>
                         <li>Your chosen <strong>callsign</strong> (free-text, up to 16 characters — letters, numbers,
                             hyphens and underscores only)</li>
                         <li>Your <strong>score</strong> for that day's challenge</li>
+                        <li>Your <strong>account ID</strong> (described above)</li>
                         <li>A <strong>random installation ID</strong> generated locally by your browser and stored in
-                            Local Storage. This is a random UUID — not a hardware identifier, not linked to your name,
-                            email or Google account — used only to distinguish leaderboard entries when two players
-                            choose the same callsign, and to allow you to update your own score without overwriting
-                            someone else's. Clearing site data resets it.</li>
+                            Local Storage. This is a random UUID — not a hardware identifier — used to tell apart
+                            players who choose the same callsign. Clearing site data resets it.</li>
                         <li>Date / week / month identifiers used for ranking</li>
                         <li>A server-side <strong>timestamp</strong> generated by Firebase at submission</li>
                     </ul>
+                    <p><strong>All of the above is publicly readable.</strong> Leaderboard entries, including the
+                        account ID and installation ID stored with them, can be read by anyone using the app, because
+                        they are needed to rank players and to open each player's profile card (section 3.5). Neither
+                        ID reveals your name, email or sign-in account.</p>
                     <p><strong>No other personal information is sent.</strong> We do not transmit your name, email, IP
-                        address, hardware identifiers, location or any tracking signals. The callsign is freely chosen
-                        by you and need not identify you personally — you may use any pseudonym.</p>
+                        address, hardware identifiers, location or any tracking signals with your scores. The callsign
+                        is freely chosen by you and need not identify you personally — you may use any pseudonym.</p>
                     <p>Firebase is operated by Google LLC. As Firebase's infrastructure provider, Google may log
                         connection metadata (such as IP addresses) at the network level when your browser communicates
                         with Firestore, in accordance with the
@@ -557,36 +627,103 @@
                             Policy</a>.
                     </p>
 
-                    <h4>3.5 Google Sign-In & Account Data (Optional)</h4>
-                    <p>Defence Guesser offers an <strong>optional</strong> Google Sign-In feature powered by
-                        <strong>Firebase Authentication</strong>. Signing in is entirely voluntary — you can play the
-                        full game as a guest without signing in.</p>
-                    <p>If you choose to sign in with Google, the following occurs:</p>
+                    <h4>3.5 Player Profile Cards (Data Shared With Other Players)</h4>
+                    <p>Any player can tap an entry on the global leaderboard to open that player's
+                        <strong>profile card</strong>. This means the statistics below are <strong>visible to other
+                            players</strong> once you have posted a score:</p>
                     <ul>
-                        <li>Google provides us with your <strong>name</strong>, <strong>email address</strong>, and
-                            <strong>profile photo URL</strong> associated with your Google account.</li>
-                        <li>A <strong>Firebase user account</strong> is created and linked to your Google identity. Your
-                            unique Firebase User ID (UID) is used to associate your game progress with your account.</li>
+                        <li><strong>Guest players:</strong> the card is calculated from the scores you have posted to
+                            the leaderboard (which are already public) and shows your callsign, best score, average
+                            score, current and longest daily streak, total days played and total points. Medals are not
+                            shown for guests, and nothing extra is uploaded to create the card.</li>
+                        <li><strong>Signed-in players:</strong> each time your progress syncs, a separate
+                            <strong>public profile summary</strong> is stored in Firebase under your account ID. It
+                            contains only your callsign, best daily score, average score, total days played, total
+                            points, current streak, the date you last played, longest streak, and the medal tiers you
+                            have earned. Your full game history, Daily Challenge attempt records and account
+                            details (email, name, photo) stay in your private profile and are <strong>never</strong> included.</li>
+                    </ul>
+                    <p>Your name, email address and profile photo are <strong>never</strong> shown on a profile card.
+                        The card is identified only by your callsign. If you do not want a profile card, do not post
+                        scores to the leaderboard. To have your public profile summary or posted scores removed, see
+                        section 3.8.</p>
+
+                    <h4>3.6 Signing In &amp; Account Data (Optional)</h4>
+                    <p>Defence Guesser offers <strong>optional</strong> sign-in powered by <strong>Firebase
+                            Authentication</strong>. Signing in is entirely voluntary — you can play the full game as a
+                        guest without signing in. You can sign in in either of two ways:</p>
+                    <ul>
+                        <li><strong>Google:</strong> Google provides us with your <strong>name</strong>, <strong>email
+                                address</strong>, and <strong>profile photo URL</strong> associated with your Google
+                            account.</li>
+                        <li><strong>Email link (passwordless):</strong> you enter your <strong>email address</strong>
+                            and Firebase sends a one-time sign-in link to it. Clicking the link proves you own the
+                            address and signs you in. No password is created or stored. The address you entered is kept
+                            in your browser's Local Storage until you finish signing in, then removed. The sign-in email
+                            is sent by Firebase (Google) on our behalf and is used for nothing else.</li>
+                    </ul>
+                    <p>Whichever method you use, the following occurs:</p>
+                    <ul>
+                        <li>A <strong>Firebase user account</strong> is created and linked to your sign-in identity
+                            (your anonymous account ID from section 3.4 is kept). Your unique Firebase User ID (UID) is
+                            used to associate your game progress with your account. If you use the same email address
+                            with Google and with an email link, both sign in to the same account.</li>
                         <li>Your <strong>game progress</strong> (scores, awards, Daily Challenge history, callsign) is
-                            sync to Firebase Firestore under your account so it is available across devices.</li>
-                        <li>Your name is displayed briefly in the app's sign-in button. Your email is used solely for
-                            account identification and is <strong>never displayed publicly</strong> or shared with other
+                            synced to Firebase Firestore under your account so it is available across devices. This
+                            private profile can only be read by you.</li>
+                        <li>A <strong>public profile summary</strong> of your Daily Challenge statistics and medals is
+                            published for other players to see from the leaderboard (see section 3.5).</li>
+                        <li>Your name (or, if you have none, your email address) is shown in shortened form in the
+                            app's sign-in button on your own device. Your email is used solely for account
+                            identification and is <strong>never displayed publicly</strong> or shared with other
                             players.</li>
                     </ul>
-                    <p><strong>We do not use your Google account data for marketing, advertising, or any purpose other
-                            than identifying your account and syncing your game progress.</strong></p>
+                    <p><strong>We do not use your account data or email address for marketing, advertising, or any
+                            purpose other than signing you in, identifying your account and syncing your game
+                            progress.</strong></p>
                     <p>You can sign out at any time using the sign-in button at the top of the home screen. Upon signing
-                        out you may optionally remove your local game data from the device. To request deletion of your
-                        Firebase account and associated game data, contact us at
+                        out you may optionally remove your local game data from the device. Signing out does not remove
+                        your public profile summary or posted scores. To request deletion of your Firebase account and
+                        associated game data (including your public profile summary), contact us at
                         <a href="mailto:defenceguesser@gmail.com">defenceguesser@gmail.com</a>.</p>
 
-                    <h4>3.6 No Tracking Cookies or Analytics</h4>
-                    <p>We do not use tracking cookies, analytics services, or advertising trackers. Although Firebase is
-                        capable of providing analytics, Defence Guesser does <strong>not</strong> enable Firebase
-                        Analytics — only Cloud Firestore (the leaderboard database) and Firebase Authentication are
-                        used.</p>
+                    <h4>3.7 Analytics &amp; Cookies (Google Analytics)</h4>
+                    <p>Defence Guesser uses <strong>Google Analytics</strong> (operated by Google LLC) to understand how
+                        the game is used — for example how many people play, which screens are visited, and which
+                        devices and browsers they use — so we can fix problems and improve the game.</p>
+                    <p><strong>Analytics only runs with your consent.</strong> When you first open the game, a banner
+                        asks whether you accept analytics cookies. Until you tap <em>Accept</em>, Google Analytics is
+                        not loaded, no analytics cookies are set and no analytics data is sent. If you tap
+                        <em>Decline</em>, it stays off. Your choice is saved on your device (in Local Storage) so you
+                        are not asked again, and you can change it at any time from <strong>Help (?) → Cookie
+                            Settings</strong>.</p>
+                    <p>If you accept, Google Analytics may collect:</p>
+                    <ul>
+                        <li>Pages and screens viewed, and basic interactions such as scrolls and outbound link
+                            clicks</li>
+                        <li>Device type, operating system, browser, screen size and language</li>
+                        <li>Approximate location (country / region / city), derived by Google from your IP address.
+                            Google Analytics does not store or share your IP address with us.</li>
+                        <li>How you arrived at the game (e.g. a search engine or a link)</li>
+                    </ul>
+                    <p>To do this, Google Analytics sets <strong>first-party cookies</strong> (named <code>_ga</code>
+                        and <code>_ga_*</code>) containing a random identifier, which lets it recognise repeat visits
+                        from the same browser.</p>
+                    <p>Google Analytics data is <strong>not</strong> linked to your callsign, scores, account ID, email
+                        or Google account; we do not send any of these to Google Analytics. We see only aggregated
+                        reports, and we do not use it for advertising, advertising personalisation or selling data.</p>
+                    <p>To withdraw your consent, open <strong>Help (?) → Cookie Settings</strong> and tap
+                        <em>Decline</em>: analytics stops and its cookies are deleted. You can also block cookies for
+                        this site in your browser settings, use a tracker or content blocker, or install the
+                        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google
+                            Analytics Opt-out Browser Add-on</a>. Declining does not affect gameplay. For more
+                        information, see
+                        <a href="https://policies.google.com/technologies/partner-sites" target="_blank"
+                            rel="noopener">How Google uses information from sites that use its services</a>.</p>
+                    <p>Firebase's own analytics feature (Firebase Analytics) is <strong>not</strong> enabled. Apart from
+                        Google Analytics, we do not use tracking cookies or advertising trackers.</p>
 
-                    <h4>3.7 Your Data Rights (GDPR Compliance)</h4>
+                    <h4>3.8 Your Data Rights (GDPR Compliance)</h4>
                     <p>Under GDPR and similar privacy regulations, you have the following rights:</p>
                     <p><strong>Local data on your device:</strong></p>
                     <ul>
@@ -598,16 +735,30 @@
                         <li><strong>Right to Withdraw Consent:</strong> You can stop using the game at any time, and
                             clear all stored data through your browser settings</li>
                     </ul>
-                    <p><strong>Cloud leaderboard data (Firebase):</strong></p>
+                    <p><strong>Analytics data (Google Analytics):</strong></p>
+                    <ul>
+                        <li><strong>Right to Object / Withdraw Consent:</strong> Analytics only runs if you accept it.
+                            You can withdraw consent at any time from Help (?) → Cookie Settings, which also deletes
+                            the analytics cookies, or by clearing cookies for this site. Because analytics data is not linked to your name, email or account, we cannot
+                            identify your individual analytics records.</li>
+                    </ul>
+                    <p><strong>Cloud leaderboard and profile data (Firebase):</strong></p>
                     <ul>
                         <li><strong>Right to Access / Erasure:</strong> To request a copy of, or the deletion of, any
-                            leaderboard entries you have submitted, email
+                            leaderboard entries you have submitted or your public profile summary, email
                             <a href="mailto:defenceguesser@gmail.com">defenceguesser@gmail.com</a> with the callsign(s)
-                            and approximate date(s) of submission. We will action verified requests within 30 days.
-                        </li>
+                            and approximate date(s) of submission (and, if signed in, the email address on your account). We
+                            will action verified requests within 30 days. Once your posted scores are removed, a guest
+                            profile card can no longer be built from them.</li>
                         <li><strong>Right to Withdraw Consent:</strong> You can simply stop submitting scores. Past
-                            submissions can be removed on request as above.</li>
+                            submissions and your public profile summary can be removed on request as above.</li>
                     </ul>
+                    <p><strong>How long data is kept:</strong> your account, game progress, leaderboard scores and
+                        public profile summary are kept for as long as you have an account, so your all-time scores,
+                        streaks and medals are never lost. They are only deleted if you ask us to, in which case we
+                        delete them within 30 days of your request. Google Analytics data (only collected if you accepted
+                        analytics cookies) is kept by Google for no more than 14 months. Data on your device stays there
+                        until you clear it.</p>
                     <p><strong>To completely remove all local game data:</strong></p>
                     <ol>
                         <li>Open your browser settings</li>
@@ -616,14 +767,16 @@
                         <li>Alternatively, clear all browser local storage</li>
                     </ol>
 
-                    <h4>3.7 Data Security</h4>
+                    <h4>3.9 Data Security</h4>
                     <p>Locally stored data depends on your device's security; we recommend keeping it protected with
-                        appropriate passwords and security software. Leaderboard data submitted to Firebase is
-                        transmitted over HTTPS and stored on Google's infrastructure, which is governed by Google's
-                        security practices.</p>
+                        appropriate passwords and security software. Leaderboard and profile data submitted to Firebase
+                        is transmitted over HTTPS and stored on Google's infrastructure, which is governed by Google's
+                        security practices. Firebase security rules restrict each player to writing only their own
+                        leaderboard entries and profile data.</p>
 
-                    <h4>3.8 Third-Party Data Processing</h4>
-                    <p>The third-party services listed in section 2.3 (Leaflet, CartoDB, Google Fonts, Google Firebase)
+                    <h4>3.10 Third-Party Data Processing</h4>
+                    <p>The third-party services listed in section 2.3 (Leaflet, CartoDB, Google Fonts, Google Firebase,
+                        Google Analytics)
                         may process data according to their own privacy policies when you use Defence Guesser. We
                         recommend reviewing their respective privacy policies, particularly Google's where applicable.
                     </p>
@@ -636,7 +789,11 @@
                         <li>Interfering with the proper functioning of the game</li>
                         <li>Using the game for any unlawful purpose</li>
                         <li>Submitting offensive or inappropriate content as your callsign</li>
+                        <li>Using a callsign that impersonates another player or reveals someone else's personal
+                            information</li>
+                        <li>Collecting, scraping or harvesting other players' leaderboard or profile data</li>
                     </ul>
+                    <p>We may remove leaderboard entries or profile summaries that break these rules.</p>
 
                     <h3>5. Disclaimers and Limitation of Liability</h3>
 
@@ -1240,6 +1397,25 @@
     <script src="assets/geo-data.js"></script>
     <script src="data.js"></script>
     <script src="app.js"></script>
+
+    <!-- Analytics cookie consent banner (logic in consent.js) -->
+    <div id="cookie-banner" class="cookie-banner hidden" role="dialog" aria-live="polite"
+        aria-labelledby="cookie-banner-title" aria-describedby="cookie-banner-text">
+        <div class="cookie-banner-body">
+            <p id="cookie-banner-title" class="cookie-banner-title">🍪 Cookies &amp; analytics</p>
+            <p id="cookie-banner-text" class="cookie-banner-text">
+                We'd like to use Google Analytics cookies to see how the game is played and improve it. They're
+                only set if you accept, and the game works the same either way.
+                <a href="#" id="cookie-banner-terms">Learn more</a>
+            </p>
+            <p id="cookie-banner-current" class="cookie-banner-current hidden"></p>
+        </div>
+        <div class="cookie-banner-actions">
+            <button id="cookie-decline-btn" type="button" class="btn secondary">DECLINE</button>
+            <button id="cookie-accept-btn" type="button" class="btn primary">ACCEPT</button>
+        </div>
+    </div>
+    <script src="consent.js"></script>
 </body>
 
 </html>

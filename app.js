@@ -5124,13 +5124,18 @@ function getOrCreateDeviceId() {
 function initAuth() {
     if (typeof auth === 'undefined') return; // Firebase scripts not loaded
 
+    // Arriving from an emailed sign-in link: finish that sign-in instead of
+    // starting a throwaway anonymous session first.
+    const arrivedViaEmailLink = auth.isSignInWithEmailLink(window.location.href);
+
     auth.onAuthStateChanged(user => {
         if (!user) {
+            if (emailLinkInProgress) return; // completeEmailLinkSignIn() decides
             // First visit, or just signed out → start a fresh anonymous session
             auth.signInAnonymously().catch(e => console.warn('[Auth] Anonymous sign-in failed:', e));
             return;
         }
-        console.log('[Auth]', user.isAnonymous ? 'Anonymous session' : `Signed in: ${user.displayName}`, user.uid);
+        console.log('[Auth]', user.isAnonymous ? 'Anonymous session' : `Signed in: ${user.displayName || user.email}`, user.uid);
         updateAuthUI(user);
         // Signed-in load (incl. returning from redirect sign-in, or switching to an
         // existing Google account): reconcile cloud and local progress.
@@ -5144,26 +5149,33 @@ function initAuth() {
         throw e;
     }).catch(e => console.warn('[Auth] Redirect sign-in failed:', e));
 
+    if (arrivedViaEmailLink) {
+        emailLinkInProgress = true;
+        completeEmailLinkSignIn();
+    }
+
     const chip = document.getElementById('account-chip');
     if (chip) chip.addEventListener('click', () => {
         const user = auth.currentUser;
         if (user && !user.isAnonymous) {
-            signOutWithGoogle();
+            signOutOfAccount();
         } else {
-            signInWithGoogle();
+            openSignInModal();
         }
     });
+
+    setupSignInModal();
 }
 
-async function signOutWithGoogle() {
-    if (!confirm('Sign out of Google?')) return;
+async function signOutOfAccount() {
+    if (!confirm('Sign out of your account?')) return;
     // Land any pending progress in the cloud before the session goes away
     await pushProfileToCloud();
     // Left in localStorage, the merged progress would be visible to the next
     // person on this machine — and merged into THEIR account if they sign in.
     const wipe = confirm(
         'Also remove your progress from this device?\n\n' +
-        'OK — recommended on a shared computer. Everything stays saved in your Google account.\n' +
+        'OK — recommended on a shared computer. Everything stays saved in your account.\n' +
         'Cancel — keep playing here as a guest with your current progress.'
     );
     if (wipe) {
@@ -5173,6 +5185,184 @@ async function signOutWithGoogle() {
     try { await auth.signOut(); } catch (e) { console.warn('[Auth] Sign-out failed:', e); }
     // Reload after a wipe so every screen rebuilds from the blank slate
     if (wipe) location.reload();
+}
+
+// ── Sign-in modal: Google or passwordless email link ──
+
+function openSignInModal() {
+    const modal = document.getElementById('signin-modal');
+    if (!modal) { signInWithGoogle(); return; }
+    showEmailSentState(null);
+    const input = document.getElementById('signin-email-input');
+    if (input) input.value = localStorage.getItem(EMAIL_FOR_SIGNIN_KEY) || '';
+    modal.classList.remove('hidden');
+}
+
+function closeSignInModal() {
+    document.getElementById('signin-modal')?.classList.add('hidden');
+}
+
+// null → show the email form; an address → show the "check your inbox" panel
+function showEmailSentState(address) {
+    const form = document.getElementById('signin-email-form');
+    const sent = document.getElementById('signin-email-sent');
+    if (!form || !sent) return;
+    form.classList.toggle('hidden', !!address);
+    sent.classList.toggle('hidden', !address);
+    if (address) document.getElementById('signin-sent-address').textContent = address;
+}
+
+function setupSignInModal() {
+    const modal = document.getElementById('signin-modal');
+    if (!modal) return;
+
+    document.getElementById('signin-close-btn')?.addEventListener('click', closeSignInModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeSignInModal(); });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeSignInModal();
+    });
+
+    document.getElementById('signin-google-btn')?.addEventListener('click', () => {
+        closeSignInModal();
+        signInWithGoogle();
+    });
+
+    document.getElementById('signin-email-form')?.addEventListener('submit', async e => {
+        e.preventDefault();
+        const input = document.getElementById('signin-email-input');
+        const btn   = document.getElementById('signin-email-btn');
+        const email = (input.value || '').trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showAuthToast('Please enter a valid email address.');
+            input.focus();
+            return;
+        }
+        btn.disabled = true;
+        const label = btn.textContent;
+        btn.textContent = 'SENDING…';
+        try {
+            await sendEmailSignInLink(email);
+            showEmailSentState(email);
+        } catch (err) {
+            console.error('[Auth] Email link send failed:', err);
+            showAuthToast(err.code === 'auth/invalid-email'
+                ? 'That email address looks invalid.'
+                : err.code === 'auth/quota-exceeded' || err.code === 'auth/too-many-requests'
+                    ? 'Too many sign-in emails sent — please try again later.'
+                    : 'Couldn\'t send the email — please try again.');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = label;
+        }
+    });
+
+    document.getElementById('signin-email-retry')?.addEventListener('click', () => {
+        showEmailSentState(null);
+        document.getElementById('signin-email-input')?.focus();
+    });
+
+    document.getElementById('signin-terms-link')?.addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById('terms-modal')?.classList.remove('hidden');
+    });
+}
+
+// ── Email link (passwordless) sign-in ──
+// Like Google, the email account is LINKED onto the player's anonymous user so
+// the UID — and every leaderboard entry keyed to it — is kept. If the email
+// already belongs to an account (signed up on another device, or the same
+// address used with Google), we sign in to that account instead.
+
+const EMAIL_FOR_SIGNIN_KEY = 'dg_email_for_signin';
+let emailLinkInProgress = false;
+
+function sendEmailSignInLink(email, { signInOnly = false } = {}) {
+    // The link returns to this exact page; signInOnly marks a resend after
+    // linking was refused, so the next attempt goes straight to sign-in.
+    const url = new URL(window.location.origin + window.location.pathname);
+    if (signInOnly) url.searchParams.set('dgSignIn', '1');
+    localStorage.setItem(EMAIL_FOR_SIGNIN_KEY, email);
+    return auth.sendSignInLinkToEmail(email, { url: url.toString(), handleCodeInApp: true });
+}
+
+function firstAuthState() {
+    return new Promise(resolve => {
+        const unsubscribe = auth.onAuthStateChanged(user => { unsubscribe(); resolve(user); });
+    });
+}
+
+// Strip oobCode/apiKey/etc. so a refresh or shared URL doesn't retry the link
+function clearEmailLinkFromUrl() {
+    history.replaceState(null, '', window.location.origin + window.location.pathname + window.location.hash);
+}
+
+async function completeEmailLinkSignIn() {
+    const link = window.location.href;
+    const signInOnly = new URL(link).searchParams.get('dgSignIn') === '1';
+    try {
+        let email = localStorage.getItem(EMAIL_FOR_SIGNIN_KEY);
+        if (!email) {
+            // Link opened on a different device/browser than it was requested on
+            email = (prompt('To finish signing in, please confirm the email address the link was sent to:') || '').trim();
+            if (!email) {
+                clearEmailLinkFromUrl();
+                showAuthToast('Sign-in cancelled.');
+                return;
+            }
+        }
+
+        const user = await firstAuthState();
+        const credential = firebase.auth.EmailAuthProvider.credentialWithLink(email, link);
+
+        if (user && user.isAnonymous && !signInOnly) {
+            try {
+                await user.linkWithCredential(credential); // upgrade in place — UID preserved
+                localStorage.removeItem(EMAIL_FOR_SIGNIN_KEY);
+                clearEmailLinkFromUrl();
+                updateAuthUI(auth.currentUser);
+                syncFromCloud(); // linking doesn't re-fire onAuthStateChanged
+                showAuthToast('Signed in as ' + email);
+                return;
+            } catch (err) {
+                if (err.code !== 'auth/email-already-in-use' &&
+                    err.code !== 'auth/credential-already-in-use' &&
+                    err.code !== 'auth/provider-already-linked') throw err;
+                // This email already has an account → fall through and sign in to it
+            }
+        }
+
+        try {
+            await auth.signInWithEmailLink(email, link);
+        } catch (err) {
+            // The refused link attempt may have used up this one-time link.
+            // Send a fresh one that signs straight in.
+            if (err.code === 'auth/invalid-action-code' && !signInOnly && user && user.isAnonymous) {
+                await sendEmailSignInLink(email, { signInOnly: true });
+                clearEmailLinkFromUrl();
+                showAuthToast('This email already has an account — we\'ve sent a new link to sign in to it.');
+                return;
+            }
+            throw err;
+        }
+        localStorage.removeItem(EMAIL_FOR_SIGNIN_KEY);
+        clearEmailLinkFromUrl();
+        showAuthToast('Signed in as ' + email);
+        // onAuthStateChanged fires for the (different) signed-in user and syncs
+    } catch (err) {
+        console.error('[Auth] Email link sign-in failed:', err);
+        clearEmailLinkFromUrl();
+        showAuthToast(err.code === 'auth/invalid-action-code' || err.code === 'auth/expired-action-code'
+            ? 'That sign-in link has expired or was already used — please request a new one.'
+            : err.code === 'auth/invalid-email'
+                ? 'That email doesn\'t match the one the link was sent to.'
+                : 'Sign-in failed — please try again.');
+    } finally {
+        emailLinkInProgress = false;
+        // Never leave the player without a session (needed for leaderboard posts)
+        if (!auth.currentUser) {
+            auth.signInAnonymously().catch(e => console.warn('[Auth] Anonymous sign-in failed:', e));
+        }
+    }
 }
 
 async function signInWithGoogle() {
@@ -5242,7 +5432,7 @@ function updateAuthUI(user) {
         if (icon) icon.classList.toggle('hidden', !!user.photoURL);
     } else {
         if (label) label.textContent = 'SIGN IN';
-        chip.title = 'Playing as guest — sign in with Google';
+        chip.title = 'Playing as guest — sign in';
         if (avatar) avatar.classList.add('hidden');
         if (icon) icon.classList.remove('hidden');
     }

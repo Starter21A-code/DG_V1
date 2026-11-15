@@ -2943,7 +2943,7 @@ window.equipmentData = [
         inService: 2009,
         users: ["China", "Venezuela"],
         status: "Active",
-        fact: "The ZBL-09 is an 8x8 wheeled APC that forms the backbone of China's rapid deployment forces, with over 1,000 units produced.",
+        fact: "The ZBL-08 is an 8x8 wheeled APC that forms the backbone of China's rapid deployment forces, with over 1,000 units produced.",
         imageCredit: "Photo: Mil.ru / Ministry of Defence of the Russian Federation / CC BY 4.0"
     },
     {
@@ -4967,6 +4967,84 @@ window.equipmentData = [
         imageCredit: "Photo: AboJasam909 / Wikimedia Commons / CC0 1.0 Public Domain"
     },
     {
+        id: 315,
+        name: "GAZ Tigr",
+        type: "Patrol Vehicle",
+        origin: "Russia",
+        coords: [55.7558, 37.6173],
+        images: [
+            "assets/Gaz_tigr.jpg",
+            "assets/Gaz_tigr_bravo.jpg"
+        ],
+        specs: { speed: "140 km/h", armament: "12.7mm Kord / 7.62mm PKP / 30mm AGS-17 (roof mount)", operationalRange: "1,000 km" },
+        inService: 2006,
+        users: ["Russia", "Belarus", "Armenia", "Kazakhstan", "Serbia", "Uruguay", "Brazil"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "4×4 on four very large, widely spaced off-road tyres with chunky tread and central tyre inflation; tall ground clearance and big, squared-off wheel arches give it a high, planted stance.",
+            hull: "Boxy, slab-sided armoured body like an oversized Humvee — a long, flat, gently sloping bonnet with a raised centre bulge, a two-pane flat upright windscreen, small square side windows with firing ports, and a tubular bull-bar wrapped around the twin-slatted grille and round headlights.",
+            armament: "Light-vehicle armament only — a roof ring or shielded pintle mount carrying a 12.7mm Kord or 7.62mm PKP machine gun, or a 30mm AGS-17 grenade launcher; specialist variants carry a remote weapon station or a pop-up Kornet anti-tank missile launcher.",
+            turret: "No turret — a circular roof hatch with an open, box-shielded gun mount; roof-mounted smoke-grenade dischargers and a spotlight are often visible on the flat roof edges."
+        },
+        fact: "The GAZ Tigr (GAZ-2330) is Russia's answer to the Humvee — a 4×4 light armoured multi-role vehicle built at the Arzamas Machine-Building Plant, with pilot production starting in 2004 and Russian Army service from 2006. Its design traces back to a late-1990s GAZ project for a UAE customer, an early prototype that later fed into the UAE's own NIMR vehicle family. Around 7 tonnes in armoured form, it can hit 140 km/h on the road and cover about 1,000 km on a tank of fuel, and it has been built in dozens of variants, from police patrol and command vehicles to the Kornet-D tank hunter and the improved Tigr-M with a domestic YaMZ diesel engine.",
+        imageCredits: [
+            "Photo: Srđan Popović / Wikimedia Commons / CC BY-SA 4.0",
+            "Photo: Srđan Popović / Wikimedia Commons / CC BY-SA 4.0 — image modified (cropped)"
+        ]
+    },
+    {
+        id: 316,
+        name: "Dongfeng EQ2050 (Mengshi)",
+        type: "Light Utility Vehicle",
+        origin: "China",
+        coords: [35.8617, 104.1954],
+        images: [
+            "assets/Dongfeng_EQ2050.jpg",
+            "assets/Dongfeng_EQ2050_Bravo.jpg"
+        ],
+        specs: { speed: "130 km/h", armament: "12.7mm HMG / HJ-8 or HJ-9 ATGM (variant dependent)", operationalRange: "600 km" },
+        inService: 2007,
+        users: ["China", "Bangladesh"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "4×4 on four large, widely spaced off-road tyres with independent suspension. It is wide and low like a Humvee, with big wheel arches pushed out to the corners.",
+            hull: "Wide, low Humvee-style body with a broad, flat bonnet that has a raised louvred vent panel. The front is distinctive: a mesh grille with the Dongfeng badge and the characters 猛士, rectangular headlight clusters in square dark housings on either side, a tubular bull-bar, and a winch bumper below. Variants range from open-top with a folding windscreen frame to fully enclosed hardtops.",
+            armament: "Light-vehicle armament only: a roof or pintle mount for a 12.7mm heavy machine gun or grenade launcher. Anti-tank variants carry HJ-8 or HJ-9 'Red Arrow' missile launchers in the rear bay, and many are fielded unarmed as troop or command carriers.",
+            turret: "No turret. Armed versions use an open roof ring or rear-bed weapon mount instead."
+        },
+        fact: "The Dongfeng EQ2050, nicknamed 'Mengshi' (猛士, 'Brave Warrior'), is China's answer to the Humvee. It was built by Dongfeng Motor in Shiyan, Hubei, and drew so heavily on the AM General Hummer H1 that early vehicles used imported H1 parts alongside a Dongfeng-Cummins diesel engine. Entering PLA service in the late 2000s, it became the army's standard light tactical vehicle in roles ranging from troop carrier and command car to anti-tank missile and rocket-launcher platforms. A civilian 'Mengshi' SUV was later sold in China, and the original design has gradually given way to the newer, more indigenous Mengshi CSK family.",
+        imageCredits: [
+            "Photo: Boris van Hoytema / Wikimedia Commons / CC BY 2.0 — image modified (cropped)",
+            "Photo: Shadman Samee / Wikimedia Commons / CC BY-SA 2.0 — image modified (cropped)"
+        ]
+    },
+    {
+        id: 317,
+        name: "VAB",
+        type: "APC",
+        origin: "France",
+        coords: [46.2276, 2.2137],
+        images: [
+            "assets/vab.jpg",
+            "assets/vab_bravo.jpg"
+        ],
+        specs: { speed: "110 km/h", armament: "12.7mm M2 / 7.62mm machine gun (roof mount)", operationalRange: "1,200 km" },
+        inService: 1976,
+        users: ["France", "Morocco", "Lebanon", "Qatar", "United Arab Emirates", "Cyprus", "Côte d'Ivoire", "Ukraine"],
+        status: "Active",
+        recognitionFeatures: {
+            wheels: "4×4 (some variants 6×6) on four large, evenly spaced road wheels with a long gap between the axles. Wheel arches are cut squarely into the slab hull sides, and there are no side skirts.",
+            hull: "Tall, boxy, flat-sided hull with a sharply pointed, boat-like wedge nose for swimming. A large two-pane windscreen for the driver and commander sits high at the front and is protected by armoured shutters that hinge up like visors. The engine sits behind the cab, and there are big twin doors at the rear.",
+            armament: "Light armament only: a roof-mounted cupola or ring with a 12.7mm M2 heavy machine gun or a 7.62mm machine gun, often with a small gun shield. Later VAB Mk3s and upgraded vehicles may carry a remote weapon station instead.",
+            turret: "No turret on the troop-carrier version, just a raised roof hatch and weapon cupola just behind the windscreen. Specialist variants have mounted 20mm turrets, mortars or missile launchers."
+        },
+        fact: "The VAB (Véhicule de l'Avant Blindé, 'front armoured vehicle') has been the workhorse of the French Army since 1976, with around 5,000 built by Renault, now Arquus, in more than 30 versions. These include ambulances, command posts, mortar carriers, anti-tank missile launchers and electronic-warfare vehicles. It is fully amphibious, driven through the water by two rear waterjets, and has served on nearly every French operation from Lebanon and the Balkans to Afghanistan and the Sahel. France donated retired VABs to Ukraine from 2022, where they have been fitted with anti-drone cages and jammers, a sign of how far the 1970s design has had to adapt to modern warfare.",
+        imageCredits: [
+            "Photo: ArmyInform / Ministry of Defence of Ukraine / CC BY 4.0 — image modified (cropped)",
+            "Photo: General Staff of the Armed Forces of Ukraine / Wikimedia Commons / CC BY 4.0 — image modified (cropped)"
+        ]
+    },
+    {
         id: 211,
         name: "Milkor MGL",
         type: "Grenade Launcher",
@@ -5620,6 +5698,58 @@ window.equipmentData = [
         imageCredits: [
             "Photo: ROK Ministry of National Defense / Korea Open Government License Type 1 — image modified (cropped, symbols removed)",
             "Photo: Peppsi Wings / Wikimedia Commons / CC BY 3.0 Unported — image modified (symbols removed)"
+        ]
+    },
+    {
+        id: 318,
+        name: "KAI FA-50 Fighting Eagle",
+        type: "Fighter Aircraft",
+        origin: "South Korea",
+        coords: [35.9078, 127.7669],
+        images: [
+            "assets/FA_50.jpg",
+            "assets/FA_50_Bravo.jpg"
+        ],
+        specs: { speed: "Mach 1.5", armament: "20mm A-50 rotary cannon / AIM-9 Sidewinder / AGM-65 Maverick / JDAM", combatRadius: "444 km" },
+        inService: 2013,
+        users: ["South Korea", "Philippines", "Poland", "Malaysia"],
+        status: "Active",
+        recognitionFeatures: {
+            wings: "Mid-mounted, moderately swept trapezoidal wings with leading-edge root extensions (LERX) running forward alongside the cockpit, and missile rails on the wingtips. The overall look is like a scaled-down F-16.",
+            engine: "Single afterburning turbofan with one round exhaust nozzle, fed by two small intakes on the fuselage sides tucked under the wing-root extensions. The F-16, by contrast, has one large intake under the nose.",
+            fuselage: "Small, slender fuselage with a long, sharply pointed nose and a two-seat canopy, with the rear seat raised above the front, and a spine running back to the tail.",
+            tail: "Single swept vertical fin with all-moving horizontal tailplanes set low at the rear, either side of the exhaust nozzle."
+        },
+        fact: "The FA-50 Fighting Eagle is the light-combat version of the T-50 Golden Eagle supersonic trainer, developed by Korea Aerospace Industries with help from Lockheed Martin. That shared heritage is why it looks so much like a shrunken F-16. Every FA-50 is built by KAI at Sacheon, South Korea. Philippine FA-50PHs flew combat sorties during the 2017 Battle of Marawi, and after Russia's invasion of Ukraine, Poland ordered 48 FA-50s in 2022 to fill the gap left by its retiring MiG-29s and Su-22s. That order made the FA-50 one of the fastest-selling combat jets of the 2020s, offering near-F-16 handling at a fraction of the price.",
+        imageCredits: [
+            "Photo: Republic of Korea Armed Forces / Wikimedia Commons / CC BY-SA 2.0 — image modified (cropped, symbols removed)",
+            "Photo: Republic of Korea Air Force, Korea Aerospace Industries / Wikimedia Commons / CC BY 2.0 — image modified (cropped)"
+        ]
+    },
+    {
+        id: 319,
+        name: "TAI T129 ATAK",
+        type: "Attack Helicopter",
+        origin: "Turkey",
+        coords: [39.9334, 32.8597],
+        images: [
+            "assets/T129.jpg",
+            "assets/T129_Bravo.jpg"
+        ],
+        specs: { speed: "281 km/h", armament: "20mm three-barrel cannon / UMTAS ATGM / Cirit rockets / Stinger", operationalRange: "537 km" },
+        inService: 2014,
+        users: ["Turkey", "Philippines", "Nigeria"],
+        status: "Active",
+        recognitionFeatures: {
+            rotors: "Five-blade main rotor on a short mast above the cabin, and a small two-blade tail rotor mounted high on the tail fin.",
+            engine: "Twin turboshaft engines in pods on either side of the rotor mast, with large, prominent rear-facing exhausts. The pods sit fairly far back, behind the cockpit.",
+            fuselage: "Very slim, narrow attack-helicopter body with stepped tandem cockpits: the gunner sits in front and the pilot sits higher behind, under flat-panel glazing. There is a three-barrel 20mm cannon in a chin turret under the nose, a sensor ball on the nose, short stub wings with weapon pylons, and fixed tailwheel landing gear.",
+            tail: "Long, thin tail boom ending in a swept vertical fin with the tail rotor at the top, small horizontal stabilisers, and a small tailwheel underneath."
+        },
+        fact: "The T129 ATAK is Turkey's attack helicopter, built by Turkish Aerospace (TAI) at Ankara. It is based on the Italian AgustaWestland A129 Mangusta but heavily redesigned with Turkish avionics, a five-blade rotor, more powerful engines and Turkish-made weapons such as UMTAS anti-tank missiles and Cirit laser-guided rockets. It entered Turkish service in 2014 and has flown extensive counter-insurgency missions, with exports following to the Philippines and Nigeria. Its American-made LHTEC CTS800 engines became a political problem when US export licences stalled a large sale to Pakistan, and that experience pushed Turkey to develop its own TEI TS1400 engine for future helicopters.",
+        imageCredits: [
+            "Photo: wiltshirespotter / Wikimedia Commons / CC BY-SA 2.0 — image modified (flags removed)",
+            "Photo: DND Philippines / Wikimedia Commons / Public Domain — image modified (cropped)"
         ]
     },
     {

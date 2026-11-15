@@ -259,6 +259,7 @@ body {
 
 /* App Icon */
 .app-icon {
+    display: block;
     width: 160px;
     height: 160px;
     border-radius: 24px;
@@ -269,8 +270,28 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.app-icon:hover {
+/* Logo button: the image plus the radar effects scale together on hover */
+.radar-logo {
+    position: relative;
+    display: block;
+    padding: 0;
+    border: none;
+    background: none;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.radar-logo:hover {
     transform: scale(1.05);
+}
+
+.radar-logo:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 4px;
+}
+
+.radar-logo:hover .app-icon {
     box-shadow:
         0 12px 48px rgba(0, 0, 0, 0.6),
         0 0 0 1px rgba(255, 255, 255, 0.15),
@@ -836,43 +857,6 @@ body {
 }
 
 /* ===== Awards / Service Record ===== */
-.awards-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
-    margin: 0.75rem auto 0 auto;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.15s ease, filter 0.15s ease;
-}
-
-.awards-btn:hover {
-    transform: translateY(-2px);
-    filter: drop-shadow(0 0 12px rgba(0, 255, 136, 0.45));
-}
-
-.awards-btn-img {
-    width: 56px;
-    height: 56px;
-    object-fit: contain;
-    display: block;
-}
-
-.awards-btn-label {
-    font-family: var(--font-main);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-}
-
-.awards-btn:hover .awards-btn-label {
-    color: var(--accent-color);
-}
-
 .awards-container {
     width: 100%;
     max-width: 760px;
@@ -906,6 +890,13 @@ body {
     text-align: center;
     position: relative;
     margin-bottom: 1.25rem;
+}
+
+/* Pin BACK to the top-left, level with the title (the header now also holds the
+   rank panel, so the shared back-btn's vertical centring would push it down) */
+.awards-header .back-btn {
+    top: 0.25rem;
+    transform: none;
 }
 
 .awards-header h2 {
@@ -1770,117 +1761,6 @@ body {
     height: auto;
 }
 
-/* History Section */
-.history-section {
-    margin: 1.5rem 0 1rem 0;
-}
-
-.history-section h3 {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
-.history-list {
-    max-height: 280px;
-    overflow-y: auto;
-    padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(0, 255, 136, 0.2);
-    border-radius: 8px;
-}
-
-.history-list::-webkit-scrollbar {
-    width: 8px;
-}
-
-.history-list::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-}
-
-.history-list::-webkit-scrollbar-thumb {
-    background: var(--accent-color);
-    border-radius: 4px;
-}
-
-.history-list::-webkit-scrollbar-thumb:hover {
-    background: #00ff88;
-}
-
-.history-entry {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    margin-bottom: 0.35rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    transition: all 0.2s ease;
-}
-
-.history-entry:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(0, 255, 136, 0.3);
-}
-
-.history-entry.today {
-    background: rgba(0, 255, 136, 0.1);
-    border-color: var(--accent-color);
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
-}
-
-.history-rank {
-    font-size: 1rem;
-    font-weight: 700;
-    min-width: 1.5rem;
-    text-align: center;
-    font-family: var(--font-heading);
-}
-
-.history-rank.gold {
-    color: #FFD700;
-}
-
-.history-rank.silver {
-    color: #C0C0C0;
-}
-
-.history-rank.bronze {
-    color: #CD7F32;
-}
-
-.history-rank.other {
-    color: var(--text-secondary);
-}
-
-.history-date {
-    flex: 1;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-}
-
-.history-score {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--accent-color);
-    font-family: var(--font-heading);
-}
-
-.history-badge {
-    font-size: 1rem;
-    margin-left: 0.35rem;
-}
-
-.no-history {
-    text-align: center;
-    color: var(--text-secondary);
-    padding: 2rem 1rem;
-    font-style: italic;
-}
-
 /* Responsive adjustments for stats dashboard */
 @media (max-width: 768px) {
     .stats-dashboard {
@@ -1905,27 +1785,6 @@ body {
         font-size: 0.7rem;
     }
 
-    .history-list {
-        max-height: 200px;
-    }
-
-    .history-entry {
-        padding: 0.5rem;
-        gap: 0.5rem;
-    }
-
-    .history-rank {
-        font-size: 1rem;
-        min-width: 1.5rem;
-    }
-
-    .history-date {
-        font-size: 0.8rem;
-    }
-
-    .history-score {
-        font-size: 0.95rem;
-    }
 }
 
 
@@ -4262,192 +4121,11 @@ body {
     border-radius: 6px;
 }
 
-/* History section - condense spacing */
-.history-section {
-    margin-bottom: 0.5rem;
-}
-
-.history-section h3 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    text-align: center;
-}
-
 /* Stats modal content wrapper - constrain overall height */
 .stats-content-wrapper {
     max-height: 85vh;
     overflow-y: auto;
     padding-right: 0.5rem;
-}
-
-/* History list container - prevent overflow */
-#history-list {
-    max-height: 200px;
-    /* Increased to accommodate more compact entries */
-    overflow-y: auto;
-    padding-right: 0.5rem;
-    margin-bottom: 0.75rem;
-}
-
-/* Scrollbar styling for history list */
-#history-list::-webkit-scrollbar {
-    width: 8px;
-}
-
-#history-list::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-}
-
-#history-list::-webkit-scrollbar-thumb {
-    background: var(--accent-color);
-    border-radius: 4px;
-}
-
-#history-list::-webkit-scrollbar-thumb:hover {
-    background: #00cc6a;
-}
-
-/* History entries - much more compact */
-.history-entry {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0.6rem;
-    background: rgba(0, 255, 136, 0.05);
-    border: 1px solid rgba(0, 255, 136, 0.1);
-    border-radius: 6px;
-    margin-bottom: 0.3rem;
-    transition: all 0.2s ease;
-}
-
-.history-entry:hover {
-    background: rgba(0, 255, 136, 0.1);
-    transform: translateX(4px);
-}
-
-.history-entry.today {
-    background: rgba(0, 255, 136, 0.15);
-    border-color: var(--accent-color);
-}
-
-.history-rank {
-    font-size: 0.9rem;
-    font-weight: 700;
-    min-width: 1.5rem;
-    text-align: center;
-    color: var(--text-secondary);
-}
-
-.history-rank.gold {
-    color: #FFD700;
-}
-
-.history-rank.silver {
-    color: #C0C0C0;
-}
-
-.history-rank.bronze {
-    color: #CD7F32;
-}
-
-.history-date {
-    flex: 1;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-}
-
-.history-score {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--accent-color);
-}
-
-.history-badge {
-    font-size: 1rem;
-}
-
-/* Total Points Display - Horizontal Compact */
-.total-points-display {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 0.4rem 0.75rem;
-    background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(0, 255, 136, 0.02) 100%);
-    border: 1px solid var(--accent-color);
-    border-radius: 6px;
-    margin-top: 0.25rem;
-}
-
-.total-points-icon {
-    font-size: 1.4rem;
-    margin-bottom: 0;
-}
-
-.total-points-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.total-points-value {
-    font-size: 1.1rem;
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--accent-color);
-    margin-bottom: 0;
-    text-shadow: 0 0 8px rgba(0, 255, 136, 0.2);
-}
-
-.total-points-label {
-    font-size: 0.55rem;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.no-history {
-    text-align: center;
-    color: var(--text-secondary);
-    padding: 2rem;
-    font-style: italic;
-}
-
-/* Total Points Summary */
-.total-points-summary {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--accent-dim);
-    border-radius: 12px;
-    padding: 2rem 1.5rem;
-    margin: 1rem auto;
-    max-width: 300px;
-}
-
-.total-points-icon {
-    font-size: 3rem;
-    margin-bottom: 0.75rem;
-}
-
-.total-points-value {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--accent-color);
-    margin-bottom: 0.5rem;
-    text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-}
-
-.total-points-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    letter-spacing: 1px;
-    text-transform: uppercase;
 }
 
 /* Result Actions Container */
@@ -5807,9 +5485,16 @@ body {
     text-transform: uppercase;
     overflow-wrap: anywhere;
 }
+/* Five tiles: 3 on top, 2 centred below (each tile spans 2 of 6 columns) */
 .stats-dashboard.pp-stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     margin-top: 0.75rem;
+}
+.pp-stats .stat-card {
+    grid-column: span 2;
+}
+.pp-stats .stat-card:nth-child(4) {
+    grid-column: 2 / span 2;
 }
 .pp-heading {
     font-size: 0.8rem;
@@ -5873,6 +5558,20 @@ body {
     white-space: nowrap;
 }
 .lb-user-entry .lb-callsign { color: #00ff88; }
+
+/* Rank abbreviation before the callsign ("Cpl ED") — quieter than the name */
+.lb-rank-abbr {
+    margin-right: 0.4em;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--text-secondary);
+}
+.lb-rank-abbr.rank-gold-text {
+    color: #ffd700;
+    font-weight: 700;
+}
 
 /* YOU badge */
 .you-tag {
@@ -6343,4 +6042,510 @@ body {
     .cookie-banner-actions .btn {
         flex: 1;
     }
+}
+
+/* ===== Career XP & rank ===== */
+
+/* Insignia + name + progress bar (start screen, Service Record, debrief, player card) */
+.rank-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+}
+
+.rank-insignia {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--glass-border);
+}
+
+.rank-summary-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.rank-summary-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+}
+
+.rank-summary-caption {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.rank-gold-text {
+    color: #ffd700;
+}
+
+.xp-bar {
+    display: block;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.xp-bar-fill {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 3px;
+    background: var(--accent-color);
+    box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    transition: width 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Start-screen Service Record button: rank + progress on the left, medal on the right */
+.service-record-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+    margin: 0.9rem auto 0 auto;
+    padding: 0.6rem 0.85rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.service-record-btn:hover {
+    border-color: var(--accent-color);
+    background: var(--accent-dim);
+    box-shadow: 0 0 18px rgba(0, 255, 136, 0.2);
+}
+
+.service-record-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    text-align: center;
+    padding-left: 2px; /* balances the trailing letter-spacing so it centres truly */
+}
+
+.service-record-btn:hover .service-record-label {
+    color: var(--accent-color);
+}
+
+.service-record-body {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.service-record-body .rank-summary {
+    flex: 1;
+    min-width: 0;
+}
+
+.service-record-medal {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* Service Record header: large insignia centred above the rank name and bar */
+.awards-rank {
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 400px;
+    margin: 1rem auto 0 auto;
+    padding: 1.25rem 1.5rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    text-align: center;
+}
+
+.awards-rank .rank-insignia {
+    width: 220px;
+    height: 220px;
+    max-width: 70vw;
+    max-height: 70vw;
+    border-radius: 16px;
+    filter: drop-shadow(0 0 22px rgba(0, 255, 136, 0.35));
+}
+
+.awards-rank .rank-summary-info {
+    width: 100%;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.awards-rank .rank-summary-name {
+    font-size: 1.35rem;
+    letter-spacing: 3px;
+}
+
+.awards-rank .xp-bar {
+    height: 8px;
+    border-radius: 4px;
+}
+
+.awards-rank .rank-summary-caption {
+    font-size: 0.75rem;
+}
+
+/* Player card */
+.pp-rank {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+}
+
+/* Debrief XP panel */
+.xp-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.xp-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.xp-panel-title {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+}
+
+.xp-gain {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    letter-spacing: 1px;
+}
+
+.xp-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.xp-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.xp-line-value {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Full-screen promotion / service-record overlay */
+.rank-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    background: radial-gradient(circle at center, rgba(0, 255, 136, 0.14) 0%, transparent 65%), rgba(5, 8, 12, 0.97);
+    animation: rankOverlayFade 0.35s ease-out;
+}
+
+.rank-overlay.hidden {
+    display: none;
+}
+
+.rank-overlay-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    text-align: center;
+    max-width: 420px;
+}
+
+.rank-overlay-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 5px;
+    color: var(--accent-color);
+    text-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+}
+
+.rank-overlay-img {
+    width: min(300px, 70vw);
+    height: auto;
+    border-radius: 16px;
+    margin: 0.5rem 0;
+    filter: drop-shadow(0 0 25px rgba(0, 255, 136, 0.45));
+    animation: rankInsigniaIn 0.6s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.rank-overlay-sub {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.rank-overlay-name {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.rank-overlay.rank-gold {
+    background: radial-gradient(circle at center, rgba(255, 215, 0, 0.18) 0%, transparent 65%), rgba(5, 8, 12, 0.97);
+}
+
+.rank-overlay.rank-gold .rank-overlay-title,
+.rank-overlay.rank-gold .rank-overlay-name {
+    color: #ffd700;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+}
+
+.rank-overlay.rank-gold .rank-overlay-img {
+    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.5));
+}
+
+@keyframes rankOverlayFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes rankInsigniaIn {
+    from { transform: scale(0.6); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Debrief headline: final score + mission assessment. Stacked by default;
+   side by side on the daily debrief, which also carries the archetype card. */
+.score-headline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.score-headline.score-headline-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem 1.75rem;
+}
+
+.score-headline-row .performance-trophy {
+    width: 64px;
+}
+
+@media (max-width: 480px) {
+    .score-headline.score-headline-row {
+        flex-wrap: nowrap;
+        gap: 0.75rem;
+    }
+
+    .score-headline-row .final-score-display .score-value {
+        font-size: 1.7rem;
+    }
+
+    .score-headline-row .score-rating {
+        padding: 0.4rem 0.6rem;
+    }
+
+    .score-headline-row .score-rating .rating-value {
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+    }
+}
+
+/* ===== Radar logo scan + Intel Brief ===== */
+
+/* Effects layer sits over the dark radar disc in the logo artwork, measured
+   on the rendered logo: centre at 50% / 42.2%, disc diameter ~52% of the logo. */
+.radar-fx {
+    position: absolute;
+    left: 50%;
+    top: 42.2%;
+    width: 52%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Rotating beam: bright leading edge with a fading tail behind it */
+.radar-sweep {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg,
+            rgba(0, 255, 136, 0) 0deg,
+            rgba(0, 255, 136, 0) 270deg,
+            rgba(0, 255, 136, 0.55) 358deg,
+            rgba(180, 255, 220, 0.9) 360deg);
+    opacity: 0;
+}
+
+/* Sonar pulse expanding from the centre */
+.radar-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10%;
+    aspect-ratio: 1;
+    border: 2px solid rgba(0, 255, 136, 0.9);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+/* Contact: the lower-right dot in the artwork lights up as the beam passes */
+.radar-blip {
+    position: absolute;
+    left: 64.4%;
+    top: 66.2%;
+    width: 13%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.4);
+    background: radial-gradient(circle, #ffffff 0%, #00ff88 35%, rgba(0, 255, 136, 0) 70%);
+    opacity: 0;
+}
+
+.radar-logo.scanning .radar-sweep { animation: radarSweep 1.2s linear forwards; }
+.radar-logo.scanning .radar-ring  { animation: radarRing 1s ease-out forwards; }
+.radar-logo.scanning .radar-blip  { animation: radarBlip 0.7s ease-out 0.45s forwards; }
+
+@keyframes radarSweep {
+    0%   { opacity: 0; transform: rotate(0deg); }
+    8%   { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { opacity: 0; transform: rotate(360deg); }
+}
+
+@keyframes radarRing {
+    0%   { opacity: 1; width: 10%; }
+    100% { opacity: 0; width: 100%; }
+}
+
+@keyframes radarBlip {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+    25%  { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .radar-logo.scanning .radar-sweep,
+    .radar-logo.scanning .radar-ring,
+    .radar-logo.scanning .radar-blip { animation-duration: 0.01s; animation-delay: 0s; }
+}
+
+/* Intel Brief card */
+.intel-content {
+    position: relative;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1.5rem 1.25rem;
+    animation: intelIn 0.3s ease-out;
+}
+
+@keyframes intelIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.97); }
+    to   { opacity: 1; transform: none; }
+}
+
+.intel-label {
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--accent-color);
+    text-shadow: 0 0 14px rgba(0, 255, 136, 0.45);
+}
+
+/* Smaller close button so it sits beside the heading, clear of the photo */
+.intel-content .close-btn {
+    top: 0.85rem;
+    right: 0.85rem;
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    border-radius: 6px;
+}
+
+.intel-img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2.intel-name {
+    margin: 0.2rem 0 0;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.intel-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.intel-meta img {
+    vertical-align: middle;
+}
+
+.intel-fact {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: var(--text-primary);
+    margin: 0.25rem 0 0.5rem;
+}
+
+.intel-actions {
+    display: flex;
+    gap: 0.6rem;
+    width: 100%;
+}
+
+.intel-actions .btn {
+    flex: 1;
+    font-size: 0.8rem;
+    padding: 0.7rem 0.5rem;
 }

@@ -78,7 +78,15 @@
 
                 <div class="app-icon-container">
                     <div class="icon-glow"></div>
-                    <img src="assets/DG_Logo.png" alt="Defence Guesser" class="app-icon">
+                    <!-- Tap the logo: radar sweep + ping, then an Intel Brief card -->
+                    <button id="radar-logo" class="radar-logo" type="button" title="Scan for intel" aria-label="Scan for intel">
+                        <img src="assets/DG_Logo.png" alt="Defence Guesser" class="app-icon">
+                        <span class="radar-fx" aria-hidden="true">
+                            <span class="radar-sweep"></span>
+                            <span class="radar-ring"></span>
+                            <span class="radar-blip"></span>
+                        </span>
+                    </button>
                 </div>
                 <h1 style="color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;">DEFENCE<span
                         class="highlight"
@@ -93,9 +101,13 @@
 
                 <button id="practice-btn" class="btn secondary">PRACTICE HUB</button>
 
-                <button id="awards-btn" class="awards-btn" title="Awards">
-                    <img src="Awards/Awards_Icon.png" alt="Awards" class="awards-btn-img">
-                    <span class="awards-btn-label">AWARDS</span>
+                <!-- Service Record: career rank on the left, medals on the right -->
+                <button id="awards-btn" class="service-record-btn" title="Service Record">
+                    <span class="service-record-label">SERVICE RECORD</span>
+                    <span class="service-record-body">
+                        <span id="rank-chip" class="rank-summary"></span>
+                        <img src="Awards/Awards_Icon.png" alt="" class="service-record-medal">
+                    </span>
                 </button>
             </div>
             <div class="version-display">V2.6</div>
@@ -108,6 +120,7 @@
                     <button id="awards-back-btn" class="back-btn">← BACK</button>
                     <h2>SERVICE <span class="highlight">RECORD</span></h2>
                     <p>Earn medals for your achievements</p>
+                    <div id="awards-rank" class="rank-summary awards-rank"></div>
                 </div>
 
                 <div class="awards-grid" id="awards-grid">
@@ -264,6 +277,9 @@
 
                 <!-- ── MY STATS TAB ── -->
                 <div class="lb-tab-panel" id="lb-panel-stats">
+                    <!-- Career rank + XP -->
+                    <div id="stats-rank" class="rank-summary pp-rank"></div>
+
                     <!-- Stats Dashboard -->
                     <div class="stats-dashboard">
                         <div class="stat-card">
@@ -297,16 +313,6 @@
                         </div>
                     </div>
 
-                    <!-- Total Points -->
-                    <div class="history-section">
-                        <div class="total-points-display">
-                            <div class="total-points-icon">🎯</div>
-                            <div class="total-points-info">
-                                <div class="total-points-value" id="total-points">0</div>
-                                <div class="total-points-label">Total Points Achieved</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- ── GLOBAL LEADERBOARD TAB ── -->
@@ -348,6 +354,33 @@
                 <button id="player-profile-close-btn" class="close-btn" aria-label="Close">✕</button>
                 <h2 id="player-profile-name" class="pp-name">PLAYER</h2>
                 <div id="player-profile-body"></div>
+            </div>
+        </div>
+
+        <!-- Intel Brief: random equipment fact, opened by tapping the landing-page logo -->
+        <div id="intel-modal" class="modal hidden">
+            <div class="modal-content intel-content">
+                <button id="intel-close-btn" class="close-btn" aria-label="Close">✕</button>
+                <span class="intel-label">📡 NEW INTEL</span>
+                <img id="intel-img" class="intel-img" src="" alt="">
+                <h2 id="intel-name" class="intel-name"></h2>
+                <div id="intel-meta" class="intel-meta"></div>
+                <p id="intel-fact" class="intel-fact"></p>
+                <div class="intel-actions">
+                    <button id="intel-view-btn" class="btn secondary" title="Open in the Practice Hub">VIEW DETAILS</button>
+                    <button id="intel-again-btn" class="btn primary">SCAN AGAIN</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rank overlay: promotion, or the one-time service-record notice -->
+        <div id="rank-overlay" class="rank-overlay hidden">
+            <div class="rank-overlay-inner">
+                <span class="rank-overlay-title" id="rank-overlay-title"></span>
+                <img class="rank-overlay-img" id="rank-overlay-img" src="" alt="">
+                <span class="rank-overlay-sub" id="rank-overlay-sub"></span>
+                <span class="rank-overlay-name" id="rank-overlay-name"></span>
+                <button id="rank-overlay-btn" class="btn primary">CONTINUE</button>
             </div>
         </div>
 
@@ -1247,12 +1280,26 @@
                 <div class="debrief-content">
                     <!-- Score Summary -->
                     <div class="score-summary">
-                        <div class="final-score-display">
-                            <span class="score-label">FINAL SCORE</span>
-                            <span class="score-value" id="final-score">0</span>
+                        <!-- Score + grade: stacked for standard, side by side for the daily -->
+                        <div class="score-headline" id="score-headline">
+                            <div class="final-score-display">
+                                <span class="score-label">FINAL SCORE</span>
+                                <span class="score-value" id="final-score">0</span>
+                            </div>
+
+                            <!-- Mission grade (this mission only; career rank is in the XP panel) -->
+                            <div class="score-rating" id="score-rating">
+                                <img id="performance-trophy" src="" alt="" class="performance-trophy hidden">
+                                <span class="rating-label">MISSION ASSESSMENT</span>
+                                <span class="rating-value" id="rating-value"></span>
+                            </div>
+                        </div>
+                        <div class="rating-quote hidden" id="rating-quote">
+                            <span class="quote-text" id="quote-text"></span>
+                            <span class="quote-author" id="quote-author"></span>
                         </div>
 
-                        <!-- Archetype Card (daily speedrun only - replaces performance rating) -->
+                        <!-- Archetype Card (daily speedrun only) -->
                         <div class="archetype-section hidden" id="archetype-section">
                             <div class="archetype-body">
                                 <div class="archetype-card-wrapper">
@@ -1276,17 +1323,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Performance Rating (standard game only) -->
-                        <div class="score-rating" id="score-rating">
-                            <img id="performance-trophy" src="" alt="Performance Trophy" class="performance-trophy hidden">
-                            <span class="rating-label">PERFORMANCE RATING</span>
-                            <span class="rating-value" id="rating-value">RECRUIT</span>
-                        </div>
-                        <div class="rating-quote hidden" id="rating-quote">
-                            <span class="quote-text" id="quote-text"></span>
-                            <span class="quote-author" id="quote-author"></span>
-                        </div>
                         <div class="summary-divider"></div>
                         <div class="score-stats">
                             <div class="stat-item">
@@ -1301,6 +1337,23 @@
                                 <span class="stat-value" id="stat-accuracy">0%</span>
                                 <span class="stat-label">Accuracy</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Career XP: breakdown for this mission + progress to the next rank -->
+                    <div class="xp-panel" id="xp-panel">
+                        <div class="xp-panel-header">
+                            <span class="xp-panel-title">CAREER PROGRESS</span>
+                            <span class="xp-gain hidden" id="xp-gain"></span>
+                        </div>
+                        <div class="xp-lines" id="xp-lines"></div>
+                        <div class="rank-summary">
+                            <img class="rank-insignia" id="xp-rank-img" src="" alt="">
+                            <span class="rank-summary-info">
+                                <span class="rank-summary-name" id="xp-rank-name"></span>
+                                <span class="xp-bar"><span class="xp-bar-fill" id="xp-bar-fill"></span></span>
+                                <span class="rank-summary-caption" id="xp-bar-caption"></span>
+                            </span>
                         </div>
                     </div>
 

@@ -199,6 +199,15 @@ function playGameOverSound() {
     setTimeout(() => playTone(783.99, 0.3, 'triangle', 0.3), 300); // G5
 }
 
+function playPromotionSound() {
+    // Rising five-note fanfare with a held top note
+    playTone(392.00, 0.15, 'triangle', 0.3); // G4
+    setTimeout(() => playTone(523.25, 0.15, 'triangle', 0.3), 130); // C5
+    setTimeout(() => playTone(659.25, 0.15, 'triangle', 0.3), 260); // E5
+    setTimeout(() => playTone(783.99, 0.2, 'triangle', 0.3), 390); // G5
+    setTimeout(() => playTone(1046.50, 0.6, 'triangle', 0.3), 560); // C6
+}
+
 function playClickSound() {
     if (!soundEnabled) return;
     playTone(800, 0.05, 'sine', 0.1);
@@ -306,15 +315,6 @@ function endSpeedrun() {
     hideComboDisplay();
     showReplayReel();
 }
-function getSpeedrunRating(score) {
-    if (score >= 120000) return 'God of War';   if (score >= 90000) return 'John Rambo';
-    if (score >= 70000)  return 'John Matrix (Commando)'; if (score >= 55000) return 'Maj Richard Sharpe';
-    if (score >= 40000)  return 'Maj Winters';   if (score >= 30000) return 'Johnny Rico';
-    if (score >= 20000)  return 'Lt Aldo Rain';  if (score >= 12000) return 'Pte Gump';
-    if (score >= 6000)   return 'Capt Sobel';    if (score >= 2000)  return 'Gen Melchett';
-    if (score >= 500)    return 'Pte Baldrick';  return 'LIZZARD';
-}
-
 // ── Speedrun Archetype Detection ────────────────────────────────────────────
 const ARCHETYPES = [
     {
@@ -3201,7 +3201,7 @@ function nextRound() {
 
 // Performance Rating Quotes - each rating can have multiple quotes for variety
 const PERFORMANCE_QUOTES = {
-    'God of War': [
+    OUTSTANDING: [
         { text: '"Veni, Vidi, Vici." (I came, I saw, I conquered.)', author: 'Julius Caesar' },
         { text: '"Victory belongs to the most persevering."', author: 'Napoleon Bonaparte' },
         { text: '"There is no substitute for victory."', author: 'General Douglas MacArthur' },
@@ -3212,9 +3212,7 @@ const PERFORMANCE_QUOTES = {
         { text: '"Victorious warriors win first and then go to war."', author: 'Sun Tzu' },
         { text: '"Excellence is never an accident."', author: 'Aristotle' },
         { text: '"To improve is to change; to be perfect is to change often."', author: 'Winston Churchill' },
-        { text: '"The superior man is modest in his speech, but exceeds in his actions."', author: 'Confucius' }
-    ],
-    'Lieutenant Colonel': [
+        { text: '"The superior man is modest in his speech, but exceeds in his actions."', author: 'Confucius' },
         { text: '"The general who wins a battle makes many calculations in his temple before the battle is fought."', author: 'Sun Tzu, The Art of War, Ch. 1 (trans. Lionel Giles, 1910)' },
         { text: '"The nation that will insist on drawing a broad line of demarcation between the fighting man and the thinking man is liable to find its fighting done by fools and its thinking done by cowards."', author: 'Sir William Francis Butler (Charles George Gordon, 1889)' },
         { text: '"The courage of a soldier is heightened by his knowledge of his profession."', author: 'Vegetius, De Re Militari, Book I' },
@@ -3222,23 +3220,19 @@ const PERFORMANCE_QUOTES = {
         { text: '"Experience is the teacher of all things."', author: 'Julius Caesar, De Bello Civili, Book II, Ch. 8' },
         { text: '"Know ye not that the end and object of conquest is to avoid doing the same thing as the conquered?"', author: 'Alexander the Great, as recorded by Plutarch (Life of Alexander, Ch. 40.2)' }
     ],
-    'Major': [
+    COMMENDABLE: [
         { text: '"Therefore, he who desires peace, let him prepare for war."', author: 'Vegetius (Epitoma Rei Militaris, Book 3)' },
         { text: '"Never in the field of human conflict was so much owed by so many to so few."', author: 'Winston Churchill (House of Commons, 20 August 1940)' },
         { text: '"Duty, Honour, Country: Those three hallowed words reverently dictate what you ought to be, what you can be, what you will be."', author: 'General Douglas MacArthur (Address to West Point, 12 May 1962)' },
         { text: '"All the business of war, and indeed all the business of life, is to endeavour to find out what you don\'t know by what you do; that\'s what I called \'guessing what was at the other side of the hill\'."', author: 'Duke of Wellington (The Croker Papers, 1885)' },
         { text: '"But life is warfare, and a sojourn in a foreign land; and after-fame is oblivion."', author: 'Marcus Aurelius (Meditations, 2.17)' },
-        { text: '"We rely, not on secret weapons, but on our own real courage and loyalty."', author: 'Pericles (Funeral Oration, via Thucydides, Book 2)' }
-    ],
-    'Captain': [
+        { text: '"We rely, not on secret weapons, but on our own real courage and loyalty."', author: 'Pericles (Funeral Oration, via Thucydides, Book 2)' },
         { text: '"War is not an affair of chance; a great deal of knowledge, study, and meditation is necessary to conduct it well."', author: 'Frederick the Great (Instructions for his Generals, 1747)' },
         { text: '"Waste no more time arguing what a good man should be. Be one."', author: 'Marcus Aurelius (Meditations, 10.16)' },
         { text: '"No captain can do very wrong if he places his ship alongside that of the enemy."', author: 'Admiral Lord Nelson (Dispatches and Letters of Lord Nelson)' },
         { text: '"War is cruelty, and you cannot refine it."', author: 'General William T. Sherman (Letter to the Mayor of Atlanta, September 1864)' },
         { text: '"In war there is but one favorable moment; the great art is to seize it."', author: 'Attributed to Napoleon Bonaparte (Napoleon\'s Maxims)' },
-        { text: '"Both are equally deserters from their post: the man who runs from fear, and the one who yields to anger."', author: 'Marcus Aurelius (Meditations, 11.9)' }
-    ],
-    'Warrant Officer (Class 1)': [
+        { text: '"Both are equally deserters from their post: the man who runs from fear, and the one who yields to anger."', author: 'Marcus Aurelius (Meditations, 11.9)' },
         { text: '"The strong do what they can and the weak suffer what they must."', author: 'Thucydides, History of the Peloponnesian War (Melian Dialogue, Book 5)' },
         { text: '"I came through and I shall return."', author: 'General Douglas MacArthur (Adelaide, Australia, 20 March 1942)' },
         { text: '"Among the Americans serving on Iwo island, uncommon valor was a common virtue."', author: 'Fleet Admiral Chester W. Nimitz (1945)' },
@@ -3246,23 +3240,19 @@ const PERFORMANCE_QUOTES = {
         { text: '"My centre is giving way, my right is retreating, situation excellent, I am attacking."', author: 'Attributed to Marshal Ferdinand Foch (First Battle of the Marne, 1914)' },
         { text: '"Boldness becomes rarer the higher the rank."', author: 'Carl von Clausewitz (On War, Book 3, Ch. 6)' }
     ],
-    'Warrant Officer (Class 2)': [
+    SATISFACTORY: [
         { text: '"The art of war is simple enough. Find out where your enemy is. Get at him as soon as you can. Strike him as hard as you can, and keep moving on."', author: 'Ulysses S. Grant (Personal Memoirs of John H. Brinton, 1914)' },
         { text: '"England expects that every man will do his duty."', author: 'Admiral Lord Nelson, Battle of Trafalgar (1805)' },
         { text: '"In case of doubt, attack."', author: 'General George S. Patton (Tactical & Technical Trends, U.S. Army, 1943)' },
         { text: '"Audacity, and again audacity, and always audacity!"', author: 'Georges Danton (Speech to the Legislative Assembly, 1792)' },
         { text: '"The supreme art of war is to subdue the enemy without fighting."', author: 'Sun Tzu, The Art of War' },
-        { text: '"Mortal danger is an effective antidote for fixed ideas."', author: 'Field Marshal Erwin Rommel (The Rommel Papers, Ch. 11)' }
-    ],
-    'Staff Sergeant': [
+        { text: '"Mortal danger is an effective antidote for fixed ideas."', author: 'Field Marshal Erwin Rommel (The Rommel Papers, Ch. 11)' },
         { text: '"If you know the enemy and know yourself, you need not fear the result of a hundred battles."', author: 'Sun Tzu, The Art of War' },
         { text: '"No plan of operations extends with any certainty beyond the first contact with the main hostile force."', author: 'Field Marshal Helmuth von Moltke the Elder (Über Strategie, 1871)' },
         { text: '"Hard pounding this, gentlemen; let\'s see who will pound longest."', author: 'Duke of Wellington, Battle of Waterloo (1815)' },
         { text: '"A good plan, violently executed now, is better than a perfect plan next week."', author: 'Attributed to General George S. Patton' },
         { text: '"Plans are worthless, but planning is everything."', author: 'Dwight D. Eisenhower (National Defense Executive Reserve Conference, 1957)' },
-        { text: '"War is merely the continuation of political intercourse with the addition of other means."', author: 'Carl von Clausewitz, On War' }
-    ],
-    'Sergeant': [
+        { text: '"War is merely the continuation of political intercourse with the addition of other means."', author: 'Carl von Clausewitz, On War' },
         { text: '"The backbone of the Army is the Non-commissioned Man."', author: 'Rudyard Kipling, The \'Eathen (1896)' },
         { text: '"Soldiers generally win battles; generals get credit for them."', author: 'Attributed to Napoleon Bonaparte' },
         { text: '"The more you sweat in peace, the less you bleed in war."', author: 'Military maxim' },
@@ -3270,22 +3260,18 @@ const PERFORMANCE_QUOTES = {
         { text: '"Wars may be fought with weapons, but they are won by men."', author: 'General George S. Patton (Cavalry Journal, 1933)' },
         { text: '"In war, the moral is to the physical as three is to one."', author: 'Napoleon Bonaparte' }
     ],
-    'Corporal': [
+    MARGINAL: [
         { text: '"It does not matter how slowly you go as long as you do not stop."', author: 'Chinese proverb' },
         { text: '"Success is not final, failure is not fatal: it is the courage to continue that counts."', author: '' },
         { text: '"Genius is one percent inspiration and ninety-nine percent perspiration."', author: 'Thomas Edison' },
         { text: '"I am not afraid of an army of lions led by a sheep; I am afraid of an army of sheep led by a lion."', author: 'Attributed to Charles de Talleyrand' },
         { text: '"To be prepared for war is one of the most effective means of preserving peace."', author: 'George Washington (First Annual Message to Congress, 1790)' },
-        { text: '"The soldier is the Army. No army is better than its soldiers."', author: 'General George S. Patton' }
-    ],
-    'Lance Corporal': [
+        { text: '"The soldier is the Army. No army is better than its soldiers."', author: 'General George S. Patton' },
         { text: '"The secret of getting ahead is getting started."', author: '' },
         { text: '"In war there is no prize for the runner-up."', author: 'Attributed to General Omar Bradley' },
         { text: '"You can\'t build a reputation on what you\'re going to do."', author: 'Attributed to Henry Ford' },
         { text: '"The first quality that is needed is audacity."', author: 'Winston Churchill (Painting as a Pastime, 1932)' },
-        { text: '"Well begun is half done."', author: 'Aristotle' }
-    ],
-    'Private': [
+        { text: '"Well begun is half done."', author: 'Aristotle' },
         { text: '"I don\'t know what effect these men will have upon the enemy, but, by God, they frighten me."', author: 'Attributed to Duke of Wellington' },
         { text: '"There are no bad soldiers, only bad officers."', author: 'Attributed to Napoleon Bonaparte' },
         { text: '"The beatings will continue until morale improves."', author: 'Attributed to various naval commanders' },
@@ -3293,7 +3279,7 @@ const PERFORMANCE_QUOTES = {
         { text: '"Even the longest march begins with a single step. You appear to have managed the one step."', author: 'Defence Guesser' },
         { text: '"If everyone is thinking alike, then somebody isn\'t thinking."', author: '' }
     ],
-    'LIZZARD': [
+    FAILED: [
         { text: '"He is a modest man, with much to be modest about."', author: 'Winston Churchill' },
         { text: '"It is better to keep your mouth closed and let people think you are a fool than to open it and remove all doubt."', author: 'Mark Twain' },
         { text: '"I sometimes think that God, in creating man, somewhat overestimated his ability."', author: 'Oscar Wilde' },
@@ -3311,6 +3297,11 @@ function getRandomQuote(rating) {
 function endGame() {
     playGameOverSound();
 
+    // Career XP is measured around the stat recording, so medal XP unlocked by
+    // this mission shows up in the debrief breakdown.
+    ensureXpBackfill();
+    const profileBefore = getProfile();
+
     // Record results at the end of every run.
     if (!state.isDailyMode) {
         try { recordStandardGameStats(); } catch (e) { console.error('Achievements:', e); }
@@ -3319,80 +3310,38 @@ function endGame() {
         try { recordDailyResultLocal(); } catch (e) { console.error('Daily record:', e); }
     }
 
+    let xpAward = null;
+    try { xpAward = awardMissionXp(profileBefore); } catch (e) { console.error('XP:', e); }
+
     document.getElementById('final-score').textContent = state.score.toLocaleString();
 
-    // Use absolute score thresholds for speedrun daily mode, percentage for standard
-    let rating;
-    if (state.isDailyMode) {
-        rating = getSpeedrunRating(state.score);
-    } else {
-        const maxPossibleScore = state.maxRounds * 10000;
-        const percentage = (state.score / maxPossibleScore) * 100;
-        rating = 'LIZZARD';
-        if (percentage >= 98) rating = 'God of War';
-        else if (percentage >= 93) rating = 'Lieutenant Colonel';
-        else if (percentage >= 87) rating = 'Major';
-        else if (percentage >= 81) rating = 'Captain';
-        else if (percentage >= 74) rating = 'Warrant Officer (Class 1)';
-        else if (percentage >= 66) rating = 'Warrant Officer (Class 2)';
-        else if (percentage >= 56) rating = 'Staff Sergeant';
-        else if (percentage >= 48) rating = 'Sergeant';
-        else if (percentage >= 40) rating = 'Corporal';
-        else if (percentage >= 26) rating = 'Lance Corporal';
-        else if (percentage >= 10) rating = 'Private';
-    }
-
-    // In daily mode: hide performance rating, show archetype card instead
-    // In standard mode: show performance rating, hide archetype section
+    // Mission assessment: a grade for this mission only (career rank comes from XP)
+    const grade = getMissionGrade();
     const scoreRatingEl = document.getElementById('score-rating');
     const quoteContainer = document.getElementById('rating-quote');
 
-    if (state.isDailyMode) {
-        // Hide the old performance rating block entirely
-        if (scoreRatingEl) scoreRatingEl.classList.add('hidden');
-        if (quoteContainer) quoteContainer.classList.add('hidden');
-    } else {
-        // Standard mode: populate and show rating block
-        if (scoreRatingEl) scoreRatingEl.classList.remove('hidden');
-        document.getElementById('rating-value').textContent = rating;
+    document.getElementById('score-headline').classList.toggle('score-headline-row', !!state.isDailyMode);
+    document.getElementById('rating-value').textContent = grade.id;
+    scoreRatingEl.classList.remove('rating-red', 'rating-amber', 'rating-green', 'rating-gold');
+    scoreRatingEl.classList.add(grade.colour);
 
-        scoreRatingEl.classList.remove('rating-red', 'rating-amber', 'rating-green', 'rating-gold');
-        const trophyImg = document.getElementById('performance-trophy');
-        if (trophyImg) trophyImg.classList.add('hidden');
-
-        const RATING_META = {
-            'God of War':               { colour: 'rating-gold',  img: 'GodofWar2.jpg' },
-            'Lieutenant Colonel':        { colour: 'rating-green', img: 'Lieutenant_Colonel.jpg' },
-            'Major':                    { colour: 'rating-green', img: 'Major.jpg' },
-            'Captain':                  { colour: 'rating-amber', img: 'Captain.jpg' },
-            'Warrant Officer (Class 1)':{ colour: 'rating-amber', img: 'Warrant_Officer_Class_1.jpg' },
-            'Warrant Officer (Class 2)':{ colour: 'rating-amber', img: 'Warrant_Officer_Class_2.jpg' },
-            'Staff Sergeant':           { colour: 'rating-amber', img: 'Staff_Sergeant.jpg' },
-            'Sergeant':                 { colour: 'rating-red',   img: 'Sergeant.jpg' },
-            'Corporal':                 { colour: 'rating-red',   img: 'Corporal.jpg' },
-            'Lance Corporal':           { colour: 'rating-red',   img: 'Lance_Corporal.jpg' },
-            'Private':                  { colour: 'rating-red',   img: 'Private.jpg' },
-            'LIZZARD':                  { colour: 'rating-red',   img: 'Lizzard.jpg' }
-        };
-        const meta = RATING_META[rating] || { colour: 'rating-red', img: 'Lizzard.jpg' };
-        scoreRatingEl.classList.add(meta.colour);
-        if (trophyImg) {
-            trophyImg.src = `PerformanceSymbols/${meta.img}`;
-            trophyImg.classList.remove('hidden');
-        }
-
-        // Performance quote
-        const quoteText = document.getElementById('quote-text');
-        const quoteAuthor = document.getElementById('quote-author');
-        const quote = getRandomQuote(rating);
-        if (quote) {
-            quoteText.textContent = quote.text;
-            quoteAuthor.textContent = quote.author ? `— ${quote.author}` : '';
-            quoteContainer.classList.remove('hidden');
-        } else {
-            quoteContainer.classList.add('hidden');
-        }
+    const trophyImg = document.getElementById('performance-trophy');
+    if (trophyImg) {
+        if (grade.img) trophyImg.src = `PerformanceSymbols/${grade.img}`;
+        trophyImg.classList.toggle('hidden', !grade.img);
     }
+
+    // Quote: standard missions only (the daily debrief already carries the archetype card)
+    const quote = state.isDailyMode ? null : getRandomQuote(grade.id);
+    if (quote) {
+        document.getElementById('quote-text').textContent = quote.text;
+        document.getElementById('quote-author').textContent = quote.author ? `— ${quote.author}` : '';
+        quoteContainer.classList.remove('hidden');
+    } else {
+        quoteContainer.classList.add('hidden');
+    }
+
+    renderXpPanel(xpAward);
 
     // Calculate stats
     if (state.isDailyMode) {
@@ -3495,6 +3444,8 @@ function switchScreen(screenName) {
         screens[screenName].classList.remove('hidden');
         screens[screenName].classList.add('active');
     }
+
+    if (screenName === 'start') flushRankOverlay(); // rank notice held back during a mission
 }
 
 function resetMapVisuals() {
@@ -4356,7 +4307,6 @@ function updateLeaderboardModal() {
 
     updateStatsDisplay(data.stats);
     updateProgressChart(data.history);
-    updateTotalPoints(data.history);
 }
 
 function updateStatsDisplay(stats) {
@@ -4484,27 +4434,6 @@ function updateProgressChart(history) {
     });
 }
 
-function updateHistoryList(history) {
-    const historyList = document.getElementById('history-list');
-    const entries = Object.entries(history);
-
-    if (entries.length === 0) {
-        historyList.innerHTML = '<p class="no-history">No history yet. Complete your first daily challenge!</p>';
-        return;
-    }
-
-    // Calculate total points achieved across all daily challenges
-    const totalPoints = entries.reduce((sum, [dateKey, entry]) => sum + entry.score, 0);
-
-    historyList.innerHTML = `
-        <div class="total-points-summary">
-            <div class="total-points-icon">🎖️</div>
-            <div class="total-points-value">${totalPoints.toLocaleString()}</div>
-            <div class="total-points-label">TOTAL POINTS</div>
-        </div>
-    `;
-}
-
 function formatDateKey(dateKey) {
     const str = dateKey.toString();
     const year = str.substring(0, 4);
@@ -4522,22 +4451,6 @@ function formatDateKeyShort(dateKey) {
     const day = str.substring(6, 8);
     return `${parseInt(month)}/${parseInt(day)}`;
 }
-
-// Update total points achieved across all daily challenges
-function updateTotalPoints(history) {
-    const totalPointsElement = document.getElementById('total-points');
-
-    if (!history || Object.keys(history).length === 0) {
-        totalPointsElement.textContent = '0';
-        return;
-    }
-
-    // Sum all scores from history
-    const totalPoints = Object.values(history).reduce((sum, entry) => sum + entry.score, 0);
-
-    totalPointsElement.textContent = totalPoints.toLocaleString();
-}
-
 
 // Proper Fisher-Yates shuffle (unbiased)
 function shuffleArray(array) {
@@ -5139,7 +5052,10 @@ function initAuth() {
         updateAuthUI(user);
         // Signed-in load (incl. returning from redirect sign-in, or switching to an
         // existing Google account): reconcile cloud and local progress.
-        if (!user.isAnonymous) syncFromCloud();
+        // The XP back-fill waits for that merge so a second device doesn't
+        // repeat a back-fill the first one already did.
+        if (!user.isAnonymous) syncFromCloud().then(ensureXpBackfill);
+        else ensureXpBackfill();
     });
 
     // Completes the mobile signInWithRedirect flow after the page reloads;
@@ -5531,13 +5447,13 @@ function buildPublicProfile(daily, profile, callsign) {
         bestDailyScore: Math.max(stats.bestScore || 0, p.bestDailyScore || 0),
         averageScore  : stats.averageScore || 0,
         totalDays     : stats.totalDays || 0,
-        totalPoints   : dayKeys.reduce((sum, k) => sum + (history[k].score || 0), 0),
         // currentStreak is only true as of lastPlayedKey — the viewer treats it
         // as lapsed once that day is older than yesterday
         currentStreak : stats.currentStreak || 0,
         lastPlayedKey : dayKeys.length ? String(Math.max(...dayKeys.map(k => parseInt(k)))) : null,
         longestStreak : Math.max(stats.longestStreak || 0, p.longestStreak || 0),
-        medals        : medals
+        medals        : medals,
+        xp            : getCareerXp(p)   // career XP — the viewer derives the rank from it
     };
 }
 
@@ -5545,7 +5461,16 @@ async function publishPublicProfile(uid, merged) {
     try {
         const pub = buildPublicProfile(merged.daily, merged.profile, merged.callsign);
         pub.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
-        await db.collection('publicProfiles').doc(uid).set(pub);
+        const ref = db.collection('publicProfiles').doc(uid);
+        try {
+            await ref.set(pub);
+        } catch (e) {
+            // Security rules that don't allow the `xp` field yet reject the whole
+            // write — publish the rest so the card doesn't go stale meanwhile.
+            console.warn('[Sync] Public profile rejected with xp, retrying without:', e);
+            delete pub.xp;
+            await ref.set(pub);
+        }
     } catch (e) {
         console.warn('[Sync] Public profile publish failed:', e);
     }
@@ -5565,8 +5490,10 @@ async function fetchLeaderboardDerivedProfile(uid, deviceId) {
     const snap = await query.limit(400).get();
 
     const history = {};
+    let xp = null; // career XP only grows, so the highest posted value is the latest
     snap.forEach(doc => {
         const d = doc.data();
+        if (typeof d.xp === 'number') xp = Math.max(xp || 0, d.xp);
         if (!d.dateKey || typeof d.score !== 'number') return;
         if (!history[d.dateKey] || d.score > history[d.dateKey].score) history[d.dateKey] = { score: d.score };
     });
@@ -5578,11 +5505,11 @@ async function fetchLeaderboardDerivedProfile(uid, deviceId) {
         bestDailyScore: stats.bestScore,
         averageScore  : stats.averageScore,
         totalDays     : stats.totalDays,
-        totalPoints   : dayKeys.reduce((sum, k) => sum + history[k].score, 0),
         currentStreak : stats.currentStreak,
         lastPlayedKey : String(Math.max(...dayKeys.map(k => parseInt(k)))),
         longestStreak : stats.longestStreak,
-        medals        : null   // medals live on the device for guests
+        medals        : null,  // medals live on the device for guests
+        xp            : xp     // null for scores posted before the XP system
     };
 }
 
@@ -5624,6 +5551,15 @@ async function openPlayerProfile({ uid, deviceId, name }) {
             : 'No record found for this player.'}</div>`;
         return;
     }
+
+    // Your own card: this device knows your current XP, which is fresher than
+    // anything published (and covers scores posted before the XP system).
+    const isOwnCard = (uid && typeof auth !== 'undefined' && auth.currentUser && uid === auth.currentUser.uid)
+        || (deviceId && deviceId === localStorage.getItem('dg_device_id'));
+    if (isOwnCard) {
+        data = Object.assign({}, data, { xp: Math.max(data.xp || 0, getCareerXp(getProfile())) });
+    }
+
     body.innerHTML = playerProfileHTML(data, verified);
 }
 
@@ -5636,13 +5572,16 @@ function playerProfileHTML(d, verified) {
             <div class="stat-label">${label}</div>
         </div>`;
 
-    let html = `<div class="stats-dashboard pp-stats">
+    // Career rank: from the public profile (signed in) or the latest posted score (guest)
+    let html = (typeof d.xp === 'number')
+        ? `<div class="rank-summary pp-rank">${rankSummaryHTML(d.xp)}</div>` : '';
+
+    html += `<div class="stats-dashboard pp-stats">
         ${stat('🏆', num(d.bestDailyScore), 'Best Score')}
         ${stat('📊', num(d.averageScore), 'Average')}
         ${stat('🔥', num(liveStreak(d.currentStreak, d.lastPlayedKey)), 'Day Streak')}
         ${stat('⚡', num(d.longestStreak), 'Longest Streak')}
         ${stat('⭐', num(d.totalDays), 'Total Days')}
-        ${stat('🎯', num(d.totalPoints), 'Total Points')}
     </div>`;
 
     if (verified) {
@@ -5734,11 +5673,11 @@ function mergeProfiles(local, cloud) {
     // both devices progressed independently, but it can never inflate a medal.
     ['standardGames', 'correctIds', 'correctLocations', 'perfectGames', 'bestStandardScore',
      'hardModeGames', 'bestHardScore', 'sharpEyeIds', 'bestDailyScore', 'longestStreak',
-     'bestDailyTargets', 'flawlessDailies'
+     'bestDailyTargets', 'flawlessDailies', 'xp'
     ].forEach(k => { m[k] = Math.max(l[k] || 0, c[k] || 0); });
 
-    // Podium flags: earned anywhere = earned
-    ['firstPlaceDaily', 'firstPlaceWeekly', 'firstPlaceMonthly']
+    // Podium flags and the XP back-fill flag: true anywhere = true
+    ['firstPlaceDaily', 'firstPlaceWeekly', 'firstPlaceMonthly', 'xpBackfilled']
         .forEach(k => { m[k] = !!(l[k] || c[k]); });
 
     // Distinct-country set: union
@@ -5752,7 +5691,7 @@ function mergeProfiles(local, cloud) {
     }
 
     // Once-per-period guards: keep the later key so nothing double-awards
-    ['processedDailyKey', 'processedWeekKey', 'processedMonthKey', 'lastDailyKey'].forEach(k => {
+    ['processedDailyKey', 'processedWeekKey', 'processedMonthKey', 'lastDailyKey', 'xpDayKey', 'xpDailyKey'].forEach(k => {
         const a = l[k], b = c[k];
         m[k] = (a && b) ? (String(a) > String(b) ? a : b) : (a || b || null);
     });
@@ -5789,7 +5728,21 @@ async function submitScoreToFirebase(callsign, score) {
             dateKey    : dateKey,
             weekKey    : getWeekKey(),
             monthKey   : getMonthKey(),
+            xp         : getCareerXp(getProfile()), // career XP at posting time — lets guest player cards show a rank
             timestamp  : firebase.firestore.FieldValue.serverTimestamp()
+        };
+        // Write a slot; if the security rules don't allow the `xp` field yet,
+        // retry the same slot without it so the score is never lost over it.
+        const writeSlot = async ref => {
+            try {
+                await ref.set(entry);
+            } catch (err) {
+                if (err.code !== 'permission-denied' || entry.xp === undefined) throw err;
+                const withoutXp = Object.assign({}, entry);
+                delete withoutXp.xp;
+                await ref.set(withoutXp);
+                console.warn('[Leaderboard] Rules rejected the xp field — posted the score without it.');
+            }
         };
         // Every player has an auth user (anonymous by default). If the session
         // isn't up yet (very fast finish, or the first sign-in failed), try once.
@@ -5801,7 +5754,7 @@ async function submitScoreToFirebase(callsign, score) {
         if (uid) {
             entry.uid = uid;
             try {
-                await col.doc(`${dateKey}_${uid}`).set(entry);
+                await writeSlot(col.doc(`${dateKey}_${uid}`));
                 console.log('[Leaderboard] Submitted:', callsign, score);
                 return;
             } catch (err) {
@@ -5809,7 +5762,7 @@ async function submitScoreToFirebase(callsign, score) {
                 // Rules not updated yet → fall through to the legacy slot
             }
         }
-        await col.doc(`${dateKey}_${deviceId}`).set(entry);
+        await writeSlot(col.doc(`${dateKey}_${deviceId}`));
         console.log('[Leaderboard] Submitted (legacy slot):', callsign, score);
     } catch (err) {
         console.warn('[Leaderboard] Submit failed:', err);
@@ -5865,18 +5818,27 @@ async function fetchLeaderboard(period) {
         const snap = await fetchTopScoreDocs(spec.field, spec.key, spec.limit, 100);
 
         const best = new Map();
+        // Career XP only grows, so a player's highest XP across ALL their docs
+        // this period is their latest rank — not just the XP on their best score.
+        const topXp = new Map();
         snap.forEach(doc => {
             const d = doc.data();
             const key = leaderboardIdentityKey(d);
+            if (typeof d.xp === 'number') topXp.set(key, Math.max(topXp.get(key) || 0, d.xp));
             const existing = best.get(key);
             if (!existing || d.score > existing.score) {
                 best.set(key, {
                     name: d.playerName,
                     score: d.score,
                     deviceId: d.deviceId || null,
-                    uid: d.uid || null
+                    uid: d.uid || null,
+                    key
                 });
             }
+        });
+        best.forEach(entry => {
+            entry.xp = topXp.has(entry.key) ? topXp.get(entry.key) : null;
+            delete entry.key;
         });
 
         return Array.from(best.values())
@@ -6025,7 +5987,10 @@ function renderLeaderboard(entries, userScore, userRank, userCallsign, userDevic
     let html = '';
     let userInTopTen = false;
 
-    entries.forEach(({ name, score, deviceId, uid }, index) => {
+    // Your own rank is always known locally, and is fresher than any posted score
+    const ownXp = getCareerXp(getProfile());
+
+    entries.forEach(({ name, score, deviceId, uid, xp }, index) => {
         const rank   = index + 1;
         // Match on uid first (stable across this account's devices), then deviceId;
         // fall back to callsign for legacy rows that carry neither
@@ -6052,7 +6017,7 @@ function renderLeaderboard(entries, userScore, userRank, userCallsign, userDevic
 
         html += `<div class="${rowClass}"${profileAttrs}>
             <span class="lb-rank ${rankClass}">${rankLabel}</span>
-            <span class="lb-callsign">${escapeHtml(displayName)}${youBadge}</span>
+            <span class="lb-callsign">${rankAbbrHTML(isUser ? Math.max(ownXp, xp || 0) : xp)}${escapeHtml(displayName)}${youBadge}</span>
             <span class="lb-score">${Number(score).toLocaleString()}</span>
         </div>`;
     });
@@ -6062,7 +6027,7 @@ function renderLeaderboard(entries, userScore, userRank, userCallsign, userDevic
         html += `<div class="lb-separator">· · ·</div>
         <div class="lb-entry lb-user-entry" role="button" tabindex="0" data-profile="1" data-uid="${escapeHtml(userUid || '')}" data-device="${escapeHtml(userDeviceId || '')}" data-name="${escapeHtml(userCallsign)}">
             <span class="lb-rank">${ordinalSuffix(userRank)}</span>
-            <span class="lb-callsign">${escapeHtml(userCallsign)}<span class="you-tag">YOU</span></span>
+            <span class="lb-callsign">${rankAbbrHTML(ownXp)}${escapeHtml(userCallsign)}<span class="you-tag">YOU</span></span>
             <span class="lb-score">${Number(userScore).toLocaleString()}</span>
         </div>`;
     }
@@ -6587,6 +6552,11 @@ function getDefaultProfile() {
         processedWeekKey: null,   // evaluated for a winner (so we never re-query or
         processedMonthKey: null,  // re-award the same period)
         lastDailyKey: null,      // guards once-per-day daily increments
+        // career XP (rank is always derived from XP, never stored)
+        xp: 0,                   // XP earned from missions; medal XP is derived on top
+        xpDayKey: null,          // game day the first-mission bonus was last paid
+        xpDailyKey: null,        // game day daily-challenge XP was last paid
+        xpBackfilled: false,     // back-dated XP for pre-XP play has been applied
         firstPlayed: Date.now(),
         lastUpdated: Date.now()
     };
@@ -6606,6 +6576,7 @@ function saveProfile(p) {
     try {
         p.lastUpdated = Date.now();
         localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(p));
+        updateRankDisplays();
         scheduleProfileSync(); // mirror to cloud when signed in with Google
     } catch (e) {
         console.error('Failed to save profile:', e);
@@ -6905,3 +6876,397 @@ function showMedalToast(tierKeys) {
     });
 }
 
+/* ===================================================================== */
+/* CAREER XP, RANKS & MISSION GRADES                                      */
+/* ===================================================================== */
+
+// Every tunable number for the XP economy lives here.
+const XP_CONFIG = {
+    // Standard missions
+    perRound: 20,                 // XP per round at 100% performance
+    hardMultiplier: 2,            // hard-mode missions earn this multiple of the base
+    triviaCorrect: 3,             // per correct hard-mode trivia answer
+    // Daily challenge
+    dailyCompletion: 50,          // flat XP for finishing the run
+    dailyPerformance: 150,        // x (score / dailyTopScore), capped at 100%
+    dailyTopScore: 120000,
+    comboPerStep: 1,              // per step of the run's best combo...
+    comboCap: 15,                 // ...up to this many XP
+    streakPerDay: 0.10,           // bonus per consecutive day after the first...
+    streakCap: 0.50,              // ...up to this fraction
+    // Bonuses
+    firstMissionBonus: 1.0,       // first mission of the game day: +100% of its XP...
+    firstMissionCap: 100,         // ...up to this many XP
+    medalTiers: [25, 50, 100],    // Bronze / Silver / Gold
+    // Back-dating XP for players who predate the XP system
+    backfillRounds: 5,
+    backfillMinPerformance: 0.35,
+    backfillMaxPerformance: 0.90
+};
+
+// Career ladder, lowest to highest. `xp` is the total career XP needed;
+// `abbr` is the short form shown before callsigns on the leaderboard.
+const CAREER_RANKS = [
+    { name: 'Private',                   abbr: 'Pte',     img: 'Private.jpg',                 xp: 0 },
+    { name: 'Lance Corporal',            abbr: 'LCpl',    img: 'Lance_Corporal.jpg',          xp: 150 },
+    { name: 'Corporal',                  abbr: 'Cpl',     img: 'Corporal.jpg',                xp: 400 },
+    { name: 'Sergeant',                  abbr: 'Sgt',     img: 'Sergeant.jpg',                xp: 800 },
+    { name: 'Staff Sergeant',            abbr: 'SSgt',    img: 'Staff_Sergeant.jpg',          xp: 1400 },
+    { name: 'Warrant Officer (Class 2)', abbr: 'WO2',     img: 'Warrant_Officer_Class_2.jpg', xp: 2200 },
+    { name: 'Warrant Officer (Class 1)', abbr: 'WO1',     img: 'Warrant_Officer_Class_1.jpg', xp: 3300 },
+    { name: 'Captain',                   abbr: 'Capt',    img: 'Captain.jpg',                 xp: 4700 },
+    { name: 'Major',                     abbr: 'Maj',     img: 'Major.jpg',                   xp: 6500 },
+    { name: 'Lieutenant Colonel',        abbr: 'Lt Col',  img: 'Lieutenant_Colonel.jpg',      xp: 8800 },
+    { name: 'Colonel',                   abbr: 'Col',     img: 'Colonel.jpg',                 xp: 11500 },
+    { name: 'Brigadier',                 abbr: 'Brig',    img: 'Brigadier.jpg',               xp: 14800 },
+    { name: 'Major General',             abbr: 'Maj Gen', img: 'Maj_Gen.jpg',                 xp: 18800 },
+    { name: 'Lieutenant General',        abbr: 'Lt Gen',  img: 'Lt_Gen.jpg',                  xp: 23500 },
+    { name: 'General',                   abbr: 'Gen',     img: 'Gen.jpg',                     xp: 29000 },
+    { name: 'God of War',                abbr: 'GoW',     img: 'GodofWar2.jpg',               xp: 65000, gold: true }
+];
+
+// Per-mission grade, best first. Standard missions grade on % of the maximum
+// score; the daily speedrun grades on absolute score.
+const MISSION_GRADES = [
+    { id: 'OUTSTANDING',  colour: 'rating-gold',  minPct: 90, minDaily: 90000 },
+    { id: 'COMMENDABLE',  colour: 'rating-green', minPct: 75, minDaily: 60000 },
+    { id: 'SATISFACTORY', colour: 'rating-amber', minPct: 50, minDaily: 35000 },
+    { id: 'MARGINAL',     colour: 'rating-red',   minPct: 25, minDaily: 15000 },
+    { id: 'FAILED',       colour: 'rating-red',   minPct: 0,  minDaily: 0, img: 'Lizzard.jpg' }
+];
+
+function getMissionGrade() {
+    const value = state.isDailyMode ? state.score : (state.score / (state.maxRounds * 10000)) * 100;
+    const key = state.isDailyMode ? 'minDaily' : 'minPct';
+    return MISSION_GRADES.find(g => value >= g[key]) || MISSION_GRADES[MISSION_GRADES.length - 1];
+}
+
+// XP carried by the medal tiers a profile currently holds. Derived, never
+// stored, so it stays correct through cloud merges without double-counting.
+function getMedalXp(profile) {
+    let xp = 0;
+    MEDALS.forEach(m => {
+        const value = m.metric(profile) || 0;
+        m.tiers.forEach((t, i) => { if (value >= t) xp += XP_CONFIG.medalTiers[i] || 0; });
+    });
+    return xp;
+}
+
+// Total career XP = stored mission XP + medal XP
+function getCareerXp(profile) {
+    return (profile.xp || 0) + getMedalXp(profile);
+}
+
+// Rank is always worked out from XP; it is never stored.
+function getCareerStanding(xp) {
+    let index = 0;
+    CAREER_RANKS.forEach((r, i) => { if (xp >= r.xp) index = i; });
+    const rank = CAREER_RANKS[index];
+    const next = CAREER_RANKS[index + 1] || null;
+    const fraction = next ? (xp - rank.xp) / (next.xp - rank.xp) : 1;
+    return { index, rank, next, fraction };
+}
+
+function getStreakBonus(streak) {
+    return Math.max(0, Math.min(XP_CONFIG.streakCap, XP_CONFIG.streakPerDay * (streak - 1)));
+}
+
+// Award XP for the mission that just ended (called from endGame, after the
+// mission's stats are recorded). `profileBefore` is the profile as it stood
+// before that recording. Returns the breakdown shown in the debrief.
+function awardMissionXp(profileBefore) {
+    const p = getProfile();
+    const todayKey = getTodaysSeed().toString();
+    const lines = [];
+    let mission = 0;
+    const add = (label, xp) => { if (xp > 0) { lines.push({ label, xp }); mission += xp; } };
+
+    if (state.isDailyMode) {
+        // Once per game day, like the other daily increments
+        if (p.xpDailyKey !== todayKey) {
+            const perf = Math.min(1, state.score / XP_CONFIG.dailyTopScore);
+            const perfXp = Math.round(perf * XP_CONFIG.dailyPerformance);
+            const streak = (getDailyData().stats || {}).currentStreak || 1;
+            add('Mission complete', XP_CONFIG.dailyCompletion);
+            add(`Performance (${Math.round(perf * 100)}%)`, perfXp);
+            add(`Daily streak (${streak} days)`, Math.round((XP_CONFIG.dailyCompletion + perfXp) * getStreakBonus(streak)));
+            add(`Best combo (${state.bestCombo}x)`, Math.min(XP_CONFIG.comboCap, state.bestCombo * XP_CONFIG.comboPerStep));
+            p.xpDailyKey = todayKey;
+        }
+    } else {
+        const perf = state.score / (state.maxRounds * 10000);
+        const base = Math.round(XP_CONFIG.perRound * state.maxRounds * perf);
+        add(`Performance (${Math.round(perf * 100)}%)`, base);
+        if (state.isHardMode) {
+            const trivia = state.roundResults.filter(r => r.triviaCorrect).length;
+            add('Hard mode bonus', Math.round(base * (XP_CONFIG.hardMultiplier - 1)));
+            add(`Trivia (${trivia} correct)`, trivia * XP_CONFIG.triviaCorrect);
+        }
+    }
+
+    if (mission > 0 && p.xpDayKey !== todayKey) {
+        add('First mission of the day', Math.min(XP_CONFIG.firstMissionCap, Math.round(mission * XP_CONFIG.firstMissionBonus)));
+        p.xpDayKey = todayKey;
+    }
+
+    p.xp = (p.xp || 0) + mission;
+    saveProfile(p);
+
+    const medalXp = getMedalXp(p) - getMedalXp(profileBefore);
+    if (medalXp > 0) lines.push({ label: 'Medals earned', xp: medalXp });
+
+    return { lines, before: getCareerXp(profileBefore), after: getCareerXp(p) };
+}
+
+// ── Back-dated XP for existing players ───────────────────────────────
+// Daily history holds every day's score, so daily XP is recomputed exactly
+// (minus the combo bonus, which isn't stored). Standard missions only have
+// lifetime totals, so their XP is estimated from lifetime ID accuracy.
+function computeBackfillXp(profile, daily) {
+    let xp = 0;
+
+    const history = (daily && daily.history) || {};
+    let streak = 0, prevKey = null;
+    Object.keys(history).map(k => parseInt(k)).sort((a, b) => a - b).forEach(key => {
+        streak = (prevKey !== null && prevDayKey(key) === prevKey) ? streak + 1 : 1;
+        prevKey = key;
+        const perf = Math.min(1, (history[key].score || 0) / XP_CONFIG.dailyTopScore);
+        const base = XP_CONFIG.dailyCompletion + Math.round(perf * XP_CONFIG.dailyPerformance);
+        xp += Math.round(base * (1 + getStreakBonus(streak)));
+    });
+
+    const games = profile.standardGames || 0;
+    if (games > 0) {
+        const hardGames = Math.min(profile.hardModeGames || 0, games);
+        const idAccuracy = (profile.correctIds || 0) / (games * XP_CONFIG.backfillRounds);
+        const perf = Math.max(XP_CONFIG.backfillMinPerformance, Math.min(XP_CONFIG.backfillMaxPerformance, idAccuracy));
+        const perGame = XP_CONFIG.perRound * XP_CONFIG.backfillRounds * perf;
+        xp += Math.round(((games - hardGames) + hardGames * XP_CONFIG.hardMultiplier) * perGame);
+    }
+    return xp;
+}
+
+// Runs once per profile (the flag syncs to the cloud). Back-dated XP is capped
+// just below the top rank, so God of War always has to be earned in play.
+function ensureXpBackfill() {
+    const p = getProfile();
+    if (p.xpBackfilled) return;
+    const cap = CAREER_RANKS[CAREER_RANKS.length - 1].xp - 1 - getMedalXp(p);
+    const backfill = Math.max(0, Math.min(computeBackfillXp(p, getDailyData()), cap));
+    p.xp = (p.xp || 0) + backfill;
+    p.xpBackfilled = true;
+    saveProfile(p);
+    if (backfill > 0) {
+        queueRankOverlay('SERVICE RECORD REVIEWED', 'You have been ranked', getCareerStanding(getCareerXp(p)).rank);
+    }
+}
+
+// ── Rank overlay (promotion / service-record notice) ─────────────────
+var pendingRankOverlay = null; // var: switchScreen() may read it before this line has run
+
+function showRankOverlay(title, sub, rank) {
+    const overlay = document.getElementById('rank-overlay');
+    if (!overlay) return;
+    document.getElementById('rank-overlay-title').textContent = title;
+    document.getElementById('rank-overlay-sub').textContent = sub;
+    document.getElementById('rank-overlay-name').textContent = rank.name.toUpperCase();
+    document.getElementById('rank-overlay-img').src = `PerformanceSymbols/${rank.img}`;
+    overlay.classList.toggle('rank-gold', !!rank.gold);
+    overlay.classList.remove('hidden');
+    playPromotionSound();
+}
+
+// Show the overlay now if the player is on the start screen; otherwise hold it
+// until they return there, so it never interrupts a mission in progress.
+function queueRankOverlay(title, sub, rank) {
+    pendingRankOverlay = { title, sub, rank };
+    if (screens.start.classList.contains('active')) flushRankOverlay();
+}
+
+function flushRankOverlay() {
+    if (!pendingRankOverlay) return;
+    const { title, sub, rank } = pendingRankOverlay;
+    pendingRankOverlay = null;
+    showRankOverlay(title, sub, rank);
+}
+
+// ── Rank displays ────────────────────────────────────────────────────
+function rankProgressCaption(xp, standing) {
+    return standing.next
+        ? `${xp.toLocaleString()} / ${standing.next.xp.toLocaleString()} XP · Next: ${standing.next.name}`
+        : `${xp.toLocaleString()} XP · Highest rank attained`;
+}
+
+// Insignia + rank name + progress bar, shared by the start screen, the Service
+// Record screen and the player card
+function rankSummaryHTML(xp) {
+    const standing = getCareerStanding(xp);
+    return `
+        <img class="rank-insignia" src="PerformanceSymbols/${standing.rank.img}" alt="">
+        <span class="rank-summary-info">
+            <span class="rank-summary-name${standing.rank.gold ? ' rank-gold-text' : ''}">${escapeHtml(standing.rank.name)}</span>
+            <span class="xp-bar"><span class="xp-bar-fill" style="width:${(standing.fraction * 100).toFixed(1)}%"></span></span>
+            <span class="rank-summary-caption">${escapeHtml(rankProgressCaption(xp, standing))}</span>
+        </span>`;
+}
+
+// Short rank shown before a callsign on the leaderboard ("Cpl ED"). Empty when
+// the XP is unknown (scores posted before the XP system). Display only — the
+// abbreviation is never part of the stored callsign.
+function rankAbbrHTML(xp) {
+    if (typeof xp !== 'number') return '';
+    const rank = getCareerStanding(xp).rank;
+    return `<span class="lb-rank-abbr${rank.gold ? ' rank-gold-text' : ''}" title="${escapeHtml(rank.name)}">${escapeHtml(rank.abbr)}</span>`;
+}
+
+function updateRankDisplays() {
+    const html = rankSummaryHTML(getCareerXp(getProfile()));
+    ['rank-chip', 'awards-rank', 'stats-rank'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = html;
+    });
+}
+
+// Debrief XP panel: breakdown lines, then the bar animating from the old total
+// to the new one. A promotion plays the full-screen overlay once the bar lands.
+function renderXpPanel(award) {
+    const panel = document.getElementById('xp-panel');
+    if (!panel) return;
+
+    const after = award ? award.after : getCareerXp(getProfile());
+    const before = award ? award.before : after;
+    const standing = getCareerStanding(after);
+    const promoted = standing.index > getCareerStanding(before).index;
+    const lines = award ? award.lines : [];
+
+    document.getElementById('xp-lines').innerHTML = lines.map(l => `
+        <div class="xp-line">
+            <span class="xp-line-label">${escapeHtml(l.label)}</span>
+            <span class="xp-line-value">+${l.xp.toLocaleString()}</span>
+        </div>`).join('');
+
+    const gainEl = document.getElementById('xp-gain');
+    gainEl.textContent = `+${(after - before).toLocaleString()} XP`;
+    gainEl.classList.toggle('hidden', after === before);
+
+    document.getElementById('xp-rank-img').src = `PerformanceSymbols/${standing.rank.img}`;
+    const nameEl = document.getElementById('xp-rank-name');
+    nameEl.textContent = standing.rank.name;
+    nameEl.classList.toggle('rank-gold-text', !!standing.rank.gold);
+    document.getElementById('xp-bar-caption').textContent = rankProgressCaption(after, standing);
+
+    // Start the bar at the old position (or empty, after a promotion), then fill
+    const fill = document.getElementById('xp-bar-fill');
+    const startFraction = promoted ? 0 : getCareerStanding(before).fraction;
+    fill.style.transition = 'none';
+    fill.style.width = `${(startFraction * 100).toFixed(1)}%`;
+    void fill.offsetWidth; // commit the start position before animating
+    fill.style.transition = '';
+    setTimeout(() => { fill.style.width = `${(standing.fraction * 100).toFixed(1)}%`; }, 600);
+
+    if (promoted) {
+        setTimeout(() => showRankOverlay('PROMOTED', 'You have been promoted to', standing.rank), 1900);
+    }
+}
+
+document.getElementById('rank-overlay-btn')?.addEventListener('click', () => {
+    document.getElementById('rank-overlay').classList.add('hidden');
+});
+
+updateRankDisplays();
+// Fallback for when Firebase never reports an auth state (offline / blocked):
+// the auth listener normally triggers the back-fill once any cloud merge is done.
+setTimeout(ensureXpBackfill, 6000);
+
+/* ===================================================================== */
+/* RADAR LOGO SCAN + INTEL BRIEF                                          */
+/* ===================================================================== */
+
+const RADAR_SCAN_MS = 1250; // sweep length before the Intel Brief opens
+let lastIntelId = null;
+
+function playRadarPing() {
+    // Sonar ping with a quieter echo, then a short contact blip as the beam hits
+    playTone(1320, 0.55, 'sine', 0.2);
+    setTimeout(() => playTone(1320, 0.4, 'sine', 0.07), 420);
+    setTimeout(() => playTone(1760, 0.07, 'square', 0.05), 500);
+}
+
+// Random equipment for the brief: prefer entries with a written fact, never
+// the same one twice in a row
+function pickIntelEquipment() {
+    const pool = equipmentData.filter(e => e.fact && e.id !== lastIntelId);
+    const list = pool.length ? pool : equipmentData;
+    const eq = list[Math.floor(Math.random() * list.length)];
+    lastIntelId = eq.id;
+    return eq;
+}
+
+// Fallback line for the few entries without a written fact
+function intelFallbackFact(eq) {
+    const s = eq.specs || {};
+    const bits = [];
+    if (s.armament) bits.push(`armed with ${s.armament}`);
+    if (s.speed) bits.push(`top speed ${s.speed}`);
+    return bits.length ? `${eq.name}: ${bits.join(', ')}.` : `${eq.name} — in service since ${eq.inService}.`;
+}
+
+function showIntelBrief() {
+    const eq = pickIntelEquipment();
+    const img = (eq.images && eq.images[0]) || eq.image || '';
+
+    const imgEl = document.getElementById('intel-img');
+    imgEl.src = img;
+    imgEl.alt = eq.name;
+    imgEl.classList.toggle('hidden', !img);
+
+    document.getElementById('intel-name').textContent = eq.name;
+    const year = eq.inService ? `In service ${eq.inServiceEstimated ? 'c. ' : ''}${eq.inService}` : '';
+    document.getElementById('intel-meta').innerHTML = [
+        `<span>${getCountryFlagHTML(eq.origin)} ${escapeHtml(eq.origin)}</span>`,
+        `<span>${escapeHtml(eq.type)}</span>`,
+        year ? `<span>${escapeHtml(year)}</span>` : ''
+    ].filter(Boolean).join('<span aria-hidden="true">·</span>');
+    document.getElementById('intel-fact').textContent = eq.fact || intelFallbackFact(eq);
+
+    document.getElementById('intel-view-btn').onclick = () => {
+        closeIntelBrief();
+        openPracticeHub();
+        openPracticeModal(eq);
+    };
+
+    const modal = document.getElementById('intel-modal');
+    // Restart the card's entrance animation on every brief (incl. Scan Again)
+    const content = modal.querySelector('.intel-content');
+    content.style.animation = 'none';
+    void content.offsetWidth;
+    content.style.animation = '';
+    modal.classList.remove('hidden');
+}
+
+function closeIntelBrief() {
+    document.getElementById('intel-modal')?.classList.add('hidden');
+}
+
+function runRadarScan() {
+    const logo = document.getElementById('radar-logo');
+    if (!logo || logo.classList.contains('scanning')) return; // one scan at a time
+    void logo.offsetWidth;
+    logo.classList.add('scanning');
+    playRadarPing();
+    setTimeout(() => {
+        logo.classList.remove('scanning');
+        showIntelBrief();
+    }, RADAR_SCAN_MS);
+}
+
+document.getElementById('radar-logo')?.addEventListener('click', runRadarScan);
+document.getElementById('intel-close-btn')?.addEventListener('click', closeIntelBrief);
+document.getElementById('intel-again-btn')?.addEventListener('click', () => {
+    playRadarPing();
+    showIntelBrief();
+});
+// Tap outside the card to dismiss
+document.getElementById('intel-modal')?.addEventListener('click', e => {
+    if (e.target.id === 'intel-modal') closeIntelBrief();
+});
